@@ -1,0 +1,10 @@
+query allLangAllCount {
+   allCountries {
+    id
+    name
+  }
+  allLanguages {
+    id
+    name
+  }
+}

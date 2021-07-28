@@ -56,3 +56,4 @@ jobs:
         continue-on-error: true
       - run: pm2 start npm --name "web" -- start
         working-directory: ./web
+      - run: pm2 save

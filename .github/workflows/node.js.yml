@@ -1,0 +1,58 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [master, server]
+  pull_request:
+    branches: [master, server]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          envkey_SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          envkey_CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
+          envkey_SMPT_HOST: ${{ secrets.SMPT_HOST }}
+          envkey_SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          envkey_SMTP_USER: ${{ secrets.SMTP_USER }}
+          envkey_SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          envkey_CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          envkey_CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          envkey_CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+      - run: yarn
+        working-directory: ./server
+      - run: yarn build
+        working-directory: ./server
+      - run: pm2 delete server
+        working-directory: ./server
+        continue-on-error: true
+      - run: mv .env ./server
+      - run: pm2 start npm --name "server" -- start
+        working-directory: ./server
+
+      - run: yarn
+        working-directory: ./web
+      - run: yarn build
+        working-directory: ./web
+      - run: pm2 delete web
+        working-directory: ./web
+        continue-on-error: true
+      - run: pm2 start npm --name "web" -- start
+        working-directory: ./web

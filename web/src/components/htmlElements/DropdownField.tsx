@@ -1,5 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
 
@@ -11,7 +10,7 @@ type DropdownFieldProps = {
   multiple?: boolean;
   name: string;
   list: DropdownItem[];
-  values?: DropdownItem[];
+  values: DropdownItem[];
   setFieldValue: (
     field: string,
     value: any,
@@ -32,42 +31,40 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   name,
   setFieldValue,
 }) => {
-  const [selected, setSelected] = useState(
-    values && values!.length > 1 ? values : [list[0]]
-  );
-
   const onChange = (value: DropdownItem) => {
+    console.log(value);
     if (!multiple) {
-      setSelected([value]);
+      setFieldValue(name, [value]);
     } else {
-      setSelected([...selected, value]);
+      setFieldValue(name, [...values, value]);
     }
-    setFieldValue(name.toLowerCase(), selected);
   };
 
   const deleteSelected = (id: number) => {
-    setSelected(selected.filter((item) => item.id !== id));
-    setFieldValue(name.toLowerCase(), selected);
+    setFieldValue(
+      name,
+      values.filter((item) => item.id !== id)
+    );
   };
 
   const filteredList = list.filter(
-    (item) => !selected.find(({ name }) => item.name === name)
+    (item) => !values.find(({ name }) => item.name === name)
   );
 
   return (
-    <Listbox value={selected[0]} onChange={(value) => onChange(value)}>
+    <Listbox value={values[0]} onChange={(value) => onChange(value)}>
       {({ open }) => (
         <>
           <Listbox.Label className='block text-sm font-medium text-gray-900 dark:text-white '>
-            {name}
+            {name.charAt(0).toUpperCase() + name.slice(1)}
           </Listbox.Label>
           <div className='mt-1 relative'>
             <Listbox.Button className='relative w-full bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
               {/* <span className='block truncate'>{selected[0].name}</span> */}
               <span className='block truncate'>
                 <div className='flex flex-wrap'>
-                  {selected.length
-                    ? selected.map((item) => (
+                  {values.length
+                    ? values.map((item) => (
                         <div key={item.id} className='flex mr-1.5'>
                           {multiple && (
                             <XIcon
@@ -114,7 +111,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                   >
                     <span
                       className={classNames(
-                        selected ? 'font-semibold' : 'font-normal',
+                        values ? 'font-semibold' : 'font-normal',
                         'block truncate'
                       )}
                     >

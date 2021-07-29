@@ -29,7 +29,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
     query: MeDocument,
   });
 
-  console.log(user);
+  // console.log(user?.me);
 
   return (
     <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
@@ -37,13 +37,18 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
         initialValues={{
           username: user?.me?.username || '',
           description: user?.me?.description || '',
-          age: [],
-          gender: [],
-          country: [],
+          age: AGES.filter((age) => age.id == user?.me?.age) || [AGES[0]],
+          gender: GENDERS.filter(
+            (gender) => gender.name == user?.me?.gender
+          ) || [GENDERS[0]],
+          country:
+            user?.me?.country?.length && countries?.length
+              ? countries.filter((country) => country.name == user?.me?.country)
+              : countries! && [countries[0]],
           languages: [],
         }}
         onSubmit={async (values, { setErrors }) => {
-          console.log(values);
+          console.log(values.age[0]);
           await updateMe({
             variables: { options: values },
           });
@@ -71,7 +76,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                   <div className='w-1/3 mr-2'>
                     {!loading && countries && (
                       <DropdownField
-                        name='Country'
+                        name='country'
+                        values={values.country}
                         list={countries}
                         setFieldValue={setFieldValue}
                       />
@@ -79,14 +85,16 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                   </div>
                   <div className='w-1/3 ml-2 mr-2'>
                     <DropdownField
-                      name='Gender'
+                      name='gender'
+                      values={values.gender}
                       list={GENDERS}
                       setFieldValue={setFieldValue}
                     />
                   </div>
                   <div className='w-1/3 ml-2'>
                     <DropdownField
-                      name='Age'
+                      name='age'
+                      values={values.age}
                       list={AGES}
                       setFieldValue={setFieldValue}
                     />
@@ -94,7 +102,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                 </div>
                 {!loading && languages && (
                   <DropdownField
-                    name='Languages'
+                    name='languages'
+                    values={values.languages}
                     list={languages}
                     setFieldValue={setFieldValue}
                     multiple={true}

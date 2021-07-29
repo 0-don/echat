@@ -8,10 +8,14 @@ import {
 import { ButtonField, InputField, TextAreaField } from '../htmlElements';
 import { DropdownField } from '../htmlElements/';
 
+import { useApolloClient } from '@apollo/client';
+import { MeDocument, MeQuery } from 'src/generated/graphql';
+
 interface ProfileSectionProps {}
 
 export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
   const { data, loading } = useAllLangAllCountQuery();
+  const { cache } = useApolloClient();
   const [updateMe] = useUpdateMeMutation();
 
   const languages = data?.allLanguages.map((item) => {
@@ -21,12 +25,18 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
     return { id: item.id, name: item.name };
   });
 
+  let user = cache.readQuery<MeQuery>({
+    query: MeDocument,
+  });
+
+  console.log(user);
+
   return (
     <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
       <Formik
         initialValues={{
-          username: '',
-          description: '',
+          username: user?.me?.username || '',
+          description: user?.me?.description || '',
           age: [],
           gender: [],
           country: [],

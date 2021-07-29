@@ -284,7 +284,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'gender' | 'country' | 'age'>
+    & Pick<User, 'id' | 'username' | 'gender' | 'country' | 'age' | 'description'>
   )> }
 );
 
@@ -639,6 +639,7 @@ export const MeDocument = gql`
     gender
     country
     age
+    description
   }
 }
     `;

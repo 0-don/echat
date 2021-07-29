@@ -99,7 +99,7 @@ export class UserResolver {
       user!.username = options.username;
     }
     if (options.description) {
-      user!.username = options.description;
+      user!.description = options.description;
     }
     if (options.age.length) {
       user!.age = parseInt(options.age[0].name);

@@ -8,6 +8,7 @@ import { createUploadLink } from 'apollo-upload-client';
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
+    connectToDevTools: true,
     ssrMode: typeof window === 'undefined',
     cache: new InMemoryCache(),
     link: createUploadLink({

@@ -26,7 +26,7 @@ const PgSession = connectPgSimple(session);
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: true,
-    logging: false,
+    logging: true,
     entities: [ENTITIES],
     migrations: [MIGRATIONS],
     subscribers: [MIGRATIONS],

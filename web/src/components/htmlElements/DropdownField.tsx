@@ -7,10 +7,9 @@ function classNames(...classes: any) {
 }
 
 type DropdownFieldProps = {
-  multiple?: boolean;
   name: string;
   list: DropdownItem[];
-  values: DropdownItem[];
+  values: DropdownItem[] | string | number;
   setFieldValue: (
     field: string,
     value: any,
@@ -25,34 +24,39 @@ type DropdownItem = {
 };
 
 export const DropdownField: React.FC<DropdownFieldProps> = ({
-  multiple = false,
   list,
   values,
   name,
   setFieldValue,
 }) => {
   const onChange = (value: DropdownItem) => {
-    console.log(value);
-    if (!multiple) {
-      setFieldValue(name, [value]);
-    } else {
+    if (values.constructor === Array) {
       setFieldValue(name, [...values, value]);
+    } else {
+      if (Number.isInteger(parseInt(value.name))) {
+        setFieldValue(name, parseInt(value.name));
+      } else {
+        setFieldValue(name, value.name);
+      }
     }
   };
 
-  const deleteSelected = (id: number) => {
-    setFieldValue(
-      name,
-      values.filter((item) => item.id !== id)
-    );
+  const deleteSelected = (id: string) => {
+    if (values.constructor === Array) {
+      setFieldValue(
+        name,
+        values.filter((i) => i.name !== id)
+      );
+    }
   };
 
-  const filteredList = list.filter(
-    (item) => !values.find(({ name }) => item.name === name)
-  );
+  const filteredList =
+    values.constructor === Array
+      ? list.filter((item) => !values.find(({ name }) => item.name === name))
+      : list.filter((item) => item.name !== values);
 
   return (
-    <Listbox value={values[0]} onChange={(value) => onChange(value)}>
+    <Listbox value={list[0]} onChange={onChange}>
       {({ open }) => (
         <>
           <Listbox.Label className='block text-sm font-medium text-gray-900 dark:text-white '>
@@ -60,23 +64,24 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
           </Listbox.Label>
           <div className='mt-1 relative'>
             <Listbox.Button className='relative w-full bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
-              {/* <span className='block truncate'>{selected[0].name}</span> */}
               <span className='block truncate'>
                 <div className='flex flex-wrap'>
-                  {values.length
-                    ? values.map((item) => (
-                        <div key={item.id} className='flex mr-1.5'>
-                          {multiple && (
-                            <XIcon
-                              className='h-5 w-5 text-gray-400 hover:text-white'
-                              aria-hidden='true'
-                              onClick={() => deleteSelected(item.id)}
-                            />
-                          )}
-                          <span key={item.name}>{item.name}</span>
-                        </div>
-                      ))
-                    : ' '}
+                  {values.constructor === Array ? (
+                    values.map((item) => (
+                      <div key={item.id} className='flex mr-1.5'>
+                        {values.length > 1 && (
+                          <XIcon
+                            className='h-5 w-5 text-gray-400 hover:text-white'
+                            aria-hidden='true'
+                            onClick={() => deleteSelected(item.name)}
+                          />
+                        )}
+                        <span key={item.name}>{item.name}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <span>{values.toString()}</span>
+                  )}
                 </div>
               </span>
               <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>

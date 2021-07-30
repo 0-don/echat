@@ -52,7 +52,7 @@ export type Languages = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  updateMe: User;
+  updateMe?: Maybe<User>;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -117,9 +117,9 @@ export type QueryUserImagesArgs = {
 export type UpdatedUser = {
   username: Scalars['String'];
   description: Scalars['String'];
-  age: Array<UpdatedUserValues>;
-  gender: Array<UpdatedUserValues>;
-  country: Array<UpdatedUserValues>;
+  age: Scalars['Int'];
+  gender: Scalars['String'];
+  country: Scalars['String'];
   languages: Array<UpdatedUserValues>;
 };
 
@@ -257,10 +257,10 @@ export type UpdateMeMutationVariables = Exact<{
 
 export type UpdateMeMutation = (
   { __typename?: 'Mutation' }
-  & { updateMe: (
+  & { updateMe?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'description' | 'age' | 'gender' | 'country'>
-  ) }
+  )> }
 );
 
 export type AllLangAllCountQueryVariables = Exact<{ [key: string]: never; }>;

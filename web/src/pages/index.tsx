@@ -1,3 +1,4 @@
+import { Loading } from 'src/components/utils';
 import { Wrapper } from '../components/Wrapper';
 import withApollo  from '../utils/apollo/withApollo';
 
@@ -7,6 +8,7 @@ const Index: React.FC<indexProps> = ({}) => {
 
   return (
     <Wrapper navbar>
+      <Loading />
       <div>Hello</div>
     </Wrapper>
   );

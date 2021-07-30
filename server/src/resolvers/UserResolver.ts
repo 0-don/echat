@@ -21,6 +21,7 @@ import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
+import { UserLanguages } from '../entity/UserLanguages';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -55,12 +56,12 @@ export class UpdatedUser {
   username: string;
   @Field()
   description: string;
-  @Field(() => [UpdatedUserValues])
-  age: UpdatedUserValues[];
-  @Field(() => [UpdatedUserValues])
-  gender: UpdatedUserValues[];
-  @Field(() => [UpdatedUserValues])
-  country: UpdatedUserValues[];
+  @Field(() => Int)
+  age: number;
+  @Field()
+  gender: string;
+  @Field()
+  country: string;
   @Field(() => [UpdatedUserValues])
   languages: UpdatedUserValues[];
 }
@@ -86,32 +87,57 @@ export class UserResolver {
     return User.findOne(req.session.userId);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMe(
     @Arg('options') options: UpdatedUser,
     @Ctx() { req }: MyContext
-  ): Promise<User> {
-    const user = await User.findOne(req.session.userId);
-    console.log(options);
+  ): Promise<User | null> {
+    const { userId } = req.session;
+    const user = await User.findOne(userId);
+    // console.log(options);
+
+    if (!user) {
+      return null;
+    }
 
     if (options.username) {
-      user!.username = options.username;
+      user.username = options.username;
     }
     if (options.description) {
-      user!.description = options.description;
+      user.description = options.description;
     }
-    if (options.age.length) {
-      user!.age = parseInt(options.age[0].name);
+    if (options.age) {
+      user.age = options.age;
     }
-    if (options.gender.length) {
-      user!.gender = options.gender[0].name;
+    if (options.gender) {
+      user.gender = options.gender;
     }
-    if (options.country.length) {
-      user!.country = options.country[0].name;
+    if (options.country) {
+      user.country = options.country;
     }
 
-    return user!.save();
+    if (options.languages.length) {
+      const freshLangList = options.languages.map((lang) => {
+        return { ...lang, userId };
+      });
+
+      const result = await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(UserLanguages)
+        .where('userId = :userId', { userId })
+        .insert()
+        .createQueryBuilder()
+        .into(UserLanguages)
+        .values(freshLangList)
+        .returning('*')
+        .execute();
+
+      console.log(result.raw);
+    }
+
+    return user.save();
   }
 
   @Mutation(() => UserResponse)

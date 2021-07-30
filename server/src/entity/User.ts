@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Images } from './Images';
+import { UserLanguages } from './UserLanguages';
 
 @ObjectType()
 @Entity()
@@ -42,9 +43,12 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   country: string;
 
-  @Column({ nullable: true })
-  resetToken: string;
+  @OneToMany(() => UserLanguages, (userLanguages) => userLanguages.userId)
+  languages: UserLanguages[];
 
   @OneToMany(() => Images, (images) => images.userId)
   images: Images[];
+
+  @Column({ nullable: true })
+  resetToken: string;
 }

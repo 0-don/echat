@@ -2,57 +2,71 @@ import { MyContext } from '../utils/MyContext';
 import {
   Arg,
   Ctx,
+  FieldResolver,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from 'type-graphql';
-import { Images } from '../entity/Images';
+import { Image } from '../entity/Image';
 import { isAuth } from '../middleware/isAuth';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { fileUpload } from '../utils/fileUpload';
 import { getConnection } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { log } from 'console';
+import { User } from '../entity/User';
 
 type ImageTypes = 'profile' | 'cover' | 'secondary';
 
-@Resolver()
-export class ImagesResolver {
+@Resolver(Image)
+export class ImageResolver {
+  @FieldResolver(() => User)
+  user(@Root() images: Image, @Ctx() { userLoader }: MyContext) {
+    return userLoader.load(images.userId);
+  }
+
   @Mutation(() => Boolean)
   async deleteAllImages() {
-    Images.delete({});
+    Image.delete({});
     return true;
   }
 
-  @Query(() => [Images], { nullable: true })
+  @Query(() => [Image], { nullable: true })
+  async allImages() {
+    const images = await Image.find({});
+    return images;
+  }
+
+  @Query(() => [Image], { nullable: true })
   @UseMiddleware(isAuth)
   async userImages(
     @Ctx() { req }: MyContext,
     @Arg('type', { nullable: true }) type?: ImageTypes
-  ): Promise<Images[]> {
+  ): Promise<Image[]> {
     const userId = req.session.userId;
 
-    let images: Images[];
+    let images: Image[];
     if (type) {
-      images = await Images.find({ where: { userId, type } });
+      images = await Image.find({ where: { userId, type } });
     } else {
-      images = await Images.find({ where: { userId } });
+      images = await Image.find({ where: { userId } });
     }
 
     return images;
   }
 
-  @Mutation(() => [Images])
+  @Mutation(() => [Image])
   @UseMiddleware(isAuth)
   async multipleUpload(
     @Arg('type') type: ImageTypes,
     @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
     @Ctx() { req }: MyContext
-  ): Promise<Images[]> {
+  ): Promise<Image[]> {
     const { userId } = req.session;
 
-    const imagesList: QueryDeepPartialEntity<Images>[] = [];
+    const imagesList: QueryDeepPartialEntity<Image>[] = [];
     for (let file of files) {
       const res = await fileUpload(file);
       imagesList.push({
@@ -65,7 +79,7 @@ export class ImagesResolver {
 
     if (type !== 'secondary') {
       try {
-        await Images.delete({ userId, type });
+        await Image.delete({ userId, type });
       } catch (err) {
         log(err);
       }
@@ -74,7 +88,7 @@ export class ImagesResolver {
     const result = await getConnection()
       .createQueryBuilder()
       .insert()
-      .into(Images)
+      .into(Image)
       .values(imagesList)
       .returning('*')
       .execute();
@@ -90,7 +104,7 @@ export class ImagesResolver {
   ) {
     const { userId } = req.session;
 
-    await Images.delete({ publicId, userId });
+    await Image.delete({ publicId, userId });
 
     return true;
   }

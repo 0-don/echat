@@ -16,8 +16,8 @@ export type Scalars = {
   Upload: any;
 };
 
-export type Countries = {
-  __typename?: 'Countries';
+export type Country = {
+  __typename?: 'Country';
   id: Scalars['Int'];
   name: Scalars['String'];
   iso: Scalars['String'];
@@ -35,17 +35,18 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
-export type Images = {
-  __typename?: 'Images';
+export type Image = {
+  __typename?: 'Image';
   id: Scalars['Int'];
   type: Scalars['String'];
   url: Scalars['String'];
   publicId: Scalars['String'];
-  userId: User;
+  userId: Scalars['Float'];
+  user: User;
 };
 
-export type Languages = {
-  __typename?: 'Languages';
+export type Language = {
+  __typename?: 'Language';
   id: Scalars['Int'];
   name: Scalars['String'];
 };
@@ -59,7 +60,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   deleteAllImages: Scalars['Boolean'];
-  multipleUpload: Array<Images>;
+  multipleUpload: Array<Image>;
   deleteImage: Scalars['Boolean'];
 };
 
@@ -104,9 +105,10 @@ export type MutationDeleteImageArgs = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
-  userImages?: Maybe<Array<Images>>;
-  allCountries: Array<Countries>;
-  allLanguages: Array<Languages>;
+  allImages?: Maybe<Array<Image>>;
+  userImages?: Maybe<Array<Image>>;
+  allCountries: Array<Country>;
+  allLanguages: Array<Language>;
 };
 
 
@@ -138,6 +140,14 @@ export type User = {
   age?: Maybe<Scalars['Int']>;
   gender?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
+  languages?: Maybe<Array<UserLanguage>>;
+  images?: Maybe<Array<Image>>;
+};
+
+export type UserLanguage = {
+  __typename?: 'UserLanguage';
+  id: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -232,8 +242,8 @@ export type MultipleUploadMutationVariables = Exact<{
 export type MultipleUploadMutation = (
   { __typename?: 'Mutation' }
   & { multipleUpload: Array<(
-    { __typename?: 'Images' }
-    & Pick<Images, 'id' | 'type' | 'url' | 'publicId'>
+    { __typename?: 'Image' }
+    & Pick<Image, 'id' | 'type' | 'url' | 'publicId'>
   )> }
 );
 
@@ -269,11 +279,11 @@ export type AllLangAllCountQueryVariables = Exact<{ [key: string]: never; }>;
 export type AllLangAllCountQuery = (
   { __typename?: 'Query' }
   & { allCountries: Array<(
-    { __typename?: 'Countries' }
-    & Pick<Countries, 'id' | 'name'>
+    { __typename?: 'Country' }
+    & Pick<Country, 'id' | 'name'>
   )>, allLanguages: Array<(
-    { __typename?: 'Languages' }
-    & Pick<Languages, 'id' | 'name'>
+    { __typename?: 'Language' }
+    & Pick<Language, 'id' | 'name'>
   )> }
 );
 
@@ -296,8 +306,8 @@ export type UserImagesQueryVariables = Exact<{
 export type UserImagesQuery = (
   { __typename?: 'Query' }
   & { userImages?: Maybe<Array<(
-    { __typename?: 'Images' }
-    & Pick<Images, 'id' | 'type' | 'url' | 'publicId'>
+    { __typename?: 'Image' }
+    & Pick<Image, 'id' | 'type' | 'url' | 'publicId'>
   )>> }
 );
 

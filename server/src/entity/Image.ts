@@ -5,13 +5,12 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 import { User } from './User';
 
 @ObjectType()
 @Entity()
-export class Images extends BaseEntity {
+export class Image extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,8 +27,11 @@ export class Images extends BaseEntity {
   @Column({ unique: true, nullable: true })
   publicId: string;
 
+  @Field()
+  @Column()
+  userId: number;
+
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.images)
-  @JoinColumn({ name: 'userId' })
-  userId: User;
+  user: User;
 }

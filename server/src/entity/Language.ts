@@ -1,9 +1,14 @@
 import { Field, Int, ObjectType } from 'type-graphql';
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+} from 'typeorm';
 
 @ObjectType()
 @Entity()
-export class Countries extends BaseEntity {
+export class Language extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -12,7 +17,4 @@ export class Countries extends BaseEntity {
   @Column()
   name: string;
 
-  @Field()
-  @Column()
-  iso: string;
 }

@@ -4,11 +4,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
+import { User } from './User';
 
 @ObjectType()
 @Entity()
-export class Languages extends BaseEntity {
+export class UserLanguage extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,5 +19,9 @@ export class Languages extends BaseEntity {
   @Field()
   @Column()
   name: string;
+
+  @ManyToOne(() => User, (user) => user.languages)
+  @JoinColumn({ name: 'userId' })
+  userId: User;
 
 }

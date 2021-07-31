@@ -2,6 +2,7 @@ import 'dotenv-safe/config';
 import 'reflect-metadata';
 import express from 'express';
 import session from 'express-session';
+import psl from 'psl';
 import { ApolloServer } from 'apollo-server-express';
 import connectPgSimple from 'connect-pg-simple';
 import cookieParser from 'cookie-parser';
@@ -10,12 +11,16 @@ import { graphqlUploadExpress } from 'graphql-upload';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
+
+
 import { UserResolver } from './resolvers/UserResolver';
-import psl from 'psl';
-import { ImagesResolver } from './resolvers/ImagesResolver';
+import { ImageResolver } from './resolvers/ImageResolver';
+import { CountryResolver } from './resolvers/CountryResolver';
+import { LanguageResolver } from './resolvers/LanguageResolver';
+import { createUserLoader } from './utils/loaders/createUserLoader';
+import { createImageLoader } from './utils/loaders/createImageLoader';
+
 import { log } from 'console';
-import { CountriesResolver } from './resolvers/CountriesResolver';
-import { LanguagesResolver } from './resolvers/LanguagesResolver';
 
 const PgSession = connectPgSimple(session);
 
@@ -60,16 +65,22 @@ const PgSession = connectPgSimple(session);
     schema: await buildSchema({
       resolvers: [
         UserResolver,
-        ImagesResolver,
-        CountriesResolver,
-        LanguagesResolver,
+        ImageResolver,
+        CountryResolver,
+        LanguageResolver,
       ],
       validate: false,
     }),
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({
+      req,
+      res,
+      userLoader: createUserLoader(),
+      imageLoader: createImageLoader(),
+    }),
     uploads: false,
     introspection: true,
   });
+
   app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
   server.applyMiddleware({ app, cors: false });
 

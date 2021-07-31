@@ -21,7 +21,7 @@ import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
-import { UserLanguages } from '../entity/UserLanguages';
+import { UserLanguage } from '../entity/UserLanguage';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -125,14 +125,14 @@ export class UserResolver {
       await getConnection()
         .createQueryBuilder()
         .delete()
-        .from(UserLanguages)
+        .from(UserLanguage)
         .where('userId = :userId', { userId })
         .execute();
 
       const result = await getConnection()
         .createQueryBuilder()
         .insert()
-        .into(UserLanguages)
+        .into(UserLanguage)
         .values(freshLangList)
         .returning('*')
         .execute();

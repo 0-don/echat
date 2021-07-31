@@ -122,13 +122,16 @@ export class UserResolver {
         return { ...lang, userId };
       });
 
-      const result = await getConnection()
+      await getConnection()
         .createQueryBuilder()
         .delete()
         .from(UserLanguages)
         .where('userId = :userId', { userId })
-        .insert()
+        .execute();
+
+      const result = await getConnection()
         .createQueryBuilder()
+        .insert()
         .into(UserLanguages)
         .values(freshLangList)
         .returning('*')

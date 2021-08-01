@@ -298,6 +298,10 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'gender' | 'country' | 'age' | 'description'>
+    & { languages?: Maybe<Array<(
+      { __typename?: 'UserLanguage' }
+      & Pick<UserLanguage, 'id' | 'name'>
+    )>> }
   )> }
 );
 
@@ -653,6 +657,10 @@ export const MeDocument = gql`
     country
     age
     description
+    languages {
+      id
+      name
+    }
   }
 }
     `;

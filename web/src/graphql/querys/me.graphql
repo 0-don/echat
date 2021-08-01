@@ -6,5 +6,9 @@ query Me {
     country
     age
     description
+    languages {
+      id
+      name
+    }
   }
 }

@@ -8,7 +8,7 @@ export const createImageLoader = () =>
 
     const gs = _.groupBy(images, 'userId');
 
-    const sortImages = keys.map((k) => gs[k.userId] || []);
+    const sortedImages = keys.map((k) => gs[k.userId] || []);
 
-    return sortImages;
+    return sortedImages;
   });

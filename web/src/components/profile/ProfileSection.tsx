@@ -20,6 +20,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
     query: MeDocument,
   });
 
+  const userLanguage = user?.me?.languages?.map((lang) => ({
+    id: lang.id,
+    name: lang.name,
+  }));
+
   const { data, loading } = useAllLangAllCountQuery();
   const [updateMe] = useUpdateMeMutation();
 
@@ -33,6 +38,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
   if (languages && languages.length && countries && countries.length && user) {
     return (
       <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+        <h1 className='text-gray-900 dark:text-white mb-3'>Profile</h1>
         <Formik
           initialValues={{
             username: user.me?.username || '',
@@ -40,9 +46,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
             age: user.me?.age || AGES[0].id,
             gender: user.me?.gender || GENDERS[0].name,
             country: user.me?.country || countries[0].name,
-            languages: [languages[0]],
+            languages: userLanguage || [languages[0]],
           }}
           onSubmit={async (values, { setErrors }) => {
+            console.log(values);
             await updateMe({
               variables: { options: values },
             });

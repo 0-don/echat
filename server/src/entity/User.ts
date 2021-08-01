@@ -50,7 +50,9 @@ export class User extends BaseEntity {
   languages: UserLanguage[];
 
   @Field(() => [Image], { nullable: true })
-  @OneToMany(() => Image, (image) => image.user)
+  @OneToMany(() => Image, (image) => image.user, {
+    cascade: true,
+  })
   images: Image[];
 
   @Column({ nullable: true })

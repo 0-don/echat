@@ -5,7 +5,6 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
-  PrimaryColumn,
 } from 'typeorm';
 import { User } from './User';
 
@@ -21,10 +20,11 @@ export class UserLanguage extends BaseEntity {
   name: string;
 
   @Field()
-  @PrimaryColumn()
+  @Column()
   userId: number;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.languages)
   user: User;
+
 }

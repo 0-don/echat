@@ -22,7 +22,7 @@ export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
   return (
     <>
       <div className='bg-white dark:bg-gray-800 shadow px-4 py-5 sm:rounded-lg sm:p-6'>
-        <h1 className='text-4xl text-gray-900 dark:text-white mb-3 '>Images</h1>
+        <h1 className='text-gray-900 dark:text-white mb-3 '>Images</h1>
         <div>
           <div>
             <img

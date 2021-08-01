@@ -71,6 +71,9 @@ export class UpdatedUser {
 
 @InputType()
 export class UpdatedUserValues {
+  // @Field({nullable: true})
+  // __typename?: string;
+
   @Field(() => Int)
   id: number;
 
@@ -83,6 +86,11 @@ export class UserResolver {
   @FieldResolver(() => [Image], { nullable: true })
   images(@Root() user: User, @Ctx() { imageLoader }: MyContext) {
     return imageLoader.load({ userId: user.id });
+  }
+
+  @FieldResolver(() => [UserLanguage], { nullable: true })
+  languages(@Root() user: User, @Ctx() { userLanguageLoader }: MyContext) {
+    return userLanguageLoader.load({ userId: user.id });
   }
 
   @Query(() => [User], { nullable: true })
@@ -133,13 +141,8 @@ export class UserResolver {
       const freshLangList = options.languages.map((lang) => {
         return { ...lang, userId };
       });
-
-      await getConnection()
-        .createQueryBuilder()
-        .delete()
-        .from(UserLanguage)
-        .where('userId = :userId', { userId })
-        .execute();
+      console.log(freshLangList)
+      await UserLanguage.delete({userId})
 
       const result = await getConnection()
         .createQueryBuilder()

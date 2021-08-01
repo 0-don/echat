@@ -10,8 +10,8 @@ export const createUserLoader = () =>
     users.forEach((u) => {
       userIdToUser[u.id] = u;
     });
-    // console.log(userIdToUser);
+
     const sortedUsers = userIds.map((userId) => userIdToUser[userId]);
-    // console.log(sortedUsers);
+
     return sortedUsers;
   });

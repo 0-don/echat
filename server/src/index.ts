@@ -1,4 +1,4 @@
-import 'dotenv-safe/config';
+import 'dotenv/config';
 import 'reflect-metadata';
 import express from 'express';
 import session from 'express-session';
@@ -11,7 +11,6 @@ import { graphqlUploadExpress } from 'graphql-upload';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
-
 
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';

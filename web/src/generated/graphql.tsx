@@ -104,6 +104,7 @@ export type MutationDeleteImageArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getAll?: Maybe<Array<User>>;
   me?: Maybe<User>;
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;

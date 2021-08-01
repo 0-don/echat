@@ -82,18 +82,11 @@ export class UpdatedUserValues {
 export class UserResolver {
   @FieldResolver(() => [Image], { nullable: true })
   images(@Root() user: User, @Ctx() { imageLoader }: MyContext) {
-    // console.log(user.id);
-    // const list = {userId: user.id}
-    // console.log(list)
-    const images = imageLoader.load({ userId: user.id });
-    // const images = Image.find({where: )
-
-    return images;
+    return imageLoader.load({ userId: user.id });
   }
 
   @Query(() => [User], { nullable: true })
   getAll() {
-  
     return User.find();
   }
 

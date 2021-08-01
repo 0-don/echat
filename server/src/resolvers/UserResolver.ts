@@ -4,12 +4,14 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from 'type-graphql';
 import argon2 from 'argon2';
@@ -22,6 +24,7 @@ import { v4 } from 'uuid';
 import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
 import { UserLanguage } from '../entity/UserLanguage';
+import { Image } from '../entity/Image';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -75,8 +78,25 @@ export class UpdatedUserValues {
   name: string;
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  @FieldResolver(() => [Image], { nullable: true })
+  images(@Root() user: User, @Ctx() { imageLoader }: MyContext) {
+    // console.log(user.id);
+    // const list = {userId: user.id}
+    // console.log(list)
+    const images = imageLoader.load({ userId: user.id });
+    // const images = Image.find({where: )
+
+    return images;
+  }
+
+  @Query(() => [User], { nullable: true })
+  getAll() {
+  
+    return User.find();
+  }
+
   @Query(() => User, { nullable: true })
   me(@Ctx() { req }: MyContext) {
     // you are not logged in
@@ -95,7 +115,6 @@ export class UserResolver {
   ): Promise<User | null> {
     const { userId } = req.session;
     const user = await User.findOne(userId);
-    // console.log(options);
 
     if (!user) {
       return null;
@@ -137,7 +156,7 @@ export class UserResolver {
         .returning('*')
         .execute();
 
-      console.log(result.raw);
+      log(result.raw);
     }
 
     return user.save();

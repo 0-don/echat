@@ -43,7 +43,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
             languages: [languages[0]],
           }}
           onSubmit={async (values, { setErrors }) => {
-            console.log(values)
             await updateMe({
               variables: { options: values },
             });

@@ -44,7 +44,7 @@ export class User extends BaseEntity {
   country: string;
 
   @Field(() => [UserLanguage], { nullable: true })
-  @OneToMany(() => UserLanguage, (userLanguage) => userLanguage.userId, {
+  @OneToMany(() => UserLanguage, (userLanguage) => userLanguage.user, {
     cascade: true,
   })
   languages: UserLanguage[];

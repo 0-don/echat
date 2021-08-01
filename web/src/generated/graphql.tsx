@@ -148,6 +148,8 @@ export type UserLanguage = {
   __typename?: 'UserLanguage';
   id: Scalars['Int'];
   name: Scalars['String'];
+  userId: Scalars['Float'];
+  user: User;
 };
 
 export type UserResponse = {

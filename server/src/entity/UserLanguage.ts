@@ -4,8 +4,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  JoinColumn,
   ManyToOne,
+  PrimaryColumn,
 } from 'typeorm';
 import { User } from './User';
 
@@ -20,8 +20,11 @@ export class UserLanguage extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.languages)
-  @JoinColumn({ name: 'userId' })
-  userId: User;
+  @Field()
+  @PrimaryColumn()
+  userId: number;
 
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.languages)
+  user: User;
 }

@@ -1,5 +1,5 @@
 import { Form, Formik} from 'formik';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { AGES, GENDERS, HOURS } from 'src/constants';
 import {
   useAllLangAllCountQuery,
@@ -207,7 +207,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                 <div className='flex flex-wrap'>
                   {formikProps.values.schedule.map(
                     ({ available, dayName, from, to }) => (
-                      <>
+                      <Fragment key={dayName}>
                         <div className='w-3/12 p-2'>{dayName}</div>
                         <div className='w-3/12 p-2'>
                           <DropdownField
@@ -259,7 +259,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                           />
                           Available
                         </div>
-                      </>
+                      </Fragment>
                     )
                   )}
                 </div>

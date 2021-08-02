@@ -7,7 +7,7 @@ export const createImageLoader = () =>
     const images = await Image.find({ where: keys });
 
     const gs = _.groupBy(images, 'userId');
-    console.log(gs);
+  
     const sortedImages = keys.map((k) => gs[k.userId] || []);
 
     return sortedImages;

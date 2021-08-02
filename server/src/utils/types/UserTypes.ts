@@ -1,5 +1,5 @@
-import { User } from "../../entity/User";
-import { InputType, Field, ObjectType, Int } from "type-graphql";
+import { User } from '../../entity/User';
+import { InputType, Field, ObjectType, Int } from 'type-graphql';
 
 @InputType()
 export class EmailUsernamePasswordInput {
@@ -58,13 +58,24 @@ export class UpdatedUser {
   tiktok: string;
   @Field(() => [UpdatedUserValues])
   languages: UpdatedUserValues[];
+  @Field(() => [UpdatedUserValues])
+  schedules: UpdatedUserValues[];
 }
-
+// { id: 7, name: 'Sunday', from: 0, to: 23, available: false },
 @InputType()
 export class UpdatedUserValues {
   @Field(() => Int)
   id: number;
 
-  @Field()
+  @Field({ nullable: true })
   name: string;
+
+  @Field({ nullable: true })
+  from?: string;
+
+  @Field({ nullable: true })
+  to?: string;
+
+  @Field({ nullable: true })
+  available?: boolean;
 }

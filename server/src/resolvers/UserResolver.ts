@@ -26,6 +26,7 @@ import {
   UpdatedUser,
   UserResponse,
 } from '../utils/types/UserTypes';
+import { Schedule } from '../entity/Schedule';
 
 @Resolver(User)
 export class UserResolver {
@@ -37,6 +38,11 @@ export class UserResolver {
   @FieldResolver(() => [UserLanguage], { nullable: true })
   languages(@Root() user: User, @Ctx() { userLanguageLoader }: MyContext) {
     return userLanguageLoader.load({ userId: user.id });
+  }
+
+  @FieldResolver(() => [Schedule], { nullable: true })
+  schedules(@Root() user: User, @Ctx() { scheduleLoader }: MyContext) {
+    return scheduleLoader.load({ userId: user.id });
   }
 
   @Query(() => [User], { nullable: true })
@@ -111,7 +117,7 @@ export class UserResolver {
     }
 
     if (options.languages.length) {
-      const freshLangList = options.languages.map((lang) => {
+      const freshLanguages = options.languages.map((lang) => {
         return { ...lang, userId };
       });
       await getConnection()
@@ -125,9 +131,28 @@ export class UserResolver {
         .createQueryBuilder()
         .insert()
         .into(UserLanguage)
-        .values(freshLangList)
+        .values(freshLanguages)
         .returning('*')
         .execute();
+    }
+
+    if (options.schedules.length) {
+        const freshSchedules = options.schedules.map((sched) => {
+          return { ...sched, from: parseInt(sched.from!), to: parseInt(sched.to!), userId };
+        });
+        await getConnection()
+          .createQueryBuilder()
+          .delete()
+          .from(Schedule)
+          .where('userId = :userId', { userId })
+          .execute();
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Schedule)
+          .values(freshSchedules)
+          .returning('*')
+          .execute();
     }
 
     return user.save();

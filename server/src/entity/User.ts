@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Image } from './Image';
+import { Schedule } from './Schedule';
 import { UserLanguage } from './UserLanguage';
 
 @ObjectType()
@@ -76,17 +77,26 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
+  // UserLanguage
   @OneToMany(() => UserLanguage, (userLanguage) => userLanguage.user, {
     cascade: true,
   })
   @Field(() => [UserLanguage], { nullable: true })
   languages: UserLanguage[];
 
+  // Image
   @OneToMany(() => Image, (image) => image.user, {
     cascade: true,
   })
   @Field(() => [Image], { nullable: true })
   images: Image[];
+
+  // Schedule
+  @OneToMany(() => Schedule, (schedule) => schedule.user, {
+    cascade: true,
+  })
+  @Field(() => [Schedule], { nullable: true })
+  schedules: Schedule[];
 
   @Column({ nullable: true })
   resetToken: string;

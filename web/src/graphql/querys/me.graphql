@@ -20,5 +20,13 @@ query Me {
       id
       name
     }
+    
+    schedules {
+      id
+      name
+      from
+      to
+      available
+    }
   }
 }

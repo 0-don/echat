@@ -21,6 +21,7 @@ import { createImageLoader } from './utils/loaders/createImageLoader';
 
 import { log } from 'console';
 import { createUserLanguageLoader } from './utils/loaders/createUserLanguageLoader';
+import { createScheduleLoader } from './utils/loaders/createScheduleLoader';
 
 const PgSession = connectPgSimple(session);
 
@@ -77,6 +78,7 @@ const PgSession = connectPgSimple(session);
       userLoader: createUserLoader(),
       imageLoader: createImageLoader(),
       userLanguageLoader: createUserLanguageLoader(),
+      scheduleLoader: createScheduleLoader(),
     }),
     uploads: false,
     introspection: true,

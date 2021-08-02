@@ -123,6 +123,17 @@ export type QueryUserImagesArgs = {
   type?: Maybe<Scalars['String']>;
 };
 
+export type Schedule = {
+  __typename?: 'Schedule';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  from: Scalars['Int'];
+  to: Scalars['Int'];
+  available: Scalars['Boolean'];
+  userId: Scalars['Int'];
+  user: User;
+};
+
 export type UpdatedUser = {
   username: Scalars['String'];
   description: Scalars['String'];
@@ -138,11 +149,15 @@ export type UpdatedUser = {
   steam: Scalars['String'];
   tiktok: Scalars['String'];
   languages: Array<UpdatedUserValues>;
+  schedules: Array<UpdatedUserValues>;
 };
 
 export type UpdatedUserValues = {
   id: Scalars['Int'];
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  from?: Maybe<Scalars['String']>;
+  to?: Maybe<Scalars['String']>;
+  available?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -165,11 +180,11 @@ export type User = {
   tiktok?: Maybe<Scalars['String']>;
   languages?: Maybe<Array<UserLanguage>>;
   images?: Maybe<Array<Image>>;
+  schedules?: Maybe<Array<Schedule>>;
 };
 
 export type UserLanguage = {
   __typename?: 'UserLanguage';
-  gid: Scalars['Int'];
   id: Scalars['Int'];
   name: Scalars['String'];
   userId: Scalars['Int'];
@@ -334,6 +349,9 @@ export type MeQuery = (
     & { languages?: Maybe<Array<(
       { __typename?: 'UserLanguage' }
       & Pick<UserLanguage, 'id' | 'name'>
+    )>>, schedules?: Maybe<Array<(
+      { __typename?: 'Schedule' }
+      & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
     )>> }
   )> }
 );
@@ -732,6 +750,13 @@ export const MeDocument = gql`
     languages {
       id
       name
+    }
+    schedules {
+      id
+      name
+      from
+      to
+      available
     }
   }
 }

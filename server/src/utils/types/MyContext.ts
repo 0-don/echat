@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { createImageLoader } from '../loaders/createImageLoader';
+import { createScheduleLoader } from '../loaders/createScheduleLoader';
 import { createUserLanguageLoader } from '../loaders/createUserLanguageLoader';
 import { createUserLoader } from '../loaders/createUserLoader';
 
@@ -10,4 +11,5 @@ export type MyContext = {
   userLoader: ReturnType<typeof createUserLoader>;
   imageLoader: ReturnType<typeof createImageLoader>;
   userLanguageLoader: ReturnType<typeof createUserLanguageLoader>;
+  scheduleLoader: ReturnType<typeof createScheduleLoader>;
 };

@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
+import { FormikProps } from 'formik';
+import { UpdatedUser } from 'src/generated/graphql';
 // import { useDeleteUserLanguageMutation } from 'src/generated/graphql';
 
 function classNames(...classes: any) {
@@ -9,32 +11,44 @@ function classNames(...classes: any) {
 
 type DropdownFieldProps = {
   fieldName: string;
+  fieldKey?: string;
   list: DropdownItem[];
-  values: DropdownItem[] | string | number;
-  setFieldValue: (
-    field: string,
-    value: any,
-    shouldValidate?: boolean | undefined
-  ) => void;
-};
+  dayName?: string;
+} & FormikProps<UpdatedUser>;
 
 type DropdownItem = {
   __typename?: string;
   id: number;
   name: string;
+  from?: number;
+  to?: number;
+  available?: boolean;
 };
 
 export const DropdownField: React.FC<DropdownFieldProps> = ({
   list,
   values,
   fieldName,
+  fieldKey,
+  dayName,
   setFieldValue,
 }) => {
-  // const [deleteUserLanguage] = useDeleteUserLanguageMutation();
 
   const onChange = (value: DropdownItem) => {
-    if (values.constructor === Array) {
-      setFieldValue(fieldName, [...values, value]);
+    if (values[fieldName].constructor === Array) {
+      if (fieldKey && dayName) {
+        setFieldValue(
+          fieldName,
+          (values[fieldName] as DropdownItem[]).map((i) => {
+            if (i.name === dayName) {
+              return { ...i, [fieldKey]: value.name };
+            }
+            return i;
+          })
+        );
+      } else {
+        setFieldValue(fieldName, [...values[fieldName], value]);
+      }
     } else {
       if (Number.isInteger(parseInt(value.name))) {
         setFieldValue(fieldName, parseInt(value.name));
@@ -45,26 +59,25 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   };
 
   const deleteSelected = ({ id, name }: DropdownItem) => {
-    // deleteUserLanguage({
-    //   variables: { name },
-    //   update(cache) {
-    //     const nId = cache.identify({ id, __typename: 'UserLanguage' });
-    //     cache.evict({ id: nId });
-    //     cache.gc();
-    //   },
-    // });
-    if (values.constructor === Array) {
+    if (values[fieldName].constructor === Array) {
       setFieldValue(
         fieldName,
-        values.filter((i) => i.name !== name)
+        values[fieldName].filter((i: DropdownItem) => i.name !== name)
       );
     }
   };
 
   const filteredList =
-    values.constructor === Array
-      ? list.filter((item) => !values.find(({ name }) => item.name === name))
-      : list.filter((item) => item.name !== values);
+    values[fieldName].constructor === Array
+      ? list.filter(
+          (item) =>
+            !values[fieldName].find(
+              ({ name }: { name: string }) => item.name === name
+            )
+        )
+      : list.filter(
+          (item: { name: string }) => item.name !== values[fieldName]
+        );
 
   return (
     <Listbox value={list[0]} onChange={onChange}>
@@ -77,10 +90,10 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
             <Listbox.Button className='relative w-full bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
               <span className='block truncate'>
                 <div className='flex flex-wrap'>
-                  {values.constructor === Array ? (
-                    values.map((item, i) => (
-                      <div key={i} className='flex mr-1.5'>
-                        {values.length > 1 && (
+                  {values[fieldName].constructor === Array && !dayName ? (
+                    values[fieldName].map((item: DropdownItem) => (
+                      <div key={item.name} className='flex mr-1.5'>
+                        {values[fieldName].length > 1 && (
                           <XIcon
                             className='h-5 w-5 text-gray-400 hover:text-white'
                             aria-hidden='true'
@@ -91,7 +104,13 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                       </div>
                     ))
                   ) : (
-                    <span>{values.toString()}</span>
+                    <span>
+                      {dayName
+                        ? values[fieldName].find(
+                            (i: DropdownItem) => i.name === dayName
+                          )[fieldKey]
+                        : values[fieldName].toString()}
+                    </span>
                   )}
                 </div>
               </span>

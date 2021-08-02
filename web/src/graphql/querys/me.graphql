@@ -6,6 +6,16 @@ query Me {
     country
     age
     description
+
+    discord
+    twitter
+    facebook
+    snapchat
+    instagram
+    twitch
+    steam
+    tiktok
+
     languages {
       id
       name

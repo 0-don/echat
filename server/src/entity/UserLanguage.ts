@@ -5,6 +5,7 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  PrimaryColumn,
 } from 'typeorm';
 import { User } from './User';
 
@@ -13,13 +14,17 @@ import { User } from './User';
 export class UserLanguage extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
+  gid: number;
+
+  @Field(() => Int)
+  @PrimaryColumn()
   id: number;
 
   @Field()
   @Column()
   name: string;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   userId: number;
 

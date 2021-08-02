@@ -62,6 +62,7 @@ export type Mutation = {
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Image>;
   deleteImage: Scalars['Boolean'];
+  deleteUserLanguage?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -102,6 +103,11 @@ export type MutationDeleteImageArgs = {
   publicId: Scalars['String'];
 };
 
+
+export type MutationDeleteUserLanguageArgs = {
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getAll?: Maybe<Array<User>>;
@@ -123,6 +129,14 @@ export type UpdatedUser = {
   age: Scalars['Int'];
   gender: Scalars['String'];
   country: Scalars['String'];
+  discord: Scalars['String'];
+  twitter: Scalars['String'];
+  facebook: Scalars['String'];
+  snapchat: Scalars['String'];
+  instagram: Scalars['String'];
+  twitch: Scalars['String'];
+  steam: Scalars['String'];
+  tiktok: Scalars['String'];
   languages: Array<UpdatedUserValues>;
 };
 
@@ -141,15 +155,24 @@ export type User = {
   age?: Maybe<Scalars['Int']>;
   gender?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  facebook?: Maybe<Scalars['String']>;
+  snapchat?: Maybe<Scalars['String']>;
+  instagram?: Maybe<Scalars['String']>;
+  twitch?: Maybe<Scalars['String']>;
+  steam?: Maybe<Scalars['String']>;
+  tiktok?: Maybe<Scalars['String']>;
   languages?: Maybe<Array<UserLanguage>>;
   images?: Maybe<Array<Image>>;
 };
 
 export type UserLanguage = {
   __typename?: 'UserLanguage';
+  gid: Scalars['Int'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  userId: Scalars['Float'];
+  userId: Scalars['Int'];
   user: User;
 };
 
@@ -202,6 +225,16 @@ export type DeleteImageMutationVariables = Exact<{
 export type DeleteImageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteImage'>
+);
+
+export type DeleteUserLanguageMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type DeleteUserLanguageMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteUserLanguage'>
 );
 
 export type ForgotPasswordMutationVariables = Exact<{
@@ -297,7 +330,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'gender' | 'country' | 'age' | 'description'>
+    & Pick<User, 'id' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { languages?: Maybe<Array<(
       { __typename?: 'UserLanguage' }
       & Pick<UserLanguage, 'id' | 'name'>
@@ -406,6 +439,37 @@ export function useDeleteImageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteImageMutationHookResult = ReturnType<typeof useDeleteImageMutation>;
 export type DeleteImageMutationResult = Apollo.MutationResult<DeleteImageMutation>;
 export type DeleteImageMutationOptions = Apollo.BaseMutationOptions<DeleteImageMutation, DeleteImageMutationVariables>;
+export const DeleteUserLanguageDocument = gql`
+    mutation DeleteUserLanguage($name: String!) {
+  deleteUserLanguage(name: $name)
+}
+    `;
+export type DeleteUserLanguageMutationFn = Apollo.MutationFunction<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>;
+
+/**
+ * __useDeleteUserLanguageMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserLanguageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserLanguageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserLanguageMutation, { data, loading, error }] = useDeleteUserLanguageMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDeleteUserLanguageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>(DeleteUserLanguageDocument, options);
+      }
+export type DeleteUserLanguageMutationHookResult = ReturnType<typeof useDeleteUserLanguageMutation>;
+export type DeleteUserLanguageMutationResult = Apollo.MutationResult<DeleteUserLanguageMutation>;
+export type DeleteUserLanguageMutationOptions = Apollo.BaseMutationOptions<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -657,6 +721,14 @@ export const MeDocument = gql`
     country
     age
     description
+    discord
+    twitter
+    facebook
+    snapchat
+    instagram
+    twitch
+    steam
+    tiktok
     languages {
       id
       name
@@ -738,6 +810,7 @@ export const namedOperations = {
   Mutation: {
     ChangePassword: 'ChangePassword',
     DeleteImage: 'DeleteImage',
+    DeleteUserLanguage: 'DeleteUserLanguage',
     ForgotPassword: 'ForgotPassword',
     Login: 'Login',
     Logout: 'Logout',

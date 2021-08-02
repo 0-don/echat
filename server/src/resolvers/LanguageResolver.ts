@@ -1,15 +1,27 @@
 import { MyContext } from '../utils/MyContext';
-import { Ctx, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Language } from '../entity/Language';
+import { UserLanguage } from '../entity/UserLanguage';
 
 @Resolver()
 export class LanguageResolver {
   @Query(() => [Language])
-  async allLanguages(@Ctx() { req }: MyContext): Promise<Language[]> {
-    const userId = req.session.userId;
-    userId
+  async allLanguages(): Promise<Language[]> {
+    return Language.find();
+  }
 
-    const languages = Language.find({});
-    return languages;
+  @Mutation(() => Boolean, { nullable: true })
+  async deleteUserLanguage(
+    @Arg('name') name: string,
+    @Ctx() { req }: MyContext
+  ): Promise<Boolean> {
+    const { userId } = req.session;
+    if (!userId) {
+      return false;
+    }
+
+    await UserLanguage.delete({ userId, name });
+
+    return true;
   }
 }

@@ -1,12 +1,18 @@
 import { useField } from 'formik';
 import React, { InputHTMLAttributes } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
+  icon?: string;
 };
 
-export const InputField: React.FC<InputFieldProps> = ({ label, ...props }) => {
+export const InputField: React.FC<InputFieldProps> = ({
+  label,
+  icon,
+  ...props
+}) => {
   const [field, { error }] = useField(props);
 
   return (
@@ -17,7 +23,10 @@ export const InputField: React.FC<InputFieldProps> = ({ label, ...props }) => {
       >
         {label}
       </label>
-      <div className='mt-1 '>
+      <div className='mt-1 relative rounded-md shadow-sm'>
+        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+          {icon && <FontAwesomeIcon icon={['fab', icon as any]} />}
+        </div>
         <input
           {...field}
           {...props}
@@ -25,15 +34,16 @@ export const InputField: React.FC<InputFieldProps> = ({ label, ...props }) => {
           placeholder={props.placeholder}
           className={`
           ${error ? 'border-red-500' : 'border-gray-300'} 
+          ${icon && 'pl-10'} 
            text-white appearance-none block w-full px-3 py-2 bg-white dark:bg-gray-700 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
           `}
         />
       </div>
-      {error ? (
+      {error && (
         <span className='flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1'>
           {error}
         </span>
-      ) : null}
+      )}
     </div>
   );
 };

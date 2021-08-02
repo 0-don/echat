@@ -1,0 +1,3 @@
+mutation DeleteUserLanguage($name: String!) {
+  deleteUserLanguage(name: $name)
+}

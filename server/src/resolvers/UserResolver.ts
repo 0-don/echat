@@ -65,15 +65,28 @@ export class UpdatedUser {
   gender: string;
   @Field()
   country: string;
+  @Field()
+  discord: string;
+  @Field()
+  twitter: string;
+  @Field()
+  facebook: string;
+  @Field()
+  snapchat: string;
+  @Field()
+  instagram: string;
+  @Field()
+  twitch: string;
+  @Field()
+  steam: string;
+  @Field()
+  tiktok: string;
   @Field(() => [UpdatedUserValues])
   languages: UpdatedUserValues[];
 }
 
 @InputType()
 export class UpdatedUserValues {
-  // @Field({nullable: true})
-  // __typename?: string;
-
   @Field(() => Int)
   id: number;
 
@@ -114,7 +127,7 @@ export class UserResolver {
     @Arg('options') options: UpdatedUser,
     @Ctx() { req }: MyContext
   ): Promise<User | null> {
-    const { userId } = req.session;
+    const { userId }: { userId: number } = req.session;
     const user = await User.findOne(userId);
 
     if (!user) {
@@ -137,22 +150,55 @@ export class UserResolver {
       user.country = options.country;
     }
 
+    // Social
+    if (options.discord) {
+      user.discord = options.discord;
+    }
+    if (options.facebook) {
+      user.facebook = options.facebook;
+    }
+    if (options.instagram) {
+      user.instagram = options.instagram;
+    }
+    if (options.steam) {
+      user.steam = options.steam;
+    }
+
+    if (options.twitter) {
+      user.twitter = options.twitter;
+    }
+    if (options.snapchat) {
+      user.snapchat = options.snapchat;
+    }
+    if (options.twitch) {
+      user.twitch = options.twitch;
+    }
+    if (options.tiktok) {
+      user.tiktok = options.tiktok;
+    }
+
     if (options.languages.length) {
       const freshLangList = options.languages.map((lang) => {
         return { ...lang, userId };
       });
-      console.log(freshLangList)
-      await UserLanguage.delete({userId})
+      console.log(freshLangList);
 
-      const result = await getConnection()
+      // await getConnection()
+      //   .createQueryBuilder()
+      //   .insert()
+      //   .into(UserLanguage)
+      //   .values(freshLangList)
+      //   .execute();
+
+      await getConnection()
         .createQueryBuilder()
         .insert()
         .into(UserLanguage)
         .values(freshLangList)
-        .returning('*')
+        .orIgnore()
         .execute();
 
-      log(result.raw);
+      // console.log(userLanguage);
     }
 
     return user.save();

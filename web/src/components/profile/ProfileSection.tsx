@@ -1,21 +1,29 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik} from 'formik';
 import React from 'react';
-import { AGES, GENDERS } from 'src/constants';
+import { AGES, GENDERS, HOURS } from 'src/constants';
 import {
   useAllLangAllCountQuery,
   useUpdateMeMutation,
 } from 'src/generated/graphql';
-import { ButtonField, InputField, TextAreaField } from '../htmlElements';
+import {
+  ButtonField,
+  InputField,
+  SwitchField,
+  TextAreaField,
+} from '../htmlElements';
 import { DropdownField } from '../htmlElements/';
 
 import { useApolloClient } from '@apollo/client';
 import { MeDocument, MeQuery } from 'src/generated/graphql';
 import { Loading } from '../utils';
 import { ImageSection } from './ImageSection';
+import { Test } from '../htmlElements/Test';
 
 interface ProfileSectionProps {}
 
 export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
+  const [updateMe] = useUpdateMeMutation();
+
   const { cache } = useApolloClient();
   let user = cache.readQuery<MeQuery>({
     query: MeDocument,
@@ -27,8 +35,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
   }));
 
   const { data, loading } = useAllLangAllCountQuery();
-  const [updateMe] = useUpdateMeMutation();
-
   const languages = data?.allLanguages.map((item) => {
     return { id: item.id, name: item.name };
   });
@@ -54,6 +60,15 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
           twitch: user.me?.twitch || '',
           steam: user.me?.steam || '',
           tiktok: user.me?.tiktok || '',
+          schedule: [
+            { dayName: 'Monday', from: 0, to: 23, available: false },
+            { dayName: 'Tuesday', from: 0, to: 23, available: false },
+            { dayName: 'Wednesday', from: 0, to: 23, available: false },
+            { dayName: 'Thursday', from: 0, to: 23, available: false },
+            { dayName: 'Friday', from: 0, to: 23, available: false },
+            { dayName: 'Saturday', from: 0, to: 23, available: false },
+            { dayName: 'Sunday', from: 0, to: 23, available: false },
+          ],
         }}
         onSubmit={async (values, { setErrors }) => {
           await updateMe({
@@ -62,8 +77,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
           });
         }}
       >
-        {({ values, isSubmitting, setFieldValue }) => (
+        {(formikProps) => (
           <>
+            <Test {...formikProps} />
             <Form className='space-y-6'>
               <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                 <h1 className='text-gray-900 dark:text-white mb-3'>Profile</h1>
@@ -71,13 +87,13 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                   <div className='w-6/12 p-2'>
                     <InputField
                       name='username'
-                      value={values.username}
+                      value={formikProps.values.username}
                       placeholder='username'
                       label='Username'
                     />
                     <TextAreaField
                       name='description'
-                      value={values.description}
+                      value={formikProps.values.description}
                       placeholder='description'
                       label='Description'
                     />
@@ -88,36 +104,36 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                         {!loading && (
                           <DropdownField
                             fieldName='country'
-                            values={values.country}
+                            values={formikProps.values.country}
                             list={countries}
-                            setFieldValue={setFieldValue}
+                            setFieldValue={formikProps.setFieldValue}
                           />
                         )}
                       </div>
-
+                      {/* {(formikProps) => <DropdownField {...props} {...formikProps} />} */}
                       <div className='w-1/3 ml-2 mr-2'>
                         <DropdownField
                           fieldName='gender'
-                          values={values.gender}
+                          values={formikProps.values.gender}
                           list={GENDERS}
-                          setFieldValue={setFieldValue}
+                          setFieldValue={formikProps.setFieldValue}
                         />
                       </div>
                       <div className='w-1/3 ml-2'>
                         <DropdownField
                           fieldName='age'
-                          values={values.age}
+                          values={formikProps.values.age}
                           list={AGES}
-                          setFieldValue={setFieldValue}
+                          setFieldValue={formikProps.setFieldValue}
                         />
                       </div>
                     </div>
                     {!loading && (
                       <DropdownField
                         fieldName='languages'
-                        values={values.languages}
+                        values={formikProps.values.languages}
                         list={languages}
-                        setFieldValue={setFieldValue}
+                        setFieldValue={formikProps.setFieldValue}
                       />
                     )}
                   </div>
@@ -134,25 +150,25 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                   <div className='w-6/12 p-2'>
                     <InputField
                       name='discord'
-                      value={values.discord}
+                      value={formikProps.values.discord}
                       label='Discord username'
                       icon='discord'
                     />
                     <InputField
                       name='facebook'
-                      value={values.facebook}
+                      value={formikProps.values.facebook}
                       label='Facebook username'
                       icon='facebook'
                     />
                     <InputField
                       name='instagram'
-                      value={values.instagram}
+                      value={formikProps.values.instagram}
                       label='Instagram username'
                       icon='instagram'
                     />
                     <InputField
                       name='steam'
-                      value={values.steam}
+                      value={formikProps.values.steam}
                       label='Steam username'
                       icon='steam'
                     />
@@ -160,32 +176,99 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                   <div className='w-6/12 p-2'>
                     <InputField
                       name='twitter'
-                      value={values.twitter}
+                      value={formikProps.values.twitter}
                       label='Twitter Username'
                       icon='twitter'
                     />
                     <InputField
                       name='snapchat'
-                      value={values.snapchat}
+                      value={formikProps.values.snapchat}
                       label='Snapchat Username'
                       icon='snapchat'
                     />
                     <InputField
                       name='twitch'
-                      value={values.twitch}
+                      value={formikProps.values.twitch}
                       label='Twitch Username'
                       icon='twitch'
                     />
                     <InputField
                       name='tiktok'
-                      value={values.tiktok}
+                      value={formikProps.values.tiktok}
                       label='TikTok Username'
                       icon='tiktok'
                     />
                   </div>
                 </div>
               </div>
-              <ButtonField loading={isSubmitting} text='Save' type='submit' />
+
+              <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+                <h1 className='text-gray-900 dark:text-white mb-3'>Schedule</h1>
+                <div className='flex flex-wrap'>
+                  {formikProps.values.schedule.map(
+                    ({ available, dayName, from, to }) => (
+                      <>
+                        <div className='w-3/12 p-2'>{dayName}</div>
+                        <div className='w-3/12 p-2'>
+                          <DropdownField
+                            fieldName='schedule'
+                            values={from}
+                            list={HOURS}
+                            setFieldValue={formikProps.setFieldValue}
+                          />
+                        </div>
+                        <div className='w-1/12 p-2'>to</div>
+                        <div className='w-3/12 p-2'>
+                          <DropdownField
+                            fieldName='schedule'
+                            values={to}
+                            list={HOURS}
+                            setFieldValue={() => {
+                              formikProps.setFieldValue(
+                                'schedule',
+                                formikProps.values.schedule.map((day) => {
+                                  if (day.dayName == dayName) {
+                                    return {
+                                      ...day,
+                                      available: !day.available,
+                                    };
+                                  }
+                                  return day;
+                                })
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className='w-2/12 p-2'>
+                          <SwitchField
+                            checked={available}
+                            onChange={() => {
+                              formikProps.setFieldValue(
+                                'schedule',
+                                formikProps.values.schedule.map((day) => {
+                                  if (day.dayName == dayName) {
+                                    return {
+                                      ...day,
+                                      available: !day.available,
+                                    };
+                                  }
+                                  return day;
+                                })
+                              );
+                            }}
+                          />
+                          Available
+                        </div>
+                      </>
+                    )
+                  )}
+                </div>
+              </div>
+              <ButtonField
+                loading={formikProps.isSubmitting}
+                text='Save'
+                type='submit'
+              />
             </Form>
           </>
         )}

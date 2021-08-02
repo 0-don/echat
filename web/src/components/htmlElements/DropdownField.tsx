@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
-import { useDeleteUserLanguageMutation } from 'src/generated/graphql';
+// import { useDeleteUserLanguageMutation } from 'src/generated/graphql';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -30,7 +30,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   fieldName,
   setFieldValue,
 }) => {
-  const [deleteUserLanguage] = useDeleteUserLanguageMutation();
+  // const [deleteUserLanguage] = useDeleteUserLanguageMutation();
 
   const onChange = (value: DropdownItem) => {
     if (values.constructor === Array) {
@@ -45,14 +45,14 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   };
 
   const deleteSelected = ({ id, name }: DropdownItem) => {
-    deleteUserLanguage({
-      variables: { name },
-      update(cache) {
-        const nId = cache.identify({ id, __typename: 'UserLanguage' });
-        cache.evict({ id: nId });
-        cache.gc();
-      },
-    });
+    // deleteUserLanguage({
+    //   variables: { name },
+    //   update(cache) {
+    //     const nId = cache.identify({ id, __typename: 'UserLanguage' });
+    //     cache.evict({ id: nId });
+    //     cache.gc();
+    //   },
+    // });
     if (values.constructor === Array) {
       setFieldValue(
         fieldName,
@@ -87,7 +87,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                             onClick={() => deleteSelected(item)}
                           />
                         )}
-                        <span key={item.name}>{item.name}</span>
+                        <span>{item.name}</span>
                       </div>
                     ))
                   ) : (

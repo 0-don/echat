@@ -1,4 +1,4 @@
-import { MyContext } from '../utils/MyContext';
+import { MyContext } from '../utils/types/MyContext';
 import { Ctx, Query, Resolver } from 'type-graphql';
 import { Country } from '../entity/Country';
 

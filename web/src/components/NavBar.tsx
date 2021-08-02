@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 // import { isServer } from '../utils/helpers/isServer';
 import { useApolloClient } from '@apollo/client';
-import { DarkModeSwitch } from './utils/DarkModeSwitch';
+import { DarkModeSwitch } from './utils/DarkMode';
 import useDarkModeStore from '../store/DarkModeStore';
 
 export const NavBar: React.FC = ({}) => {

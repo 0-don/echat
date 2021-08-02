@@ -1,4 +1,4 @@
-import { EmailUsernamePasswordInput } from '../resolvers/UserResolver';
+import { EmailUsernamePasswordInput } from "./types/UserTypes";
 
 export const validateRegister = (options: EmailUsernamePasswordInput) => {
 

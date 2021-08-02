@@ -3,12 +3,8 @@ import { Session } from '../entity/Session';
 import {
   Arg,
   Ctx,
-  Field,
   FieldResolver,
-  InputType,
-  Int,
   Mutation,
-  ObjectType,
   Query,
   Resolver,
   Root,
@@ -16,7 +12,7 @@ import {
 } from 'type-graphql';
 import argon2 from 'argon2';
 import { getConnection, getRepository } from 'typeorm';
-import { MyContext } from 'src/utils/MyContext';
+import { MyContext } from '../utils/types/MyContext';
 import { COOKIE_NAME } from '../constants';
 import { validateRegister } from '../utils/validateRegister';
 import { sendEmail } from '../utils/sendEmail';
@@ -25,74 +21,11 @@ import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
 import { UserLanguage } from '../entity/UserLanguage';
 import { Image } from '../entity/Image';
-
-@InputType()
-export class EmailUsernamePasswordInput {
-  @Field()
-  email: string;
-  @Field()
-  username: string;
-  @Field()
-  password: string;
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-  @Field()
-  message: string;
-}
-
-@ObjectType()
-class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => User, { nullable: true })
-  user?: User;
-}
-
-@InputType()
-export class UpdatedUser {
-  @Field()
-  username: string;
-  @Field()
-  description: string;
-  @Field(() => Int)
-  age: number;
-  @Field()
-  gender: string;
-  @Field()
-  country: string;
-  @Field()
-  discord: string;
-  @Field()
-  twitter: string;
-  @Field()
-  facebook: string;
-  @Field()
-  snapchat: string;
-  @Field()
-  instagram: string;
-  @Field()
-  twitch: string;
-  @Field()
-  steam: string;
-  @Field()
-  tiktok: string;
-  @Field(() => [UpdatedUserValues])
-  languages: UpdatedUserValues[];
-}
-
-@InputType()
-export class UpdatedUserValues {
-  @Field(() => Int)
-  id: number;
-
-  @Field()
-  name: string;
-}
+import {
+  EmailUsernamePasswordInput,
+  UpdatedUser,
+  UserResponse,
+} from '../utils/types/UserTypes';
 
 @Resolver(User)
 export class UserResolver {
@@ -181,24 +114,20 @@ export class UserResolver {
       const freshLangList = options.languages.map((lang) => {
         return { ...lang, userId };
       });
-      console.log(freshLangList);
-
-      // await getConnection()
-      //   .createQueryBuilder()
-      //   .insert()
-      //   .into(UserLanguage)
-      //   .values(freshLangList)
-      //   .execute();
+      await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(UserLanguage)
+        .where('userId = :userId', { userId })
+        .execute();
 
       await getConnection()
         .createQueryBuilder()
         .insert()
         .into(UserLanguage)
         .values(freshLangList)
-        .orIgnore()
+        .returning('*')
         .execute();
-
-      // console.log(userLanguage);
     }
 
     return user.save();

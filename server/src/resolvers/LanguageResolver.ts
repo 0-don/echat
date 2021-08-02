@@ -1,4 +1,4 @@
-import { MyContext } from '../utils/MyContext';
+import { MyContext } from '../utils/types/MyContext';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Language } from '../entity/Language';
 import { UserLanguage } from '../entity/UserLanguage';

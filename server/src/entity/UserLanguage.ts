@@ -1,7 +1,6 @@
 import { Field, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   BaseEntity,
   ManyToOne,
@@ -12,9 +11,6 @@ import { User } from './User';
 @ObjectType()
 @Entity()
 export class UserLanguage extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  gid: number;
 
   @Field(() => Int)
   @PrimaryColumn()

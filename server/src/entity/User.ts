@@ -1,4 +1,4 @@
-import { Field, InputType, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,10 +8,9 @@ import {
 } from 'typeorm';
 import { Image } from './Image';
 import { Schedule } from './Schedule';
-import { UserLanguage } from './UserLanguage';
+import { Language } from './Language';
 
 @ObjectType()
-@InputType('UserInput')
 @Entity()
 export class User extends BaseEntity {
   @Field(() => Int)
@@ -77,12 +76,12 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
-  // UserLanguage
-  @OneToMany(() => UserLanguage, (userLanguage) => userLanguage.user, {
+  // Language
+  @OneToMany(() => Language, (language) => language.user, {
     cascade: true,
   })
-  @Field(() => [UserLanguage], { nullable: true })
-  languages: UserLanguage[];
+  @Field(() => [Language], { nullable: true })
+  languages: Language[];
 
   // Image
   @OneToMany(() => Image, (image) => image.user, {

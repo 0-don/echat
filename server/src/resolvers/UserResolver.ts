@@ -19,7 +19,7 @@ import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
-import { UserLanguage } from '../entity/UserLanguage';
+import { Language } from '../entity/Language';
 import { Image } from '../entity/Image';
 import {
   EmailUsernamePasswordInput,
@@ -35,9 +35,9 @@ export class UserResolver {
     return imageLoader.load({ userId: user.id });
   }
 
-  @FieldResolver(() => [UserLanguage], { nullable: true })
-  languages(@Root() user: User, @Ctx() { userLanguageLoader }: MyContext) {
-    return userLanguageLoader.load({ userId: user.id });
+  @FieldResolver(() => [Language], { nullable: true })
+  languages(@Root() user: User, @Ctx() { languageLoader }: MyContext) {
+    return languageLoader.load({ userId: user.id });
   }
 
   @FieldResolver(() => [Schedule], { nullable: true })
@@ -123,36 +123,41 @@ export class UserResolver {
       await getConnection()
         .createQueryBuilder()
         .delete()
-        .from(UserLanguage)
+        .from(Language)
         .where('userId = :userId', { userId })
         .execute();
 
       await getConnection()
         .createQueryBuilder()
         .insert()
-        .into(UserLanguage)
+        .into(Language)
         .values(freshLanguages)
         .returning('*')
         .execute();
     }
 
     if (options.schedules.length) {
-        const freshSchedules = options.schedules.map((sched) => {
-          return { ...sched, from: parseInt(sched.from!), to: parseInt(sched.to!), userId };
-        });
-        await getConnection()
-          .createQueryBuilder()
-          .delete()
-          .from(Schedule)
-          .where('userId = :userId', { userId })
-          .execute();
-        await getConnection()
-          .createQueryBuilder()
-          .insert()
-          .into(Schedule)
-          .values(freshSchedules)
-          .returning('*')
-          .execute();
+      const freshSchedules = options.schedules.map((sched) => {
+        return {
+          ...sched,
+          from: parseInt(sched.from!),
+          to: parseInt(sched.to!),
+          userId,
+        };
+      });
+      await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(Schedule)
+        .where('userId = :userId', { userId })
+        .execute();
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Schedule)
+        .values(freshSchedules)
+        .returning('*')
+        .execute();
     }
 
     return user.save();

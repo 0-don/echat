@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import 'reflect-metadata';
+import { log } from 'console';
 import express from 'express';
 import session from 'express-session';
 import psl from 'psl';
@@ -14,14 +15,12 @@ import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
 
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';
-import { CountryResolver } from './resolvers/CountryResolver';
-import { LanguageResolver } from './resolvers/LanguageResolver';
-import { createUserLoader } from './utils/loaders/createUserLoader';
-import { createImageLoader } from './utils/loaders/createImageLoader';
-
-import { log } from 'console';
-import { createUserLanguageLoader } from './utils/loaders/createUserLanguageLoader';
-import { createScheduleLoader } from './utils/loaders/createScheduleLoader';
+import {
+  createUserLoader,
+  createImageLoader,
+  createLanguageLoader,
+  createScheduleLoader,
+} from './utils/loaders';
 
 const PgSession = connectPgSimple(session);
 
@@ -64,12 +63,7 @@ const PgSession = connectPgSimple(session);
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [
-        UserResolver,
-        ImageResolver,
-        CountryResolver,
-        LanguageResolver,
-      ],
+      resolvers: [UserResolver, ImageResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({
@@ -77,7 +71,7 @@ const PgSession = connectPgSimple(session);
       res,
       userLoader: createUserLoader(),
       imageLoader: createImageLoader(),
-      userLanguageLoader: createUserLanguageLoader(),
+      languageLoader: createLanguageLoader(),
       scheduleLoader: createScheduleLoader(),
     }),
     uploads: false,

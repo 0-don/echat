@@ -1,10 +1,16 @@
 import { Form, Formik } from 'formik';
 import React, { Fragment } from 'react';
-import { AGES, GENDERS, HOURS } from 'src/constants';
+import {
+  AGES,
+  GENDERS,
+  HOURS,
+  COUNTRIES,
+  LANGUAGES,
+  SCHEDULES,
+} from 'src/constants';
 import {
   MeDocument,
-  MeQuery,
-  useAllLangAllCountQuery,
+  useMeQuery,
   useUpdateMeMutation,
 } from 'src/generated/graphql';
 import {
@@ -14,8 +20,6 @@ import {
   TextAreaField,
 } from '../htmlElements';
 import { DropdownField } from '../htmlElements/';
-
-import { useApolloClient } from '@apollo/client';
 import { Loading } from '../utils';
 import { ImageSection } from './ImageSection';
 
@@ -24,10 +28,7 @@ interface ProfileSectionProps {}
 export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
   const [updateMe] = useUpdateMeMutation();
 
-  const { cache } = useApolloClient();
-  let user = cache.readQuery<MeQuery>({
-    query: MeDocument,
-  });
+  const { data: user, loading } = useMeQuery();
 
   const userLanguage = user?.me?.languages?.map((lang) => ({
     id: lang.id,
@@ -41,23 +42,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
       to: sched.to.toString(),
     })
   );
-  console.log(userSchedules);
-  const { data, loading } = useAllLangAllCountQuery();
-  const languages = data?.allLanguages.map((item) => {
-    return { id: item.id, name: item.name };
-  });
-  const countries = data?.allCountries.map((item) => {
-    return { id: item.id, name: item.name };
-  });
 
-  if (
-    !loading &&
-    languages &&
-    languages.length &&
-    countries &&
-    countries.length &&
-    user
-  ) {
+  if (!loading && user) {
     return (
       <Formik
         initialValues={{
@@ -65,8 +51,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
           description: user.me?.description || '',
           age: user.me?.age || AGES[0].id,
           gender: user.me?.gender || GENDERS[0].name,
-          country: user.me?.country || countries[0].name,
-          languages: userLanguage || [languages[0]],
+          country: user.me?.country || COUNTRIES[0].name,
+
           discord: user.me?.discord || '',
           twitter: user.me?.twitter || '',
           facebook: user.me?.facebook || '',
@@ -75,15 +61,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
           twitch: user.me?.twitch || '',
           steam: user.me?.steam || '',
           tiktok: user.me?.tiktok || '',
-          schedules: userSchedules || [
-            { id: 1, name: 'Monday', from: '0', to: '23', available: false },
-            { id: 2, name: 'Tuesday', from: '0', to: '23', available: false },
-            { id: 3, name: 'Wednesday', from: '0', to: '23', available: false },
-            { id: 4, name: 'Thursday', from: '0', to: '23', available: false },
-            { id: 5, name: 'Friday', from: '0', to: '23', available: false },
-            { id: 6, name: 'Saturday', from: '0', to: '23', available: false },
-            { id: 7, name: 'Sunday', from: '0', to: '23', available: false },
-          ],
+
+          languages: userLanguage?.length ? userLanguage : [LANGUAGES[0]],
+          schedules: userSchedules?.length ? userSchedules : SCHEDULES,
         }}
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
@@ -119,7 +99,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                         <DropdownField
                           {...formikProps}
                           fieldName='country'
-                          list={countries}
+                          list={COUNTRIES}
                         />
                       </div>
                       <div className='w-1/3 ml-2 mr-2'>
@@ -140,7 +120,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                     <DropdownField
                       {...formikProps}
                       fieldName='languages'
-                      list={languages}
+                      list={LANGUAGES}
                     />
                   </div>
                 </div>
@@ -212,9 +192,11 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                 <h1 className='text-gray-900 dark:text-white mb-3'>Schedule</h1>
                 <div className='flex flex-wrap'>
                   {formikProps.values.schedules.map(
-                    ({ available, name, from, to }) => (
+                    ({ available, id, name, from, to }) => (
                       <Fragment key={name}>
-                        <div className='w-3/12 p-2'>{name}</div>
+                        <div className='w-2/12 flex items-center justify-start'>
+                          {name}
+                        </div>
                         <div className='w-3/12 p-2'>
                           <DropdownField
                             {...formikProps}
@@ -224,8 +206,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                             list={HOURS}
                           />
                         </div>
-                        <div className='w-1/12 p-2'>to</div>
-                        <div className='w-3/12 p-2'>
+                        <div className='w-1/12 flex items-center justify-center'>
+                          to
+                        </div>
+                        <div className='w-3/12'>
                           <DropdownField
                             {...formikProps}
                             fieldKey='to'
@@ -234,20 +218,17 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({}) => {
                             list={HOURS}
                           />
                         </div>
-                        <div className='w-2/12 p-2'>
+                        <div className='w-3/12 flex items-center justify-center'>
                           <SwitchField
                             checked={available}
                             onChange={() => {
                               formikProps.setFieldValue(
                                 'schedules',
                                 formikProps.values.schedules.map((day) => {
-                                  if (day.name == name) {
-                                    return {
-                                      ...day,
-                                      available: !day.available,
-                                    };
+                                  if (day.name === name) {
+                                    day.available = !day.available;
                                   }
-                                  return day;
+                                  return day
                                 })
                               );
                             }}

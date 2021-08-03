@@ -3,7 +3,6 @@ import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
 import { FormikProps } from 'formik';
 import { UpdatedUser } from 'src/generated/graphql';
-// import { useDeleteUserLanguageMutation } from 'src/generated/graphql';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -33,38 +32,28 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   dayName,
   setFieldValue,
 }) => {
-
   const onChange = (value: DropdownItem) => {
     if (values[fieldName].constructor === Array) {
-      if (fieldKey && dayName) {
-        setFieldValue(
-          fieldName,
-          (values[fieldName] as DropdownItem[]).map((i) => {
-            if (i.name === dayName) {
-              return { ...i, [fieldKey]: value.name };
-            }
-            return i;
-          })
-        );
-      } else {
-        setFieldValue(fieldName, [...values[fieldName], value]);
-      }
+      fieldKey && dayName
+        ? setFieldValue(
+            fieldName,
+            (values[fieldName] as DropdownItem[]).map((i) =>
+              i.name === dayName ? { ...i, [fieldKey]: value.name } : i
+            )
+          )
+        : setFieldValue(fieldName, [...values[fieldName], value]);
     } else {
-      if (Number.isInteger(parseInt(value.name))) {
-        setFieldValue(fieldName, parseInt(value.name));
-      } else {
-        setFieldValue(fieldName, value.name);
-      }
+      Number.isInteger(parseInt(value.name))
+        ? setFieldValue(fieldName, parseInt(value.name))
+        : setFieldValue(fieldName, value.name);
     }
   };
 
-  const deleteSelected = ({ id, name }: DropdownItem) => {
-    if (values[fieldName].constructor === Array) {
-      setFieldValue(
-        fieldName,
-        values[fieldName].filter((i: DropdownItem) => i.name !== name)
-      );
-    }
+  const deleteSelected = ({ name }: DropdownItem) => {
+    setFieldValue(
+      fieldName,
+      values[fieldName].filter((i: DropdownItem) => i.name !== name)
+    );
   };
 
   const filteredList =
@@ -84,7 +73,9 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
       {({ open }) => (
         <>
           <Listbox.Label className='block text-sm font-medium text-gray-900 dark:text-white '>
-            {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+            {dayName
+              ? ''
+              : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
           </Listbox.Label>
           <div className='mt-1 relative'>
             <Listbox.Button className='relative w-full bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>

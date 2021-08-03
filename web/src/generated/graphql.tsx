@@ -16,13 +16,6 @@ export type Scalars = {
   Upload: any;
 };
 
-export type Country = {
-  __typename?: 'Country';
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  iso: Scalars['String'];
-};
-
 export type EmailUsernamePasswordInput = {
   email: Scalars['String'];
   username: Scalars['String'];
@@ -49,6 +42,8 @@ export type Language = {
   __typename?: 'Language';
   id: Scalars['Int'];
   name: Scalars['String'];
+  userId: Scalars['Int'];
+  user: User;
 };
 
 export type Mutation = {
@@ -62,7 +57,6 @@ export type Mutation = {
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Image>;
   deleteImage: Scalars['Boolean'];
-  deleteUserLanguage?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -103,19 +97,12 @@ export type MutationDeleteImageArgs = {
   publicId: Scalars['String'];
 };
 
-
-export type MutationDeleteUserLanguageArgs = {
-  name: Scalars['String'];
-};
-
 export type Query = {
   __typename?: 'Query';
   getAll?: Maybe<Array<User>>;
   me?: Maybe<User>;
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
-  allCountries: Array<Country>;
-  allLanguages: Array<Language>;
 };
 
 
@@ -178,17 +165,9 @@ export type User = {
   twitch?: Maybe<Scalars['String']>;
   steam?: Maybe<Scalars['String']>;
   tiktok?: Maybe<Scalars['String']>;
-  languages?: Maybe<Array<UserLanguage>>;
+  languages?: Maybe<Array<Language>>;
   images?: Maybe<Array<Image>>;
   schedules?: Maybe<Array<Schedule>>;
-};
-
-export type UserLanguage = {
-  __typename?: 'UserLanguage';
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  userId: Scalars['Int'];
-  user: User;
 };
 
 export type UserResponse = {
@@ -240,16 +219,6 @@ export type DeleteImageMutationVariables = Exact<{
 export type DeleteImageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteImage'>
-);
-
-export type DeleteUserLanguageMutationVariables = Exact<{
-  name: Scalars['String'];
-}>;
-
-
-export type DeleteUserLanguageMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'deleteUserLanguage'>
 );
 
 export type ForgotPasswordMutationVariables = Exact<{
@@ -324,20 +293,6 @@ export type UpdateMeMutation = (
   )> }
 );
 
-export type AllLangAllCountQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllLangAllCountQuery = (
-  { __typename?: 'Query' }
-  & { allCountries: Array<(
-    { __typename?: 'Country' }
-    & Pick<Country, 'id' | 'name'>
-  )>, allLanguages: Array<(
-    { __typename?: 'Language' }
-    & Pick<Language, 'id' | 'name'>
-  )> }
-);
-
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -347,8 +302,8 @@ export type MeQuery = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { languages?: Maybe<Array<(
-      { __typename?: 'UserLanguage' }
-      & Pick<UserLanguage, 'id' | 'name'>
+      { __typename?: 'Language' }
+      & Pick<Language, 'id' | 'name'>
     )>>, schedules?: Maybe<Array<(
       { __typename?: 'Schedule' }
       & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
@@ -457,37 +412,6 @@ export function useDeleteImageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteImageMutationHookResult = ReturnType<typeof useDeleteImageMutation>;
 export type DeleteImageMutationResult = Apollo.MutationResult<DeleteImageMutation>;
 export type DeleteImageMutationOptions = Apollo.BaseMutationOptions<DeleteImageMutation, DeleteImageMutationVariables>;
-export const DeleteUserLanguageDocument = gql`
-    mutation DeleteUserLanguage($name: String!) {
-  deleteUserLanguage(name: $name)
-}
-    `;
-export type DeleteUserLanguageMutationFn = Apollo.MutationFunction<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>;
-
-/**
- * __useDeleteUserLanguageMutation__
- *
- * To run a mutation, you first call `useDeleteUserLanguageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteUserLanguageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteUserLanguageMutation, { data, loading, error }] = useDeleteUserLanguageMutation({
- *   variables: {
- *      name: // value for 'name'
- *   },
- * });
- */
-export function useDeleteUserLanguageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>(DeleteUserLanguageDocument, options);
-      }
-export type DeleteUserLanguageMutationHookResult = ReturnType<typeof useDeleteUserLanguageMutation>;
-export type DeleteUserLanguageMutationResult = Apollo.MutationResult<DeleteUserLanguageMutation>;
-export type DeleteUserLanguageMutationOptions = Apollo.BaseMutationOptions<DeleteUserLanguageMutation, DeleteUserLanguageMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -691,45 +615,6 @@ export function useUpdateMeMutation(baseOptions?: Apollo.MutationHookOptions<Upd
 export type UpdateMeMutationHookResult = ReturnType<typeof useUpdateMeMutation>;
 export type UpdateMeMutationResult = Apollo.MutationResult<UpdateMeMutation>;
 export type UpdateMeMutationOptions = Apollo.BaseMutationOptions<UpdateMeMutation, UpdateMeMutationVariables>;
-export const AllLangAllCountDocument = gql`
-    query allLangAllCount {
-  allCountries {
-    id
-    name
-  }
-  allLanguages {
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useAllLangAllCountQuery__
- *
- * To run a query within a React component, call `useAllLangAllCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllLangAllCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllLangAllCountQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAllLangAllCountQuery(baseOptions?: Apollo.QueryHookOptions<AllLangAllCountQuery, AllLangAllCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllLangAllCountQuery, AllLangAllCountQueryVariables>(AllLangAllCountDocument, options);
-      }
-export function useAllLangAllCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllLangAllCountQuery, AllLangAllCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllLangAllCountQuery, AllLangAllCountQueryVariables>(AllLangAllCountDocument, options);
-        }
-export type AllLangAllCountQueryHookResult = ReturnType<typeof useAllLangAllCountQuery>;
-export type AllLangAllCountLazyQueryHookResult = ReturnType<typeof useAllLangAllCountLazyQuery>;
-export type AllLangAllCountQueryResult = Apollo.QueryResult<AllLangAllCountQuery, AllLangAllCountQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -828,14 +713,12 @@ export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQ
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
 export const namedOperations = {
   Query: {
-    allLangAllCount: 'allLangAllCount',
     Me: 'Me',
     UserImages: 'UserImages'
   },
   Mutation: {
     ChangePassword: 'ChangePassword',
     DeleteImage: 'DeleteImage',
-    DeleteUserLanguage: 'DeleteUserLanguage',
     ForgotPassword: 'ForgotPassword',
     Login: 'Login',
     Logout: 'Logout',

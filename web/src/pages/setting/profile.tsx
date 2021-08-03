@@ -5,7 +5,6 @@ import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
 
 const Profile: React.FC = () => {
-
   return (
     <Wrapper navbar>
       <ProfileSection />

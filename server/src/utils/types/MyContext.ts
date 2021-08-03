@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import { createImageLoader } from '../loaders/createImageLoader';
-import { createScheduleLoader } from '../loaders/createScheduleLoader';
-import { createUserLanguageLoader } from '../loaders/createUserLanguageLoader';
-import { createUserLoader } from '../loaders/createUserLoader';
+import { createUserLoader, createImageLoader, createLanguageLoader, createScheduleLoader } from '../loaders';
 
 export type MyContext = {
   // @ts-ignore
@@ -10,6 +7,6 @@ export type MyContext = {
   res: Response;
   userLoader: ReturnType<typeof createUserLoader>;
   imageLoader: ReturnType<typeof createImageLoader>;
-  userLanguageLoader: ReturnType<typeof createUserLanguageLoader>;
+  languageLoader: ReturnType<typeof createLanguageLoader>;
   scheduleLoader: ReturnType<typeof createScheduleLoader>;
 };

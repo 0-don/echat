@@ -239,20 +239,22 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             />
                           </div>
                           <div className='w-3/12 flex items-center justify-center'>
-                            <SwitchField
-                              checked={available}
-                              onChange={() => {
-                                formikProps.setFieldValue(
-                                  'schedules',
-                                  formikProps.values.schedules.map((day) => {
-                                    if (day.name === name) {
-                                      day.available = !day.available;
-                                    }
-                                    return day;
-                                  })
-                                );
-                              }}
-                            />
+                            {typeof available == "boolean" && (
+                              <SwitchField
+                                checked={available}
+                                onChange={() => {
+                                  formikProps.setFieldValue(
+                                    'schedules',
+                                    formikProps.values.schedules.map((day) => {
+                                      if (day.name === name) {
+                                        day.available = !day.available;
+                                      }
+                                      return day;
+                                    })
+                                  );
+                                }}
+                              />
+                            )}
                             Available
                           </div>
                         </Fragment>

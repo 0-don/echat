@@ -67,7 +67,7 @@ export class UpdatedUserValues {
   @Field(() => Int)
   id: number;
 
-  @Field({ nullable: true })
+  @Field()
   name: string;
 
   @Field({ nullable: true })

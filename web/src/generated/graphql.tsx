@@ -141,7 +141,7 @@ export type UpdatedUser = {
 
 export type UpdatedUserValues = {
   id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   from?: Maybe<Scalars['String']>;
   to?: Maybe<Scalars['String']>;
   available?: Maybe<Scalars['Boolean']>;

@@ -2,7 +2,7 @@ import useDarkModeStore from '../../store/DarkModeStore';
 import { useEffect } from 'react';
 import { SwitchField } from '../htmlElements';
 
-export const DarkModeSwitch: React.FC = () => {
+export const DarkMode: React.FC = () => {
   const { theme, hasHydrated, changeTheme, startTheme } = useDarkModeStore();
 
   useEffect(() => {

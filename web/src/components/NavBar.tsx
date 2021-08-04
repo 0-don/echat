@@ -5,11 +5,10 @@ import NextLink from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 // import { isServer } from '../utils/helpers/isServer';
 import { useApolloClient } from '@apollo/client';
-import { DarkModeSwitch } from './utils/DarkMode';
+import { DarkMode } from './utils/DarkMode';
 import useDarkModeStore from '../store/DarkModeStore';
 
 export const NavBar: React.FC = ({}) => {
-  // const { data, loading } = useMeQuery({ skip: isServer() });
   const { data, loading } = useMeQuery();
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
@@ -148,7 +147,7 @@ export const NavBar: React.FC = ({}) => {
                   )}
                 </Menu>
 
-                <DarkModeSwitch />
+                <DarkMode />
               </div>
             </div>
           </div>

@@ -269,7 +269,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                       const findIndex = steps.findIndex(
                         (step) => step.name === currentStep
                       );
-                      console.log(findIndex)
                       setSteps(
                         steps.map((step) => {
                           if (step.id < findIndex + 1) {
@@ -284,7 +283,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                           return step;
                         })
                       );
-                      console.log(steps)
                     }
                   }}
                 />

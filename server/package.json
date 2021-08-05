@@ -6,21 +6,27 @@
   "dependencies": {
     "apollo-server-express": "^2.25.2",
     "argon2": "^0.28.2",
+    "axios": "^0.21.1",
+    "axios-retry": "^3.1.9",
     "cloudinary": "^1.26.2",
     "connect-pg-simple": "^6.2.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dataloader": "^2.0.0",
+    "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "graphql-type-json": "^0.3.2",
     "graphql-upload": "^12.0.0",
     "lodash": "^4.17.21",
     "nodemailer": "^6.6.2",
     "nodemon": "^2.0.12",
     "pg": "^8.6.0",
+    "probe-image-size": "^7.2.1",
     "psl": "^1.8.0",
     "reflect-metadata": "^0.1.13",
+    "twitch": "^4.6.5",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2"
@@ -36,6 +42,7 @@
     "@types/lodash": "^4.14.171",
     "@types/node": "^16.0.1",
     "@types/nodemailer": "^6.4.4",
+    "@types/probe-image-size": "^7.0.1",
     "@types/psl": "^1.1.0",
     "@types/uuid": "^8.3.1",
     "cross-env": "^7.0.3",
@@ -45,10 +52,16 @@
   },
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
+    "gamesMigration": "nodemon --exec ts-node src/gamesMigration.ts",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "gen-env": "gen-env-types .env -o src/env.d.ts -e .",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "migration": "npx typeorm migration:create -n LanguagesMigration -d src/migration"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "games.json"
+    ]
   }
 }

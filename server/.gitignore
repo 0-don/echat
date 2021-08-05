@@ -7,3 +7,4 @@ package-lock.json
 dist
 files
 ormconfig.json
+yarn-error.log

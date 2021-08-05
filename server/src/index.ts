@@ -20,7 +20,9 @@ import {
   createImageLoader,
   createLanguageLoader,
   createScheduleLoader,
+  createGameImageLoader,
 } from './utils/loaders';
+import { GameResolver } from './resolvers/GameResolver';
 
 const PgSession = connectPgSimple(session);
 
@@ -63,7 +65,7 @@ const PgSession = connectPgSimple(session);
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ImageResolver],
+      resolvers: [UserResolver, ImageResolver, GameResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({
@@ -73,6 +75,7 @@ const PgSession = connectPgSimple(session);
       imageLoader: createImageLoader(),
       languageLoader: createLanguageLoader(),
       scheduleLoader: createScheduleLoader(),
+      gameImageLoader: createGameImageLoader(),
     }),
     uploads: false,
     introspection: true,

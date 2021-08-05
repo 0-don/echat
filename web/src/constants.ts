@@ -4,13 +4,13 @@ export const GRAPHQL_SERVER_URL = __prod__
   : 'http://localhost:4001/graphql';
 
 export const SCHEDULES = [
-  { id: 1, name: 'Monday', from: '0', to: '23', available: !1 },
-  { id: 2, name: 'Tuesday', from: '0', to: '23', available: !1 },
-  { id: 3, name: 'Wednesday', from: '0', to: '23', available: !1 },
-  { id: 4, name: 'Thursday', from: '0', to: '23', available: !1 },
-  { id: 5, name: 'Friday', from: '0', to: '23', available: !1 },
-  { id: 6, name: 'Saturday', from: '0', to: '23', available: !1 },
-  { id: 7, name: 'Sunday', from: '0', to: '23', available: !1 },
+  { id: 1, name: 'Monday', from: '0', to: '23', available: true },
+  { id: 2, name: 'Tuesday', from: '0', to: '23', available: true },
+  { id: 3, name: 'Wednesday', from: '0', to: '23', available: true },
+  { id: 4, name: 'Thursday', from: '0', to: '23', available: true },
+  { id: 5, name: 'Friday', from: '0', to: '23', available: true },
+  { id: 6, name: 'Saturday', from: '0', to: '23', available: true },
+  { id: 7, name: 'Sunday', from: '0', to: '23', available: true },
 ];
 export const GENDERS = [
   { id: 1, name: 'Female' },

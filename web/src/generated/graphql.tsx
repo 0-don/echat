@@ -12,9 +12,14 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
+
 
 export type EmailUsernamePasswordInput = {
   email: Scalars['String'];
@@ -28,6 +33,32 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type Game = {
+  __typename?: 'Game';
+  id: Scalars['Int'];
+  igdbId: Scalars['Int'];
+  twitchId: Scalars['Int'];
+  name: Scalars['String'];
+  popularity: Scalars['Int'];
+  boxArtUrl: Scalars['String'];
+  first_release_date?: Maybe<Scalars['DateTime']>;
+  platforms?: Maybe<Scalars['JSON']>;
+  genres?: Maybe<Scalars['JSON']>;
+  multiplayer_modes?: Maybe<Scalars['JSON']>;
+  images?: Maybe<Array<GameImage>>;
+};
+
+export type GameImage = {
+  __typename?: 'GameImage';
+  id: Scalars['Int'];
+  type: Scalars['String'];
+  url: Scalars['String'];
+  width: Scalars['Int'];
+  height: Scalars['Int'];
+  gameId: Scalars['Float'];
+  user: Game;
+};
+
 export type Image = {
   __typename?: 'Image';
   id: Scalars['Int'];
@@ -37,6 +68,7 @@ export type Image = {
   userId: Scalars['Float'];
   user: User;
 };
+
 
 export type Language = {
   __typename?: 'Language';
@@ -103,6 +135,7 @@ export type Query = {
   me?: Maybe<User>;
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
+  getAllGames?: Maybe<Array<Game>>;
 };
 
 

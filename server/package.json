@@ -52,12 +52,13 @@
   },
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "gamesMigration": "nodemon --exec ts-node src/gamesMigration.ts",
+    "games": "nodemon --exec ts-node src/game/gamesMigration.ts",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "gen-env": "gen-env-types .env -o src/env.d.ts -e .",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "migration": "npx typeorm migration:create -n LanguagesMigration -d src/migration"
+    "migration": "npx typeorm migration:create -n LanguagesMigration -d src/migration",
+    "games-server": "ts-node src/game/gamesMigration.ts"
   },
   "nodemonConfig": {
     "ignore": [

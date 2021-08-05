@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  PrimaryColumn,
   ManyToOne,
 } from 'typeorm';
 import { Game } from './Game';
@@ -16,12 +15,12 @@ export class GameImage extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Int)
-  @PrimaryColumn()
+  @Field()
+  @Column()
   type: string;
 
   @Field()
-  @PrimaryColumn()
+  @Column()
   url: string;
 
   @Field(() => Int)

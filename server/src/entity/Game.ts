@@ -5,7 +5,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  PrimaryColumn,
   OneToMany,
 } from 'typeorm';
 import { GameImage } from './GameImage';
@@ -18,11 +17,11 @@ export class Game extends BaseEntity {
   id: number;
 
   @Field(() => Int)
-  @PrimaryColumn({ unique: true })
+  @Column({ unique: true })
   igdbId: number;
 
   @Field(() => Int)
-  @PrimaryColumn({ unique: true })
+  @Column({ unique: true })
   twitchId: number;
 
   @Field()

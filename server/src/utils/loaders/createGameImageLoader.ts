@@ -5,8 +5,8 @@ import { GameImage } from '../../entity/GameImage';
 export const createGameImageLoader = () =>
   new DataLoader<{ gameId: number }, GameImage[]>(async (keys) => {
     const gameImages = await GameImage.find({ where: keys });
-
-    const gs = _.groupBy(gameImages, 'userId');
+    console.log(gameImages)
+    const gs = _.groupBy(gameImages, 'gameId');
 
     const sortedGameImages = keys.map((k) => gs[k.gameId] || []);
 

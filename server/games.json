@@ -1,182 +1,67 @@
 [
 	{
 		"twitchId": 511746,
-		"popularity": 1,
+		"popularity": 2,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Back%204%20Blood-500x750.jpg",
 		"igdbId": 116200,
 		"name": "Back 4 Blood",
-		"first_release_date": "2021-10-12T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Shooter"
-		]
+		"first_release_date": "2021-10-12T02:00:00+02:00"
 	},
 	{
 		"twitchId": 32982,
-		"popularity": 2,
+		"popularity": 3,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Grand%20Theft%20Auto%20V-500x750.jpg",
 		"igdbId": 1020,
 		"name": "Grand Theft Auto V",
-		"first_release_date": "2013-09-17T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 3",
-			"PlayStation 4",
-			"Xbox One",
-			"Xbox 360"
-		],
-		"genres": [
-			"Shooter",
-			"Adventure"
-		],
-		"multiplayer_modes": [
-			"dropin",
-			"onlinecoop"
-		]
+		"first_release_date": "2013-09-17T02:00:00+02:00"
 	},
 	{
 		"twitchId": 21779,
-		"popularity": 3,
+		"popularity": 4,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-500x750.jpg",
 		"igdbId": 115,
 		"name": "League of Legends",
-		"first_release_date": "2009-10-27T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Mac"
-		],
-		"genres": [
-			"MOBA"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"first_release_date": "2009-10-27T01:00:00+01:00"
 	},
 	{
 		"twitchId": 33214,
-		"popularity": 4,
+		"popularity": 5,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-500x750.jpg",
 		"igdbId": 1905,
 		"name": "Fortnite",
-		"first_release_date": "2017-07-25T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Nintendo Switch",
-			"Mac",
-			"Android",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Shooter",
-			"Strategy"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"first_release_date": "2017-07-25T02:00:00+02:00"
 	},
 	{
 		"twitchId": 511224,
-		"popularity": 5,
+		"popularity": 6,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Apex%20Legends-500x750.jpg",
 		"igdbId": 114795,
 		"name": "Apex Legends",
-		"first_release_date": "2019-02-04T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 32399,
-		"popularity": 6,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Counter-Strike:%20Global%20Offensive-500x750.jpg",
-		"igdbId": 1372,
-		"name": "Counter-Strike: Global Offensive",
-		"first_release_date": "2012-08-21T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 3",
-			"Xbox 360",
-			"Linux"
-		],
-		"genres": [
-			"Shooter",
-			"Tactical"
-		]
-	},
-	{
-		"twitchId": 516575,
-		"popularity": 7,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/VALORANT-500x750.jpg",
-		"igdbId": 126459,
-		"name": "VALORANT",
-		"first_release_date": "2020-06-02T02:00:00+02:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Shooter",
-			"Tactical"
-		]
+		"first_release_date": "2019-02-04T01:00:00+01:00"
 	},
 	{
 		"twitchId": 512710,
-		"popularity": 8,
+		"popularity": 7,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Warzone-500x750.jpg",
 		"igdbId": 131800,
 		"name": "Call of Duty: Warzone",
-		"first_release_date": "2020-03-10T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter"
-		]
+		"first_release_date": "2020-03-10T01:00:00+01:00"
 	},
 	{
-		"twitchId": 27471,
+		"twitchId": 516575,
+		"popularity": 8,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/VALORANT-500x750.jpg",
+		"igdbId": 126459,
+		"name": "VALORANT",
+		"first_release_date": "2020-06-02T02:00:00+02:00"
+	},
+	{
+		"twitchId": 32399,
 		"popularity": 9,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Minecraft-500x750.jpg",
-		"igdbId": 121,
-		"name": "Minecraft",
-		"first_release_date": "2011-11-18T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"Linux"
-		],
-		"genres": [
-			"Simulator",
-			"Adventure",
-			"Arcade"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"dropin",
-			"lancoop",
-			"onlinecoop"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Counter-Strike:%20Global%20Offensive-500x750.jpg",
+		"igdbId": 1372,
+		"name": "Counter-Strike: Global Offensive",
+		"first_release_date": "2012-08-21T02:00:00+02:00"
 	},
 	{
 		"twitchId": 4902,
@@ -184,1195 +69,397 @@
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/BATTLESHIP-500x750.jpg",
 		"igdbId": 85991,
 		"name": "BATTLESHIP",
-		"first_release_date": "2019-07-24T02:00:00+02:00",
-		"platforms": [
-			"Nintendo Switch"
-		],
-		"genres": [
-			"Strategy",
-			"Tactical",
-			"Card & Board Game"
-		]
+		"first_release_date": "2019-07-24T02:00:00+02:00"
+	},
+	{
+		"twitchId": 27471,
+		"popularity": 11,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Minecraft-500x750.jpg",
+		"igdbId": 121,
+		"name": "Minecraft",
+		"first_release_date": "2011-11-18T01:00:00+01:00"
 	},
 	{
 		"twitchId": 29595,
-		"popularity": 11,
+		"popularity": 12,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dota%202-500x750.jpg",
 		"igdbId": 2963,
 		"name": "Dota 2",
-		"first_release_date": "2013-07-09T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"Linux"
-		],
-		"genres": [
-			"Strategy",
-			"MOBA"
-		],
-		"multiplayer_modes": [
-			"lancoop",
-			"onlinecoop"
-		]
+		"first_release_date": "2013-07-09T02:00:00+02:00"
 	},
 	{
 		"twitchId": 491487,
-		"popularity": 12,
+		"popularity": 14,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dead%20by%20Daylight-500x750.jpg",
 		"igdbId": 18866,
 		"name": "Dead by Daylight",
-		"first_release_date": "2016-06-14T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Strategy"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"first_release_date": "2016-06-14T02:00:00+02:00"
 	},
 	{
 		"twitchId": 18122,
-		"popularity": 13,
+		"popularity": 16,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/World%20of%20Warcraft-500x750.jpg",
 		"igdbId": 123,
 		"name": "World of Warcraft",
-		"first_release_date": "2004-11-23T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Mac"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Adventure"
-		]
+		"first_release_date": "2004-11-23T01:00:00+01:00"
 	},
 	{
 		"twitchId": 263490,
-		"popularity": 14,
+		"popularity": 18,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Rust-500x750.jpg",
 		"igdbId": 3277,
 		"name": "Rust",
-		"first_release_date": "2018-02-08T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter",
-			"Role-playing (RPG)",
-			"Adventure",
-			"Indie"
-		]
+		"first_release_date": "2018-02-08T01:00:00+01:00"
 	},
 	{
 		"twitchId": 138585,
-		"popularity": 15,
+		"popularity": 19,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Hearthstone-500x750.jpg",
 		"igdbId": 1279,
 		"name": "Hearthstone",
-		"first_release_date": "2014-03-11T01:00:00+01:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Mac",
-			"Android"
-		],
-		"genres": [
-			"Strategy",
-			"Turn-based strategy (TBS)",
-			"Card & Board Game"
-		]
-	},
-	{
-		"twitchId": 30921,
-		"popularity": 16,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Rocket%20League-500x750.jpg",
-		"igdbId": 11198,
-		"name": "Rocket League",
-		"first_release_date": "2015-07-07T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Linux"
-		],
-		"genres": [
-			"Racing",
-			"Sport",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"offlinecoop",
-			"onlinecoop",
-			"splitscreen"
-		]
+		"first_release_date": "2014-03-11T01:00:00+01:00"
 	},
 	{
 		"twitchId": 491931,
-		"popularity": 17,
+		"popularity": 20,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Escape%20from%20Tarkov-500x750.jpg",
 		"igdbId": 15536,
 		"name": "Escape from Tarkov",
-		"first_release_date": "2016-08-04T02:00:00+02:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Shooter",
-			"Role-playing (RPG)",
-			"Simulator",
-			"Tactical"
-		]
-	},
-	{
-		"twitchId": 29307,
-		"popularity": 18,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Path%20of%20Exile-500x750.jpg",
-		"igdbId": 1911,
-		"name": "Path of Exile",
-		"first_release_date": "2013-10-23T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Hack and slash/Beat 'em up",
-			"Adventure",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"dropin",
-			"onlinecoop"
-		]
+		"first_release_date": "2016-08-04T02:00:00+02:00"
 	},
 	{
 		"twitchId": 512525,
-		"popularity": 19,
+		"popularity": 21,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Olympic%20Games%20Tokyo%202020:%20The%20Official%20Video%20Game-500x750.jpg",
 		"igdbId": 116797,
 		"name": "Olympic Games Tokyo 2020: The Official Video Game",
-		"first_release_date": "2019-07-24T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Sport"
-		]
+		"first_release_date": "2019-07-24T02:00:00+02:00"
+	},
+	{
+		"twitchId": 30921,
+		"popularity": 22,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Rocket%20League-500x750.jpg",
+		"igdbId": 11198,
+		"name": "Rocket League",
+		"first_release_date": "2015-07-07T02:00:00+02:00"
 	},
 	{
 		"twitchId": 518379,
-		"popularity": 20,
+		"popularity": 23,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Pok%C3%A9mon%20Unite-500x750.jpg",
 		"igdbId": 135381,
 		"name": "Pokémon Unite",
-		"first_release_date": "2021-07-21T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"Nintendo Switch",
-			"Android"
-		],
-		"genres": [
-			"MOBA"
-		]
+		"first_release_date": "2021-07-21T02:00:00+02:00"
+	},
+	{
+		"twitchId": 29307,
+		"popularity": 24,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Path%20of%20Exile-500x750.jpg",
+		"igdbId": 1911,
+		"name": "Path of Exile",
+		"first_release_date": "2013-10-23T02:00:00+02:00"
 	},
 	{
 		"twitchId": 513181,
-		"popularity": 21,
+		"popularity": 25,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Genshin%20Impact-500x750.jpg",
 		"igdbId": 119277,
 		"name": "Genshin Impact",
-		"first_release_date": "2020-09-28T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Nintendo Switch",
-			"Android",
-			"PlayStation 4",
-			"PlayStation 5"
-		],
-		"genres": [
-			"Role-playing (RPG)"
-		],
-		"multiplayer_modes": [
-			"dropin",
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 518204,
-		"popularity": 22,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2021-500x750.jpg",
-		"igdbId": 134101,
-		"name": "FIFA 21",
-		"first_release_date": "2020-10-08T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Simulator",
-			"Sport"
-		]
+		"first_release_date": "2020-09-28T02:00:00+02:00"
 	},
 	{
 		"twitchId": 502732,
-		"popularity": 23,
+		"popularity": 26,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Garena%20Free%20Fire-500x750.jpg",
 		"igdbId": 87622,
 		"name": "Garena Free Fire",
-		"first_release_date": "2017-12-04T01:00:00+01:00",
-		"platforms": [
-			"iOS",
-			"Android"
-		],
-		"genres": [
-			"Adventure"
-		]
+		"first_release_date": "2017-12-04T01:00:00+01:00"
+	},
+	{
+		"twitchId": 518204,
+		"popularity": 27,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2021-500x750.jpg",
+		"igdbId": 134101,
+		"name": "FIFA 21",
+		"first_release_date": "2020-10-08T02:00:00+02:00"
 	},
 	{
 		"twitchId": 488552,
-		"popularity": 24,
+		"popularity": 29,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Overwatch-500x750.jpg",
 		"igdbId": 8173,
 		"name": "Overwatch",
-		"first_release_date": "2016-05-24T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter",
-			"Strategy"
-		],
-		"multiplayer_modes": [
-			"dropin",
-			"onlinecoop"
-		]
+		"first_release_date": "2016-05-24T02:00:00+02:00"
 	},
 	{
 		"twitchId": 271304,
-		"popularity": 25,
+		"popularity": 30,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/7%20Days%20to%20Die-500x750.jpg",
 		"igdbId": 5574,
 		"name": "7 Days to Die",
-		"first_release_date": "2013-12-13T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One",
-			"Linux"
-		],
-		"genres": [
-			"Shooter",
-			"Role-playing (RPG)",
-			"Simulator",
-			"Strategy",
-			"Adventure",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"lancoop",
-			"onlinecoop",
-			"dropin"
-		]
-	},
-	{
-		"twitchId": 2748,
-		"popularity": 26,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Magic:%20The%20Gathering-500x750.jpg",
-		"igdbId": 136558,
-		"name": "Magic: The Gathering",
-		"first_release_date": "2001-12-31T01:00:00+01:00",
-		"platforms": [
-			"Dreamcast"
-		],
-		"genres": [
-			"Strategy",
-			"Card & Board Game"
-		]
+		"first_release_date": "2013-12-13T01:00:00+01:00"
 	},
 	{
 		"twitchId": 24241,
-		"popularity": 27,
+		"popularity": 33,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Final%20Fantasy%20XIV%20Online-500x750.jpg",
 		"igdbId": 386,
 		"name": "Final Fantasy XIV Online",
-		"first_release_date": "2013-08-27T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 3",
-			"PlayStation 4",
-			"PlayStation 5"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Strategy",
-			"Adventure"
-		]
-	},
-	{
-		"twitchId": 510218,
-		"popularity": 28,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Among%20Us-500x750.jpg",
-		"igdbId": 111469,
-		"name": "Among Us",
-		"first_release_date": "2018-06-15T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Nintendo Switch",
-			"Android",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Strategy",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"lancoop",
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 504462,
-		"popularity": 29,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Black%20Ops%204-500x750.jpg",
-		"igdbId": 83727,
-		"name": "Call of Duty: Black Ops 4",
-		"first_release_date": "2018-10-12T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter"
-		]
-	},
-	{
-		"twitchId": 1614555304,
-		"popularity": 30,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20Of%20Duty:%20Modern%20Warfare-500x750.jpg",
-		"igdbId": 119177,
-		"name": "Call Of Duty: Modern Warfare",
-		"first_release_date": "2019-10-25T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter"
-		]
+		"first_release_date": "2013-08-27T02:00:00+02:00"
 	},
 	{
 		"twitchId": 459931,
-		"popularity": 31,
+		"popularity": 34,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Old%20School%20RuneScape-500x750.jpg",
 		"igdbId": 79824,
 		"name": "Old School RuneScape",
-		"first_release_date": "2013-02-22T01:00:00+01:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Mac",
-			"Android"
-		],
-		"genres": [
-			"Role-playing (RPG)"
-		]
+		"first_release_date": "2013-02-22T01:00:00+01:00"
 	},
 	{
-		"twitchId": 65632,
-		"popularity": 32,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/DayZ-500x750.jpg",
-		"igdbId": 2117,
-		"name": "DayZ",
-		"first_release_date": "2018-12-13T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter",
-			"Simulator",
-			"Tactical",
-			"Adventure",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"dropin",
-			"onlinecoop"
-		]
+		"twitchId": 1614555304,
+		"popularity": 35,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20Of%20Duty:%20Modern%20Warfare-500x750.jpg",
+		"igdbId": 119177,
+		"name": "Call Of Duty: Modern Warfare",
+		"first_release_date": "2019-10-25T02:00:00+02:00"
 	},
 	{
-		"twitchId": 491168,
-		"popularity": 33,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Clash%20Royale-500x750.jpg",
-		"igdbId": 15707,
-		"name": "Clash Royale",
-		"first_release_date": "2016-01-04T01:00:00+01:00",
-		"platforms": [
-			"iOS",
-			"Android"
-		],
-		"genres": [
-			"Real Time Strategy (RTS)",
-			"Strategy",
-			"Card & Board Game"
-		]
-	},
-	{
-		"twitchId": 752590871,
-		"popularity": 34,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/F1%202021-500x750.jpg",
-		"igdbId": 145838,
-		"name": "F1 2021",
-		"first_release_date": "2021-07-16T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Racing",
-			"Simulator",
-			"Sport"
-		]
+		"twitchId": 504462,
+		"popularity": 37,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Black%20Ops%204-500x750.jpg",
+		"igdbId": 83727,
+		"name": "Call of Duty: Black Ops 4",
+		"first_release_date": "2018-10-12T02:00:00+02:00"
 	},
 	{
 		"twitchId": 513143,
-		"popularity": 35,
+		"popularity": 39,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Teamfight%20Tactics-500x750.jpg",
 		"igdbId": 120176,
 		"name": "Teamfight Tactics",
-		"first_release_date": "2019-06-26T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Mac",
-			"Android"
-		],
-		"genres": [
-			"Strategy",
-			"Tactical",
-			"Card & Board Game"
-		]
+		"first_release_date": "2019-06-26T02:00:00+02:00"
+	},
+	{
+		"twitchId": 32507,
+		"popularity": 41,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/SMITE-500x750.jpg",
+		"igdbId": 5607,
+		"name": "SMITE",
+		"first_release_date": "2014-03-25T01:00:00+01:00"
+	},
+	{
+		"twitchId": 752590871,
+		"popularity": 42,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/F1%202021-500x750.jpg",
+		"igdbId": 145838,
+		"name": "F1 2021",
+		"first_release_date": "2021-07-16T02:00:00+02:00"
 	},
 	{
 		"twitchId": 493057,
-		"popularity": 36,
+		"popularity": 43,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./PUBG:%20BATTLEGROUNDS-500x750.jpg",
 		"igdbId": 27789,
 		"name": "PUBG: BATTLEGROUNDS",
-		"first_release_date": "2017-12-20T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"Google Stadia"
-		],
-		"genres": [
-			"Shooter",
-			"Adventure",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"first_release_date": "2017-12-20T01:00:00+01:00"
 	},
 	{
-		"twitchId": 313558,
-		"popularity": 37,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Diablo%20III-500x750.jpg",
-		"igdbId": 120,
-		"name": "Diablo III",
-		"first_release_date": "2012-05-15T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 3",
-			"PlayStation 4",
-			"Xbox One",
-			"Xbox 360"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Hack and slash/Beat 'em up",
-			"Adventure"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 491080,
-		"popularity": 38,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./The%20Binding%20of%20Isaac:%20Repentance-500x750.jpg",
-		"igdbId": 109241,
-		"name": "The Binding of Isaac: Repentance",
-		"first_release_date": "2021-03-31T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"Mac",
-			"PlayStation 5",
-			"Linux"
-		],
-		"genres": [
-			"Shooter",
-			"Adventure",
-			"Arcade",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"offlinecoop"
-		]
+		"twitchId": 65632,
+		"popularity": 44,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/DayZ-500x750.jpg",
+		"igdbId": 2117,
+		"name": "DayZ",
+		"first_release_date": "2018-12-13T01:00:00+01:00"
 	},
 	{
 		"twitchId": 398981,
-		"popularity": 39,
+		"popularity": 45,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./The%20Typing%20of%20the%20Dead:%20Overkill-500x750.jpg",
 		"igdbId": 9438,
 		"name": "The Typing of the Dead: Overkill",
-		"first_release_date": "2013-10-29T01:00:00+01:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Shooter"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"onlinecoop"
-		]
+		"first_release_date": "2013-10-29T01:00:00+01:00"
+	},
+	{
+		"twitchId": 506491,
+		"popularity": 46,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./CRSED:%20F.O.A.D.-500x750.jpg",
+		"igdbId": 103381,
+		"name": "CRSED: F.O.A.D.",
+		"first_release_date": "2019-12-12T01:00:00+01:00"
+	},
+	{
+		"twitchId": 491080,
+		"popularity": 47,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./The%20Binding%20of%20Isaac:%20Repentance-500x750.jpg",
+		"igdbId": 109241,
+		"name": "The Binding of Isaac: Repentance",
+		"first_release_date": "2021-03-31T02:00:00+02:00"
+	},
+	{
+		"twitchId": 491168,
+		"popularity": 48,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Clash%20Royale-500x750.jpg",
+		"igdbId": 15707,
+		"name": "Clash Royale",
+		"first_release_date": "2016-01-04T01:00:00+01:00"
+	},
+	{
+		"twitchId": 2748,
+		"popularity": 49,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Magic:%20The%20Gathering-500x750.jpg",
+		"igdbId": 136558,
+		"name": "Magic: The Gathering",
+		"first_release_date": "2001-12-31T01:00:00+01:00"
 	},
 	{
 		"twitchId": 460630,
-		"popularity": 40,
+		"popularity": 50,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Tom%20Clancy%27s%20Rainbow%20Six%20Siege-500x750.jpg",
 		"igdbId": 7360,
 		"name": "Tom Clancy's Rainbow Six Siege",
-		"first_release_date": "2015-12-01T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Shooter",
-			"Tactical"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"first_release_date": "2015-12-01T01:00:00+01:00"
 	},
 	{
-		"twitchId": 460951,
-		"popularity": 41,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Geometry%20Dash-500x750.jpg",
-		"igdbId": 11642,
-		"name": "Geometry Dash",
-		"first_release_date": "2013-08-13T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Mac",
-			"Android"
-		],
-		"genres": [
-			"Music",
-			"Platform",
-			"Arcade",
-			"Indie"
-		]
-	},
-	{
-		"twitchId": 499310,
-		"popularity": 42,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Splitgate-500x750.jpg",
-		"igdbId": 114684,
-		"name": "Splitgate",
-		"first_release_date": "2019-05-22T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Shooter"
-		]
-	},
-	{
-		"twitchId": 509356,
-		"popularity": 43,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Streets%20of%20Rage%204-500x750.jpg",
-		"igdbId": 107262,
-		"name": "Streets of Rage 4",
-		"first_release_date": "2020-04-30T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One",
-			"Linux",
-			"Google Stadia"
-		],
-		"genres": [
-			"Fighting",
-			"Hack and slash/Beat 'em up",
-			"Arcade",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"offlinecoop"
-		]
+		"twitchId": 490292,
+		"popularity": 51,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dark%20Souls%20III-500x750.jpg",
+		"igdbId": 11133,
+		"name": "Dark Souls III",
+		"first_release_date": "2016-03-24T01:00:00+01:00"
 	},
 	{
 		"twitchId": 497057,
-		"popularity": 44,
+		"popularity": 52,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Destiny%202-500x750.jpg",
 		"igdbId": 25657,
 		"name": "Destiny 2",
-		"first_release_date": "2017-09-06T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Shooter",
-			"Role-playing (RPG)",
-			"Tactical",
-			"Adventure"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"dropin",
-			"onlinecoop"
-		]
+		"first_release_date": "2017-09-06T02:00:00+02:00"
 	},
 	{
-		"twitchId": 518023,
-		"popularity": 45,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/NBA%202K21-500x750.jpg",
-		"igdbId": 134599,
-		"name": "NBA 2K21",
-		"first_release_date": "2020-09-04T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Simulator",
-			"Sport"
-		]
-	},
-	{
-		"twitchId": 493959,
-		"popularity": 46,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Red%20Dead%20Redemption%202-500x750.jpg",
-		"igdbId": 25076,
-		"name": "Red Dead Redemption 2",
-		"first_release_date": "2018-10-26T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"Google Stadia"
-		],
-		"genres": [
-			"Shooter",
-			"Role-playing (RPG)",
-			"Adventure"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"twitchId": 499310,
+		"popularity": 53,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Splitgate-500x750.jpg",
+		"igdbId": 114684,
+		"name": "Splitgate",
+		"first_release_date": "2019-05-22T02:00:00+02:00"
 	},
 	{
 		"twitchId": 73586,
-		"popularity": 47,
+		"popularity": 54,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Outlast-500x750.jpg",
 		"igdbId": 1910,
 		"name": "Outlast",
-		"first_release_date": "2013-09-04T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One",
-			"Linux"
-		],
-		"genres": [
-			"Adventure",
-			"Indie"
-		]
+		"first_release_date": "2013-09-04T02:00:00+02:00"
 	},
 	{
 		"twitchId": 369588,
-		"popularity": 48,
+		"popularity": 55,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Mario%20Kart%208-500x750.jpg",
 		"igdbId": 2350,
 		"name": "Mario Kart 8",
-		"first_release_date": "2014-05-29T02:00:00+02:00",
-		"platforms": [
-			"Wii U"
-		],
-		"genres": [
-			"Racing",
-			"Sport"
-		],
-		"multiplayer_modes": [
-			"splitscreen"
-		]
+		"first_release_date": "2014-05-29T02:00:00+02:00"
 	},
 	{
-		"twitchId": 490377,
-		"popularity": 49,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Sea%20of%20Thieves-500x750.jpg",
-		"igdbId": 11137,
-		"name": "Sea of Thieves",
-		"first_release_date": "2018-03-20T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Xbox One",
-			"Xbox Series"
-		],
-		"genres": [
-			"Adventure"
-		]
-	},
-	{
-		"twitchId": 27284,
-		"popularity": 50,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Retro-500x750.jpg",
-		"igdbId": 91473,
-		"name": "Retro",
-		"platforms": [
-			"PlayStation 2"
-		],
-		"genres": [
-			"Arcade"
-		]
+		"twitchId": 313558,
+		"popularity": 56,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Diablo%20III-500x750.jpg",
+		"igdbId": 120,
+		"name": "Diablo III",
+		"first_release_date": "2012-05-15T02:00:00+02:00"
 	},
 	{
 		"twitchId": 29452,
-		"popularity": 51,
+		"popularity": 57,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Virtual%20Casino-500x750.jpg",
 		"igdbId": 45517,
 		"name": "Virtual Casino",
-		"first_release_date": "1996-02-01T01:00:00+01:00",
-		"platforms": [
-			"Sega Saturn"
-		]
+		"first_release_date": "1996-02-01T01:00:00+01:00"
 	},
 	{
 		"twitchId": 508967,
-		"popularity": 52,
+		"popularity": 58,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Axie%20Infinity-500x750.jpg",
 		"igdbId": 109024,
 		"name": "Axie Infinity"
 	},
 	{
 		"twitchId": 743,
-		"popularity": 53,
+		"popularity": 60,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Chess-500x750.jpg",
 		"igdbId": 25126,
 		"name": "Chess",
-		"first_release_date": "1981-12-01T01:00:00+01:00",
-		"platforms": [
-			"PC DOS"
-		],
-		"genres": [
-			"Simulator",
-			"Strategy",
-			"Quiz/Trivia"
-		]
+		"first_release_date": "1981-12-01T01:00:00+01:00"
 	},
 	{
 		"twitchId": 506230,
-		"popularity": 54,
+		"popularity": 61,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Honkai%20Impact%203rd-500x750.jpg",
 		"igdbId": 96032,
 		"name": "Honkai Impact 3rd",
-		"first_release_date": "2016-10-14T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Android"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Strategy",
-			"Hack and slash/Beat 'em up"
-		]
+		"first_release_date": "2016-10-14T02:00:00+02:00"
 	},
 	{
-		"twitchId": 32502,
-		"popularity": 55,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/World%20of%20Warships-500x750.jpg",
-		"igdbId": 5587,
-		"name": "World of Warships",
-		"first_release_date": "2015-09-17T02:00:00+02:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Shooter",
-			"Real Time Strategy (RTS)",
-			"Simulator",
-			"Tactical"
-		],
-		"multiplayer_modes": [
-			"dropin",
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 512160,
-		"popularity": 56,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Tribes%20of%20Midgard-500x750.jpg",
-		"igdbId": 120619,
-		"name": "Tribes of Midgard",
-		"first_release_date": "2021-07-27T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"PlayStation 5"
-		],
-		"genres": [
-			"Adventure",
-			"Indie"
-		]
-	},
-	{
-		"twitchId": 8645,
-		"popularity": 57,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Resident%20Evil%202-500x750.jpg",
-		"igdbId": 880,
-		"name": "Resident Evil 2",
-		"first_release_date": "1998-01-21T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Dreamcast",
-			"Nintendo 64",
-			"Nintendo GameCube",
-			"PlayStation 3",
-			"PlayStation"
-		],
-		"genres": [
-			"Shooter",
-			"Adventure"
-		]
-	},
-	{
-		"twitchId": 512980,
-		"popularity": 58,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Fall%20Guys:%20Ultimate%20Knockout-500x750.jpg",
-		"igdbId": 119313,
-		"name": "Fall Guys: Ultimate Knockout",
-		"first_release_date": "2020-08-03T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One",
-			"Xbox Series"
-		],
-		"genres": [
-			"Platform",
-			"Sport",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 512709,
-		"popularity": 59,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Black%20Ops%20Cold%20War-500x750.jpg",
-		"igdbId": 137001,
-		"name": "Call of Duty: Black Ops Cold War",
-		"first_release_date": "2020-11-13T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Shooter"
-		]
+		"twitchId": 490377,
+		"popularity": 62,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Sea%20of%20Thieves-500x750.jpg",
+		"igdbId": 11137,
+		"name": "Sea of Thieves",
+		"first_release_date": "2018-03-20T01:00:00+01:00"
 	},
 	{
 		"twitchId": 91423,
-		"popularity": 60,
+		"popularity": 64,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dark%20Souls%20II-500x750.jpg",
 		"igdbId": 2368,
 		"name": "Dark Souls II",
-		"first_release_date": "2014-03-11T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 3",
-			"Xbox 360"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Adventure"
-		],
-		"multiplayer_modes": [
-			"onlinecoop",
-			"campaigncoop"
-		]
+		"first_release_date": "2014-03-11T01:00:00+01:00"
 	},
 	{
-		"twitchId": 29433,
-		"popularity": 61,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dark%20Souls-500x750.jpg",
-		"igdbId": 2155,
-		"name": "Dark Souls",
-		"first_release_date": "2011-09-22T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 3",
-			"Xbox 360"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Hack and slash/Beat 'em up",
-			"Adventure"
-		]
+		"twitchId": 518023,
+		"popularity": 65,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/NBA%202K21-500x750.jpg",
+		"igdbId": 134599,
+		"name": "NBA 2K21",
+		"first_release_date": "2020-09-04T02:00:00+02:00"
 	},
 	{
-		"twitchId": 491115,
-		"popularity": 62,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Paladins-500x750.jpg",
-		"igdbId": 11544,
-		"name": "Paladins",
-		"first_release_date": "2017-05-02T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Shooter",
-			"Strategy"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"twitchId": 27284,
+		"popularity": 66,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Retro-500x750.jpg",
+		"igdbId": 91473,
+		"name": "Retro"
+	},
+	{
+		"twitchId": 512709,
+		"popularity": 67,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Black%20Ops%20Cold%20War-500x750.jpg",
+		"igdbId": 137001,
+		"name": "Call of Duty: Black Ops Cold War",
+		"first_release_date": "2020-11-13T01:00:00+01:00"
+	},
+	{
+		"twitchId": 512980,
+		"popularity": 68,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Fall%20Guys:%20Ultimate%20Knockout-500x750.jpg",
+		"igdbId": 119313,
+		"name": "Fall Guys: Ultimate Knockout",
+		"first_release_date": "2020-08-03T02:00:00+02:00"
+	},
+	{
+		"twitchId": 512160,
+		"popularity": 69,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Tribes%20of%20Midgard-500x750.jpg",
+		"igdbId": 120619,
+		"name": "Tribes of Midgard",
+		"first_release_date": "2021-07-27T02:00:00+02:00"
 	},
 	{
 		"twitchId": 510393,
-		"popularity": 63,
+		"popularity": 70,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Idol%20Manager-500x750.jpg",
 		"igdbId": 95215,
 		"name": "Idol Manager",
-		"first_release_date": "2021-07-27T02:00:00+02:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Simulator",
-			"Strategy",
-			"Indie"
-		]
-	},
-	{
-		"twitchId": 65654,
-		"popularity": 64,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/The%20Elder%20Scrolls%20Online-500x750.jpg",
-		"igdbId": 1081,
-		"name": "The Elder Scrolls Online",
-		"first_release_date": "2014-04-04T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series",
-			"Google Stadia"
-		],
-		"genres": [
-			"Role-playing (RPG)"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"dropin",
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 518184,
-		"popularity": 65,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Phasmophobia-500x750.jpg",
-		"igdbId": 132516,
-		"name": "Phasmophobia",
-		"first_release_date": "2020-09-18T02:00:00+02:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Puzzle",
-			"Tactical",
-			"Indie"
-		]
-	},
-	{
-		"twitchId": 19619,
-		"popularity": 66,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Tibia-500x750.jpg",
-		"igdbId": 9596,
-		"name": "Tibia",
-		"first_release_date": "1997-01-01T01:00:00+01:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Adventure"
-		]
-	},
-	{
-		"twitchId": 27546,
-		"popularity": 67,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/World%20of%20Tanks-500x750.jpg",
-		"igdbId": 1184,
-		"name": "World of Tanks",
-		"first_release_date": "2011-04-12T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One",
-			"Xbox 360"
-		],
-		"genres": [
-			"Shooter",
-			"Simulator",
-			"Strategy",
-			"Arcade"
-		]
-	},
-	{
-		"twitchId": 490292,
-		"popularity": 68,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dark%20Souls%20III-500x750.jpg",
-		"igdbId": 11133,
-		"name": "Dark Souls III",
-		"first_release_date": "2016-03-24T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Adventure"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
-	},
-	{
-		"twitchId": 369252,
-		"popularity": 69,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/The%20Sims%204-500x750.jpg",
-		"igdbId": 3212,
-		"name": "The Sims 4",
-		"first_release_date": "2014-09-02T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Simulator",
-			"Adventure"
-		]
-	},
-	{
-		"twitchId": 32507,
-		"popularity": 70,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/SMITE-500x750.jpg",
-		"igdbId": 5607,
-		"name": "SMITE",
-		"first_release_date": "2014-03-25T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Strategy",
-			"Adventure",
-			"MOBA"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"first_release_date": "2021-07-27T02:00:00+02:00"
 	},
 	{
 		"twitchId": 490100,
@@ -1380,296 +467,214 @@
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/LOST%20ARK-500x750.jpg",
 		"igdbId": 26128,
 		"name": "LOST ARK",
-		"first_release_date": "2018-12-04T01:00:00+01:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Hack and slash/Beat 'em up",
-			"Adventure"
-		]
+		"first_release_date": "2018-12-04T01:00:00+01:00"
 	},
 	{
-		"twitchId": 517159,
+		"twitchId": 65654,
 		"popularity": 72,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Guilty%20Gear:%20Strive-500x750.jpg",
-		"igdbId": 125764,
-		"name": "Guilty Gear: Strive",
-		"first_release_date": "2021-06-11T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"PlayStation 5",
-			"Arcade"
-		],
-		"genres": [
-			"Fighting"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/The%20Elder%20Scrolls%20Online-500x750.jpg",
+		"igdbId": 1081,
+		"name": "The Elder Scrolls Online",
+		"first_release_date": "2014-04-04T02:00:00+02:00"
 	},
 	{
-		"twitchId": 1160459167,
-		"popularity": 73,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/MLB%20The%20Show%2021-500x750.jpg",
-		"igdbId": 143260,
-		"name": "MLB The Show 21",
-		"first_release_date": "2021-04-20T02:00:00+02:00",
-		"platforms": [
-			"PlayStation 4",
-			"Xbox One",
-			"PlayStation 5",
-			"Xbox Series"
-		],
-		"genres": [
-			"Sport"
-		]
-	},
-	{
-		"twitchId": 7348,
+		"twitchId": 19619,
 		"popularity": 74,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Quake-500x750.jpg",
-		"igdbId": 333,
-		"name": "Quake",
-		"first_release_date": "1996-06-22T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PC DOS",
-			"Nintendo 64",
-			"Amiga",
-			"Mac",
-			"Sega Saturn",
-			"Mobile",
-			"Linux",
-			"Zeebo"
-		],
-		"genres": [
-			"Shooter"
-		],
-		"multiplayer_modes": [
-			"campaigncoop",
-			"dropin",
-			"onlinecoop",
-			"splitscreen"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Tibia-500x750.jpg",
+		"igdbId": 9596,
+		"name": "Tibia",
+		"first_release_date": "1997-01-01T01:00:00+01:00"
 	},
 	{
-		"twitchId": 8224,
+		"twitchId": 29433,
 		"popularity": 75,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/TrackMania-500x750.jpg",
-		"igdbId": 85523,
-		"name": "TrackMania",
-		"first_release_date": "2010-09-23T02:00:00+02:00",
-		"platforms": [
-			"Wii"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dark%20Souls-500x750.jpg",
+		"igdbId": 2155,
+		"name": "Dark Souls",
+		"first_release_date": "2011-09-22T02:00:00+02:00"
 	},
 	{
-		"twitchId": 386821,
+		"twitchId": 491115,
 		"popularity": 76,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Black%20Desert%20Online-500x750.jpg",
-		"igdbId": 6292,
-		"name": "Black Desert Online",
-		"first_release_date": "2015-07-14T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Simulator",
-			"Strategy",
-			"Adventure"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Paladins-500x750.jpg",
+		"igdbId": 11544,
+		"name": "Paladins",
+		"first_release_date": "2017-05-02T02:00:00+02:00"
 	},
 	{
-		"twitchId": 23020,
+		"twitchId": 32502,
 		"popularity": 77,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Roblox-500x750.jpg",
-		"igdbId": 17269,
-		"name": "Roblox",
-		"first_release_date": "2006-09-01T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Mac",
-			"Android",
-			"Xbox One"
-		],
-		"genres": [
-			"Platform",
-			"Simulator",
-			"Adventure"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/World%20of%20Warships-500x750.jpg",
+		"igdbId": 5587,
+		"name": "World of Warships",
+		"first_release_date": "2015-09-17T02:00:00+02:00"
 	},
 	{
-		"twitchId": 31339,
-		"popularity": 78,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Project%20Zomboid-500x750.jpg",
-		"igdbId": 3189,
-		"name": "Project Zomboid",
-		"first_release_date": "2013-11-08T01:00:00+01:00",
-		"platforms": [
-			"PC",
-			"Mac"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Simulator",
-			"Indie"
-		]
+		"twitchId": 369252,
+		"popularity": 79,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/The%20Sims%204-500x750.jpg",
+		"igdbId": 3212,
+		"name": "The Sims 4",
+		"first_release_date": "2014-09-02T02:00:00+02:00"
 	},
 	{
 		"twitchId": 514858,
-		"popularity": 79,
+		"popularity": 80,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./League%20of%20Legends:%20Wild%20Rift-500x750.jpg",
 		"igdbId": 124700,
 		"name": "League of Legends: Wild Rift",
-		"first_release_date": "2020-10-27T01:00:00+01:00",
-		"platforms": [
-			"iOS",
-			"Nintendo Switch",
-			"Android",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"MOBA"
-		]
+		"first_release_date": "2020-10-27T01:00:00+01:00"
 	},
 	{
-		"twitchId": 1829367372,
-		"popularity": 80,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./The%20Legend%20of%20Zelda:%20Skyward%20Sword%20HD-500x750.jpg",
-		"igdbId": 143614,
-		"name": "The Legend of Zelda: Skyward Sword HD",
-		"first_release_date": "2021-07-16T02:00:00+02:00",
-		"platforms": [
-			"Nintendo Switch"
-		],
-		"genres": [
-			"Adventure"
-		]
-	},
-	{
-		"twitchId": 497497,
-		"popularity": 81,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Brawl%20Stars-500x750.jpg",
-		"igdbId": 55945,
-		"name": "Brawl Stars",
-		"first_release_date": "2018-12-12T01:00:00+01:00",
-		"platforms": [
-			"iOS",
-			"Android"
-		]
-	},
-	{
-		"twitchId": 394568,
+		"twitchId": 6369,
 		"popularity": 82,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/RimWorld-500x750.jpg",
-		"igdbId": 9789,
-		"name": "RimWorld",
-		"first_release_date": "2018-10-17T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Mac",
-			"Linux"
-		],
-		"genres": [
-			"Real Time Strategy (RTS)",
-			"Simulator",
-			"Strategy",
-			"Indie"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/God%20of%20War-500x750.jpg",
+		"igdbId": 19560,
+		"name": "God of War",
+		"first_release_date": "2018-04-20T02:00:00+02:00"
 	},
 	{
-		"twitchId": 702993320,
+		"twitchId": 31339,
 		"popularity": 83,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dodgeball%20Academia-500x750.jpg",
-		"igdbId": 152255,
-		"name": "Dodgeball Academia",
-		"first_release_date": "2021-08-05T02:00:00+02:00",
-		"platforms": [
-			"PC",
-			"Nintendo Switch",
-			"PlayStation 4",
-			"Xbox One"
-		],
-		"genres": [
-			"Role-playing (RPG)",
-			"Sport",
-			"Adventure",
-			"Arcade",
-			"Indie"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Project%20Zomboid-500x750.jpg",
+		"igdbId": 3189,
+		"name": "Project Zomboid",
+		"first_release_date": "2013-11-08T01:00:00+01:00"
 	},
 	{
-		"twitchId": 499003,
+		"twitchId": 517159,
 		"popularity": 84,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/VRChat-500x750.jpg",
-		"igdbId": 33615,
-		"name": "VRChat",
-		"first_release_date": "2017-02-01T01:00:00+01:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Simulator",
-			"Sport",
-			"Adventure"
-		]
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Guilty%20Gear:%20Strive-500x750.jpg",
+		"igdbId": 125764,
+		"name": "Guilty Gear: Strive",
+		"first_release_date": "2021-06-11T02:00:00+02:00"
+	},
+	{
+		"twitchId": 386821,
+		"popularity": 85,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Black%20Desert%20Online-500x750.jpg",
+		"igdbId": 6292,
+		"name": "Black Desert Online",
+		"first_release_date": "2015-07-14T02:00:00+02:00"
+	},
+	{
+		"twitchId": 27546,
+		"popularity": 86,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/World%20of%20Tanks-500x750.jpg",
+		"igdbId": 1184,
+		"name": "World of Tanks",
+		"first_release_date": "2011-04-12T02:00:00+02:00"
+	},
+	{
+		"twitchId": 23020,
+		"popularity": 87,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Roblox-500x750.jpg",
+		"igdbId": 17269,
+		"name": "Roblox",
+		"first_release_date": "2006-09-01T02:00:00+02:00"
 	},
 	{
 		"twitchId": 504461,
-		"popularity": 85,
+		"popularity": 88,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Super%20Smash%20Bros.%20Ultimate-500x750.jpg",
 		"igdbId": 90101,
 		"name": "Super Smash Bros. Ultimate",
-		"first_release_date": "2018-12-07T01:00:00+01:00",
-		"platforms": [
-			"Nintendo Switch"
-		],
-		"genres": [
-			"Fighting"
-		]
+		"first_release_date": "2018-12-07T01:00:00+01:00"
+	},
+	{
+		"twitchId": 497497,
+		"popularity": 89,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Brawl%20Stars-500x750.jpg",
+		"igdbId": 55945,
+		"name": "Brawl Stars",
+		"first_release_date": "2018-12-12T01:00:00+01:00"
+	},
+	{
+		"twitchId": 493959,
+		"popularity": 90,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Red%20Dead%20Redemption%202-500x750.jpg",
+		"igdbId": 25076,
+		"name": "Red Dead Redemption 2",
+		"first_release_date": "2018-10-26T02:00:00+02:00"
+	},
+	{
+		"twitchId": 1160459167,
+		"popularity": 91,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/MLB%20The%20Show%2021-500x750.jpg",
+		"igdbId": 143260,
+		"name": "MLB The Show 21",
+		"first_release_date": "2021-04-20T02:00:00+02:00"
 	},
 	{
 		"twitchId": 512864,
-		"popularity": 86,
+		"popularity": 92,
 		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Eternal%20Return-500x750.jpg",
 		"igdbId": 135842,
 		"name": "Eternal Return",
-		"first_release_date": "2020-10-14T02:00:00+02:00",
-		"platforms": [
-			"PC"
-		],
-		"genres": [
-			"Strategy",
-			"Tactical",
-			"Indie",
-			"MOBA"
-		]
+		"first_release_date": "2020-10-14T02:00:00+02:00"
 	},
 	{
-		"twitchId": 21465,
-		"popularity": 87,
-		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/osu%21-500x750.jpg",
-		"igdbId": 3012,
-		"name": "osu!",
-		"first_release_date": "2007-09-16T02:00:00+02:00",
-		"platforms": [
-			"iOS",
-			"PC",
-			"Mac",
-			"Android",
-			"Linux"
-		],
-		"genres": [
-			"Music",
-			"Indie"
-		],
-		"multiplayer_modes": [
-			"onlinecoop"
-		]
+		"twitchId": 518184,
+		"popularity": 93,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Phasmophobia-500x750.jpg",
+		"igdbId": 132516,
+		"name": "Phasmophobia",
+		"first_release_date": "2020-09-18T02:00:00+02:00"
+	},
+	{
+		"twitchId": 394568,
+		"popularity": 94,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/RimWorld-500x750.jpg",
+		"igdbId": 9789,
+		"name": "RimWorld",
+		"first_release_date": "2018-10-17T02:00:00+02:00"
+	},
+	{
+		"twitchId": 702993320,
+		"popularity": 95,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Dodgeball%20Academia-500x750.jpg",
+		"igdbId": 152255,
+		"name": "Dodgeball Academia",
+		"first_release_date": "2021-08-05T02:00:00+02:00"
+	},
+	{
+		"twitchId": 770229477,
+		"popularity": 96,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/60%20Seconds%21%20Reatomized-500x750.jpg",
+		"igdbId": 120560,
+		"name": "60 Seconds! Reatomized",
+		"first_release_date": "2019-07-25T02:00:00+02:00"
+	},
+	{
+		"twitchId": 489635,
+		"popularity": 97,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./Ark:%20Survival%20Evolved-500x750.jpg",
+		"igdbId": 10239,
+		"name": "Ark: Survival Evolved",
+		"first_release_date": "2017-08-27T02:00:00+02:00"
+	},
+	{
+		"twitchId": 1829367372,
+		"popularity": 98,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/./The%20Legend%20of%20Zelda:%20Skyward%20Sword%20HD-500x750.jpg",
+		"igdbId": 143614,
+		"name": "The Legend of Zelda: Skyward Sword HD",
+		"first_release_date": "2021-07-16T02:00:00+02:00"
+	},
+	{
+		"twitchId": 460951,
+		"popularity": 99,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Geometry%20Dash-500x750.jpg",
+		"igdbId": 11642,
+		"name": "Geometry Dash",
+		"first_release_date": "2013-08-13T02:00:00+02:00"
+	},
+	{
+		"twitchId": 509356,
+		"popularity": 100,
+		"boxArtUrl": "https://static-cdn.jtvnw.net/ttv-boxart/Streets%20of%20Rage%204-500x750.jpg",
+		"igdbId": 107262,
+		"name": "Streets of Rage 4",
+		"first_release_date": "2020-04-30T02:00:00+02:00"
 	}
 ]

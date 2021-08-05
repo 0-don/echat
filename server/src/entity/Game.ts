@@ -6,6 +6,8 @@ import {
   Column,
   BaseEntity,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { GameImage } from './GameImage';
 
@@ -58,4 +60,10 @@ export class Game extends BaseEntity {
   })
   @Field(() => [GameImage], { nullable: true })
   images: GameImage[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

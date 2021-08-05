@@ -42,7 +42,7 @@ const main = async () => {
 
   let games: Games[] = JSON.parse(data);
   for (let game of games) {
-    console.log(game.popularity, game.name);
+    console.log(`Upload ${game.popularity}/${games.length}: ${game.name}`);
     let { images, ...gameData } = game;
 
     let findGame;
@@ -65,7 +65,7 @@ const main = async () => {
         .execute();
     }
     const gameId = findGame.raw[0].id;
-    if(images) {
+    if (images) {
       images.forEach((image) => (image.gameId = gameId));
 
       await GameImage.delete({ gameId });

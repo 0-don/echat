@@ -5,6 +5,8 @@ import {
   Column,
   BaseEntity,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Image } from './Image';
 import { Schedule } from './Schedule';
@@ -75,6 +77,12 @@ export class User extends BaseEntity {
   @Field({ nullable: true })
   @Column({ nullable: true })
   tiktok: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
   // Language
   @OneToMany(() => Language, (language) => language.user, {

@@ -2,7 +2,7 @@ require('dotenv').config();
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 axiosRetry(axios, { retries: 10 });
-// import probe from 'probe-image-size';
+import probe from 'probe-image-size';
 import fs from 'fs';
 import { ApiClient } from 'twitch';
 import { ClientCredentialsAuthProvider } from 'twitch-auth';
@@ -90,39 +90,39 @@ const searchGame = async (name: string) => {
   });
 };
 
-// const getImages = async (
-//   size: ImageSize,
-//   type: 'screenshots' | 'covers' | 'artworks',
-//   ids: GameResultType
-// ) => {
-//   if (!ids) {
-//     return undefined;
-//   }
+const getImages = async (
+  size: ImageSize,
+  type: 'screenshots' | 'covers' | 'artworks',
+  ids: GameResultType
+) => {
+  if (!ids) {
+    return undefined;
+  }
 
-//   let { data }: { data: { url: string }[] } = await axios.post(
-//     type,
-//     `fields url;
-//       where id = (${Number.isInteger(ids) ? ids : (ids as number[]).join(',')});
-//       limit 100;`
-//   );
+  let { data }: { data: { url: string }[] } = await axios.post(
+    type,
+    `fields url;
+      where id = (${Number.isInteger(ids) ? ids : (ids as number[]).join(',')});
+      limit 100;`
+  );
 
-//   const imageUrls = data.map(({ url }) =>
-//     url.replace('//', 'https://').replace('t_thumb', `t_${size}`)
-//   );
+  const imageUrls = data.map(({ url }) =>
+    url.replace('//', 'https://').replace('t_thumb', `t_${size}`)
+  );
 
-//   let images = [];
-//   for (let url of imageUrls) {
-//     try {
-//       let { width, height } = await probe(url, { retries: 10 });
+  let images = [];
+  for (let url of imageUrls) {
+    try {
+      let { width, height } = await probe(url, { retries: 10 });
 
-//       images.push({ type, url, width, height });
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
+      images.push({ type, url, width, height });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-//   return images;
-// };
+  return images;
+};
 
 const getGenres = async (ids: GameResultType) => {
   if (!ids) {
@@ -188,15 +188,13 @@ const getFullGameData = async (name: string) => {
 
   const game = posibleGames.find((game) => game.name === name);
 
-  console.log(` searched Game: ${name}\n`, `found Game: ${game?.name}\n\n`);
-
   if (!game) {
     return undefined;
   }
 
-  // const screenshots = await getImages('720p', 'screenshots', game.screenshots);
-  // const artworks = await getImages('720p', 'artworks', game.artworks);
-  // const covers = await getImages('720p', 'covers', game.covers);
+  const screenshots = await getImages('720p', 'screenshots', game.screenshots);
+  const artworks = await getImages('720p', 'artworks', game.artworks);
+  const covers = await getImages('720p', 'covers', game.covers);
 
   const multiplayer_modes = await getMultiplayerModes(game.multiplayer_modes);
   const platforms = await getPlatforms(game.platforms);
@@ -209,7 +207,7 @@ const getFullGameData = async (name: string) => {
     platforms,
     genres,
     multiplayer_modes,
-    // images: [...(screenshots || []), ...(covers || []), ...(artworks || [])],
+    images: [...(screenshots || []), ...(covers || []), ...(artworks || [])],
   };
 };
 
@@ -224,13 +222,14 @@ export const getGames = async () => {
   const gamesList = [];
   for (let { boxArtUrl, id, name } of topGames) {
     try {
+      popularity += 1;
+      console.log(`Download ${popularity}/${topGames.length}: ${name}`);
       const game = await getFullGameData(name);
 
       if (!game) {
         continue;
       }
 
-      popularity += 1;
       gamesList.push({ twitchId: id, popularity, boxArtUrl, ...game });
 
       fs.writeFileSync('games.json', JSON.stringify(gamesList, null, '\t'));

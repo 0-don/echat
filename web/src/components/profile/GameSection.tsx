@@ -1,4 +1,3 @@
-import { MailIcon, PhoneIcon } from '@heroicons/react/outline';
 import { FormikProps } from 'formik';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useGetAllGamesQuery } from 'src/generated/graphql';
@@ -43,8 +42,11 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
                   <h3 className='mt-6 text-white text-sm font-medium'>
                     {name}
                   </h3>
-                  <button className="mb-1 text-gray-400 text-xs" onClick={click}>
-                    {genres && genres.join(", ")}
+                  <button
+                    className='mb-1 text-gray-400 text-xs'
+                    onClick={click}
+                  >
+                    {genres && genres.join(', ')}
                   </button>
                 </div>
               </li>

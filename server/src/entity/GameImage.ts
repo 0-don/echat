@@ -37,5 +37,5 @@ export class GameImage extends BaseEntity {
 
   @Field(() => Game)
   @ManyToOne(() => Game, (game) => game.images)
-  user: Game;
+  game: Game;
 }

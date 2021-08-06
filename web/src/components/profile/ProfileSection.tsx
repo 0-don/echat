@@ -80,7 +80,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
-            console.log(values);
             await updateMe({
               variables: { options: values },
               refetchQueries: [{ query: MeDocument }],
@@ -239,7 +238,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             />
                           </div>
                           <div className='w-3/12 flex items-center justify-center'>
-                            {typeof available == "boolean" && (
+                            {typeof available == 'boolean' && (
                               <SwitchField
                                 checked={available}
                                 onChange={() => {

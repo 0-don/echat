@@ -9,6 +9,7 @@ import { ClientCredentialsAuthProvider } from 'twitch-auth';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';
+import { log } from 'console';
 
 export type GameResultType = number[] | number | undefined;
 export type TopGamesType = {
@@ -117,7 +118,7 @@ const getImages = async (
 
       images.push({ type, url, width, height });
     } catch (err) {
-      console.log(err);
+      log(err);
     }
   }
 
@@ -223,7 +224,7 @@ export const getGames = async () => {
   for (let { boxArtUrl, id, name } of topGames) {
     try {
       popularity += 1;
-      console.log(`Download ${popularity}/${topGames.length}: ${name}`);
+      log(`Download ${popularity}/${topGames.length}: ${name}`);
       const game = await getFullGameData(name);
 
       if (!game) {
@@ -234,7 +235,7 @@ export const getGames = async () => {
 
       fs.writeFileSync('games.json', JSON.stringify(gamesList, null, '\t'));
     } catch (err) {
-      console.log(err);
+      log(err);
     }
   }
 };

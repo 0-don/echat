@@ -1,0 +1,19 @@
+query GetAllGames {
+  getAllGames {
+    id
+    name
+    popularity
+    boxArtUrl
+    first_release_date
+    genres
+    platforms
+    multiplayer_modes
+    images {
+      id
+      type
+      url
+      width
+      height
+    }
+  }
+}

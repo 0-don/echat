@@ -13,8 +13,8 @@ const Profile: React.FC = () => {
   const formikRef = useRef<FormikProps<UpdatedUser>>(null);
 
   const [steps, setSteps] = useState<StepType[]>([
-    { id: 0, name: 'Profile', status: 'current' },
-    { id: 1, name: 'Games', status: 'upcoming' },
+    { id: 0, name: 'Profile', status: 'complete' },
+    { id: 1, name: 'Games', status: 'current' },
     { id: 2, name: 'Submit', status: 'upcoming' },
   ]);
 

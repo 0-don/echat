@@ -15,7 +15,7 @@ export type Scalars = {
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: any;
+  JSON: string[];
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
@@ -56,7 +56,7 @@ export type GameImage = {
   width: Scalars['Int'];
   height: Scalars['Int'];
   gameId: Scalars['Float'];
-  user: Game;
+  game: Game;
 };
 
 export type Image = {
@@ -324,6 +324,21 @@ export type UpdateMeMutation = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'description' | 'age' | 'gender' | 'country'>
   )> }
+);
+
+export type GetAllGamesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllGamesQuery = (
+  { __typename?: 'Query' }
+  & { getAllGames?: Maybe<Array<(
+    { __typename?: 'Game' }
+    & Pick<Game, 'id' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'genres' | 'platforms' | 'multiplayer_modes'>
+    & { images?: Maybe<Array<(
+      { __typename?: 'GameImage' }
+      & Pick<GameImage, 'id' | 'type' | 'url' | 'width' | 'height'>
+    )>> }
+  )>> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -648,6 +663,54 @@ export function useUpdateMeMutation(baseOptions?: Apollo.MutationHookOptions<Upd
 export type UpdateMeMutationHookResult = ReturnType<typeof useUpdateMeMutation>;
 export type UpdateMeMutationResult = Apollo.MutationResult<UpdateMeMutation>;
 export type UpdateMeMutationOptions = Apollo.BaseMutationOptions<UpdateMeMutation, UpdateMeMutationVariables>;
+export const GetAllGamesDocument = gql`
+    query GetAllGames {
+  getAllGames {
+    id
+    name
+    popularity
+    boxArtUrl
+    first_release_date
+    genres
+    platforms
+    multiplayer_modes
+    images {
+      id
+      type
+      url
+      width
+      height
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllGamesQuery__
+ *
+ * To run a query within a React component, call `useGetAllGamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllGamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllGamesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllGamesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllGamesQuery, GetAllGamesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllGamesQuery, GetAllGamesQueryVariables>(GetAllGamesDocument, options);
+      }
+export function useGetAllGamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllGamesQuery, GetAllGamesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllGamesQuery, GetAllGamesQueryVariables>(GetAllGamesDocument, options);
+        }
+export type GetAllGamesQueryHookResult = ReturnType<typeof useGetAllGamesQuery>;
+export type GetAllGamesLazyQueryHookResult = ReturnType<typeof useGetAllGamesLazyQuery>;
+export type GetAllGamesQueryResult = Apollo.QueryResult<GetAllGamesQuery, GetAllGamesQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -746,6 +809,7 @@ export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQ
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
 export const namedOperations = {
   Query: {
+    GetAllGames: 'GetAllGames',
     Me: 'Me',
     UserImages: 'UserImages'
   },

@@ -5,6 +5,7 @@ import { ENTITIES } from '../constants';
 import { Game } from '../entity/Game';
 import { GameImage } from '../entity/GameImage';
 import { getGames } from './getGames';
+import { log } from 'console';
 
 export interface Image {
   gameId: number;
@@ -42,7 +43,7 @@ const main = async () => {
 
   let games: Games[] = JSON.parse(data);
   for (let game of games) {
-    console.log(`Upload ${game.popularity}/${games.length}: ${game.name}`);
+    log(`Upload ${game.popularity}/${games.length}: ${game.name}`);
     let { images, ...gameData } = game;
 
     let findGame;

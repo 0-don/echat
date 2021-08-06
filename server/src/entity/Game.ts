@@ -55,7 +55,7 @@ export class Game extends BaseEntity {
   multiplayer_modes?: string[];
 
   // GameImage
-  @OneToMany(() => GameImage, (gameImage) => gameImage.user, {
+  @OneToMany(() => GameImage, (gameImage) => gameImage.game, {
     cascade: true,
   })
   @Field(() => [GameImage], { nullable: true })

@@ -15,7 +15,7 @@ export type Scalars = {
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: string[];
+  JSON: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };

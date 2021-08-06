@@ -74,7 +74,7 @@ export const GameModal: React.FC<GameModalProps> = ({ open, setOpen }) => {
                     )
                   )}
                 </ul>
-         
+                <button type='button'></button>
               </div>
             </Transition.Child>
           </div>

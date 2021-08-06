@@ -67,7 +67,7 @@ const getTopGames = async () => {
 
   return data.map(({ id, boxArtUrl, name }) => ({
     id: parseInt(id),
-    boxArtUrl: boxArtUrl.replace('{width}', '285').replace('{height}', '380'),
+    boxArtUrl: boxArtUrl.replace('{width}', '171').replace('{height}', '228'),
     name,
   }));
 };

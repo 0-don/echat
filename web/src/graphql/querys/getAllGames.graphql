@@ -7,6 +7,7 @@ query GetAllGames {
     first_release_date
     genres
     platforms
+
     multiplayer_modes
     images {
       id

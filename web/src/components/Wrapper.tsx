@@ -11,7 +11,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
   return (
     <>
       {navbar && <NavBar />}
-      <div className='flex flex-col justify-center py-12 sm:px-6 lg:px-80'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {children}
       </div>
     </>

@@ -69,7 +69,7 @@ export const NavBar: React.FC = ({}) => {
   }
 
   return (
-    <Disclosure as='nav' className='bg-white dark:bg-gray-800 shadow'>
+    <Disclosure as='nav' className='bg-white dark:bg-gray-800 shadow mb-1'>
       {({ open }) => (
         <>
           <div className='max-w-7xl mx-auto'>

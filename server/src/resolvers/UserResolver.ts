@@ -45,6 +45,8 @@ export class UserResolver {
     return scheduleLoader.load({ userId: user.id });
   }
 
+
+  
   @Query(() => [User], { nullable: true })
   getAll() {
     return User.find();

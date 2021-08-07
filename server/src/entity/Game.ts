@@ -35,7 +35,7 @@ export class Game extends BaseEntity {
   popularity: number;
 
   @Field()
-  @Column()
+  @Column() 
   boxArtUrl: string;
 
   @Field(() => Date, { nullable: true })

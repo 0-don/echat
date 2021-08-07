@@ -23,8 +23,8 @@ export class GameResolver {
     console.log(game);
 
     const foundGame = await getRepository(Game)
-      .createQueryBuilder()
-      .where(`platforms @> '"${name}"'`)
+      .createQueryBuilder('game')
+      .where('game.platforms @> :platforms', { platforms: JSON.stringify(['PC', "Mac"]) })
       // .where(`platforms @> '["PC", "Mac"]'`)
       .getMany();
 

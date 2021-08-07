@@ -136,11 +136,17 @@ export type Query = {
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
   getAllGames?: Maybe<Array<Game>>;
+  findGame?: Maybe<Array<Game>>;
 };
 
 
 export type QueryUserImagesArgs = {
   type?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryFindGameArgs = {
+  game: Scalars['String'];
 };
 
 export type Schedule = {
@@ -200,7 +206,16 @@ export type User = {
   tiktok?: Maybe<Scalars['String']>;
   languages?: Maybe<Array<Language>>;
   images?: Maybe<Array<Image>>;
+  games?: Maybe<Array<UserGame>>;
   schedules?: Maybe<Array<Schedule>>;
+};
+
+export type UserGame = {
+  __typename?: 'UserGame';
+  id: Scalars['Int'];
+  gameId: Scalars['Float'];
+  userId: Scalars['Float'];
+  user: User;
 };
 
 export type UserResponse = {

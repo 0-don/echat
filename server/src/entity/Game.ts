@@ -44,15 +44,15 @@ export class Game extends BaseEntity {
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  platforms?: string;
+  platforms?: string[];
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  genres?: string;
+  genres?: string[];
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  multiplayer_modes?: string;
+  multiplayer_modes?: string[];
 
   // GameImage
   @OneToMany(() => GameImage, (gameImage) => gameImage.game, {

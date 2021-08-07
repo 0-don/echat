@@ -11,6 +11,7 @@ import {
 import { Image } from './Image';
 import { Schedule } from './Schedule';
 import { Language } from './Language';
+import { UserGame } from './UserGame';
 
 @ObjectType()
 @Entity()
@@ -97,6 +98,13 @@ export class User extends BaseEntity {
   })
   @Field(() => [Image], { nullable: true })
   images: Image[];
+
+  // UserGame
+  @OneToMany(() => UserGame, (user) => user.user, {
+    cascade: true,
+  })
+  @Field(() => [UserGame], { nullable: true })
+  games: UserGame[];
 
   // Schedule
   @OneToMany(() => Schedule, (schedule) => schedule.user, {

@@ -43,10 +43,6 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
 
   userGame;
   if (!allGamesLoading && game && game.images && game.images.length) {
-    const platforms = game.platforms.map((plat: string, i: number) => ({
-      id: i,
-      name: plat,
-    }));
     return (
       <>
         <Modal open={open} setOpen={setOpen}>
@@ -72,7 +68,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
               initialValues={{
                 gameId,
                 level: LEVELS[0].name,
-                platforms,
+                platforms: [game.platforms[0]],
                 description: '',
                 price: 0,
                 per: PERS[0].name,
@@ -100,7 +96,8 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                       <DropdownField
                         {...formikProps}
                         fieldName='platforms'
-                        list={platforms}
+                        //  @ts-ignore
+                        list={game.platforms}
                       />
                     </div>
                   </div>
@@ -132,7 +129,6 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                 </Form>
               )}
             </Formik>
-            <button></button>
           </div>
         </Modal>
       </>

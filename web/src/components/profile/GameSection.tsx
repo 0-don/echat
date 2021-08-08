@@ -1,5 +1,6 @@
 import { FormikProps } from 'formik';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
+import { useGetUserGameQuery } from 'src/generated/graphql';
 import { StepType } from '../utils/FormSteps';
 import { GameModal } from './modals/GameModal';
 
@@ -10,13 +11,16 @@ interface GameSectionProps {
   setSteps?: Dispatch<SetStateAction<StepType[]>>;
 }
 
-export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
-  formikRef;
-  const [open, setOpen] = useState<boolean>(false);
+export const GameSection: React.FC<GameSectionProps> = ({}) => {
+  const { data, loading } = useGetUserGameQuery();
+
+  if (!loading) {
+    console.log(data)
+  }
+
   return (
     <>
-      <GameModal open={open} setOpen={setOpen} />
-      <button onClick={() => setOpen(!open)}>textz</button>
+      <GameModal />
     </>
   );
 };

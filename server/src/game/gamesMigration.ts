@@ -22,8 +22,8 @@ export interface Games {
   name: string;
   popularity: number;
   first_release_date?: string;
-  platforms: string[];
-  genres: string[];
+  platforms: { id: number; name: string }[];
+  genres: { id: number; name: string }[];
   multiplayer_modes: string[];
   images: Image[] | undefined;
 }

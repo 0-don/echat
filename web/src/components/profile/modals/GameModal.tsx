@@ -1,23 +1,20 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { useGetAllGamesQuery } from 'src/generated/graphql';
 import { Loading } from 'src/components/utils/Loading';
 import { Button, Modal } from 'src/components/htmlElements';
+import { UpsertGameModal } from './UpsertGameModal';
 
-export type GameModalProps = {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-};
-
-export const GameModal: React.FC<GameModalProps> = () => {
-  const [open, setOpen] = useState<boolean>(false);
-
+export const GameModal: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const [gameOpen, setGameOpen] = useState(true);
+  const [gameId, setGameId] = useState(60);
   const { data, loading } = useGetAllGamesQuery();
 
   return (
     <>
       <Button text='add Game' onClick={() => setOpen(!open)} />
       <Modal open={open} setOpen={setOpen}>
-        <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full sm:p-6'>
+        <div className='inline-block align-bottom bg-white dark:bg-gray-700 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full sm:p-6'>
           <button></button>
           <ul
             role='list'
@@ -28,6 +25,11 @@ export const GameModal: React.FC<GameModalProps> = () => {
                 ({ id, boxArtUrl, name, genres, multiplayer_modes }) => (
                   <li
                     key={id}
+                    onClick={() => {
+                      setOpen(false);
+                      setGameId(id);
+                      setGameOpen(true);
+                    }}
                     className='col-span-1 flex flex-col text-center divide-y'
                   >
                     <div className='flex-1 flex flex-col'>
@@ -36,7 +38,7 @@ export const GameModal: React.FC<GameModalProps> = () => {
                         src={boxArtUrl}
                         alt=''
                       />
-                      <h3 className='mt-6 text-black text-sm font-medium'>
+                      <h3 className='mt-6 text-gray-700 dark:text-white text-sm font-medium'>
                         {name}
                       </h3>
                     </div>
@@ -49,6 +51,7 @@ export const GameModal: React.FC<GameModalProps> = () => {
           </ul>
         </div>
       </Modal>
+      <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
     </>
   );
 };

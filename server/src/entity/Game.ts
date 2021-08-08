@@ -11,6 +11,11 @@ import {
 } from 'typeorm';
 import { GameImage } from './GameImage';
 
+type List = {
+  id: number;
+  name: string;
+}
+
 @ObjectType()
 @Entity()
 export class Game extends BaseEntity {
@@ -44,11 +49,11 @@ export class Game extends BaseEntity {
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  platforms?: string[];
+  platforms?: List[];
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  genres?: string[];
+  genres?: List[];
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })

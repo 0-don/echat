@@ -130,14 +130,14 @@ const getGenres = async (ids: GameResultType) => {
     return undefined;
   }
 
-  const { data }: { data: { name: string }[] } = await axios.post(
+  const { data }: { data: { id: number; name: string }[] } = await axios.post(
     'genres',
     `fields name;
      where id = (${Number.isInteger(ids) ? ids : (ids as number[]).join(',')});
      limit 100;`
   );
 
-  return data.map((genre) => genre.name);
+  return data.map(({ id, name }) => ({ id, name }));
 };
 
 const getMultiplayerModes = async (ids: GameResultType) => {
@@ -173,15 +173,17 @@ const getPlatforms = async (ids: GameResultType) => {
     return undefined;
   }
 
-  const { data }: { data: { name: string }[] } = await axios.post(
+  const { data }: { data: { id: number; name: string }[] } = await axios.post(
     'platforms',
     `fields *;
-     exclude id;
      where id = (${Number.isInteger(ids) ? ids : (ids as number[]).join(',')});
      limit 100;`
   );
 
-  return data.map((p) => p.name.replace(' (Microsoft Windows)', ''));
+  return data.map(({ id, name }) => ({
+    id,
+    name: name.replace(' (Microsoft Windows)', ''),
+  }));
 };
 
 const getFullGameData = async (name: string) => {

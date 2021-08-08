@@ -25,7 +25,11 @@ export const InputField: React.FC<InputFieldProps> = ({
       </label>
       <div className='mt-1 relative rounded-md shadow-sm'>
         <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-          {icon && <FontAwesomeIcon icon={['fab', icon as any]} />}
+          {icon && icon !== 'dollar-sign' ? (
+            <FontAwesomeIcon className="text-gray-700 dark:text-white" icon={['fab', icon as any]} />
+          ) : (
+            <FontAwesomeIcon className="text-gray-700 dark:text-white" icon={icon as any} />
+          )}
         </div>
         <input
           {...field}
@@ -34,7 +38,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           placeholder={props.placeholder}
           className={`
           ${error ? 'border-red-500' : 'border-gray-300'} 
-          ${icon && 'pl-10'} 
+          ${icon && 'pl-8'} 
            text-white appearance-none block w-full px-3 py-2 bg-white dark:bg-gray-700 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
           `}
         />

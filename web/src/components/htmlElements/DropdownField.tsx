@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
 import { FormikProps } from 'formik';
-import { UpdatedUser } from 'src/generated/graphql';
+import { UpdatedUser, UpsertUserGame } from 'src/generated/graphql';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -13,7 +13,7 @@ type DropdownFieldProps = {
   fieldKey?: string;
   list: DropdownItem[];
   dayName?: string;
-} & FormikProps<UpdatedUser>;
+} & FormikProps<UpdatedUser | UpsertUserGame>;
 
 type DropdownItem = {
   __typename?: string;
@@ -43,7 +43,8 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
           )
         : setFieldValue(fieldName, [...values[fieldName], value]);
     } else {
-      Number.isInteger(parseInt(value.name))
+      // check if only numbers
+      /^\d+$/.test(value.name)
         ? setFieldValue(fieldName, parseInt(value.name))
         : setFieldValue(fieldName, value.name);
     }
@@ -80,7 +81,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
           <div className='mt-1 relative'>
             <Listbox.Button className='relative w-full bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
               <span className='block truncate'>
-                <div className='flex flex-wrap'>
+                <div className='flex flex-wrap text-gray-700 dark:text-white'>
                   {values[fieldName].constructor === Array && !dayName ? (
                     values[fieldName].map((item: DropdownItem) => (
                       <div key={item.name} className='flex mr-1.5'>

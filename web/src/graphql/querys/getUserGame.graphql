@@ -1,0 +1,12 @@
+query GetUserGame{
+  getUserGame {
+    id
+    gameId
+    level
+    platforms
+    description
+    price
+    per
+    userId
+  }
+}

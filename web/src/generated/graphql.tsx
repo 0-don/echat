@@ -21,6 +21,11 @@ export type Scalars = {
 };
 
 
+export type Dropdown = {
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
 export type EmailUsernamePasswordInput = {
   email: Scalars['String'];
   username: Scalars['String'];
@@ -89,6 +94,7 @@ export type Mutation = {
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Image>;
   deleteImage: Scalars['Boolean'];
+  upsertUserGame: UserGame;
 };
 
 
@@ -129,6 +135,11 @@ export type MutationDeleteImageArgs = {
   publicId: Scalars['String'];
 };
 
+
+export type MutationUpsertUserGameArgs = {
+  options: UpsertUserGame;
+};
+
 export type Query = {
   __typename?: 'Query';
   getAll?: Maybe<Array<User>>;
@@ -137,6 +148,7 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getAllGames?: Maybe<Array<Game>>;
   findGame?: Maybe<Array<Game>>;
+  getUserGame?: Maybe<Array<UserGame>>;
 };
 
 
@@ -187,6 +199,15 @@ export type UpdatedUserValues = {
 };
 
 
+export type UpsertUserGame = {
+  gameId: Scalars['Int'];
+  level: Scalars['String'];
+  platforms: Array<Dropdown>;
+  description: Scalars['String'];
+  price: Scalars['Int'];
+  per: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
@@ -213,7 +234,12 @@ export type User = {
 export type UserGame = {
   __typename?: 'UserGame';
   id: Scalars['Int'];
-  gameId: Scalars['Float'];
+  gameId: Scalars['Int'];
+  level: Scalars['String'];
+  platforms: Scalars['JSON'];
+  description: Scalars['String'];
+  price: Scalars['Int'];
+  per: Scalars['String'];
   userId: Scalars['Float'];
   user: User;
 };
@@ -341,6 +367,19 @@ export type UpdateMeMutation = (
   )> }
 );
 
+export type UpsertUserGameMutationVariables = Exact<{
+  options: UpsertUserGame;
+}>;
+
+
+export type UpsertUserGameMutation = (
+  { __typename?: 'Mutation' }
+  & { upsertUserGame: (
+    { __typename?: 'UserGame' }
+    & Pick<UserGame, 'id' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
+  ) }
+);
+
 export type GetAllGamesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -353,6 +392,17 @@ export type GetAllGamesQuery = (
       { __typename?: 'GameImage' }
       & Pick<GameImage, 'id' | 'type' | 'url' | 'width' | 'height'>
     )>> }
+  )>> }
+);
+
+export type GetUserGameQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserGameQuery = (
+  { __typename?: 'Query' }
+  & { getUserGame?: Maybe<Array<(
+    { __typename?: 'UserGame' }
+    & Pick<UserGame, 'id' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'userId'>
   )>> }
 );
 
@@ -678,6 +728,45 @@ export function useUpdateMeMutation(baseOptions?: Apollo.MutationHookOptions<Upd
 export type UpdateMeMutationHookResult = ReturnType<typeof useUpdateMeMutation>;
 export type UpdateMeMutationResult = Apollo.MutationResult<UpdateMeMutation>;
 export type UpdateMeMutationOptions = Apollo.BaseMutationOptions<UpdateMeMutation, UpdateMeMutationVariables>;
+export const UpsertUserGameDocument = gql`
+    mutation UpsertUserGame($options: UpsertUserGame!) {
+  upsertUserGame(options: $options) {
+    id
+    gameId
+    level
+    platforms
+    description
+    price
+    per
+  }
+}
+    `;
+export type UpsertUserGameMutationFn = Apollo.MutationFunction<UpsertUserGameMutation, UpsertUserGameMutationVariables>;
+
+/**
+ * __useUpsertUserGameMutation__
+ *
+ * To run a mutation, you first call `useUpsertUserGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertUserGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertUserGameMutation, { data, loading, error }] = useUpsertUserGameMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useUpsertUserGameMutation(baseOptions?: Apollo.MutationHookOptions<UpsertUserGameMutation, UpsertUserGameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertUserGameMutation, UpsertUserGameMutationVariables>(UpsertUserGameDocument, options);
+      }
+export type UpsertUserGameMutationHookResult = ReturnType<typeof useUpsertUserGameMutation>;
+export type UpsertUserGameMutationResult = Apollo.MutationResult<UpsertUserGameMutation>;
+export type UpsertUserGameMutationOptions = Apollo.BaseMutationOptions<UpsertUserGameMutation, UpsertUserGameMutationVariables>;
 export const GetAllGamesDocument = gql`
     query GetAllGames {
   getAllGames {
@@ -726,6 +815,47 @@ export function useGetAllGamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetAllGamesQueryHookResult = ReturnType<typeof useGetAllGamesQuery>;
 export type GetAllGamesLazyQueryHookResult = ReturnType<typeof useGetAllGamesLazyQuery>;
 export type GetAllGamesQueryResult = Apollo.QueryResult<GetAllGamesQuery, GetAllGamesQueryVariables>;
+export const GetUserGameDocument = gql`
+    query GetUserGame {
+  getUserGame {
+    id
+    gameId
+    level
+    platforms
+    description
+    price
+    per
+    userId
+  }
+}
+    `;
+
+/**
+ * __useGetUserGameQuery__
+ *
+ * To run a query within a React component, call `useGetUserGameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserGameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserGameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserGameQuery(baseOptions?: Apollo.QueryHookOptions<GetUserGameQuery, GetUserGameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserGameQuery, GetUserGameQueryVariables>(GetUserGameDocument, options);
+      }
+export function useGetUserGameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserGameQuery, GetUserGameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserGameQuery, GetUserGameQueryVariables>(GetUserGameDocument, options);
+        }
+export type GetUserGameQueryHookResult = ReturnType<typeof useGetUserGameQuery>;
+export type GetUserGameLazyQueryHookResult = ReturnType<typeof useGetUserGameLazyQuery>;
+export type GetUserGameQueryResult = Apollo.QueryResult<GetUserGameQuery, GetUserGameQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -825,6 +955,7 @@ export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImag
 export const namedOperations = {
   Query: {
     GetAllGames: 'GetAllGames',
+    GetUserGame: 'GetUserGame',
     Me: 'Me',
     UserImages: 'UserImages'
   },
@@ -836,7 +967,8 @@ export const namedOperations = {
     Logout: 'Logout',
     MultipleUpload: 'MultipleUpload',
     Register: 'Register',
-    UpdateMe: 'UpdateMe'
+    UpdateMe: 'UpdateMe',
+    UpsertUserGame: 'UpsertUserGame'
   },
   Fragment: {
     RegularError: 'RegularError',

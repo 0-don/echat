@@ -3,6 +3,7 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -13,21 +14,28 @@ import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
 
 @InputType()
-export class UpsertUserGame {
+export class Dropdown {
+  @Field(() => Int)
+  id: number;
+
   @Field()
+  name: string;
+}
+
+@InputType()
+export class UpsertUserGame {
+  @Field(() => Int)
   gameId: number;
   @Field()
   level: string;
-  @Field()
-  platforms: string;
+  @Field(() => [Dropdown])
+  platforms: [Dropdown];
   @Field()
   description: string;
-  @Field()
+  @Field(() => Int)
   price: number;
   @Field()
   per: string;
-  @Field()
-  userId: number;
 }
 
 @Resolver(UserGame)
@@ -45,15 +53,17 @@ export class UserGameResolver {
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
+    console.log(options);
+    let userGame = await UserGame.findOne({ gameId: options.gameId, userId });
 
-    let userGame;
-    userGame = await UserGame.find({ gameId: options.gameId, userId });
     if (!userGame) {
-      userGame = UserGame.create({ ...options, userId });
+      await UserGame.create({ ...options, userId }).save();
     } else {
-      userGame = UserGame.update({gameId: options.gameId, userId},{ ...options });
+      await UserGame.update({ gameId: options.gameId, userId }, { ...options });
     }
 
-    return userGame
+    let freshGame = UserGame.find({ gameId: options.gameId, userId });
+
+    return freshGame;
   }
 }

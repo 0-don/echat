@@ -26,7 +26,7 @@ export class UserGame extends BaseEntity {
 
   @Field(() => GraphQLJSON)
   @Column({ type: 'jsonb' })
-  platforms: string;
+  platforms: {id: number, name: string}[];
 
   @Field()
   @Column()

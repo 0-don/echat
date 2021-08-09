@@ -86,7 +86,7 @@ export type Language = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  updateMe?: Maybe<User>;
+  updateMe?: Maybe<Scalars['Boolean']>;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -151,6 +151,7 @@ export type Query = {
   __typename?: 'Query';
   getAll?: Maybe<Array<User>>;
   me?: Maybe<User>;
+  changeUserType: Scalars['Boolean'];
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
   getAllGames?: Maybe<Array<Game>>;
@@ -218,6 +219,7 @@ export type UpsertUserGame = {
 export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
+  type?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -379,10 +381,7 @@ export type UpdateMeMutationVariables = Exact<{
 
 export type UpdateMeMutation = (
   { __typename?: 'Mutation' }
-  & { updateMe?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'description' | 'age' | 'gender' | 'country'>
-  )> }
+  & Pick<Mutation, 'updateMe'>
 );
 
 export type UpsertUserGameMutationVariables = Exact<{
@@ -742,14 +741,7 @@ export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateMeDocument = gql`
     mutation UpdateMe($options: UpdatedUser!) {
-  updateMe(options: $options) {
-    id
-    username
-    description
-    age
-    gender
-    country
-  }
+  updateMe(options: $options)
 }
     `;
 export type UpdateMeMutationFn = Apollo.MutationFunction<UpdateMeMutation, UpdateMeMutationVariables>;

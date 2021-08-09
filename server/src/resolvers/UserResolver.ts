@@ -45,8 +45,6 @@ export class UserResolver {
     return scheduleLoader.load({ userId: user.id });
   }
 
-
-  
   @Query(() => [User], { nullable: true })
   getAll() {
     return User.find();
@@ -62,66 +60,30 @@ export class UserResolver {
     return User.findOne(req.session.userId);
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Query(() => Boolean)
+  @UseMiddleware(isAuth)
+  async changeUserType(@Ctx() { req }: MyContext) {
+    const { userId } = req.session;
+    await User.update({ id: userId }, { type: 'user' });
+    return true;
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
   @UseMiddleware(isAuth)
   async updateMe(
     @Arg('options') options: UpdatedUser,
     @Ctx() { req }: MyContext
-  ): Promise<User | null> {
-    const { userId }: { userId: number } = req.session;
-    const user = await User.findOne(userId);
+  ) {
+    const { userId } = req.session;
+    const { languages, schedules, ...optionsUpdate } = options;
 
-    if (!user) {
-      return null;
-    }
+    await User.update({ id: userId }, { ...optionsUpdate });
 
-    if (options.username) {
-      user.username = options.username;
-    }
-    if (options.description) {
-      user.description = options.description;
-    }
-    if (options.age) {
-      user.age = options.age;
-    }
-    if (options.gender) {
-      user.gender = options.gender;
-    }
-    if (options.country) {
-      user.country = options.country;
-    }
-
-    // Social
-    if (options.discord) {
-      user.discord = options.discord;
-    }
-    if (options.facebook) {
-      user.facebook = options.facebook;
-    }
-    if (options.instagram) {
-      user.instagram = options.instagram;
-    }
-    if (options.steam) {
-      user.steam = options.steam;
-    }
-
-    if (options.twitter) {
-      user.twitter = options.twitter;
-    }
-    if (options.snapchat) {
-      user.snapchat = options.snapchat;
-    }
-    if (options.twitch) {
-      user.twitch = options.twitch;
-    }
-    if (options.tiktok) {
-      user.tiktok = options.tiktok;
-    }
-
-    if (options.languages.length) {
-      const freshLanguages = options.languages.map((lang) => {
+    if (languages.length) {
+      const freshLanguages = languages.map((lang) => {
         return { ...lang, userId };
       });
+
       await getConnection()
         .createQueryBuilder()
         .delete()
@@ -134,12 +96,11 @@ export class UserResolver {
         .insert()
         .into(Language)
         .values(freshLanguages)
-        .returning('*')
         .execute();
     }
 
-    if (options.schedules.length) {
-      const freshSchedules = options.schedules.map((sched) => {
+    if (schedules.length) {
+      const freshSchedules = schedules.map((sched) => {
         return {
           ...sched,
           from: parseInt(sched.from!),
@@ -147,22 +108,23 @@ export class UserResolver {
           userId,
         };
       });
+
       await getConnection()
         .createQueryBuilder()
         .delete()
         .from(Schedule)
         .where('userId = :userId', { userId })
         .execute();
+
       await getConnection()
         .createQueryBuilder()
         .insert()
         .into(Schedule)
         .values(freshSchedules)
-        .returning('*')
         .execute();
     }
 
-    return user.save();
+    return true;
   }
 
   @Mutation(() => UserResponse)

@@ -1,10 +1,3 @@
 mutation UpdateMe($options: UpdatedUser!) {
-  updateMe(options: $options) {
-    id
-    username
-    description
-    age
-    gender
-    country
-  }
+  updateMe(options: $options)
 }

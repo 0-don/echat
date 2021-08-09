@@ -20,6 +20,10 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field(() => String, { nullable: true })
+  @Column({ default: 'guest', nullable: true })
+  type: 'guest' | 'user';
+
   @Field()
   @Column()
   username: string;

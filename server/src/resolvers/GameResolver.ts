@@ -21,7 +21,7 @@ export class GameResolver {
   @Query(() => [Game], { nullable: true })
   async findGame(@Arg('game') game: string) {
 
-    console.log(game)
+    game
     const foundGame = await getRepository(Game)
       .createQueryBuilder('game')
       .where('game.platforms @> :platforms', { platforms: JSON.stringify(['PC', "Mac"]) })

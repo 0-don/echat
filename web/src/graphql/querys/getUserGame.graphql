@@ -1,4 +1,4 @@
-query GetUserGame{
+query GetUserGame {
   getUserGame {
     id
     gameId
@@ -7,6 +7,17 @@ query GetUserGame{
     description
     price
     per
-    userId
+    game {
+      id
+      igdbId
+      twitchId
+      name
+      popularity
+      boxArtUrl
+      first_release_date
+      platforms
+      genres
+      multiplayer_modes
+    }
   }
 }

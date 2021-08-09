@@ -10,11 +10,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { GameImage } from './GameImage';
+import { UserGame } from './UserGame';
 
 type List = {
   id: number;
   name: string;
-}
+};
 
 @ObjectType()
 @Entity()
@@ -40,7 +41,7 @@ export class Game extends BaseEntity {
   popularity: number;
 
   @Field()
-  @Column() 
+  @Column()
   boxArtUrl: string;
 
   @Field(() => Date, { nullable: true })
@@ -65,6 +66,13 @@ export class Game extends BaseEntity {
   })
   @Field(() => [GameImage], { nullable: true })
   images: GameImage[];
+
+  // UserGame
+  @OneToMany(() => UserGame, (userGame) => userGame.game, {
+    cascade: true,
+  })
+  @Field(() => UserGame, { nullable: true })
+  userGame: UserGame;
 
   @CreateDateColumn()
   created_at: Date;

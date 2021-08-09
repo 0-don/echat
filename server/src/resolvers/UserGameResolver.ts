@@ -2,16 +2,19 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Int,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { UserGame } from '../entity/UserGame';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
+import { Game } from '../entity/Game';
 
 @InputType()
 export class Dropdown {
@@ -30,8 +33,8 @@ export class UpsertUserGame {
   level: string;
   @Field(() => [Dropdown])
   platforms: [Dropdown];
-  @Field()
-  description: string;
+  @Field({ nullable: true })
+  description?: string;
   @Field(() => Int)
   price: number;
   @Field()
@@ -40,6 +43,11 @@ export class UpsertUserGame {
 
 @Resolver(UserGame)
 export class UserGameResolver {
+  @FieldResolver(() => Game)
+  game(@Root() userGame: UserGame, @Ctx() { gameLoader }: MyContext) {
+    return gameLoader.load(userGame.gameId);
+  }
+
   @Query(() => [UserGame], { nullable: true })
   @UseMiddleware(isAuth)
   getUserGame(@Ctx() { req }: MyContext) {
@@ -47,13 +55,12 @@ export class UserGameResolver {
     return UserGame.find(userId);
   }
 
-  @Mutation(() => UserGame)
+  @Mutation(() => Boolean)
   async upsertUserGame(
     @Arg('options') options: UpsertUserGame,
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
-    console.log(options);
     let userGame = await UserGame.findOne({ gameId: options.gameId, userId });
 
     if (!userGame) {
@@ -62,8 +69,19 @@ export class UserGameResolver {
       await UserGame.update({ gameId: options.gameId, userId }, { ...options });
     }
 
-    let freshGame = UserGame.find({ gameId: options.gameId, userId });
+    return true;
+  }
 
-    return freshGame;
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteUserGame(
+    @Arg('id', () => Int) id: number,
+    @Ctx() { req }: MyContext
+  ) {
+    const { userId } = req.session;
+
+    await UserGame.delete({ id, userId });
+
+    return true;
   }
 }

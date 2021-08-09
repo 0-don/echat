@@ -5,11 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
+  brandIcon?: string;
   icon?: string;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
   label,
+  brandIcon,
   icon,
   ...props
 }) => {
@@ -24,12 +26,9 @@ export const InputField: React.FC<InputFieldProps> = ({
         {label}
       </label>
       <div className='mt-1 relative rounded-md shadow-sm'>
-        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-          {icon && icon !== 'dollar-sign' ? (
-            <FontAwesomeIcon className="text-gray-700 dark:text-white" icon={['fab', icon as any]} />
-          ) : (
-            <FontAwesomeIcon className="text-gray-700 dark:text-white" icon={icon as any} />
-          )}
+        <div className='text-gray-700 dark:text-white absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+          {icon && <FontAwesomeIcon icon={icon as any} />}
+          {brandIcon && <FontAwesomeIcon icon={['fab', brandIcon as any]} />}
         </div>
         <input
           {...field}

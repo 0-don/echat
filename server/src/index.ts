@@ -24,6 +24,7 @@ import {
 } from './utils/loaders';
 import { GameResolver } from './resolvers/GameResolver';
 import { UserGameResolver } from './resolvers/UserGameResolver';
+import { createGameLoader } from './utils/loaders/createGameLoader';
 
 const PgSession = connectPgSimple(session);
 
@@ -77,6 +78,7 @@ const PgSession = connectPgSimple(session);
       languageLoader: createLanguageLoader(),
       scheduleLoader: createScheduleLoader(),
       gameImageLoader: createGameImageLoader(),
+      gameLoader: createGameLoader(),
     }),
     uploads: false,
     introspection: true,

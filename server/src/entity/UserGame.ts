@@ -7,6 +7,7 @@ import {
   BaseEntity,
   ManyToOne,
 } from 'typeorm';
+import { Game } from './Game';
 import { User } from './User';
 
 @ObjectType()
@@ -16,21 +17,17 @@ export class UserGame extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Int)
-  @Column()
-  gameId: number;
-
   @Field()
   @Column()
   level: string;
 
   @Field(() => GraphQLJSON)
   @Column({ type: 'jsonb' })
-  platforms: {id: number, name: string}[];
+  platforms: { id: number; name: string }[];
 
-  @Field()
-  @Column()
-  description: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  description?: string;
 
   @Field(() => Int)
   @Column()
@@ -47,4 +44,12 @@ export class UserGame extends BaseEntity {
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.games)
   user: User;
+
+  @Field(() => Int)
+  @Column()
+  gameId: number;
+
+  @Field(() => Game)
+  @ManyToOne(() => Game, (user) => user.userGame)
+  game: Game;
 }

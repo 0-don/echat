@@ -14,10 +14,8 @@ import {
   faSteam,
   faTiktok,
 } from '@fortawesome/free-brands-svg-icons';
-import { faDollarSign, faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { config } from '@fortawesome/fontawesome-svg-core';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-config.autoAddCss = false;
 library.add(
   faDiscord,
   faTwitter,
@@ -27,8 +25,7 @@ library.add(
   faTwitch,
   faSteam,
   faTiktok,
-  faDollarSign,
-  faCoffee
+  faDollarSign
 );
 
 const App = ({ Component, pageProps }: AppProps) => {

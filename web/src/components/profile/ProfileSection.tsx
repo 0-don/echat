@@ -43,9 +43,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
   const { data: user, loading } = useMeQuery();
 
-  const userLanguage = user?.me?.languages?.map((lang) => ({
-    id: lang.id,
-    name: lang.name,
+  const userLanguage = user?.me?.languages?.map(({ id, name }) => ({
+    id,
+    name,
   }));
 
   const userSchedules = user?.me?.schedules?.map(
@@ -155,25 +155,25 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         name='discord'
                         value={formikProps.values.discord}
                         label='Discord username'
-                        icon='discord'
+                        brandIcon='discord'
                       />
                       <InputField
                         name='facebook'
                         value={formikProps.values.facebook}
                         label='Facebook username'
-                        icon='facebook'
+                        brandIcon='facebook'
                       />
                       <InputField
                         name='instagram'
                         value={formikProps.values.instagram}
                         label='Instagram username'
-                        icon='instagram'
+                        brandIcon='instagram'
                       />
                       <InputField
                         name='steam'
                         value={formikProps.values.steam}
                         label='Steam username'
-                        icon='steam'
+                        brandIcon='steam'
                       />
                     </div>
                     <div className='w-6/12 p-2'>
@@ -181,25 +181,25 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         name='twitter'
                         value={formikProps.values.twitter}
                         label='Twitter Username'
-                        icon='twitter'
+                        brandIcon='twitter'
                       />
                       <InputField
                         name='snapchat'
                         value={formikProps.values.snapchat}
                         label='Snapchat Username'
-                        icon='snapchat'
+                        brandIcon='snapchat'
                       />
                       <InputField
                         name='twitch'
                         value={formikProps.values.twitch}
                         label='Twitch Username'
-                        icon='twitch'
+                        brandIcon='twitch'
                       />
                       <InputField
                         name='tiktok'
                         value={formikProps.values.tiktok}
                         label='TikTok Username'
-                        icon='tiktok'
+                        brandIcon='tiktok'
                       />
                     </div>
                   </div>

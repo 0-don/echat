@@ -1,11 +1,3 @@
 mutation UpsertUserGame($options: UpsertUserGame!) {
-  upsertUserGame(options: $options) {
-    id
-    gameId
-    level
-    platforms
-    description
-    price
-    per
-  }
+  upsertUserGame(options: $options)
 }

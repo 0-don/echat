@@ -1,5 +1,5 @@
 import { Formik, Form, FormikProps } from 'formik';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   Button,
   DropdownField,
@@ -10,6 +10,7 @@ import {
 import { LEVELS, PERS } from 'src/constants';
 
 import {
+  GetUserGameDocument,
   UpsertUserGame,
   useGetAllGamesQuery,
   useGetUserGameQuery,
@@ -18,8 +19,8 @@ import {
 
 interface UpsertGameModalProps {
   gameId: number;
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
@@ -27,6 +28,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
   open,
   setOpen,
 }) => {
+  const [localOpen, setLocalOpen] = useState(false);
   const [upsertUserGame] = useUpsertUserGameMutation();
   const { data: allGamesData, loading: allGamesLoading } =
     useGetAllGamesQuery();
@@ -39,13 +41,15 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
 
   let userGame =
     !userGameLoading &&
-    userGameData!.getUserGame!.find((game) => game.gameId === gameId);
+    userGameData?.getUserGame?.find((game) => game.gameId === gameId);
 
-  userGame;
-  if (!allGamesLoading && game && game.images && game.images.length) {
+  if (game && game?.images?.length && LEVELS?.length && PERS?.length) {
     return (
       <>
-        <Modal open={open} setOpen={setOpen}>
+        <Modal
+          open={open === undefined ? localOpen : open}
+          setOpen={setOpen === undefined ? setLocalOpen : setOpen}
+        >
           <div className='inline-block bg-white dark:bg-gray-700 transform sm:align-middle sm:max-w-5xl w-full sm:w-full'>
             <img
               className='h-32 w-full object-cover lg:h-48'
@@ -67,19 +71,23 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
             <Formik
               initialValues={{
                 gameId,
-                level: LEVELS[0].name,
-                platforms: [game.platforms[0]],
-                description: '',
-                price: 0,
-                per: PERS[0].name,
+                level:
+                  userGame && userGame.level ? userGame.level : LEVELS[0].name,
+                platforms:
+                  userGame && userGame.platforms
+                    ? userGame.platforms
+                    : [game.platforms[0]],
+                description:
+                  userGame && userGame.description ? userGame.description : '',
+                price: userGame && userGame.price ? userGame.price : 0,
+                per: userGame && userGame.price ? userGame.per : PERS[0].name,
               }}
-              onSubmit={async (values, { setErrors }) => {
-                console.log(values);
-                const data = await upsertUserGame({
+              onSubmit={async (values) => {
+                console.log(values)
+                await upsertUserGame({
                   variables: { options: values },
+                  refetchQueries: [{ query: GetUserGameDocument }],
                 });
-
-                console.log(data);
               }}
             >
               {(formikProps: FormikProps<UpsertUserGame>) => (
@@ -105,7 +113,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                     <div className='w-8/12'>
                       <TextAreaField
                         name='description'
-                        value={formikProps.values.description}
+                        value={formikProps.values.description!}
                         placeholder='description'
                         label='Description'
                       />

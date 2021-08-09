@@ -6,7 +6,7 @@ import { UpsertGameModal } from './UpsertGameModal';
 
 export const GameModal: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [gameOpen, setGameOpen] = useState(true);
+  const [gameOpen, setGameOpen] = useState(false);
   const [gameId, setGameId] = useState(0);
   const { data, loading } = useGetAllGamesQuery();
 

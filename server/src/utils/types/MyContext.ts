@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
-import { createUserLoader, createImageLoader, createLanguageLoader, createScheduleLoader } from '../loaders';
+import {
+  createUserLoader,
+  createImageLoader,
+  createLanguageLoader,
+  createScheduleLoader,
+} from '../loaders';
 import { createGameImageLoader } from '../loaders/createGameImageLoader';
+import { createGameLoader } from '../loaders/createGameLoader';
 
 export type MyContext = {
   // @ts-ignore
@@ -11,4 +17,5 @@ export type MyContext = {
   languageLoader: ReturnType<typeof createLanguageLoader>;
   scheduleLoader: ReturnType<typeof createScheduleLoader>;
   gameImageLoader: ReturnType<typeof createGameImageLoader>;
+  gameLoader: ReturnType<typeof createGameLoader>;
 };

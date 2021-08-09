@@ -51,6 +51,7 @@ export type Game = {
   genres?: Maybe<Scalars['JSON']>;
   multiplayer_modes?: Maybe<Scalars['JSON']>;
   images?: Maybe<Array<GameImage>>;
+  userGame?: Maybe<UserGame>;
 };
 
 export type GameImage = {
@@ -94,7 +95,8 @@ export type Mutation = {
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Image>;
   deleteImage: Scalars['Boolean'];
-  upsertUserGame: UserGame;
+  upsertUserGame: Scalars['Boolean'];
+  deleteUserGame: Scalars['Boolean'];
 };
 
 
@@ -138,6 +140,11 @@ export type MutationDeleteImageArgs = {
 
 export type MutationUpsertUserGameArgs = {
   options: UpsertUserGame;
+};
+
+
+export type MutationDeleteUserGameArgs = {
+  id: Scalars['Int'];
 };
 
 export type Query = {
@@ -203,7 +210,7 @@ export type UpsertUserGame = {
   gameId: Scalars['Int'];
   level: Scalars['String'];
   platforms: Array<Dropdown>;
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   per: Scalars['String'];
 };
@@ -234,14 +241,15 @@ export type User = {
 export type UserGame = {
   __typename?: 'UserGame';
   id: Scalars['Int'];
-  gameId: Scalars['Int'];
   level: Scalars['String'];
   platforms: Scalars['JSON'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   per: Scalars['String'];
   userId: Scalars['Float'];
   user: User;
+  gameId: Scalars['Int'];
+  game: Game;
 };
 
 export type UserResponse = {
@@ -293,6 +301,16 @@ export type DeleteImageMutationVariables = Exact<{
 export type DeleteImageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteImage'>
+);
+
+export type DeleteUserGameMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteUserGame'>
 );
 
 export type ForgotPasswordMutationVariables = Exact<{
@@ -374,10 +392,7 @@ export type UpsertUserGameMutationVariables = Exact<{
 
 export type UpsertUserGameMutation = (
   { __typename?: 'Mutation' }
-  & { upsertUserGame: (
-    { __typename?: 'UserGame' }
-    & Pick<UserGame, 'id' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-  ) }
+  & Pick<Mutation, 'upsertUserGame'>
 );
 
 export type GetAllGamesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -402,7 +417,11 @@ export type GetUserGameQuery = (
   { __typename?: 'Query' }
   & { getUserGame?: Maybe<Array<(
     { __typename?: 'UserGame' }
-    & Pick<UserGame, 'id' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'userId'>
+    & Pick<UserGame, 'id' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
+    & { game: (
+      { __typename?: 'Game' }
+      & Pick<Game, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
+    ) }
   )>> }
 );
 
@@ -525,6 +544,37 @@ export function useDeleteImageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteImageMutationHookResult = ReturnType<typeof useDeleteImageMutation>;
 export type DeleteImageMutationResult = Apollo.MutationResult<DeleteImageMutation>;
 export type DeleteImageMutationOptions = Apollo.BaseMutationOptions<DeleteImageMutation, DeleteImageMutationVariables>;
+export const DeleteUserGameDocument = gql`
+    mutation DeleteUserGame($id: Int!) {
+  deleteUserGame(id: $id)
+}
+    `;
+export type DeleteUserGameMutationFn = Apollo.MutationFunction<DeleteUserGameMutation, DeleteUserGameMutationVariables>;
+
+/**
+ * __useDeleteUserGameMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserGameMutation, { data, loading, error }] = useDeleteUserGameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserGameMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserGameMutation, DeleteUserGameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserGameMutation, DeleteUserGameMutationVariables>(DeleteUserGameDocument, options);
+      }
+export type DeleteUserGameMutationHookResult = ReturnType<typeof useDeleteUserGameMutation>;
+export type DeleteUserGameMutationResult = Apollo.MutationResult<DeleteUserGameMutation>;
+export type DeleteUserGameMutationOptions = Apollo.BaseMutationOptions<DeleteUserGameMutation, DeleteUserGameMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -730,15 +780,7 @@ export type UpdateMeMutationResult = Apollo.MutationResult<UpdateMeMutation>;
 export type UpdateMeMutationOptions = Apollo.BaseMutationOptions<UpdateMeMutation, UpdateMeMutationVariables>;
 export const UpsertUserGameDocument = gql`
     mutation UpsertUserGame($options: UpsertUserGame!) {
-  upsertUserGame(options: $options) {
-    id
-    gameId
-    level
-    platforms
-    description
-    price
-    per
-  }
+  upsertUserGame(options: $options)
 }
     `;
 export type UpsertUserGameMutationFn = Apollo.MutationFunction<UpsertUserGameMutation, UpsertUserGameMutationVariables>;
@@ -825,7 +867,18 @@ export const GetUserGameDocument = gql`
     description
     price
     per
-    userId
+    game {
+      id
+      igdbId
+      twitchId
+      name
+      popularity
+      boxArtUrl
+      first_release_date
+      platforms
+      genres
+      multiplayer_modes
+    }
   }
 }
     `;
@@ -962,6 +1015,7 @@ export const namedOperations = {
   Mutation: {
     ChangePassword: 'ChangePassword',
     DeleteImage: 'DeleteImage',
+    DeleteUserGame: 'DeleteUserGame',
     ForgotPassword: 'ForgotPassword',
     Login: 'Login',
     Logout: 'Logout',

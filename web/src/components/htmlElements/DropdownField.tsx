@@ -139,7 +139,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                     <span
                       className={classNames(
                         values ? 'font-semibold' : 'font-normal',
-                        'block truncate'
+                        'block truncate text-center'
                       )}
                     >
                       {item.name}

@@ -1,6 +1,7 @@
 query Me {
   me {
     id
+    type
     username
     gender
     country
@@ -20,7 +21,7 @@ query Me {
       id
       name
     }
-    
+
     schedules {
       id
       name

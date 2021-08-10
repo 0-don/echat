@@ -27,9 +27,6 @@ const Profile: React.FC = () => {
   return (
     <Wrapper navbar>
       <FormSteps steps={steps} setSteps={setSteps} />
-      {/* {steps.map(({ status, name, component }, index) => (
-        <Fragment key={index}>{status === 'current' && component}</Fragment>
-      ))} */}
       {steps.map(({ status, name }, index) => (
         <Fragment key={index}>
           {status === 'current' && name === 'Profile' && (
@@ -37,23 +34,21 @@ const Profile: React.FC = () => {
               formikRef={formikRef}
               steps={steps}
               setSteps={setSteps}
-              currentStep={'Profile'}
+              currentStep={name}
             />
           )}
           {status === 'current' && name === 'Games' && (
             <GameSection
-              formikRef={formikRef}
               steps={steps}
               setSteps={setSteps}
-              currentStep={'Games'}
+              currentStep={name}
             />
           )}
           {status === 'current' && name === 'Submit' && (
             <SubmitSection
-              formikRef={formikRef}
               steps={steps}
               setSteps={setSteps}
-              currentStep={'Submit'}
+              currentStep={name}
             />
           )}
         </Fragment>

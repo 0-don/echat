@@ -31,7 +31,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
 
   return (
     <div className="w-full">
-      <h2 className="text-gray-700 text-center text-4xl">{progress}%</h2>
+      <h2 className="text-center text-4xl mb-1">{progress}%</h2>
       <div className='progress'>
         <div
           className='progress-bar'

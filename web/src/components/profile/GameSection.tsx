@@ -4,19 +4,25 @@ import {
   useDeleteUserGameMutation,
   useGetUserGameQuery,
 } from 'src/generated/graphql';
+import { ButtonField } from '../htmlElements';
 import { Loading } from '../utils';
 import { StepType } from '../utils/FormSteps';
 import { GameModal } from './modals/GameModal';
 import { UpsertGameModal } from './modals/UpsertGameModal';
 
 interface GameSectionProps {
-  formikRef: React.RefObject<FormikProps<any>>;
+  formikRef?: React.RefObject<FormikProps<any>>;
   currentStep?: string;
   steps?: StepType[];
   setSteps?: Dispatch<SetStateAction<StepType[]>>;
 }
 
-export const GameSection: React.FC<GameSectionProps> = ({}) => {
+export const GameSection: React.FC<GameSectionProps> = ({
+  formikRef,
+  currentStep,
+  steps,
+  setSteps,
+}) => {
   const { data, loading } = useGetUserGameQuery();
   const [deleteUserGame] = useDeleteUserGameMutation();
   const [gameOpen, setGameOpen] = useState(false);
@@ -78,6 +84,33 @@ export const GameSection: React.FC<GameSectionProps> = ({}) => {
         ))}
       </ul>
       <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
+      {data?.getUserGame?.length ? (
+        <ButtonField
+          text='Next'
+          type='button'
+          onClick={() => {
+            if (steps && setSteps) {
+              const findIndex = steps.findIndex(
+                (step) => step.name === currentStep
+              );
+              setSteps(
+                steps.map((step) => {
+                  if (step.id < findIndex + 1) {
+                    step.status = 'complete';
+                  }
+                  if (step.id === findIndex + 1) {
+                    step.status = 'current';
+                  }
+                  if (step.id > findIndex + 1) {
+                    step.status = 'upcoming';
+                  }
+                  return step;
+                })
+              );
+            }
+          }}
+        />
+      ) : null}
     </>
   );
 };

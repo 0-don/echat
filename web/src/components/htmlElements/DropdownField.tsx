@@ -73,7 +73,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
     <Listbox value={list[0]} onChange={onChange}>
       {({ open }) => (
         <>
-          <Listbox.Label className='block text-sm font-medium text-gray-900 dark:text-white '>
+          <Listbox.Label className='my-1 block text-sm font-medium text-gray-900 dark:text-white '>
             {dayName
               ? ''
               : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}

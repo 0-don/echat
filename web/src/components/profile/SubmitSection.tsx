@@ -4,10 +4,10 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Button } from '../htmlElements';
 import { StepType } from '../utils/FormSteps';
 
-import gaming from '/public/gaming.png';
+import rocket from '/public/undraw_To_the_stars_qhyy.svg';
 
 interface SubmitSectionProps {
-  formikRef: React.RefObject<FormikProps<any>>;
+  formikRef?: React.RefObject<FormikProps<any>>;
   currentStep?: string;
   steps?: StepType[];
   setSteps?: Dispatch<SetStateAction<StepType[]>>;
@@ -19,7 +19,7 @@ export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {
     <>
       <div className='bg-white text-center dark:bg-gray-800 dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
         <div className='flex  justify-center'>
-          <Image src={gaming} alt='Picture of the author' />
+          <Image src={rocket}  height={150} width={150} />
         </div>
         <h1 className='text-3xl my-2'>Ready to Go!!</h1>
         <p className='mb-4'>

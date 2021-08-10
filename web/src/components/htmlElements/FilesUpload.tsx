@@ -19,7 +19,6 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
 }) => {
   const [progress, setProgress] = useState<number>(0);
 
-  
   const [multipleUpload, { loading }] = useMultipleUploadMutation();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -85,44 +84,32 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
   });
 
   return (
-    <div className='m-5 bg-white dark:bg-gray-800 shadow px-4 py-5 sm:rounded-lg sm:p-6'>
-      <label className='block text-sm font-medium text-gray-900 dark:text-white'>
+    <div className='shadow-xl sm:rounded-lg sm:p-6 m-1 text-gray-900 dark:text-white'>
+      <label className='text-sm font-medium'>
         {type.charAt(0).toUpperCase() + type.slice(1)}
       </label>
       <div
         {...getRootProps()}
-        className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 dark:border-indigo-600 border-dashed rounded-md'
+        className='mt-1 flex justify-center items-center px-6 pt-5 pb-6 h-32 border-2 dark:border-indigo-600 border-dashed rounded-md'
       >
         {!progress && loading ? (
           <div>
-            <h1 className='text-gray-700 text-center'>Almost There</h1>
+            <h1 className='text-center'>Almost There</h1>
             <Loading />
           </div>
-        ) : progress && loading ? (
+        ) : progress && !loading ? (
           <ProgressBar progress={progress} />
         ) : (
-          <div className='space-y-1 text-center'>
-            <PhotographIcon
-              className='h-12 w-12 m-auto text-black dark:text-white bg-white dark:bg-gray-800'
-              aria-hidden='true'
-            />
-            <div className='flex text-sm text-gray-600'>
-              <label
-                htmlFor='file-upload'
-                className='relative cursor-pointer  rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
-              >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                  <p>Drop the files here ...</p>
-                ) : (
-                  <div className='rounded-full py-1 px-6 bg-gray-200 dark:bg-indigo-600'>
-                    <p className='text-gray-600 bg-gray-200 dark:bg-indigo-600 dark:text-white  '>
-                      Change {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </p>
-                  </div>
-                )}
-              </label>
-            </div>
+          <div className='space-y-1 text-white text-center cursor-pointer'>
+            <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' />
+            <label className='relative '>
+              <input {...getInputProps()} />
+              <p className='rounded-full text-sm bg-indigo-600 hover:bg-indigo-500 '>
+                {isDragActive
+                  ? 'Drop the files here ...'
+                  : type.charAt(0).toUpperCase() + type.slice(1)}
+              </p>
+            </label>
             <p className='text-xs text-gray-500'>PNG, JPG, GIF up to 10MB</p>
           </div>
         )}

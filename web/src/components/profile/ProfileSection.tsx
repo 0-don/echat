@@ -95,8 +95,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Profile
                   </h1>
-                  <div className='flex'>
-                    <div className='w-6/12 p-2'>
+                  <div className='md:flex'>
+                    <div className='md:w-6/12 p-2'>
                       <InputField
                         name='username'
                         value={formikProps.values.username}
@@ -110,7 +110,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         label='Description'
                       />
                     </div>
-                    <div className='w-6/12 p-2'>
+                    <div className='md:w-6/12 p-2'>
                       <div className='flex'>
                         <div className='w-1/3 mr-2'>
                           <DropdownField
@@ -209,56 +209,49 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Schedule
                   </h1>
-                  <div className='flex flex-wrap'>
-                    {formikProps.values.schedules.map(
-                      ({ available, id, name, from, to }) => (
-                        <Fragment key={name}>
-                          <div className='w-2/12 flex items-center justify-start'>
-                            {name}
-                          </div>
-                          <div className='w-3/12 p-2'>
-                            <DropdownField
-                              {...formikProps}
-                              fieldKey='from'
-                              fieldName='schedules'
-                              dayName={name!}
-                              list={HOURS}
+                  <div className='flex flex-wrap items-center'>
+                    {formikProps.values.schedules.map(({ available, name }) => (
+                      <Fragment key={name}>
+                        <div className='w-2/12'>{name}</div>
+                        <div className='w-3/12'>
+                          <DropdownField
+                            {...formikProps}
+                            fieldKey='from'
+                            fieldName='schedules'
+                            dayName={name}
+                            list={HOURS}
+                          />
+                        </div>
+                        <div className='w-1/12 text-center'>to</div>
+                        <div className='w-3/12'>
+                          <DropdownField
+                            {...formikProps}
+                            fieldKey='to'
+                            fieldName='schedules'
+                            dayName={name}
+                            list={HOURS}
+                          />
+                        </div>
+                        <div className='w-3/12 flex items-center justify-center'>
+                          {typeof available == 'boolean' && (
+                            <SwitchField
+                              checked={available}
+                              onChange={() => {
+                                formikProps.setFieldValue(
+                                  'schedules',
+                                  formikProps.values.schedules.map((day) =>
+                                    day.name === name
+                                      ? { ...day, available: !day.available }
+                                      : day
+                                  )
+                                );
+                              }}
                             />
-                          </div>
-                          <div className='w-1/12 flex items-center justify-center'>
-                            to
-                          </div>
-                          <div className='w-3/12'>
-                            <DropdownField
-                              {...formikProps}
-                              fieldKey='to'
-                              fieldName='schedules'
-                              dayName={name!}
-                              list={HOURS}
-                            />
-                          </div>
-                          <div className='w-3/12 flex items-center justify-center'>
-                            {typeof available == 'boolean' && (
-                              <SwitchField
-                                checked={available}
-                                onChange={() => {
-                                  formikProps.setFieldValue(
-                                    'schedules',
-                                    formikProps.values.schedules.map((day) => {
-                                      if (day.name === name) {
-                                        day.available = !day.available;
-                                      }
-                                      return day;
-                                    })
-                                  );
-                                }}
-                              />
-                            )}
-                            Available
-                          </div>
-                        </Fragment>
-                      )
-                    )}
+                          )}
+                          Available
+                        </div>
+                      </Fragment>
+                    ))}
                   </div>
                 </div>
                 <ButtonField

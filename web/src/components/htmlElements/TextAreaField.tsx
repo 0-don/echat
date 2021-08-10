@@ -1,5 +1,5 @@
 import { useField } from 'formik';
-import React, { TextareaHTMLAttributes } from 'react';
+import React, {  TextareaHTMLAttributes } from 'react';
 
 type TextAreaFieldProps = TextareaHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -13,17 +13,16 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   const [field, { error }] = useField(props);
 
   return (
-    <div>
+    <>
       <label
         htmlFor={field.name}
-        className='block  text-sm font-medium text-gray-900 dark:text-white'
+        className='block my-1 text-sm font-medium text-gray-900 dark:text-white'
       >
         {label}
       </label>
       <div className='mt-1'>
         <textarea
           {...field}
-          // {...props}
           id={field.name}
           placeholder={props.placeholder}
           className={`
@@ -37,6 +36,6 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
           {error}
         </span>
       ) : null}
-    </div>
+    </>
   );
 };

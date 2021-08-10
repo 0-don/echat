@@ -39,9 +39,11 @@ export const uploadFetch = (url: string, options: any) =>
     };
     xhr.open(options.method, url, true);
 
-    Object.keys(options.headers).forEach((key) => {
-      xhr.setRequestHeader(key, options.headers[key]);
-    });
+    // Cant set cookies like that
+
+    // Object.keys(options.headers).forEach((key) => {
+    //   xhr.setRequestHeader(key, options.headers[key]);
+    // });
 
     if (xhr.upload) {
       xhr.upload.onprogress = options.onProgress;

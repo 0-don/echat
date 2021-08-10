@@ -18,10 +18,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   const [field, { error }] = useField(props);
 
   return (
-    <div>
+    <>
       <label
         htmlFor={field.name}
-        className='block text-sm font-medium text-gray-700 dark:text-gray-200'
+        className='block my-1 text-sm font-medium text-gray-700 dark:text-gray-200'
       >
         {label}
       </label>
@@ -47,6 +47,6 @@ export const InputField: React.FC<InputFieldProps> = ({
           {error}
         </span>
       )}
-    </div>
+    </>
   );
 };

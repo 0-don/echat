@@ -50,7 +50,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
           open={open === undefined ? localOpen : open}
           setOpen={setOpen === undefined ? setLocalOpen : setOpen}
         >
-          <div className='inline-block bg-white dark:bg-gray-700 transform sm:align-middle sm:max-w-5xl w-full sm:w-full'>
+          <div className='inline-block bg-white dark:bg-dark transform sm:align-middle sm:max-w-5xl w-full sm:w-full'>
             <img
               className='h-32 w-full object-cover lg:h-48'
               src={
@@ -65,7 +65,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                 alt=''
               />
             </div>
-            <h1 className='text-3xl bg-gray-700 dark:text-white'>
+            <h1 className='text-3xl bg-white dark:bg-dark dark:text-white'>
               {game.name}
             </h1>
             <Formik

@@ -90,7 +90,7 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
       </label>
       <div
         {...getRootProps()}
-        className='mt-1 flex justify-center items-center px-6 pt-5 pb-6 h-32 border-2 dark:border-indigo-600 border-dashed rounded-md'
+        className='mt-1 flex justify-center items-center px-6 pt-5 pb-6 h-32 border-2 dark:border-purple border-dashed rounded-md'
       >
         {!progress && loading ? (
           <div>
@@ -100,11 +100,11 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
         ) : progress && !loading ? (
           <ProgressBar progress={progress} />
         ) : (
-          <div className='space-y-1 text-white text-center cursor-pointer'>
+          <div className='space-y-1 text-black dark:text-white text-center cursor-pointer'>
             <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' />
             <label className='relative '>
               <input {...getInputProps()} />
-              <p className='rounded-full text-sm bg-indigo-600 hover:bg-indigo-500 '>
+              <p className='rounded-full text-sm text-white bg-dark-light dark:bg-purple hover:bg-indigo-500 '>
                 {isDragActive
                   ? 'Drop the files here ...'
                   : type.charAt(0).toUpperCase() + type.slice(1)}

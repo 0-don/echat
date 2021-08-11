@@ -14,7 +14,7 @@ export const GameModal: React.FC = () => {
     <>
       <Button text='add Game' onClick={() => setOpen(!open)} />
       <Modal open={open} setOpen={setOpen}>
-        <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full sm:p-6'>
+        <div className='inline-block align-bottom bg-white dark:bg-dark rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full sm:p-6'>
           <button></button>
           <ul
             role='list'
@@ -38,7 +38,7 @@ export const GameModal: React.FC = () => {
                         src={boxArtUrl}
                         alt=''
                       />
-                      <h3 className='mt-6 text-black text-sm font-medium'>
+                      <h3 className='mt-6 text-black dark:text-white text-sm font-medium'>
                         {name}
                       </h3>
                     </div>

@@ -43,17 +43,17 @@ export const GameSection: React.FC<GameSectionProps> = ({
           ({ __typename, id, per, price, game, status, gameId }) => (
             <div
               key={game.boxArtUrl}
-              className='bg-white w-full p-2 sm:p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row gap-5 select-none mx-1'
+              className='bg-white dark:bg-dark dark:text-white w-full p-2 sm:p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row gap-5 select-none mx-1'
             >
               <img
                 src={game.boxArtUrl}
                 className='rounded-xl bg-gray-100 bg-center bg-cover'
               ></img>
               <div className='flex sm:flex-1 flex-col gap-2 p-1'>
-                <h1 className='text-lg sm:text-xl font-semibold  text-gray-600'>
+                <h1 className='text-lg sm:text-xl font-semibold  text-black dark:text-white'>
                   {game.name}
                 </h1>
-                <p className='text-gray-500 text-sm sm:text-base line-clamp-3'>
+                <p className='text-black dark:text-white text-sm sm:text-base line-clamp-3'>
                   {price}€ per {per}
                 </p>
                 <div className='flex mt-auto items-center justify-center'>

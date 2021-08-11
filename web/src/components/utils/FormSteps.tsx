@@ -59,8 +59,8 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
                 className='px-6 py-4 flex items-center text-sm font-medium'
                 aria-current='step'
               >
-                <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center border-2 border-indigo-600 dark:bg-indigo-600 rounded-full'>
-                  <span className='text-indigo-600 dark:text-gray-200'>
+                <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center border-2 border-purple dark:bg-purple rounded-full'>
+                  <span className='text-purple dark:text-gray-200'>
                     {step.id}
                   </span>
                 </span>

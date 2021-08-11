@@ -21,7 +21,7 @@ export const InputField: React.FC<InputFieldProps> = ({
     <>
       <label
         htmlFor={field.name}
-        className='block my-1 text-sm font-medium text-gray-700 dark:text-gray-200'
+        className='block my-1 text-sm font-medium text-gray-700 dark:text-gray-50'
       >
         {label}
       </label>
@@ -38,7 +38,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           className={`
           ${error ? 'border-red-500' : 'border-gray-300'} 
           ${icon || brandIcon && 'pl-8'} 
-           text-white appearance-none block w-full px-3 py-2 bg-white dark:bg-gray-700 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+            appearance-none block w-full px-3 py-2 dark:bg-dark-light dark:border-dark-light dark:text-white border rounded-md shadow-sm focus:outline-none dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple'
           `}
         />
       </div>

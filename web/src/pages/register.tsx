@@ -17,7 +17,7 @@ const Register: React.FC<registerProps> = ({}) => {
       <FormHeader text="Register your account"/>
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-        <div className='bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10'>
+        <div className='bg-white dark:text-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10'>
           <Formik
             initialValues={{
               username: '',

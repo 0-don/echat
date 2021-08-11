@@ -91,7 +91,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             <>
               {/* <button onClick={handleSubmit}>wtf</button> */}
               <Form className='space-y-6'>
-                <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+                <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Profile
                   </h1>
@@ -145,7 +145,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
                 <ImageSection />
 
-                <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+                <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Social Media
                   </h1>
@@ -205,7 +205,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   </div>
                 </div>
 
-                <div className='bg-white dark:bg-gray-800 dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+                <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Schedule
                   </h1>

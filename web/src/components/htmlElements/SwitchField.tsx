@@ -31,14 +31,14 @@ export const SwitchField: React.FC<SwitchProps> = ({
       <span
         aria-hidden='true'
         className={classNames(
-          checked ? 'bg-indigo-600' : 'bg-gray-200',
+          checked ? 'bg-purple' : 'bg-gray-200',
           'pointer-events-none absolute h-4 w-9 mx-auto rounded-full transition-colors ease-in-out duration-200'
         )}
       />
       <span
         aria-hidden='true'
         className={classNames(
-          checked ? 'translate-x-5 dark:bg-indigo-600' : 'translate-x-0',
+          checked ? 'translate-x-5 dark:bg-purple' : 'translate-x-0',
           'flex items-center justify-center text-xs pointer-events-none absolute left-0 h-5 w-5 border border-gray-200 rounded-full bg-white shadow transform ring-0 transition-transform ease-in-out duration-200'
         )}
       >

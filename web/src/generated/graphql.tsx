@@ -95,6 +95,7 @@ export type Mutation = {
   deleteAllImages: Scalars['Boolean'];
   multipleUpload: Array<Image>;
   deleteImage: Scalars['Boolean'];
+  switchUserGameStatus: Scalars['Boolean'];
   upsertUserGame: Scalars['Boolean'];
   deleteUserGame: Scalars['Boolean'];
 };
@@ -135,6 +136,11 @@ export type MutationMultipleUploadArgs = {
 
 export type MutationDeleteImageArgs = {
   publicId: Scalars['String'];
+};
+
+
+export type MutationSwitchUserGameStatusArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -243,12 +249,13 @@ export type User = {
 export type UserGame = {
   __typename?: 'UserGame';
   id: Scalars['Int'];
+  status: Scalars['Boolean'];
   level: Scalars['String'];
   platforms: Scalars['JSON'];
   description?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   per: Scalars['String'];
-  userId: Scalars['Float'];
+  userId: Scalars['Int'];
   user: User;
   gameId: Scalars['Int'];
   game: Game;
@@ -374,6 +381,16 @@ export type RegisterMutation = (
   ) }
 );
 
+export type SwitchUserGameStatusMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type SwitchUserGameStatusMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'switchUserGameStatus'>
+);
+
 export type UpdateMeMutationVariables = Exact<{
   options: UpdatedUser;
 }>;
@@ -416,7 +433,7 @@ export type GetUserGameQuery = (
   { __typename?: 'Query' }
   & { getUserGame?: Maybe<Array<(
     { __typename?: 'UserGame' }
-    & Pick<UserGame, 'id' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
+    & Pick<UserGame, 'id' | 'status' | 'gameId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
     & { game: (
       { __typename?: 'Game' }
       & Pick<Game, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
@@ -739,6 +756,37 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SwitchUserGameStatusDocument = gql`
+    mutation SwitchUserGameStatus($id: Int!) {
+  switchUserGameStatus(id: $id)
+}
+    `;
+export type SwitchUserGameStatusMutationFn = Apollo.MutationFunction<SwitchUserGameStatusMutation, SwitchUserGameStatusMutationVariables>;
+
+/**
+ * __useSwitchUserGameStatusMutation__
+ *
+ * To run a mutation, you first call `useSwitchUserGameStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSwitchUserGameStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [switchUserGameStatusMutation, { data, loading, error }] = useSwitchUserGameStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSwitchUserGameStatusMutation(baseOptions?: Apollo.MutationHookOptions<SwitchUserGameStatusMutation, SwitchUserGameStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SwitchUserGameStatusMutation, SwitchUserGameStatusMutationVariables>(SwitchUserGameStatusDocument, options);
+      }
+export type SwitchUserGameStatusMutationHookResult = ReturnType<typeof useSwitchUserGameStatusMutation>;
+export type SwitchUserGameStatusMutationResult = Apollo.MutationResult<SwitchUserGameStatusMutation>;
+export type SwitchUserGameStatusMutationOptions = Apollo.BaseMutationOptions<SwitchUserGameStatusMutation, SwitchUserGameStatusMutationVariables>;
 export const UpdateMeDocument = gql`
     mutation UpdateMe($options: UpdatedUser!) {
   updateMe(options: $options)
@@ -853,6 +901,7 @@ export const GetUserGameDocument = gql`
     query GetUserGame {
   getUserGame {
     id
+    status
     gameId
     level
     platforms
@@ -1014,6 +1063,7 @@ export const namedOperations = {
     Logout: 'Logout',
     MultipleUpload: 'MultipleUpload',
     Register: 'Register',
+    SwitchUserGameStatus: 'SwitchUserGameStatus',
     UpdateMe: 'UpdateMe',
     UpsertUserGame: 'UpsertUserGame'
   },

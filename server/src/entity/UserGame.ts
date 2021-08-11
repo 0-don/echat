@@ -17,6 +17,10 @@ export class UserGame extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field(() => Boolean)
+  @Column({ default: true })
+  status: boolean;
+
   @Field()
   @Column()
   level: string;
@@ -37,7 +41,7 @@ export class UserGame extends BaseEntity {
   @Column()
   per: string;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   userId: number;
 

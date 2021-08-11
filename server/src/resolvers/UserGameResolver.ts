@@ -48,6 +48,18 @@ export class UserGameResolver {
     return gameLoader.load(userGame.gameId);
   }
 
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async switchUserGameStatus(
+    @Arg('id', () => Int) id: number,
+    @Ctx() { req }: MyContext
+  ) {
+    const { userId } = req.session;
+    const userGame = await UserGame.findOne({ id, userId });
+    await UserGame.update({ id, userId }, { status: !userGame?.status });
+    return true;
+  }
+
   @Query(() => [UserGame], { nullable: true })
   @UseMiddleware(isAuth)
   getUserGame(@Ctx() { req }: MyContext) {
@@ -61,6 +73,7 @@ export class UserGameResolver {
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
+
     let userGame = await UserGame.findOne({ gameId: options.gameId, userId });
 
     if (!userGame) {

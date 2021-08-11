@@ -1,6 +1,7 @@
 query GetUserGame {
   getUserGame {
     id
+    status
     gameId
     level
     platforms

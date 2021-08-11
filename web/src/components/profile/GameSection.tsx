@@ -37,26 +37,26 @@ export const GameSection: React.FC<GameSectionProps> = ({
 
   return (
     <>
-      <GameModal />
-      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 my-1'>
+      <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
+      <div className='flex justify-end my-3'>
+        <GameModal />
+      </div>
+      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 my-1 border-'>
         {data?.getUserGame?.map(
           ({ __typename, id, per, price, game, status, gameId }) => (
             <div
               key={game.boxArtUrl}
-              className='bg-white dark:bg-dark dark:text-white w-full p-2 sm:p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row gap-5 select-none mx-1'
+              className='bg-white dark:bg-dark dark:text-white flex flex-col select-none mx-1'
             >
-              <img
-                src={game.boxArtUrl}
-                className='rounded-xl bg-gray-100 bg-center bg-cover'
-              ></img>
-              <div className='flex sm:flex-1 flex-col gap-2 p-1'>
-                <h1 className='text-lg sm:text-xl font-semibold  text-black dark:text-white'>
+              <img src={game.boxArtUrl} className='h-auto' />
+              <div className='flex sm:flex-1 flex-col gap-2 p-1 '>
+                <h1 className='text-lg sm:text-xl font-semibold text-center text-black dark:text-white'>
                   {game.name}
                 </h1>
-                <p className='text-black dark:text-white text-sm sm:text-base line-clamp-3'>
-                  {price}€ per {per}
-                </p>
                 <div className='flex mt-auto items-center justify-center'>
+                  <p className='text-black dark:text-white text-center'>
+                    {price}€ per {per}
+                  </p>
                   <SwitchField
                     checked={status}
                     onChange={async () => {
@@ -68,9 +68,10 @@ export const GameSection: React.FC<GameSectionProps> = ({
                   />
                   Status
                 </div>
-                <div className='flex mt-auto'>
+                <div className='flex justify-between mt-auto'>
                   <Button
                     text='edit'
+                    icon='pen-alt'
                     onClick={() => {
                       setGameId(game.id);
                       setGameOpen(!gameOpen);
@@ -78,6 +79,7 @@ export const GameSection: React.FC<GameSectionProps> = ({
                   />
                   <Button
                     text='delete'
+                    icon='trash-alt'
                     onClick={async () => {
                       await deleteUserGame({
                         variables: { id },
@@ -95,34 +97,35 @@ export const GameSection: React.FC<GameSectionProps> = ({
           )
         )}
       </div>
-      <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
-      {data?.getUserGame?.length ? (
-        <Button
-          text='Next'
-          type='button'
-          onClick={() => {
-            if (steps && setSteps) {
-              const findIndex = steps.findIndex(
-                (step) => step.name === currentStep
-              );
-              setSteps(
-                steps.map((step) => {
-                  if (step.id < findIndex + 1) {
-                    step.status = 'complete';
-                  }
-                  if (step.id === findIndex + 1) {
-                    step.status = 'current';
-                  }
-                  if (step.id > findIndex + 1) {
-                    step.status = 'upcoming';
-                  }
-                  return step;
-                })
-              );
-            }
-          }}
-        />
-      ) : null}
+      <div className='flex justify-end'>
+        {data?.getUserGame?.length && (
+          <Button
+            text='Next'
+            type='button'
+            onClick={() => {
+              if (steps && setSteps) {
+                const findIndex = steps.findIndex(
+                  (step) => step.name === currentStep
+                );
+                setSteps(
+                  steps.map((step) => {
+                    if (step.id < findIndex + 1) {
+                      step.status = 'complete';
+                    }
+                    if (step.id === findIndex + 1) {
+                      step.status = 'current';
+                    }
+                    if (step.id > findIndex + 1) {
+                      step.status = 'upcoming';
+                    }
+                    return step;
+                  })
+                );
+              }
+            }}
+          />
+        )}
+      </div>
     </>
   );
 };

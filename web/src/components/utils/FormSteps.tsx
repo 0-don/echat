@@ -33,7 +33,7 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
 
   return (
     <nav aria-label='Progress'>
-      <ol className='border mb-5 dark:bg-gray-800 bg-white border-gray-300 dark:border-indigo-500 rounded-md divide-y divide-gray-300 md:flex md:divide-y-0'>
+      <ol className='border dark:bg-gray-800 bg-white border-gray-300 dark:border-indigo-500 rounded-md divide-y divide-gray-300 md:flex md:divide-y-0'>
         {steps.map((step, stepIdx) => (
           <li key={step.name} className='relative md:flex-1 md:flex'>
             {step.status === 'complete' ? (

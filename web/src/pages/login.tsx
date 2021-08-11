@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import { InputField, ButtonField } from '../components/htmlElements/';
+import { InputField, Button } from '../components/htmlElements/';
 import { FormHeader } from '../components/utils/FormHeader';
 import { Wrapper } from '../components/Wrapper';
 import { useLoginMutation, MeQuery, MeDocument } from '../generated/graphql';
@@ -66,7 +66,7 @@ const Login: React.FC<registerProps> = ({}) => {
                   </NextLink>
                 </div>
 
-                <ButtonField
+                <Button
                   loading={isSubmitting}
                   text='Login'
                   type='submit'

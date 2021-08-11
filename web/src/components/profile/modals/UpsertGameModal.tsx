@@ -88,6 +88,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                   variables: { options: values },
                   refetchQueries: [{ query: GetUserGameDocument }],
                 });
+                setOpen === undefined ? setLocalOpen(false) : setOpen(false)
               }}
             >
               {(formikProps: FormikProps<UpsertUserGame>) => (

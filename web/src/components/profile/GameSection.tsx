@@ -6,7 +6,7 @@ import {
   useGetUserGameQuery,
   useSwitchUserGameStatusMutation,
 } from 'src/generated/graphql';
-import { Button, ButtonField, SwitchField } from '../htmlElements';
+import { Button, SwitchField } from '../htmlElements';
 import { Loading } from '../utils';
 import { StepType } from '../utils/FormSteps';
 import { GameModal } from './modals/GameModal';
@@ -97,7 +97,7 @@ export const GameSection: React.FC<GameSectionProps> = ({
       </div>
       <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
       {data?.getUserGame?.length ? (
-        <ButtonField
+        <Button
           text='Next'
           type='button'
           onClick={() => {

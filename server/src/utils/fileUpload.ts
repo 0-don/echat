@@ -42,7 +42,7 @@ export const fileUpload = async (file: FileUpload) => {
 
   await createdFile;
 
-  const image = new Promise<CloudinaryUploadResult>((resolve, reject)  => {
+  const image = new Promise<CloudinaryUploadResult>((resolve, reject) => {
     cloudinary.uploader.upload(
       `${filePath}/${filename}`,
       (err: any, img: CloudinaryUploadResult) => {
@@ -52,5 +52,5 @@ export const fileUpload = async (file: FileUpload) => {
     );
   });
 
-  return image
+  return image;
 };

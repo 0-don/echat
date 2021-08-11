@@ -64,7 +64,7 @@ export class UserGameResolver {
   @UseMiddleware(isAuth)
   getUserGame(@Ctx() { req }: MyContext) {
     const { userId } = req.session;
-    return UserGame.find(userId);
+    return UserGame.find({ order: { gameId: 'ASC' }, where: { userId } });
   }
 
   @Mutation(() => Boolean)

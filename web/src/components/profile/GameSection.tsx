@@ -41,36 +41,40 @@ export const GameSection: React.FC<GameSectionProps> = ({
       <div className='flex justify-end my-3'>
         <GameModal />
       </div>
-      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 my-1 border-'>
+      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6'>
         {data?.getUserGame?.map(
           ({ __typename, id, per, price, game, status, gameId }) => (
             <div
               key={game.boxArtUrl}
-              className='bg-white dark:bg-dark dark:text-white flex flex-col select-none mx-1'
+              className='bg-white dark:bg-dark dark:text-white flex flex-col select-none mx-1 rounded-xl'
             >
+              <h1 className='text-base my-1 font-semibold text-center text-black dark:text-white'>
+                {game.name}
+              </h1>
               <img src={game.boxArtUrl} className='h-auto' />
               <div className='flex sm:flex-1 flex-col gap-2 p-1 '>
-                <h1 className='text-lg sm:text-xl font-semibold text-center text-black dark:text-white'>
-                  {game.name}
-                </h1>
-                <div className='flex mt-auto items-center justify-center'>
+                <div className='flex mt-auto items-center justify-between text-sm'>
+                  <div className='flex items-center justify-center'>
+                    <SwitchField
+                      checked={status}
+                      onChange={async () => {
+                        await switchUserGameStatus({
+                          variables: { id },
+                          refetchQueries: [{ query: GetUserGameDocument }],
+                        });
+                      }}
+                    />
+                    Status
+                  </div>
                   <p className='text-black dark:text-white text-center'>
-                    {price}€ per {per}
+                    <span className='text-green-500'>${price}</span> per {per}
                   </p>
-                  <SwitchField
-                    checked={status}
-                    onChange={async () => {
-                      await switchUserGameStatus({
-                        variables: { id },
-                        refetchQueries: [{ query: GetUserGameDocument }],
-                      });
-                    }}
-                  />
-                  Status
                 </div>
+
                 <div className='flex justify-between mt-auto'>
                   <Button
                     text='edit'
+                    className='py-1'
                     icon='pen-alt'
                     onClick={() => {
                       setGameId(game.id);
@@ -79,6 +83,7 @@ export const GameSection: React.FC<GameSectionProps> = ({
                   />
                   <Button
                     text='delete'
+                    className='py-1'
                     icon='trash-alt'
                     onClick={async () => {
                       await deleteUserGame({

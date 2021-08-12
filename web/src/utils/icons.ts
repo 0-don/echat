@@ -10,9 +10,10 @@ import {
   faSteam,
   faTiktok,
 } from '@fortawesome/free-brands-svg-icons';
-import { faDollarSign, faTrash, faTrashAlt, faPenAlt } from '@fortawesome/free-solid-svg-icons';
+import { faDollarSign, faTrash, faTrashAlt, faPenAlt, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+  faCheck,
   faPenAlt,
   faTrashAlt,
   faTrash,

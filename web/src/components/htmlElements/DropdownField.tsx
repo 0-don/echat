@@ -78,8 +78,8 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
               ? ''
               : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
           </Listbox.Label>
-          <div className='mt-1 relative'>
-            <Listbox.Button className='relative w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1  dark:bg-dark-light dark:border-dark-light  dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple '>
+          <div className='relative'>
+            <Listbox.Button className='relative border w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default  dark:bg-dark-light dark:border-dark-light  dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple '>
               <span className='block truncate'>
                 <div className='flex flex-wrap text-gray-700 dark:text-white'>
                   {values[fieldName].constructor === Array && !dayName ? (
@@ -123,7 +123,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
             >
               <Listbox.Options
                 static
-                className='absolute z-10 mt-1 w-full bg-white dark:bg-dark-light shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'
+                className='absolute z-10 mt-1 w-full bg-white dark:bg-dark-light shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto sm:text-sm'
               >
                 {filteredList?.map((item) => (
                   <Listbox.Option

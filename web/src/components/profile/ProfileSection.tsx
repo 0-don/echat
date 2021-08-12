@@ -20,7 +20,9 @@ import {
   SwitchField,
   TextAreaField,
   DropdownField,
+  DatePickerField,
 } from '../htmlElements';
+
 import { Loading } from '../utils';
 import { FormikAutoSubmit } from '../utils/FormikAutoSubmit';
 import { StepType } from '../utils/FormSteps';
@@ -40,7 +42,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
   setSteps,
 }) => {
   const [updateMe] = useUpdateMeMutation();
-
   const { data: user, loading } = useMeQuery();
 
   const userLanguage = user?.me?.languages?.map(({ id, name }) => ({
@@ -112,26 +113,29 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     </div>
                     <div className='md:w-6/12 p-2'>
                       <div className='flex'>
-                        <div className='w-1/3 mr-2'>
+                        <div className='w-1/4 mr-1'>
                           <DropdownField
                             {...formikProps}
                             fieldName='country'
                             list={COUNTRIES}
                           />
                         </div>
-                        <div className='w-1/3 ml-2 mr-2'>
+                        <div className='w-1/4 mr-1'>
                           <DropdownField
                             {...formikProps}
                             fieldName='gender'
                             list={GENDERS}
                           />
                         </div>
-                        <div className='w-1/3 ml-2'>
+                        <div className='w-1/4 mr-1'>
                           <DropdownField
                             {...formikProps}
                             fieldName='age'
                             list={AGES}
                           />
+                        </div>
+                        <div className='w-1/4'>
+                          <DatePickerField label="Age" />
                         </div>
                       </div>
                       <DropdownField

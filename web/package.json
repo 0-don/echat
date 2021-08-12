@@ -17,6 +17,7 @@
     "next": "latest",
     "next-apollo": "^5.0.6",
     "react": "^17.0.2",
+    "react-datepicker": "^4.2.0",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.4",
     "zustand": "^3.5.7"
@@ -39,6 +40,7 @@
     "@types/babel-plugin-macros": "^2.8.5",
     "@types/node": "^16.0.1",
     "@types/react": "^17.0.14",
+    "@types/react-datepicker": "^4.1.4",
     "@types/tailwindcss": "^2.2.1",
     "autoprefixer": "^10.2.6",
     "concurrently": "^6.2.0",

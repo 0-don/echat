@@ -1,3 +1,4 @@
+import 'react-datepicker/dist/react-datepicker.css';
 import './_app.css';
 import "../utils/icons"
 import { useEffect } from 'react';

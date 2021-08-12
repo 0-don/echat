@@ -14,6 +14,7 @@ export const DatePickerField: React.FC<DatePickerProps> = ({ label }) => {
         {label}
       </label>
       <DatePicker
+      className='' 
         selected={startDate}
         onChange={(date) => setStartDate(date as any)}
         dropdownMode='scroll'

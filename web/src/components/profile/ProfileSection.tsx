@@ -1,7 +1,7 @@
 import { Form, Formik, FormikProps } from 'formik';
 import React, { Dispatch, Fragment, SetStateAction } from 'react';
 import {
-  AGES,
+  // AGES,
   GENDERS,
   HOURS,
   COUNTRIES,
@@ -64,10 +64,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
           initialValues={{
             username: user.me?.username || '',
             description: user.me?.description || '',
-            age: user.me?.age || AGES[0].id,
+            age: new Date() || new Date(),
             gender: user.me?.gender || GENDERS[0].name,
             country: user.me?.country || COUNTRIES[0].name,
-
             discord: user.me?.discord || '',
             twitter: user.me?.twitter || '',
             facebook: user.me?.facebook || '',
@@ -81,6 +80,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
+            console.log(values);
             await updateMe({
               variables: { options: values },
               refetchQueries: [{ query: MeDocument }],
@@ -90,7 +90,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
         >
           {(formikProps) => (
             <>
-              {/* <button onClick={handleSubmit}>wtf</button> */}
               <Form className='space-y-6 mt-5'>
                 <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                   <h1 className='text-gray-900 dark:text-white mb-3'>
@@ -113,29 +112,22 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     </div>
                     <div className='md:w-6/12 p-2'>
                       <div className='flex'>
-                        <div className='w-1/4 mr-1'>
+                        <div className='w-3/4 mr-1'>
                           <DropdownField
                             {...formikProps}
                             fieldName='country'
                             list={COUNTRIES}
                           />
                         </div>
-                        <div className='w-1/4 mr-1'>
+                        <div className='w-3/4 mr-1'>
                           <DropdownField
                             {...formikProps}
                             fieldName='gender'
                             list={GENDERS}
                           />
                         </div>
-                        <div className='w-1/4 mr-1'>
-                          <DropdownField
-                            {...formikProps}
-                            fieldName='age'
-                            list={AGES}
-                          />
-                        </div>
-                        <div className='w-1/4'>
-                          <DatePickerField label="Age" />
+                        <div className='w-3/4 mr-1'>
+                          <DatePickerField name='age' />
                         </div>
                       </div>
                       <DropdownField

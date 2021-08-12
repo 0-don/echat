@@ -34,8 +34,8 @@ export class UpdatedUser {
   username: string;
   @Field()
   description: string;
-  @Field(() => Int)
-  age: number;
+  @Field()
+  age: Date;
   @Field()
   gender: string;
   @Field()

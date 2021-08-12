@@ -39,9 +39,9 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  @Field(() => Int, { nullable: true })
-  @Column({ nullable: true })
-  age: number;
+  @Field({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
+  age: Date;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

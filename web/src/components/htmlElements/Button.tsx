@@ -16,7 +16,6 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
-  console.log(className)
   return loading ? (
     <Loading />
   ) : (

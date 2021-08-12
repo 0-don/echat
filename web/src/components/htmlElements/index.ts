@@ -5,3 +5,4 @@ export { InputField } from './InputField';
 export { TextAreaField } from './TextAreaField';
 export { DropdownField } from './DropdownField';
 export { SwitchField } from './SwitchField';
+export { DatePickerField } from './DatePickerField';

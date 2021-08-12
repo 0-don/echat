@@ -83,7 +83,6 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                 per: userGame && userGame.price ? userGame.per : PERS[0].name,
               }}
               onSubmit={async (values) => {
-                console.log(values)
                 await upsertUserGame({
                   variables: { options: values },
                   refetchQueries: [{ query: GetUserGameDocument }],

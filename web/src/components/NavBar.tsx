@@ -106,7 +106,7 @@ export const NavBar: React.FC = ({}) => {
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <NextLink href='/'>
-                    <a className='border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white'>
+                    <a className='border-purple text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white'>
                       Home
                     </a>
                   </NextLink>
@@ -117,7 +117,7 @@ export const NavBar: React.FC = ({}) => {
                   {({ open }) => (
                     <>
                       <div>
-                        <Menu.Button className='bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+                        <Menu.Button className='bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple'>
                           <span className='sr-only'>Open user menu</span>
                           <img
                             className='h-8 w-8 rounded-full'

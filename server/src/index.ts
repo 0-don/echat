@@ -69,6 +69,7 @@ const PgSession = connectPgSimple(session);
     schema: await buildSchema({
       resolvers: [UserResolver, ImageResolver, GameResolver, UserGameResolver],
       validate: false,
+      dateScalarMode: "isoDate",
     }),
     context: ({ req, res }) => ({
       req,

@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "apollo-upload-client": "^16.0.0",
+    "dayjs": "^1.10.6",
     "formik": "^2.2.9",
     "graphql": "^15.5.1",
     "immer": "^9.0.5",

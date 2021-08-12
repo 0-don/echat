@@ -13,11 +13,11 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
+  DateTime: Date;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
   /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
+  Upload: File;
 };
 
 
@@ -189,7 +189,7 @@ export type Schedule = {
 export type UpdatedUser = {
   username: Scalars['String'];
   description: Scalars['String'];
-  age: Scalars['Int'];
+  age: Scalars['DateTime'];
   gender: Scalars['String'];
   country: Scalars['String'];
   discord: Scalars['String'];
@@ -229,7 +229,7 @@ export type User = {
   username: Scalars['String'];
   email: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  age?: Maybe<Scalars['Int']>;
+  age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   discord?: Maybe<Scalars['String']>;

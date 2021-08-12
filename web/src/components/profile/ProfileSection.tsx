@@ -15,7 +15,7 @@ import {
   useUpdateMeMutation,
 } from 'src/generated/graphql';
 import {
-  ButtonField,
+  Button,
   InputField,
   SwitchField,
   TextAreaField,
@@ -90,7 +90,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
           {(formikProps) => (
             <>
               {/* <button onClick={handleSubmit}>wtf</button> */}
-              <Form className='space-y-6'>
+              <Form className='space-y-6 mt-5'>
                 <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Profile
@@ -254,7 +254,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     ))}
                   </div>
                 </div>
-                <ButtonField
+                <Button
                   loading={formikProps.isSubmitting}
                   text='Next'
                   type='button'

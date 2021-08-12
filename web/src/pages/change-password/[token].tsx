@@ -2,7 +2,7 @@ import { Form, Formik } from 'formik';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { InputField, ButtonField } from '../../components/htmlElements/';
+import { InputField, Button } from '../../components/htmlElements/';
 import { Wrapper } from '../../components/Wrapper';
 import {
   MeDocument,
@@ -78,7 +78,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
                   </div>
                 ) : null}
 
-                <ButtonField
+                <Button
                   loading={isSubmitting}
                   text='Login'
                   type='submit'

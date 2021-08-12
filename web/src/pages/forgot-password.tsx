@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { Wrapper } from '../components/Wrapper';
 import  withApollo  from '../utils/apollo/withApollo';
-import { InputField, ButtonField } from '../components/htmlElements/';
+import { InputField, Button } from '../components/htmlElements/';
 import { useForgotPasswordMutation } from '../generated/graphql';
 import { FormHeader } from '../components/utils/';
 
@@ -38,7 +38,7 @@ const ForgotPassword: React.FC = ({}) => {
                     type='email'
                     label='Email'
                   />
-                <ButtonField
+                <Button
                   loading={isSubmitting}
                   text='Login'
                   type='submit'

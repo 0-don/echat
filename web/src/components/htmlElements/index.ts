@@ -1,7 +1,6 @@
 export { Button } from './Button';
 export { Modal } from './Modal';
-export { ButtonField } from './ButtonField';
-export { FilesUpload } from './FilesUpload';
+export { FilesUpload } from './FileUpload';
 export { InputField } from './InputField';
 export { TextAreaField } from './TextAreaField';
 export { DropdownField } from './DropdownField';

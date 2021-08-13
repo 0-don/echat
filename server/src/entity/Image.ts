@@ -17,18 +17,17 @@ export class Image extends BaseEntity {
 
   @Field()
   @Column()
-  type: "profile" | "cover" | "secondary";
-  
-  
+  type: string;
+
   @Field()
-  @Column({ unique: true })
+  @Column()
   url: string;
 
   @Field()
   @Column({ unique: true, nullable: true })
   publicId: string;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   userId: number;
 

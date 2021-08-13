@@ -40,24 +40,42 @@ const main = async () => {
       .returning("*")
       .execute();
 
-    // let userId = dbUser.raw[0].id;
+    let userId: number = dbUser.raw[0].id;
     dbUser;
-    const images = {
-      profile: faker.image.imageUrl(),
-      cover: faker.image.imageUrl(),
-      secondary: faker.image.imageUrl(),
+
+    const profile = {
+      type: "profile",
+      url: faker.image.imageUrl(),
+      publicId: `${Math.random()}`,
+      userId,
     };
 
+    const cover = {
+      type: "cover",
+      url: faker.image.imageUrl(),
+      publicId: `${Math.random()}`,
+      userId,
+    };
+    const secondary = {
+      type: "secondary",
+      url: faker.image.imageUrl(),
+      publicId: `${Math.random()}`,
+      userId,
+    };
+    console.log(profile, cover, secondary);
+
+    let images = [];
+    images.push(profile);
+    images.push(cover);
+    images.push(secondary);
+    console.log(images);
     await conn
       .createQueryBuilder()
       .insert()
       .into(Image)
-      .values(images)
+      .values(secondary)
       .returning("*")
       .execute();
-
-    console.log(images);
   }
 };
-
 main();

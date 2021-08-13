@@ -23,6 +23,7 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple,
+    noClick: true,
     accept: 'image/*',
     onDrop: async (files) => {
       await multipleUpload({

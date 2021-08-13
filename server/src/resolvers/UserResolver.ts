@@ -60,7 +60,7 @@ export class UserResolver {
     return User.findOne(req.session.userId);
   }
 
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async changeUserType(@Ctx() { req }: MyContext) {
     const { userId } = req.session;

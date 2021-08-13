@@ -37,7 +37,8 @@ export const InputField: React.FC<InputFieldProps> = ({
           placeholder={props.placeholder}
           className={`
           ${error ? 'border-red-500' : 'border-gray-300'} 
-          ${icon || brandIcon && 'pl-8'} 
+          ${brandIcon && 'pl-8'}
+          ${icon && 'pl-6'} 
             appearance-none block w-full px-3 py-2 dark:bg-dark-light dark:border-dark-light dark:text-white border rounded-md shadow-sm focus:outline-none 
             dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple focus:border-purple sm:text-sm focus:border-purple'
           `}

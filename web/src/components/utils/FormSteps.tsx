@@ -94,7 +94,7 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
                   aria-hidden='true'
                 >
                   <svg
-                    className='h-full w-full text-gray-300 dark:text-indigo-500'
+                    className='h-full w-full text-gray-300 dark:text-purple'
                     viewBox='0 0 22 80'
                     fill='none'
                     preserveAspectRatio='none'

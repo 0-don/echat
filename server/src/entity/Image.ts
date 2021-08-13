@@ -1,12 +1,12 @@
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from "type-graphql";
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
   ManyToOne,
-} from 'typeorm';
-import { User } from './User';
+} from "typeorm";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -17,8 +17,9 @@ export class Image extends BaseEntity {
 
   @Field()
   @Column()
-  type: string;
-
+  type: "profile" | "cover" | "secondary";
+  
+  
   @Field()
   @Column({ unique: true })
   url: string;

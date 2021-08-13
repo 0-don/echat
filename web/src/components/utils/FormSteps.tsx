@@ -42,7 +42,7 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
                 className='group flex items-center w-full'
               >
                 <span className='px-6 py-4 flex items-center text-sm font-medium'>
-                  <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center bg-indigo-600 rounded-full group-hover:bg-indigo-800'>
+                  <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center bg-purple rounded-full group-hover:bg-purple'>
                     <CheckIcon
                       className='w-6 h-6 text-white'
                       aria-hidden='true'

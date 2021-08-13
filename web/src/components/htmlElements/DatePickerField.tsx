@@ -1,7 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import { useField, useFormikContext } from 'formik';
-type DatePickerFieldProps = any & { label: string;  };
+type DatePickerFieldProps = any & { label: string };
 
 export const DatePickerField: React.FC<DatePickerFieldProps> = ({
   ...props

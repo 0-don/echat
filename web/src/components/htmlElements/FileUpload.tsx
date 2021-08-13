@@ -104,9 +104,9 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
             <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' /> 
             <label className='relative '>
               <input {...getInputProps()} />
-              <p className='rounded-full text-sm text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark '>
+              <p className='rounded-full text-sm text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark hover:bg-lightGray '>
                 {isDragActive
-                  ? 'Drop the files here ...'
+                  ? 'Drop the files here ...' 
                   : type.charAt(0).toUpperCase() + type.slice(1)}
               </p>
             </label>

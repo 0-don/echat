@@ -86,6 +86,7 @@ export type Language = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changeUserType: Scalars['Boolean'];
   updateMe?: Maybe<Scalars['Boolean']>;
   register: UserResponse;
   login: UserResponse;
@@ -157,7 +158,6 @@ export type Query = {
   __typename?: 'Query';
   getAll?: Maybe<Array<User>>;
   me?: Maybe<User>;
-  changeUserType: Scalars['Boolean'];
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
   getAllGames?: Maybe<Array<Game>>;
@@ -300,6 +300,14 @@ export type ChangePasswordMutation = (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
   ) }
+);
+
+export type ChangeUserTypeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ChangeUserTypeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'changeUserType'>
 );
 
 export type DeleteImageMutationVariables = Exact<{
@@ -529,6 +537,36 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const ChangeUserTypeDocument = gql`
+    mutation ChangeUserType {
+  changeUserType
+}
+    `;
+export type ChangeUserTypeMutationFn = Apollo.MutationFunction<ChangeUserTypeMutation, ChangeUserTypeMutationVariables>;
+
+/**
+ * __useChangeUserTypeMutation__
+ *
+ * To run a mutation, you first call `useChangeUserTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeUserTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeUserTypeMutation, { data, loading, error }] = useChangeUserTypeMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChangeUserTypeMutation(baseOptions?: Apollo.MutationHookOptions<ChangeUserTypeMutation, ChangeUserTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeUserTypeMutation, ChangeUserTypeMutationVariables>(ChangeUserTypeDocument, options);
+      }
+export type ChangeUserTypeMutationHookResult = ReturnType<typeof useChangeUserTypeMutation>;
+export type ChangeUserTypeMutationResult = Apollo.MutationResult<ChangeUserTypeMutation>;
+export type ChangeUserTypeMutationOptions = Apollo.BaseMutationOptions<ChangeUserTypeMutation, ChangeUserTypeMutationVariables>;
 export const DeleteImageDocument = gql`
     mutation DeleteImage($publicId: String!) {
   deleteImage(publicId: $publicId)
@@ -1056,6 +1094,7 @@ export const namedOperations = {
   },
   Mutation: {
     ChangePassword: 'ChangePassword',
+    ChangeUserType: 'ChangeUserType',
     DeleteImage: 'DeleteImage',
     DeleteUserGame: 'DeleteUserGame',
     ForgotPassword: 'ForgotPassword',

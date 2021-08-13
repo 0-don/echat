@@ -9,16 +9,19 @@ export type StepType = {
 };
 
 type Form = {
+  currentStep: string;
   steps: StepType[];
-  changeStep: (index: number) => void;
+  setStep: (index: number) => void;
+  formInit: (form: StepType[]) => void;
 };
 
 const useFormStore = create<Form>(
   persist(
     immer(
       (set): Form => ({
+        currentStep: '',
         steps: [],
-        changeStep: (index) =>
+        setStep: (index) =>
           set((state) => {
             state.steps = state.steps.map((step) => {
               if (step.id < index) {
@@ -26,12 +29,19 @@ const useFormStore = create<Form>(
               }
               if (step.id === index) {
                 step.status = 'current';
+                state.currentStep = step.name;
               }
               if (step.id > index) {
                 step.status = 'upcoming';
               }
               return step;
             });
+          }),
+        formInit: (form) =>
+          set((state) => {
+            if (!state.steps.length) {
+              state.steps = form;
+            }
           }),
       })
     ),
@@ -42,5 +52,4 @@ const useFormStore = create<Form>(
     }
   )
 );
-
 export default useFormStore;

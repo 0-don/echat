@@ -1,30 +1,24 @@
 import { FormikProps } from 'formik';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import {
   GetUserGameDocument,
   useDeleteUserGameMutation,
   useGetUserGameQuery,
   useSwitchUserGameStatusMutation,
 } from 'src/generated/graphql';
+import useFormStore from 'src/store/FormStore';
 import { Button, SwitchField } from '../htmlElements';
 import { Loading } from '../utils';
-import { StepType } from '../utils/FormSteps';
 import { GameModal } from './modals/GameModal';
 import { UpsertGameModal } from './modals/UpsertGameModal';
 
 interface GameSectionProps {
   formikRef?: React.RefObject<FormikProps<any>>;
-  currentStep?: string;
-  steps?: StepType[];
-  setSteps?: Dispatch<SetStateAction<StepType[]>>;
 }
 
-export const GameSection: React.FC<GameSectionProps> = ({
-  formikRef,
-  currentStep,
-  steps,
-  setSteps,
-}) => {
+export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
+  formikRef;
+  const { setStep } = useFormStore();
   const { data, loading } = useGetUserGameQuery();
   const [deleteUserGame] = useDeleteUserGameMutation();
   const [switchUserGameStatus] = useSwitchUserGameStatusMutation();
@@ -104,31 +98,7 @@ export const GameSection: React.FC<GameSectionProps> = ({
       </div>
       <div className='flex justify-end'>
         {data?.getUserGame?.length && (
-          <Button
-            text='Next'
-            type='button'
-            onClick={() => {
-              if (steps && setSteps) {
-                const findIndex = steps.findIndex(
-                  (step) => step.name === currentStep
-                );
-                setSteps(
-                  steps.map((step) => {
-                    if (step.id < findIndex + 1) {
-                      step.status = 'complete';
-                    }
-                    if (step.id === findIndex + 1) {
-                      step.status = 'current';
-                    }
-                    if (step.id > findIndex + 1) {
-                      step.status = 'upcoming';
-                    }
-                    return step;
-                  })
-                );
-              }
-            }}
-          />
+          <Button text='Next' type='button' onClick={() => setStep(2)} />
         )}
       </div>
     </>

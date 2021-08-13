@@ -1,17 +1,13 @@
 import { FormikProps } from 'formik';
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useChangeUserTypeMutation } from 'src/generated/graphql';
 import { Button } from '../htmlElements';
-import { StepType } from '../utils/FormSteps';
 import { useRouter } from 'next/router';
 import rocket from '/public/undraw_To_the_stars_qhyy.svg';
 
 interface SubmitSectionProps {
   formikRef?: React.RefObject<FormikProps<any>>;
-  currentStep?: string;
-  steps?: StepType[];
-  setSteps?: Dispatch<SetStateAction<StepType[]>>;
 }
 
 export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {

@@ -1,5 +1,5 @@
 import { Form, Formik, FormikProps } from 'formik';
-import React, { Dispatch, Fragment, SetStateAction } from 'react';
+import React, { Fragment } from 'react';
 import {
   // AGES,
   GENDERS,
@@ -14,6 +14,7 @@ import {
   useMeQuery,
   useUpdateMeMutation,
 } from 'src/generated/graphql';
+import useFormStore from 'src/store/FormStore';
 import {
   Button,
   InputField,
@@ -25,22 +26,16 @@ import {
 
 import { Loading } from '../utils';
 import { FormikAutoSubmit } from '../utils/FormikAutoSubmit';
-import { StepType } from '../utils/FormSteps';
 import { ImageSection } from './ImageSection';
 
 export type ProfileSectionProps = {
-  formikRef: React.RefObject<FormikProps<UpdatedUser>>;
-  currentStep?: string;
-  steps?: StepType[];
-  setSteps?: Dispatch<SetStateAction<StepType[]>>;
+  formikRef?: React.RefObject<FormikProps<UpdatedUser>>;
 };
 
 export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
-  currentStep,
-  steps,
-  setSteps,
 }) => {
+  const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
 
@@ -255,25 +250,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   text='Next'
                   type='button'
                   onClick={() => {
-                    if (steps && setSteps) {
-                      const findIndex = steps.findIndex(
-                        (step) => step.name === currentStep
-                      );
-                      setSteps(
-                        steps.map((step) => {
-                          if (step.id < findIndex + 1) {
-                            step.status = 'complete';
-                          }
-                          if (step.id === findIndex + 1) {
-                            step.status = 'current';
-                          }
-                          if (step.id > findIndex + 1) {
-                            step.status = 'upcoming';
-                          }
-                          return step;
-                        })
-                      );
-                    }
+                    setStep(1);
                   }}
                 />
                 <FormikAutoSubmit />

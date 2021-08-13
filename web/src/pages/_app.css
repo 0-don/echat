@@ -124,7 +124,7 @@ html {
   @apply dark:bg-dark-light;
 }
 .react-datepicker__header {
-  @apply dark:bg-dark-dark;
+  @apply dark:bg-dark-dark border-purple border-b-0;
 }
 .react-datepicker__current-month {
   @apply dark:text-white;

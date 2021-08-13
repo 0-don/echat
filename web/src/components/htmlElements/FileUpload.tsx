@@ -101,10 +101,10 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
           <ProgressBar progress={progress} />
         ) : (
           <div className='space-y-1 text-black dark:text-white text-center cursor-pointer'>
-            <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' />
+            <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' /> 
             <label className='relative '>
               <input {...getInputProps()} />
-              <p className='rounded-full text-sm text-white bg-dark-light dark:bg-purple hover:bg-indigo-500 '>
+              <p className='rounded-full text-sm text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark '>
                 {isDragActive
                   ? 'Drop the files here ...'
                   : type.charAt(0).toUpperCase() + type.slice(1)}

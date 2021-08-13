@@ -16,8 +16,8 @@ const Register: React.FC<registerProps> = ({}) => {
     <Wrapper navbar>
       <FormHeader text="Register your account"/>
 
-      <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-        <div className='bg-white dark:text-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10'>
+      <div className='mt-8  sm:mx-auto sm:w-full sm:max-w-md'>
+        <div className='bg-white dark:text-white dark:bg-dark py-8 px-4 shadow sm:rounded-lg sm:px-10'>
           <Formik
             initialValues={{
               username: '',
@@ -45,7 +45,7 @@ const Register: React.FC<registerProps> = ({}) => {
             }}
           >
             {({ values, handleChange, isSubmitting }) => (
-              <Form className='space-y-6'>
+              <Form className='space-y-4'> 
                 <InputField
                   name='username'
                   placeholder='username'
@@ -53,7 +53,7 @@ const Register: React.FC<registerProps> = ({}) => {
                 />
                 <InputField
                   name='email'
-                  placeholder='email'
+                  placeholder='email' 
                   label='Email'
                   type='email'
                 />

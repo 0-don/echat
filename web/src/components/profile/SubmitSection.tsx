@@ -17,7 +17,7 @@ export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {
   formikRef;
   return (
     <>
-      <div className='bg-white text-center dark:bg-gray-800 dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+      <div className='bg-white text-center dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
         <div className='flex  justify-center'>
           <Image src={rocket}  height={150} width={150} />
         </div>

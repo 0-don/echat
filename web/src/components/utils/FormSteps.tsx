@@ -30,10 +30,10 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
       })
     );
   };
-
+  
   return (
     <nav aria-label='Progress'>
-      <ol className='border dark:bg-gray-800 bg-white border-gray-300 dark:border-indigo-500 rounded-md divide-y divide-gray-300 md:flex md:divide-y-0'>
+      <ol className='border dark:bg-dark bg-white border-gray-300 dark:border-purple rounded-md divide-y divide-gray-300 md:flex md:divide-y-0'>
         {steps.map((step, stepIdx) => (
           <li key={step.name} className='relative md:flex-1 md:flex'>
             {step.status === 'complete' ? (
@@ -74,16 +74,16 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
                 className='group flex items-center'
               >
                 <span className='px-6 py-4 flex items-center text-sm font-medium'>
-                  <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center border-2 border-gray-300 rounded-full group-hover:border-gray-400 dark:group-hover:text-indigo-600'>
+                  <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center border-2 border-gray-300 rounded-full group-hover:border-gray-400 dark:group-hover:text-purple'>
                     <span className='text-gray-500 group-hover:text-gray-900 dark:group-hover:text-indigo-600'>
                       {step.id}
                     </span>
                   </span>
-                  <span className='ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900 dark:group-hover:text-indigo-600'>
+                  <span className='ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900 dark:group-hover:text-purple'>
                     {step.name}
                   </span>
                 </span>
-              </div>
+              </div> 
             )}
 
             {stepIdx !== steps.length - 1 ? (

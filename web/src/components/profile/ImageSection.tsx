@@ -35,7 +35,7 @@ export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
           <div className='mx-auto px-4 sm:px-6 lg:px-8'>
             <div className='flex justify-center -mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5'>
               <img
-                className='h-24 w-24 rounded-full ring-4  object-cover ring-white dark:ring-indigo-600  sm:h-32 sm:w-32'
+                className='h-24 w-24 rounded-full ring-4  object-cover ring-white dark:ring-purple  sm:h-32 sm:w-32'
                 src={!loading && profile?.length ? profile![0].url : gray.src}
               />
             </div>

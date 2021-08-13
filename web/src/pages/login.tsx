@@ -18,7 +18,7 @@ const Login: React.FC<registerProps> = ({}) => {
       <FormHeader text='Sign in to your account' />
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-        <div className='bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10'>
+        <div className='bg-white dark:bg-dark py-8 px-4 shadow sm:rounded-lg sm:px-10'>
           <Formik
             initialValues={{
               usernameOrEmail: '',
@@ -41,11 +41,11 @@ const Login: React.FC<registerProps> = ({}) => {
                 setErrors(toErrorMap(response.data.login.errors));
               } else if (response.data?.login.user) {
                 router.push('/');
-              }
+              } 
             }}
           >
             {({ values, handleChange, isSubmitting }) => (
-              <Form className='space-y-6'>
+              <Form className='space-y-4'>
                 <InputField
                   name='usernameOrEmail'
                   placeholder='username or email'
@@ -60,8 +60,8 @@ const Login: React.FC<registerProps> = ({}) => {
 
                 <div className='text-sm'>
                   <NextLink href='/forgot-password'>
-                    <a className='font-medium text-indigo-600 hover:text-indigo-500'>
-                      Forgot your password?
+                    <a className='font-medium text-purple hover:text-purple-dark'>
+                       Forgot your password?
                     </a>
                   </NextLink>
                 </div>

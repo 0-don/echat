@@ -64,7 +64,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
           initialValues={{
             username: user.me?.username || '',
             description: user.me?.description || '',
-            age: new Date() || new Date(),
+            age:  user.me?.age || new Date(),
             gender: user.me?.gender || GENDERS[0].name,
             country: user.me?.country || COUNTRIES[0].name,
             discord: user.me?.discord || '',

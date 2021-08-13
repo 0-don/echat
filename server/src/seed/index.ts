@@ -13,7 +13,7 @@ const main = async () => {
     entities: [ENTITIES],
   });
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 10; i++) {
     const user = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -68,7 +68,7 @@ const main = async () => {
     images.push(profile);
     images.push(cover);
     images.push(secondary);
-    console.log(images);
+
     await conn
       .createQueryBuilder()
       .insert()

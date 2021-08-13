@@ -32,7 +32,7 @@ export const SwitchField: React.FC<SwitchProps> = ({
       )}
       <span
         aria-hidden='true'
-        className='pointer-events-none absolute w-full h-full rounded-md'
+        className='pointer-events-none   absolute w-full h-full rounded-md'
       />
 
       <span

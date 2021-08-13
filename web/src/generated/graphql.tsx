@@ -156,7 +156,7 @@ export type MutationDeleteUserGameArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  getAll?: Maybe<Array<User>>;
+  getUsers?: Maybe<Array<User>>;
   me?: Maybe<User>;
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
@@ -446,6 +446,27 @@ export type GetUserGameQuery = (
       { __typename?: 'Game' }
       & Pick<Game, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
     ) }
+  )>> }
+);
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersQuery = (
+  { __typename?: 'Query' }
+  & { getUsers?: Maybe<Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+    & { images?: Maybe<Array<(
+      { __typename?: 'Image' }
+      & Pick<Image, 'id' | 'url'>
+    )>>, languages?: Maybe<Array<(
+      { __typename?: 'Language' }
+      & Pick<Language, 'id' | 'name'>
+    )>>, schedules?: Maybe<Array<(
+      { __typename?: 'Schedule' }
+      & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
+    )>> }
   )>> }
 );
 
@@ -988,6 +1009,69 @@ export function useGetUserGameLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetUserGameQueryHookResult = ReturnType<typeof useGetUserGameQuery>;
 export type GetUserGameLazyQueryHookResult = ReturnType<typeof useGetUserGameLazyQuery>;
 export type GetUserGameQueryResult = Apollo.QueryResult<GetUserGameQuery, GetUserGameQueryVariables>;
+export const GetUsersDocument = gql`
+    query GetUsers {
+  getUsers {
+    id
+    type
+    username
+    gender
+    country
+    age
+    description
+    discord
+    twitter
+    facebook
+    snapchat
+    instagram
+    twitch
+    steam
+    tiktok
+    images {
+      id
+      url
+    }
+    languages {
+      id
+      name
+    }
+    schedules {
+      id
+      name
+      from
+      to
+      available
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -1089,6 +1173,7 @@ export const namedOperations = {
   Query: {
     GetAllGames: 'GetAllGames',
     GetUserGame: 'GetUserGame',
+    GetUsers: 'GetUsers',
     Me: 'Me',
     UserImages: 'UserImages'
   },

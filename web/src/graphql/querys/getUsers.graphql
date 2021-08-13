@@ -1,0 +1,38 @@
+query GetUsers {
+  getUsers {
+    id
+    type
+    username
+    gender
+    country
+    age
+    description
+
+    discord
+    twitter
+    facebook
+    snapchat
+    instagram
+    twitch
+    steam
+    tiktok
+
+    images {
+      id
+      url
+    }
+
+    languages {
+      id
+      name
+    }
+
+    schedules {
+      id
+      name
+      from
+      to
+      available
+    }
+  }
+}

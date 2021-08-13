@@ -2,8 +2,8 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { CheckIcon } from '@heroicons/react/solid';
 
 interface FormStepsProps {
-  steps: StepType[]
-  setSteps: Dispatch<SetStateAction<StepType[]>>
+  steps: StepType[];
+  setSteps: Dispatch<SetStateAction<StepType[]>>;
 }
 
 export type StepType = {
@@ -12,8 +12,7 @@ export type StepType = {
   status: 'complete' | 'current' | 'upcoming';
 };
 
-export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
-
+export const FormSteps: React.FC<FormStepsProps> = ({ steps, setSteps }) => {
   const changeStep = (stepIdx: number) => {
     setSteps(
       steps.map((step) => {
@@ -30,7 +29,7 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
       })
     );
   };
-  
+
   return (
     <nav aria-label='Progress'>
       <ol className='border dark:bg-dark bg-white border-gray-300 dark:border-purple rounded-md divide-y divide-gray-300 md:flex md:divide-y-0'>
@@ -83,7 +82,7 @@ export const FormSteps: React.FC<FormStepsProps> = ({steps, setSteps}) => {
                     {step.name}
                   </span>
                 </span>
-              </div> 
+              </div>
             )}
 
             {stepIdx !== steps.length - 1 ? (

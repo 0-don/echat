@@ -16,7 +16,7 @@ const main = async () => {
 
   // await User.delete({});
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     const user = {
       type: "user",
       username: faker.internet.userName(),

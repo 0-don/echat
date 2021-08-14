@@ -46,8 +46,8 @@ export class UserResolver {
   }
 
   @Query(() => [User], { nullable: true })
-  getAll() {
-    return User.find();
+  getUsers() {
+    return User.find({ where: { type: 'user' } });
   }
 
   @Query(() => User, { nullable: true })

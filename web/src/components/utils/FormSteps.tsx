@@ -3,7 +3,7 @@ import { CheckIcon } from '@heroicons/react/solid';
 import useFormStore from 'src/store/FormStore';
 
 export const FormSteps: React.FC = () => {
-  const { steps, setStep} = useFormStore();
+  const { steps, setStep } = useFormStore();
 
   return (
     <nav aria-label='Progress'>
@@ -22,7 +22,7 @@ export const FormSteps: React.FC = () => {
                       aria-hidden='true'
                     />
                   </span>
-                  <span className='ml-4 text-sm font-medium text-gray-900 dark:text-indigo-500'>
+                  <span className='ml-4 text-sm font-medium text-gray-900 dark:text-purple'>
                     {name}
                   </span>
                 </span>
@@ -47,7 +47,7 @@ export const FormSteps: React.FC = () => {
               >
                 <span className='px-6 py-4 flex items-center text-sm font-medium'>
                   <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center border-2 border-gray-300 rounded-full group-hover:border-gray-400 dark:group-hover:text-purple'>
-                    <span className='text-gray-500 group-hover:text-gray-900 dark:group-hover:text-indigo-600'>
+                    <span className='text-gray-500 group-hover:text-gray-900 hover:text-puple  dark:group-hover:text-purple'>
                       {id}
                     </span>
                   </span>
@@ -66,7 +66,7 @@ export const FormSteps: React.FC = () => {
                   aria-hidden='true'
                 >
                   <svg
-                    className='h-full w-full text-gray-300 dark:text-indigo-500'
+                    className='h-full w-full text-gray-300 dark:text-purple'
                     viewBox='0 0 22 80'
                     fill='none'
                     preserveAspectRatio='none'

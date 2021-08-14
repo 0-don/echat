@@ -223,7 +223,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             list={HOURS}
                           />
                         </div>
-                        <div className='w-3/12 flex items-center justify-center'>
+                        <div className='w-3/12  flex items-center justify-center'>
                           {typeof available == 'boolean' && (
                             <SwitchField
                               checked={available}

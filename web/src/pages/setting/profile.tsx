@@ -16,8 +16,6 @@ const Profile: React.FC = () => {
   // //     formikRef.current.submitForm();
   // //   }
   // // };
-
-
   
   return (
     <Wrapper navbar>

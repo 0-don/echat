@@ -17,6 +17,14 @@ const Profile: React.FC = () => {
   // //   }
   // // };
   
+  useEffect(() => {
+    formInit([
+      { id: 0, name: 'Profile', status: 'current' },
+      { id: 1, name: 'Games', status: 'upcoming' },
+      { id: 2, name: 'Submit', status: 'upcoming' },
+    ]);
+  }, []);
+
   return (
     <Wrapper navbar>
       <FormSteps />

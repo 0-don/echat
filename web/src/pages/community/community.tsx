@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React from 'react';
 import withApollo from '../../utils/apollo/withApollo';
 import { Wrapper } from '../../components/Wrapper';
 

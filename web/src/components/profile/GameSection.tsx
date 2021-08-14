@@ -38,10 +38,10 @@ export const GameSection: React.FC<GameSectionProps> = ({
   return (
     <>
       <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
-      <div className='flex justify-end my-3'>
+      <div className='flex justify-end my-3 '>
         <GameModal />
       </div>
-      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6'>
+      <div className='grid  grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6'>
         {data?.getUserGame?.map(
           ({ __typename, id, per, price, game, status, gameId }) => (
             <div
@@ -102,7 +102,7 @@ export const GameSection: React.FC<GameSectionProps> = ({
           )
         )}
       </div>
-      <div className='flex justify-end'>
+      <div className='flex justify-end text-white dark:text-dark-dark'>
         {data?.getUserGame?.length && (
           <Button
             text='Next'

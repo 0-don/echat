@@ -21,7 +21,7 @@ export const SwitchField: React.FC<SwitchProps> = ({
     <Switch
       checked={checked}
       onChange={onChange}
-      className='mx-1 flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-6 w-9 cursor-pointer'
+      className='mx-1 flex-shrink-0 group relative rounded-full  inline-flex items-center justify-center h-6 w-9 cursor-pointer'
     >
       {checked && (
         <FontAwesomeIcon

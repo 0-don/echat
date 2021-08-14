@@ -35,14 +35,14 @@ export const GameModal: React.FC = () => {
                     <div className='flex-1 flex flex-col text-purple'>
                       <div className='hover:bg-purple'>
                       <img
-                        className='flex-shrink-0 mx-auto hover:border hover:border-purple  transition duration-200 ease-in-out hover:transform hover:translate-x-4 hover:translate-y-4'
+                        className='flex-shrink-0 mx-auto hover:border hover:border-purple transition duration-200 ease-in-out hover:transform hover:translate-x-4 hover:translate-y-4'
                         src={boxArtUrl}
                         alt='' 
                       /></div>
                       <h3 className='mt-6 text-black  dark:text-white text-sm font-medium'>
                         {name}
                       </h3> 
-                    </div>
+                    </div> 
                   </li>
                 )
               )

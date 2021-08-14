@@ -82,5 +82,6 @@ const addFakeData = async () => {
       .returning("*")
       .execute();
   }
+  console.log('finished');
 };
 addFakeData();

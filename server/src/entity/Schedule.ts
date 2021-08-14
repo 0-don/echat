@@ -30,6 +30,6 @@ export class Schedule extends BaseEntity {
   userId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.schedules)
+  @ManyToOne(() => User, (user) => user.schedules, { onDelete: 'CASCADE' })
   user: User;
 }

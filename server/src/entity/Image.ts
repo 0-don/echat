@@ -1,12 +1,12 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
   ManyToOne,
-} from "typeorm";
-import { User } from "./User";
+} from 'typeorm';
+import { User } from './User';
 
 @ObjectType()
 @Entity()
@@ -32,6 +32,6 @@ export class Image extends BaseEntity {
   userId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.images)
+  @ManyToOne(() => User, (user) => user.images, { onDelete: 'CASCADE' })
   user: User;
 }

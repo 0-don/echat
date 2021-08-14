@@ -25,7 +25,7 @@ export class Language extends BaseEntity {
   userId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.languages)
+  @ManyToOne(() => User, (user) => user.languages, { onDelete: 'CASCADE' })
   user: User;
 
 }

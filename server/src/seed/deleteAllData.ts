@@ -1,21 +1,33 @@
 import "dotenv/config";
 import { createConnection } from "typeorm";
-import { ENTITIES } from "../constants";
+import { Language } from "../entity/Language";
 import { User } from "../entity/User";
 import { Image } from "../entity/Image";
+import { Game } from "../entity/Game";
+import { GameImage } from "../entity/GameImage";
+import { UserGame } from "../entity/UserGame";
+import { Schedule } from "../entity/Schedule";
 const main = async () => {
   console.log("test");
-  const conn = await createConnection({
+
+  createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
     username: "postgres",
     password: "root",
-    entities: [ENTITIES],
-  });
+    database: "Echat",
+    entities: [User, Language, Image, Game, GameImage, UserGame, Schedule],
+  })
+    .then(async (connection) => {
+      await connection.query("DELETE FROM public.user_game");
+      await connection.query("DELETE FROM public.language");
+      await connection.query("DELETE FROM public.schedule");
+      await connection.query("DELETE FROM public.images");
+      await connection.query("DELETE FROM public.user");
+    })
+    .catch((error) => console.log(error));
 
-  await conn.createQueryBuilder().delete().from(User).execute();
-  await conn.createQueryBuilder().delete().from(Image).execute();
   console.log("test2");
 };
 main();

@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect } from 'react';
-import { Wrapper } from '../../components/Wrapper';
-import withApollo from '../../utils/apollo/withApollo';
-import { ProfileSection } from 'src/components/profile/ProfileSection';
-import { GameSection } from 'src/components/profile/GameSection';
-import { SubmitSection } from 'src/components/profile/SubmitSection';
-import { FormSteps } from 'src/components/utils/FormSteps';
-import useFormStore from 'src/store/FormStore';
+// import { Wrapper } from '../../components/Wrapper';
+// import withApollo from '../../utils/apollo/withApollo';
+// import { ProfileSection } from 'src/components/profile/ProfileSection';
+// import { GameSection } from 'src/components/profile/GameSection';
+// import { SubmitSection } from 'src/components/profile/SubmitSection';
+// import { FormSteps } from 'src/components/utils/FormSteps';
+// import useFormStore from 'src/store/FormStore';
 
 const Profile: React.FC = () => {
   const { steps, formInit } = useFormStore();

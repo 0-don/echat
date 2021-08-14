@@ -71,7 +71,7 @@ export type Image = {
   type: Scalars['String'];
   url: Scalars['String'];
   publicId: Scalars['String'];
-  userId: Scalars['Float'];
+  userId: Scalars['Int'];
   user: User;
 };
 

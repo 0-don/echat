@@ -18,6 +18,7 @@ const main = async () => {
 
   for (let i = 0; i < 100; i++) {
     const user = {
+      type: "user",
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),

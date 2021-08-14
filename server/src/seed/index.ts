@@ -14,9 +14,9 @@ const main = async () => {
     entities: [ENTITIES],
   });
 
-  await User.delete({});
+  // await User.delete({});
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 100; i++) {
     const user = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -72,6 +72,7 @@ const main = async () => {
       .values(images)
       .returning('*')
       .execute();
+    console.log(i);
   }
   console.log('finished');
 };

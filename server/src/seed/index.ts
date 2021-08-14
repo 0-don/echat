@@ -13,7 +13,7 @@ const main = async () => {
     entities: [ENTITIES],
   });
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1; i++) {
     const user = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -62,7 +62,6 @@ const main = async () => {
       publicId: `${Math.random()}`,
       userId,
     };
-    console.log(profile, cover, secondary);
 
     let images = [];
     images.push(profile);

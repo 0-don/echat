@@ -22,7 +22,7 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ default: 'guest', nullable: true })
-  type: 'guest' | 'user';
+  type: 'guest' | 'user' | string;
 
   @Field()
   @Column()

@@ -1,31 +1,19 @@
 import "dotenv/config";
 import { createConnection } from "typeorm";
+import { User } from "../entity/User";
+import { ENTITIES } from "../constants";
 
-const deleteAllData = async () => {
-  const keys = [
-    "public.image",
-    "public.user_game",
-    "public.language",
-    "public.schedule",
-    "public.images",
-    "public.user",
-  ];
+const main = async () => {
   await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
-    username: "postgres",
-    password: "root",
-    database: "Echat",
-    entities: [],
-  })
-    .then(async (connection) => {
-      for (let i = 0; i < keys.length; i++) {
-        await connection.query(`DELETE FROM ${keys[i]}`);
-      }
-    })
-    .catch((error) => console.log(error));
+    // logging: true,
+    entities: [ENTITIES],
+  });
 
-  console.log("test2");
+  User.delete({});
+
+  console.log("finished");
 };
-deleteAllData();
+main();

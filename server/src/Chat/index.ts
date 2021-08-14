@@ -39,10 +39,10 @@ const main = async () => {
 
   httpServer.listen(process.env.PORT, () => {
     console.log(
-      `Server ready at http://localhost:${process.env.PORT}${apolloServer.graphqlPath}`
+      `Server ready at http://localhost:${process.env.Server_PORT}${apolloServer.graphqlPath}`
     );
     console.log(
-      `Subscriptions ready at ws://localhost:${process.env.PORT}${apolloServer.subscriptionsPath}`
+      `Subscriptions ready at ws://localhost:${process.env.Server_PORT}${apolloServer.subscriptionsPath}`
     );
   });
 };

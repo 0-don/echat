@@ -8,7 +8,7 @@ import { Game } from "../entity/Game";
 import { GameImage } from "../entity/GameImage";
 import { UserGame } from "../entity/UserGame";
 import { Schedule } from "../entity/Schedule";
-const main = async () => {
+const addFakeData = async () => {
   const conn = await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
@@ -83,4 +83,4 @@ const main = async () => {
       .execute();
   }
 };
-main();
+addFakeData();

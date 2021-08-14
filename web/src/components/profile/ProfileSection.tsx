@@ -23,6 +23,7 @@ import {
   DropdownField,
   DatePickerField,
 } from '../htmlElements';
+import { TimePickerField } from '../htmlElements/TimePickerField';
 
 import { Loading } from '../utils';
 import { FormikAutoSubmit } from '../utils/FormikAutoSubmit';
@@ -200,6 +201,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Schedule
                   </h1>
+                  
                   <div className='flex flex-wrap items-center'>
                     {formikProps.values.schedules.map(({ available, name }) => (
                       <Fragment key={name}>
@@ -212,6 +214,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             dayName={name}
                             list={HOURS}
                           />
+                          <TimePickerField />
                         </div>
                         <div className='w-1/12 text-center'>to</div>
                         <div className='w-3/12'>
@@ -222,6 +225,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             dayName={name}
                             list={HOURS}
                           />
+                          <TimePickerField />
                         </div>
                         <div className='w-3/12  flex items-center justify-center'>
                           {typeof available == 'boolean' && (

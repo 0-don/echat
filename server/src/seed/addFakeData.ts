@@ -78,7 +78,7 @@ const main = async () => {
       .createQueryBuilder()
       .insert()
       .into(Image)
-      .values(secondary)
+      .values(images)
       .returning("*")
       .execute();
   }

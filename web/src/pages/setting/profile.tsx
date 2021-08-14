@@ -16,7 +16,6 @@ const Profile: React.FC = () => {
   // //     formikRef.current.submitForm();
   // //   }
   // // };
-  
   useEffect(() => {
     formInit([
       { id: 0, name: 'Profile', status: 'current' },

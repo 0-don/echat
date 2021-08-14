@@ -1,21 +1,23 @@
-import 'dotenv/config';
-import { createConnection } from 'typeorm';
-import faker from 'faker';
-import { User } from '../entity/User';
-import { Image } from '../entity/Image';
-import { ENTITIES } from 'src/constants';
-
-const main = async () => {
+import "dotenv/config";
+import { createConnection } from "typeorm";
+import faker from "faker";
+import { Language } from "../entity/Language";
+import { User } from "../entity/User";
+import { Image } from "../entity/Image";
+import { Game } from "../entity/Game";
+import { GameImage } from "../entity/GameImage";
+import { UserGame } from "../entity/UserGame";
+import { Schedule } from "../entity/Schedule";
+const addFakeData = async () => {
   const conn = await createConnection({
-    type: 'postgres',
+    type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
-    // logging: true,
-    entities: [ENTITIES],
+    username: "postgres",
+    password: "root",
+    database: "Echat",
+    entities: [User, Language, Image, Game, GameImage, UserGame, Schedule],
   });
-
-  await User.delete({});
-  await Image.delete({});
 
   for (let i = 0; i < 10; i++) {
     const user = {
@@ -41,38 +43,44 @@ const main = async () => {
       .insert()
       .into(User)
       .values(user)
-      .returning('*')
+      .returning("*")
       .execute();
 
     let userId: number = dbUser.raw[0].id;
+    dbUser;
+
+    const profile = {
+      type: "profile",
+      url: faker.image.imageUrl(),
+      publicId: `${Math.random()}`,
+      userId,
+    };
+
+    const cover = {
+      type: "cover",
+      url: faker.image.imageUrl(),
+      publicId: `${Math.random()}`,
+      userId,
+    };
+    const secondary = {
+      type: "secondary",
+      url: faker.image.imageUrl(),
+      publicId: `${Math.random()}`,
+      userId,
+    };
 
     let images = [];
-    images.push({
-      type: 'profile',
-      url: faker.image.imageUrl(),
-      publicId: `${Math.random()}`,
-      userId,
-    });
-    images.push({
-      type: 'cover',
-      url: faker.image.imageUrl(),
-      publicId: `${Math.random()}`,
-      userId,
-    });
-    images.push({
-      type: 'secondary',
-      url: faker.image.imageUrl(),
-      publicId: `${Math.random()}`,
-      userId,
-    });
+    images.push(profile);
+    images.push(cover);
+    images.push(secondary);
 
     await conn
       .createQueryBuilder()
       .insert()
       .into(Image)
       .values(images)
-      .returning('*')
+      .returning("*")
       .execute();
   }
 };
-main();
+addFakeData();

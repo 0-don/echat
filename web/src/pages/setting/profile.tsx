@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
 import { ProfileSection } from 'src/components/profile/ProfileSection';
@@ -8,7 +8,7 @@ import { FormSteps } from 'src/components/utils/FormSteps';
 import useFormStore from 'src/store/FormStore';
 
 const Profile: React.FC = () => {
-   const { steps, formInit } = useFormStore();
+  const { currentStep, formInit } = useFormStore();
 
   // // const formikRef = useRef<FormikProps<UpdatedUser>>(null);
   // // const submitForm = () => {
@@ -22,20 +22,16 @@ const Profile: React.FC = () => {
       { id: 1, name: 'Games', status: 'upcoming' },
       { id: 2, name: 'Submit', status: 'upcoming' },
     ]);
-  });
+  }, []);
 
   return (
     <Wrapper navbar>
       <FormSteps />
-      {steps.map(({ status, name  }) => (
-        <Fragment key={name}>
-          {status === 'current' && name === 'Profile' && <ProfileSection />}
-          {status === 'current' && name === 'Games' && <GameSection />}
-          {status === 'current' && name === 'Submit' && <SubmitSection />}
-        </Fragment>
-      ))}
+      {currentStep === 'Profile' && <ProfileSection />}
+      {currentStep === 'Games' && <GameSection />}
+      {currentStep === 'Submit' && <SubmitSection />}
     </Wrapper>
   );
 };
 
-export default withApollo({ ssr: false })(Profile); 
+export default withApollo({ ssr: false })(Profile);

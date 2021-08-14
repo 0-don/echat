@@ -41,6 +41,7 @@ const useFormStore = create<Form>(
           set((state) => {
             if (!state.steps.length) {
               state.steps = form;
+              state.currentStep = form[0].name
             }
           }),
       })

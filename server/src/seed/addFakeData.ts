@@ -18,8 +18,8 @@ const addFakeData = async () => {
     database: "Echat",
     entities: [User, Language, Image, Game, GameImage, UserGame, Schedule],
   });
-
-  for (let i = 0; i < 100; i++) {
+ 
+  for (let i = 0; i < 10; i++) {
     const user = {
       username: faker.internet.userName(),
       email: faker.internet.email(),

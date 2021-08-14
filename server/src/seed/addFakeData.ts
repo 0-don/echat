@@ -19,13 +19,9 @@ const addFakeData = async () => {
     entities: [User, Language, Image, Game, GameImage, UserGame, Schedule],
   });
 
-<<<<<<< HEAD:server/src/seed/addFakeData.ts
-  for (let i = 0; i < 10; i++) {
-=======
   // await User.delete({});
 
   for (let i = 0; i < 100; i++) {
->>>>>>> master:server/src/seed/index.ts
     const user = {
       type: "user",
       username: faker.internet.userName(),

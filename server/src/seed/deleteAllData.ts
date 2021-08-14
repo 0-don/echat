@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { createConnection } from "typeorm";
 import { User } from "../entity/User";
+
 import { ENTITIES } from "../constants";
 
 const main = async () => {

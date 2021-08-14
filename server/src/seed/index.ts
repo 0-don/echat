@@ -3,7 +3,7 @@ import { createConnection } from 'typeorm';
 import faker from 'faker';
 import { User } from '../entity/User';
 import { Image } from '../entity/Image';
-import { ENTITIES } from 'src/constants';
+import { ENTITIES } from '../constants';
 
 const main = async () => {
   const conn = await createConnection({
@@ -15,9 +15,8 @@ const main = async () => {
   });
 
   await User.delete({});
-  await Image.delete({});
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1; i++) {
     const user = {
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -74,5 +73,6 @@ const main = async () => {
       .returning('*')
       .execute();
   }
+  console.log('finished');
 };
 main();

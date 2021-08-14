@@ -90,30 +90,22 @@ export class User extends BaseEntity {
   updated_at: Date;
 
   // Language
-  @OneToMany(() => Language, (language) => language.user, {
-    cascade: true,
-  })
+  @OneToMany(() => Language, (language) => language.user)
   @Field(() => [Language], { nullable: true })
   languages: Language[];
 
   // Image
-  @OneToMany(() => Image, (image) => image.user, {
-    cascade: true,
-  })
+  @OneToMany(() => Image, (image) => image.user)
   @Field(() => [Image], { nullable: true })
   images: Image[];
 
   // UserGame
-  @OneToMany(() => UserGame, (user) => user.user, {
-    cascade: true,
-  })
+  @OneToMany(() => UserGame, (user) => user.user)
   @Field(() => [UserGame], { nullable: true })
   games: UserGame[];
 
   // Schedule
-  @OneToMany(() => Schedule, (schedule) => schedule.user, {
-    cascade: true,
-  })
+  @OneToMany(() => Schedule, (schedule) => schedule.user)
   @Field(() => [Schedule], { nullable: true })
   schedules: Schedule[];
 

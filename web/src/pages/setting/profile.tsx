@@ -23,7 +23,7 @@ const Profile: React.FC = () => {
       { id: 1, name: 'Games', status: 'upcoming' },
       { id: 2, name: 'Submit', status: 'upcoming' },
     ]);
-  }, []);
+  });
 
   return (
     <Wrapper navbar>

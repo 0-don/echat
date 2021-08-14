@@ -1,12 +1,6 @@
 import "dotenv/config";
 import { createConnection } from "typeorm";
-import { Language } from "../entity/Language";
-import { User } from "../entity/User";
-import { Image } from "../entity/Image";
-import { Game } from "../entity/Game";
-import { GameImage } from "../entity/GameImage";
-import { UserGame } from "../entity/UserGame";
-import { Schedule } from "../entity/Schedule";
+
 const main = async () => {
   console.log("test");
 
@@ -17,9 +11,10 @@ const main = async () => {
     username: "postgres",
     password: "root",
     database: "Echat",
-    entities: [User, Language, Image, Game, GameImage, UserGame, Schedule],
+    entities: [],
   })
     .then(async (connection) => {
+      await connection.query("DELETE FROM public.image");
       await connection.query("DELETE FROM public.user_game");
       await connection.query("DELETE FROM public.language");
       await connection.query("DELETE FROM public.schedule");

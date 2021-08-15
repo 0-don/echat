@@ -84,6 +84,11 @@ export type Language = {
   user: User;
 };
 
+export type ListValues = {
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   changeUserType: Scalars['Boolean'];
@@ -179,11 +184,19 @@ export type Schedule = {
   __typename?: 'Schedule';
   id: Scalars['Int'];
   name: Scalars['String'];
-  from: Scalars['Int'];
-  to: Scalars['Int'];
+  from: Scalars['DateTime'];
+  to: Scalars['DateTime'];
   available: Scalars['Boolean'];
   userId: Scalars['Int'];
   user: User;
+};
+
+export type ScheduleValues = {
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  from: Scalars['DateTime'];
+  to: Scalars['DateTime'];
+  available: Scalars['Boolean'];
 };
 
 export type UpdatedUser = {
@@ -200,16 +213,8 @@ export type UpdatedUser = {
   twitch: Scalars['String'];
   steam: Scalars['String'];
   tiktok: Scalars['String'];
-  languages: Array<UpdatedUserValues>;
-  schedules: Array<UpdatedUserValues>;
-};
-
-export type UpdatedUserValues = {
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  from?: Maybe<Scalars['String']>;
-  to?: Maybe<Scalars['String']>;
-  available?: Maybe<Scalars['Boolean']>;
+  languages: Array<ListValues>;
+  schedules: Array<ScheduleValues>;
 };
 
 

@@ -19,9 +19,6 @@ type DropdownItem = {
   __typename?: string;
   id: number;
   name: string;
-  from?: number;
-  to?: number;
-  available?: boolean;
 };
 
 export const DropdownField: React.FC<DropdownFieldProps> = ({

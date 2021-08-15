@@ -37,8 +37,8 @@
   ],
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "/*.ts",
+    "/*.tsx",
     "src/utils/useDarkMode.js"
   ]
 }

@@ -6,7 +6,7 @@
     "dev": "concurrently \"next dev\" \"graphql-codegen --config codegen.yml -w\"",
     "build": "next build",
     "start": "cross-env NODE_ENV=production next start",
-    "gen": "graphql-codegen --config codegen.yml",
+    "gen": "graphql-codegen --config codegen.yml"
 
   },
   "dependencies": {

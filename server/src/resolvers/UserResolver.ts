@@ -100,14 +100,7 @@ export class UserResolver {
     }
 
     if (schedules.length) {
-      const freshSchedules = schedules.map((sched) => {
-        return {
-          ...sched,
-          from: parseInt(sched.from!),
-          to: parseInt(sched.to!),
-          userId,
-        };
-      });
+      const freshSchedules = schedules.map((sched) => ({ ...sched, userId }));
 
       await getConnection()
         .createQueryBuilder()

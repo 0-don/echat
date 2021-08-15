@@ -14,11 +14,11 @@ const main = async () => {
     entities: [ENTITIES],
   });
 
-  // await User.delete({});
+  await User.delete({});
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     const user = {
-      type: "user",
+      type: 'user',
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
@@ -49,19 +49,19 @@ const main = async () => {
     let images = [];
     images.push({
       type: 'profile',
-      url: faker.image.imageUrl(),
+      url: faker.image.imageUrl() + '?random=' + i + Math.random(),
       publicId: `${Math.random()}`,
       userId,
     });
     images.push({
       type: 'cover',
-      url: faker.image.imageUrl(),
+      url: faker.image.imageUrl() + '?random=' + i + Math.random(),
       publicId: `${Math.random()}`,
       userId,
     });
     images.push({
       type: 'secondary',
-      url: faker.image.imageUrl(),
+      url: faker.image.imageUrl() + '?random=' + i + Math.random(),
       publicId: `${Math.random()}`,
       userId,
     });

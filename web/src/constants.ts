@@ -3,13 +3,13 @@ export const GRAPHQL_SERVER_URL = __prod__
   ? '/graphql'
   : 'http://localhost:4001/graphql';
 
-  export const PERS = [
-    { id: 1, name: 'Game' },
-    { id: 2, name: '15 Min' },
-    { id: 3, name: '30 Min' },
-    { id: 4, name: '45 Min' },
-    { id: 5, name: '60 Min' },
-  ];
+export const PERS = [
+  { id: 1, name: 'Game' },
+  { id: 2, name: '15 Min' },
+  { id: 3, name: '30 Min' },
+  { id: 4, name: '45 Min' },
+  { id: 5, name: '60 Min' },
+];
 
 export const LEVELS = [
   { id: 1, name: 'Newbie' },
@@ -22,13 +22,55 @@ export const LEVELS = [
 ];
 
 export const SCHEDULES = [
-  { id: 1, name: 'Monday', from: '0', to: '23', available: true },
-  { id: 2, name: 'Tuesday', from: '0', to: '23', available: true },
-  { id: 3, name: 'Wednesday', from: '0', to: '23', available: true },
-  { id: 4, name: 'Thursday', from: '0', to: '23', available: true },
-  { id: 5, name: 'Friday', from: '0', to: '23', available: true },
-  { id: 6, name: 'Saturday', from: '0', to: '23', available: true },
-  { id: 7, name: 'Sunday', from: '0', to: '23', available: true },
+  {
+    id: 1,
+    name: 'Monday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
+  {
+    id: 2,
+    name: 'Tuesday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
+  {
+    id: 3,
+    name: 'Wednesday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
+  {
+    id: 4,
+    name: 'Thursday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
+  {
+    id: 5,
+    name: 'Friday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
+  {
+    id: 6,
+    name: 'Saturday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
+  {
+    id: 7,
+    name: 'Sunday',
+    from: new Date(0, 0, 0, 9, 30),
+    to: new Date(0, 0, 0, 18, 30),
+    available: true,
+  },
 ];
 
 export const GENDERS = [

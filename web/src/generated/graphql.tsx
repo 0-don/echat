@@ -71,7 +71,7 @@ export type Image = {
   type: Scalars['String'];
   url: Scalars['String'];
   publicId: Scalars['String'];
-  userId: Scalars['Int'];
+  userId: Scalars['Float'];
   user: User;
 };
 
@@ -86,7 +86,6 @@ export type Language = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  changeUserType: Scalars['Boolean'];
   updateMe?: Maybe<Scalars['Boolean']>;
   register: UserResponse;
   login: UserResponse;
@@ -156,8 +155,9 @@ export type MutationDeleteUserGameArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  getUsers?: Maybe<Array<User>>;
+  getAll?: Maybe<Array<User>>;
   me?: Maybe<User>;
+  changeUserType: Scalars['Boolean'];
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
   getAllGames?: Maybe<Array<Game>>;

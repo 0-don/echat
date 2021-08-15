@@ -1,9 +1,8 @@
 import { Form, Formik, FormikProps } from 'formik';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import {
   // AGES,
   GENDERS,
-  HOURS,
   COUNTRIES,
   LANGUAGES,
   SCHEDULES,

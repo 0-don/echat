@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 import {
   // AGES,
   GENDERS,
-  HOURS,
   COUNTRIES,
   LANGUAGES,
   SCHEDULES,
@@ -23,6 +22,7 @@ import {
   DropdownField,
   DatePickerField,
 } from '../htmlElements';
+import { TimePickerField } from '../htmlElements/TimePickerField';
 
 import { Loading } from '../utils';
 import { FormikAutoSubmit } from '../utils/FormikAutoSubmit';
@@ -35,6 +35,8 @@ export type ProfileSectionProps = {
 export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
 }) => {
+
+
   const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
@@ -47,8 +49,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
   const userSchedules = user?.me?.schedules?.map(
     ({ __typename, ...sched }) => ({
       ...sched,
-      from: sched.from.toString(),
-      to: sched.to.toString(),
+      to: new Date(sched.to),
+      from: new Date(sched.from),
     })
   );
 
@@ -200,27 +202,38 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Schedule
                   </h1>
+
                   <div className='flex flex-wrap items-center'>
-                    {formikProps.values.schedules.map(({ available, name }) => (
+                    {formikProps.values.schedules.map(({ available, name, to, from }) => (
                       <Fragment key={name}>
                         <div className='w-2/12'>{name}</div>
                         <div className='w-3/12'>
-                          <DropdownField
+                          {/* <DropdownField
                             {...formikProps}
                             fieldKey='from'
                             fieldName='schedules'
                             dayName={name}
                             list={HOURS}
+                          /> */}
+                          <TimePickerField
+                            label='from'
+                            maxTime={to}
+                            dayName={name}
                           />
                         </div>
                         <div className='w-1/12 text-center'>to</div>
                         <div className='w-3/12'>
-                          <DropdownField
+                          {/* <DropdownField
                             {...formikProps}
                             fieldKey='to'
                             fieldName='schedules'
                             dayName={name}
                             list={HOURS}
+                          /> */}
+                          <TimePickerField
+                            label='to'
+                            minTime={from}
+                            dayName={name}
                           />
                         </div>
                         <div className='w-3/12  flex items-center justify-center'>

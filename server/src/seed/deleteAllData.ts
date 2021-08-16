@@ -5,15 +5,15 @@ import { User } from "../entity/User";
 import { ENTITIES } from "../constants";
 
 const main = async () => {
-  await createConnection({
-    type: "postgres",
+  const conn = await createConnection({
+    type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: true,
-    // logging: true,
     entities: [ENTITIES],
   });
-
-  User.delete({});
+  conn
+  // await conn.createQueryBuilder().delete().from(User).execute()
+  await User.delete({});
 
   console.log("finished");
 };

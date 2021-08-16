@@ -12,7 +12,7 @@ import { graphqlUploadExpress } from "graphql-upload";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from "./constants";
-
+import dotenv from "dotenv";
 import { UserResolver } from "./resolvers/UserResolver";
 import { ImageResolver } from "./resolvers/ImageResolver";
 import {
@@ -25,11 +25,17 @@ import {
 import { GameResolver } from "./resolvers/GameResolver";
 import { UserGameResolver } from "./resolvers/UserGameResolver";
 import { createGameLoader } from "./utils/loaders/createGameLoader";
+import { ChatResolver } from "./resolvers/ChatResolver";
+import http from "http";
+import { SubscriptionServer } from "subscriptions-transport-ws";
 
+import { execute, subscribe } from "graphql";
+dotenv.config();
 const PgSession = connectPgSimple(session);
 
-(async () => {
+async () => {
   const app = express();
+  const httpServer = http.createServer(app);
 
   const conn = await createConnection({
     type: "postgres",
@@ -71,6 +77,7 @@ const PgSession = connectPgSimple(session);
       validate: false,
       dateScalarMode: "isoDate",
     }),
+
     context: ({ req, res }) => ({
       req,
       res,
@@ -81,14 +88,44 @@ const PgSession = connectPgSimple(session);
       gameImageLoader: createGameImageLoader(),
       gameLoader: createGameLoader(),
     }),
-
     introspection: true,
   });
-
-  app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
   await server.start();
-  server.applyMiddleware({ app, cors: false });
+  app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
 
+  server.applyMiddleware({ app, cors: false });
+  SubscriptionServer.create(
+    {
+      schema: await buildSchema({
+        resolvers: [ChatResolver],
+        validate: false,
+      }),
+      execute,
+      subscribe,
+    },
+    {
+      server: httpServer,
+      path: server.graphqlPath,
+
+      onConnect: () => {
+        console.log("Client connected for subscriptions");
+      },
+      onDisconnect: () => {
+        console.log("Client disconnected from subscriptions");
+      },
+    }
+  );
+
+  httpServer.listen(9000, () => {
+    console.log(
+      `Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+    );
+    console.log(
+      `Subscriptions ready at ws://localhost:${process.env.PORT}${server.graphqlPath}`
+    );
+  });
+
+  
   app.listen(parseInt(process.env.SERVER_PORT!), () => {
     log(`
     🚀  Server is running!
@@ -96,4 +133,4 @@ const PgSession = connectPgSimple(session);
     📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
   `);
   });
-})();
+};

@@ -34,6 +34,7 @@ export class ChatResolver {
     await pubSub.publish(channel, payload);
     return chat;
   }
+  
   @Subscription({ topics: channel })
   messageSent(@Root() { id, name, message }: Chat): Chat {
     return { id, name, message };

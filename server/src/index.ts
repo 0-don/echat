@@ -4,12 +4,12 @@ import { log } from "console";
 import express from "express";
 import session from "express-session";
 import psl from "psl";
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, gql } from "apollo-server-express";
 import connectPgSimple from "connect-pg-simple";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { graphqlUploadExpress } from "graphql-upload";
-import { buildSchema } from "type-graphql";
+import { buildSchema, buildTypeDefsAndResolvers } from "type-graphql";
 import { createConnection } from "typeorm";
 import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from "./constants";
 import dotenv from "dotenv";
@@ -28,6 +28,7 @@ import { createGameLoader } from "./utils/loaders/createGameLoader";
 import { ChatResolver } from "./resolvers/ChatResolver";
 import http from "http";
 import { SubscriptionServer } from "subscriptions-transport-ws";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 import { execute, subscribe } from "graphql";
 dotenv.config();
@@ -36,7 +37,11 @@ const PgSession = connectPgSimple(session);
 async () => {
   const app = express();
   const httpServer = http.createServer(app);
-
+  const typeDefs = gql`
+    type Query {
+      hello: String
+    }
+  `;
   const conn = await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
@@ -91,18 +96,21 @@ async () => {
     introspection: true,
   });
   await server.start();
+  const { resolvers } = await buildTypeDefsAndResolvers({
+    resolvers: [ChatResolver],
+  });
+
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
+
   app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
 
   server.applyMiddleware({ app, cors: false });
+
   SubscriptionServer.create(
-    {
-      schema: await buildSchema({
-        resolvers: [ChatResolver],
-        validate: false,
-      }),
-      execute,
-      subscribe,
-    },
+    { schema, execute, subscribe },
     {
       server: httpServer,
       path: server.graphqlPath,
@@ -125,7 +133,6 @@ async () => {
     );
   });
 
-  
   app.listen(parseInt(process.env.SERVER_PORT!), () => {
     log(`
     🚀  Server is running!

@@ -3,12 +3,12 @@ import { CheckIcon } from '@heroicons/react/solid';
 import useFormStore from 'src/store/FormStore';
 
 export const FormSteps: React.FC = () => {
-  const { steps, setStep } = useFormStore();
+  const { steps, setStep, hasHydrated } = useFormStore();
 
   return (
     <nav aria-label='Progress'>
       <ol className='border dark:bg-dark bg-white border-gray-300 dark:border-purple rounded-md divide-y divide-gray-300 md:flex md:divide-y-0'>
-        {steps.map(({ id, name, status }, index) => (
+        {hasHydrated && steps.map(({ id, name, status }, index) => (
           <li key={index} className='relative md:flex-1 md:flex'>
             {status === 'complete' ? (
               <div

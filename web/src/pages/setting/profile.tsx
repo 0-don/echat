@@ -8,7 +8,7 @@ import { FormSteps } from 'src/components/utils/FormSteps';
 import useFormStore from 'src/store/FormStore';
 
 const Profile: React.FC = () => {
-  const { currentStep, formInit } = useFormStore();
+  const { currentStep, formInit, hasHydrated } = useFormStore();
 
   // // const formikRef = useRef<FormikProps<UpdatedUser>>(null);
   // // const submitForm = () => {
@@ -23,14 +23,14 @@ const Profile: React.FC = () => {
       { id: 1, name: 'Games', status: 'upcoming' },
       { id: 2, name: 'Submit', status: 'upcoming' },
     ]);
-  }, []);
+  });
 
   return (
     <Wrapper navbar>
       <FormSteps />
-      {currentStep === 'Profile' && <ProfileSection />}
-      {currentStep === 'Games' && <GameSection />}
-      {currentStep === 'Submit' && <SubmitSection />}
+      {hasHydrated &&currentStep === 'Profile' && <ProfileSection />}
+      {hasHydrated && currentStep === 'Games' && <GameSection />}
+      {hasHydrated && currentStep === 'Submit' && <SubmitSection />}
     </Wrapper>
   );
 };

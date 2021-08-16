@@ -6,19 +6,22 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import Chats from "../components/chat/Chats";
 import SendMessage from "../components/chat/SendMessage";
 import { useState } from "react";
+import  ws from 'websocket';
 
-const wsLink = new WebSocketLink({
-  uri: "ws://localhost:9000/subscriptions",
-  options: {
+
+const wsLink = typeof window === "undefined"? new WebSocketLink({
+  uri: "ws://localhost:4001/subscriptions",
+  options: { 
     reconnect: true,
   },
-});
+  webSocketImpl:{ ws}
+}) : null;
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:9000/graphql",
+  uri: "http://localhost:4001/graphql",
   credentials: "include",
 });
-
+ 
 const link = split(
   ({ query }) => {
     const definition = getMainDefinition(query); 
@@ -31,7 +34,7 @@ const link = split(
   httpLink
 );
 
-const client = new ApolloClient({
+const client = new ApolloClient({ 
   link,
   cache: new InMemoryCache(),
 }); 

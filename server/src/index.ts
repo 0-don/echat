@@ -120,13 +120,13 @@ const main = async () => {
       path: server.graphqlPath,
     }
   );
-  httpServer.listen(9000, () => {
+  httpServer.listen(4001, () => {
     console.log(
-      `Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+      `Server ready at http://localhost:${process.env.SERVER_PORT}${server.graphqlPath}`
     );
     console.log(
       `Subscriptions ready at ws://localhost:${
-        process.env.PORT
+        process.env.SERVER_PORT
       }${"/subscriptions"}`
     );
   });

@@ -6,12 +6,12 @@ import { ENTITIES } from "../constants";
 
 const main = async () => {
   const conn = await createConnection({
-    type: 'postgres',
+    type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
     entities: [ENTITIES],
   });
-  conn
+  conn;
   // await conn.createQueryBuilder().delete().from(User).execute()
   await User.delete({});
 

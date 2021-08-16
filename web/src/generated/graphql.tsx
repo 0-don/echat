@@ -20,6 +20,13 @@ export type Scalars = {
   Upload: File;
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  id: Scalars['Float'];
+  message: Scalars['String'];
+  name: Scalars['String'];
+};
+
 
 export type Dropdown = {
   id: Scalars['Int'];
@@ -104,6 +111,7 @@ export type Mutation = {
   switchUserGameStatus: Scalars['Boolean'];
   upsertUserGame: Scalars['Boolean'];
   deleteUserGame: Scalars['Boolean'];
+  createChat: Chat;
 };
 
 
@@ -159,6 +167,12 @@ export type MutationDeleteUserGameArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationCreateChatArgs = {
+  message: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getUsers?: Maybe<Array<User>>;
@@ -168,6 +182,7 @@ export type Query = {
   getAllGames?: Maybe<Array<Game>>;
   findGame?: Maybe<Array<Game>>;
   getUserGame?: Maybe<Array<UserGame>>;
+  getChats: Array<Chat>;
 };
 
 
@@ -197,6 +212,11 @@ export type ScheduleValues = {
   from: Scalars['DateTime'];
   to: Scalars['DateTime'];
   available: Scalars['Boolean'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  messageSent: Chat;
 };
 
 export type UpdatedUser = {

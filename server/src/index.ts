@@ -1,15 +1,15 @@
 import "dotenv/config";
 import "reflect-metadata";
-import { log } from "console";
+
 import express from "express";
 import session from "express-session";
 import psl from "psl";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import connectPgSimple from "connect-pg-simple";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { graphqlUploadExpress } from "graphql-upload";
-import { buildSchema, buildTypeDefsAndResolvers } from "type-graphql";
+import { buildTypeDefsAndResolvers } from "type-graphql";
 import { createConnection } from "typeorm";
 import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from "./constants";
 import dotenv from "dotenv";
@@ -26,22 +26,21 @@ import { GameResolver } from "./resolvers/GameResolver";
 import { UserGameResolver } from "./resolvers/UserGameResolver";
 import { createGameLoader } from "./utils/loaders/createGameLoader";
 import { ChatResolver } from "./resolvers/ChatResolver";
-import http from "http";
+import { createServer } from "http";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
 import { execute, subscribe } from "graphql";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+
 dotenv.config();
 const PgSession = connectPgSimple(session);
 
-async () => {
+const main = async () => {
   const app = express();
-  const httpServer = http.createServer(app);
-  const typeDefs = gql`
-    type Query {
-      hello: String
-    }
-  `;
+
+  const httpServer = createServer(app);
+
   const conn = await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
@@ -76,12 +75,25 @@ async () => {
     })
   );
 
+  const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
+    resolvers: [
+      UserResolver,
+      ImageResolver,
+      GameResolver,
+      UserGameResolver,
+      ChatResolver,
+    ],
+
+    validate: false,
+    dateScalarMode: "isoDate",
+  });
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
   const server = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [UserResolver, ImageResolver, GameResolver, UserGameResolver],
-      validate: false,
-      dateScalarMode: "isoDate",
-    }),
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],
+    schema: schema,
 
     context: ({ req, res }) => ({
       req,
@@ -95,17 +107,9 @@ async () => {
     }),
     introspection: true,
   });
-  await server.start();
-  const { resolvers } = await buildTypeDefsAndResolvers({
-    resolvers: [ChatResolver],
-  });
-
-  const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-  });
-
   app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
+
+  await server.start();
 
   server.applyMiddleware({ app, cors: false });
 
@@ -114,30 +118,17 @@ async () => {
     {
       server: httpServer,
       path: server.graphqlPath,
-
-      onConnect: () => {
-        console.log("Client connected for subscriptions");
-      },
-      onDisconnect: () => {
-        console.log("Client disconnected from subscriptions");
-      },
     }
   );
-
   httpServer.listen(9000, () => {
     console.log(
       `Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
     );
     console.log(
-      `Subscriptions ready at ws://localhost:${process.env.PORT}${server.graphqlPath}`
+      `Subscriptions ready at ws://localhost:${
+        process.env.PORT
+      }${"/subscriptions"}`
     );
   });
-
-  app.listen(parseInt(process.env.SERVER_PORT!), () => {
-    log(`
-    🚀  Server is running!
-    🔉  Listening on port ${process.env.SERVER_PORT}
-    📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
-  `);
-  });
 };
+main();

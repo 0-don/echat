@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.4.7",
     "@graphql-tools/schema": "^8.1.1",
+    "@types/ws": "^7.4.7",
     "apollo-server-express": "^3.1.2",
     "argon2": "^0.28.2",
     "axios": "^0.21.1",
@@ -37,7 +38,8 @@
     "twitch": "^4.6.5",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.34",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "ws": "^8.1.0"
   },
   "devDependencies": {
     "@types/connect-pg-simple": "^4.2.3",

@@ -23,12 +23,12 @@ const Profile: React.FC = () => {
       { id: 1, name: 'Games', status: 'upcoming' },
       { id: 2, name: 'Submit', status: 'upcoming' },
     ]);
-  });
+  }, []);
 
   return (
     <Wrapper navbar>
       <FormSteps />
-      {hasHydrated &&currentStep === 'Profile' && <ProfileSection />}
+      {hasHydrated && currentStep === 'Profile' && <ProfileSection />}
       {hasHydrated && currentStep === 'Games' && <GameSection />}
       {hasHydrated && currentStep === 'Submit' && <SubmitSection />}
     </Wrapper>

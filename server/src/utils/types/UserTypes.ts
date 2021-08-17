@@ -56,26 +56,35 @@ export class UpdatedUser {
   steam: string;
   @Field()
   tiktok: string;
-  @Field(() => [UpdatedUserValues])
-  languages: UpdatedUserValues[];
-  @Field(() => [UpdatedUserValues])
-  schedules: UpdatedUserValues[];
+  @Field(() => [ListValues])
+  languages: ListValues[];
+  @Field(() => [ScheduleValues])
+  schedules: ScheduleValues[];
 }
 // { id: 7, name: 'Sunday', from: 0, to: 23, available: false },
 @InputType()
-export class UpdatedUserValues {
+export class ListValues {
+  @Field(() => Int)
+  id: number;
+
+  @Field()
+  name: string;
+}
+
+@InputType()
+export class ScheduleValues {
   @Field(() => Int)
   id: number;
 
   @Field()
   name: string;
 
-  @Field({ nullable: true })
-  from?: string;
+  @Field()
+  from: Date;
 
-  @Field({ nullable: true })
-  to?: string;
+  @Field()
+  to: Date;
 
-  @Field({ nullable: true })
-  available?: boolean;
+  @Field()
+  available: boolean;
 }

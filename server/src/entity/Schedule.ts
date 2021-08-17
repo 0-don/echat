@@ -13,13 +13,13 @@ export class Schedule extends BaseEntity {
   @Column()
   name: string;
 
-  @Field(() => Int)
-  @Column()
-  from: number;
+  @Field()
+  @Column('timestamptz')
+  from: Date;
 
-  @Field(() => Int)
-  @Column()
-  to: number;
+  @Field()
+  @Column('timestamptz')
+  to: Date;
 
   @Field()
   @Column()

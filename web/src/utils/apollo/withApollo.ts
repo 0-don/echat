@@ -15,12 +15,12 @@ const createClient = (ctx: NextPageContext) =>
       uri: GRAPHQL_SERVER_URL,
       credentials: 'include',
       fetch: customFetch as any,
-      headers: {
-        cookie:
-          (typeof window === 'undefined'
-            ? ctx?.req?.headers.cookie
-            : undefined) || '',
-      },
+      // headers: {
+      //   cookie:
+      //     (typeof window === 'undefined'
+      //       ? ctx?.req?.headers.cookie
+      //       : undefined) || '',
+      // },
     }),
   });
 

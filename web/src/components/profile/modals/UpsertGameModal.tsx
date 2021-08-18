@@ -58,9 +58,9 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
               }
               alt=''
             />
-            <div className='mx-auto flex justify-center -mt-16 sm:-mt-16'>
+            <div className='flex justify-center -mt-16 sm:-mt-16'>
               <img
-                className='h-24 ring-4 ring-white sm:h-32'
+                className='h-24 shadow-xl sm:h-32'
                 src={game.boxArtUrl}
                 alt=''
               />
@@ -87,20 +87,20 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                   variables: { options: values },
                   refetchQueries: [{ query: GetUserGameDocument }],
                 });
-                setOpen === undefined ? setLocalOpen(false) : setOpen(false)
+                setOpen === undefined ? setLocalOpen(false) : setOpen(false);
               }}
             >
               {(formikProps: FormikProps<UpsertUserGame>) => (
                 <Form className='p-5'>
                   <div className='flex'>
-                    <div className='w-6/12'>
+                    <div className='w-6/12 mr-2.5'>
                       <DropdownField
                         {...formikProps}
                         fieldName='level'
                         list={LEVELS}
                       />
                     </div>
-                    <div className='w-6/12'>
+                    <div className='w-6/12 ml-2.5'>
                       <DropdownField
                         {...formikProps}
                         fieldName='platforms'
@@ -110,7 +110,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                     </div>
                   </div>
                   <div className='flex mb-3'>
-                    <div className='w-8/12'>
+                    <div className='w-6/12 mr-2.5'>
                       <TextAreaField
                         name='description'
                         value={formikProps.values.description!}
@@ -118,22 +118,31 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
                         label='Description'
                       />
                     </div>
-                    <div className='w-4/12'>
-                      <InputField
-                        name='price'
-                        type='number'
-                        icon='dollar-sign'
-                        value={formikProps.values.price}
-                        label='Price'
-                      />
-                      <DropdownField
-                        {...formikProps}
-                        fieldName='per'
-                        list={PERS}
-                      />
+                    <div className='w-6/12 ml-2.5'>
+                      <div className='flex'>
+                        <div className="w-6/12 mr-2.5">
+                          <InputField
+                            name='price'
+                            type='number'
+                            icon='dollar-sign'
+                            value={formikProps.values.price}
+                            label='Price'
+                          />
+                        </div>
+                        <div className="w-6/12 ml-2.5">
+                          <DropdownField
+                            {...formikProps}
+                            fieldName='per'
+                            list={PERS}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <Button type='submit' text='send' />
+
+                  <div className='flex items-end justify-end'>
+                    <Button type='submit' text='send' />
+                  </div>
                 </Form>
               )}
             </Formik>

@@ -9,16 +9,18 @@ export type StepType = {
 };
 
 type Form = {
+  hasHydrated: boolean;
   currentStep: string;
   steps: StepType[];
   setStep: (index: number) => void;
-  formInit: (form: StepType[]) => void;
+  formInit: (form?: StepType[]) => void;
 };
 
 const useFormStore = create<Form>(
   persist(
     immer(
       (set): Form => ({
+        hasHydrated: false,
         currentStep: '',
         steps: [],
         setStep: (index) =>
@@ -39,10 +41,11 @@ const useFormStore = create<Form>(
           }),
         formInit: (form) =>
           set((state) => {
-            if (!state.steps.length) {
+            state.hasHydrated = true;
+            if (!state.steps.length && form) {
               state.steps = form;
-              state.currentStep = form[0].name
-            }
+              state.currentStep = form[0].name;
+            }       
           }),
       })
     ),
@@ -50,6 +53,7 @@ const useFormStore = create<Form>(
       name: 'Form',
       serialize: (state) => JSON.stringify(state),
       deserialize: (storedState) => JSON.parse(storedState),
+      blacklist: ['hasHydrated'],
     }
   )
 );

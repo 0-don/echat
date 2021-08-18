@@ -24,6 +24,7 @@ const addFakeData = async () => {
   for (let i = 0; i < 10; i++) {
     const user = {
       type: 'user',
+      fake: true,
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),

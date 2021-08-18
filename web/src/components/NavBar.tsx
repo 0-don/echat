@@ -2,18 +2,29 @@ import React, { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import NextLink from 'next/link';
-import { useLogoutMutation, useMeQuery } from '../generated/graphql';
-// import { isServer } from '../utils/helpers/isServer';
+import {
+  useLogoutMutation,
+  useMeQuery,
+  useUserImagesQuery,
+} from '../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 import { DarkMode } from './utils/DarkMode';
 import useDarkModeStore from '../store/DarkModeStore';
+import { useRouter } from 'next/router';
+import gray from '/public/gray.png';
 
 export const NavBar: React.FC = ({}) => {
-  const { data, loading } = useMeQuery();
-  const [logout] = useLogoutMutation();
+  const router = useRouter();  
   const apolloClient = useApolloClient();
 
+  const { data, loading } = useMeQuery();
+  const { data: userImages } = useUserImagesQuery();
+  const [logout] = useLogoutMutation();
   const { theme, hasHydrated } = useDarkModeStore();
+
+  const profileUrl = userImages?.userImages?.find(
+    ({ type }) => type === 'profile'
+  )?.url;
 
   let userMenu: JSX.Element | null = null;
   // data is loading
@@ -24,14 +35,14 @@ export const NavBar: React.FC = ({}) => {
       <>
         <Menu.Item>
           <NextLink href='/register'>
-            <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+            <a className='block px-4 py-2 text-sm text-gray-700 dark:text-white  hover:bg-purple'>
               Register
             </a>
           </NextLink>
         </Menu.Item>
         <Menu.Item>
           <NextLink href='/login'>
-            <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+            <a className='block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-purple '>
               Login
             </a>
           </NextLink>
@@ -42,13 +53,13 @@ export const NavBar: React.FC = ({}) => {
     userMenu = (
       <>
         <Menu.Item>
-          <div className='block px-4 py-2 text-sm text-gray-700'>
+          <div className='block px-4 py-2 text-sm text-gray-700 dark:text-white'>
             {`Hello ${data.me!.username}`}
           </div>
         </Menu.Item>
         <Menu.Item>
           <NextLink href='/setting/profile'>
-            <a className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+            <a className='block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-purple hover:text-white'>
               Settings
             </a>
           </NextLink>
@@ -56,10 +67,11 @@ export const NavBar: React.FC = ({}) => {
         <Menu.Item>
           <div
             onClick={async () => {
+              router.push('/');
               await logout();
               await apolloClient.resetStore();
             }}
-            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+            className='block px-4 py-2 text-sm text-gray-700dark:text-white hover:bg-purple hover:text-white'
           >
             Logout
           </div>
@@ -121,7 +133,7 @@ export const NavBar: React.FC = ({}) => {
                           <span className='sr-only'>Open user menu</span>
                           <img
                             className='h-8 w-8 rounded-full'
-                            src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                            src={profileUrl ? profileUrl : gray.src}
                             alt=''
                           />
                         </Menu.Button>
@@ -138,7 +150,7 @@ export const NavBar: React.FC = ({}) => {
                       >
                         <Menu.Items
                           static
-                          className='z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
+                          className='z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-dark text-white ring-1 ring-black ring-opacity-5 focus:outline-none'
                         >
                           {userMenu}
                         </Menu.Items>

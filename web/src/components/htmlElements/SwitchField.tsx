@@ -45,8 +45,8 @@ export const SwitchField: React.FC<SwitchProps> = ({
       <span
         aria-hidden='true'
         className={classNames(
-          checked ? 'translate-x-6 dark:bg-purple' : 'translate-x-1',
-          'flex items-center justify-center text-xs pointer-events-none absolute left-0 h-2 w-2 rounded-full bg-gray-500 shadow transform ring-0 transition-transform ease-in-out duration-200'
+          checked ? 'translate-x-6 bg-purple' : 'translate-x-1 bg-gray-500 ',
+          'flex items-center justify-center text-xs pointer-events-none absolute left-0 h-2 w-2 rounded-full  shadow transform ring-0 transition-transform ease-in-out duration-200'
         )}
       >
         {/* {icons && icons.length ? (checked ? icons[0] : icons[1]) : null} */}

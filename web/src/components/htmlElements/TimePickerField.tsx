@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { UpdatedUser } from '../../generated/graphql';
 
@@ -8,6 +8,7 @@ type TimePickerFieldProps = {
   minTime?: Date;
   maxTime?: Date;
   dayName?: string;
+  readOnly?: boolean;
 };
  
 export type Schedule = {
@@ -24,11 +25,26 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
   minTime,
   maxTime,
   dayName,
+  readOnly,
 }) => {
   const { values, setFieldValue } = useFormikContext<UpdatedUser>();
 
   const getTime = values.schedules.find(({ name }) => name === dayName);
 
+  const ExampleCustomInput = forwardRef(({ value, onClick }: any, ref: any) => (
+    <button
+      type='button'
+      className={`${
+        readOnly
+          ? 'dark:bg-dark dark:border-dark-light'
+          : 'dark:bg-dark-light dark:border-dark-light'
+      } dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple focus:border-purple sm:text-sm border w-full rounded-md shadow-sm pl-3 py-2 text-left`}
+      onClick={onClick}
+      ref={ref}
+    >
+      {value}
+    </button>
+  ));
   return (
     <>
       <label
@@ -37,8 +53,11 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
       >
         {/* {label} */}
       </label>
-      <div className='mt-1 relative rounded-md shadow-sm'>
+      <div className='mt-1 relative rounded-md shadow-sm '>
         <DatePicker
+          readOnly={readOnly}
+          customInput={<ExampleCustomInput />}
+          className='bg-dark'
           selected={getTime ? getTime[label] : new Date()}
           onChange={(date) =>
             setFieldValue(

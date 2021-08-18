@@ -5,6 +5,7 @@ import { useChangeUserTypeMutation } from 'src/generated/graphql';
 import { Button } from '../htmlElements';
 import { useRouter } from 'next/router';
 import rocket from '/public/undraw_To_the_stars_qhyy.svg';
+import gaming from '/public/gaming.svg';
 
 interface SubmitSectionProps {
   formikRef?: React.RefObject<FormikProps<any>>;
@@ -18,7 +19,7 @@ export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {
     <>
       <div className='mt-5 bg-white text-center dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
         <div className='flex  justify-center'>
-          <Image src={rocket} height={150} width={150} />
+          <Image src={gaming} height={150} width={150} />
         </div>
         <h1 className='text-3xl my-2'>Ready to Go!!</h1>
         <p className='mb-4'>

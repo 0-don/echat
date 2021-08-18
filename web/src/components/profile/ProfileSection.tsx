@@ -59,9 +59,12 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
           initialValues={{
             username: user.me?.username || '',
             description: user.me?.description || '',
-            age: new Date(user.me?.age || new Date()),
+            age: new Date(
+              user.me?.age ||
+                new Date().setFullYear(new Date().getFullYear() - 18)
+            ),
             gender: user.me?.gender || GENDERS[0].name,
-            country: user.me?.country || COUNTRIES[0].name,
+            country: user.me?.country || COUNTRIES[216].name,
             discord: user.me?.discord || '',
             twitter: user.me?.twitter || '',
             facebook: user.me?.facebook || '',
@@ -71,7 +74,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             steam: user.me?.steam || '',
             tiktok: user.me?.tiktok || '',
 
-            languages: userLanguage?.length ? userLanguage : [LANGUAGES[0]],
+            languages: userLanguage?.length ? userLanguage : [LANGUAGES[23]],
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
@@ -252,7 +255,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                 <div className='flex items-end justify-end'>
                   <Button
                     loading={formikProps.isSubmitting}
-                    text='Next'
+                    text='next'
+                    icon='caret-right'
                     type='button'
                     onClick={() => {
                       setStep(1);

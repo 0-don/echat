@@ -10,10 +10,11 @@ const main = async () => {
     synchronize: true,
     entities: [ENTITIES],
   });
-  conn
+  conn;
   // await conn.createQueryBuilder().delete().from(User).execute()
-  await User.delete({});
+  await User.delete({ fake: true });
 
   console.log('finished');
+  process.exit();
 };
 main();

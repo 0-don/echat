@@ -19,6 +19,7 @@ const main = async () => {
   for (let i = 0; i < 10; i++) {
     const user = {
       type: 'user',
+      fake: true,
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
@@ -49,20 +50,29 @@ const main = async () => {
     let images = [];
     images.push({
       type: 'profile',
-      url: faker.image.imageUrl() + '?random=' + i + Math.random(),
-      publicId: `${Math.random()}`,
+      url: `${faker.image.imageUrl()}/${faker.datatype.uuid()}`.replace(
+        'http://',
+        'https://'
+      ),
+      publicId: `${faker.datatype.uuid()}`,
       userId,
     });
     images.push({
       type: 'cover',
-      url: faker.image.imageUrl() + '?random=' + i + Math.random(),
-      publicId: `${Math.random()}`,
+      url: `${faker.image.imageUrl()}/${faker.datatype.uuid()}`.replace(
+        'http://',
+        'https://'
+      ),
+      publicId: `${faker.datatype.uuid()}`,
       userId,
     });
     images.push({
       type: 'secondary',
-      url: faker.image.imageUrl() + '?random=' + i + Math.random(),
-      publicId: `${Math.random()}`,
+      url: `${faker.image.imageUrl()}/${faker.datatype.uuid()}`.replace(
+        'http://',
+        'https://'
+      ),
+      publicId: `${faker.datatype.uuid()}`,
       userId,
     });
 

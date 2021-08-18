@@ -9,7 +9,7 @@
     "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.7",
+    "@apollo/client": "^3.4.8",
     "apollo-link-ws": "^1.0.20",
     "apollo-upload-client": "^16.0.0",
     "dayjs": "^1.10.6",
@@ -17,7 +17,7 @@
     "gql": "^1.1.2",
     "graphql": "^15.5.1",
     "immer": "^9.0.5",
-    "next": "latest", 
+    "next": "^11.1.0",
     "next-apollo": "^5.0.6",
     "react": "^17.0.2",
     "react-datepicker": "^4.2.0",
@@ -25,14 +25,13 @@
     "react-dropzone": "^11.3.4",
     "subscriptions-transport-ws": "^0.9.19",
     "ws": "^8.1.0",
-    "zustand": "^3.5.7" 
+    "zustand": "^3.5.7"
   },
   "browser": {
     "fs": false,
     "path": false,
     "os": false
-  
-  }, 
+  },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",

@@ -35,7 +35,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
       <div className='flex justify-end my-3 '>
         <GameModal />
       </div>
-      <div className='grid  grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6'>
+      <div className='grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
         {data?.getUserGame?.map(
           ({ __typename, id, per, price, game, status, gameId }) => (
             <div
@@ -68,7 +68,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
                 <div className='flex justify-between mt-auto'>
                   <Button
                     text='edit'
-                    className='py-1'
+                    className='py-1 px-1.5'
                     icon='pen-alt'
                     onClick={() => {
                       setGameId(game.id);
@@ -77,7 +77,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
                   />
                   <Button
                     text='delete'
-                    className='py-1'
+                    className='py-1 px-1.5'
                     icon='trash-alt'
                     onClick={async () => {
                       await deleteUserGame({
@@ -98,7 +98,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
       </div>
       <div className='flex justify-end text-white dark:text-dark-dark'>
         {data?.getUserGame?.length && (
-          <Button text='Next' type='button' onClick={() => setStep(2)} />
+          <Button text='next' type='button' icon="caret-right" onClick={() => setStep(2)} />
         )}
       </div>
     </>

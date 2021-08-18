@@ -40,7 +40,7 @@ const ForgotPassword: React.FC = ({}) => {
                   />
                 <Button
                   loading={isSubmitting}
-                  text='Login'
+                  text='login'
                   type='submit'
                 />
                 </Form>

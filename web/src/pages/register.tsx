@@ -14,7 +14,7 @@ const Register: React.FC<registerProps> = ({}) => {
   const [register] = useRegisterMutation();
   return (
     <Wrapper navbar>
-      <FormHeader text="Register your account"/>
+      <FormHeader text='Register your account' />
 
       <div className='mt-8  sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='bg-white dark:text-white dark:bg-dark py-8 px-4 shadow sm:rounded-lg sm:px-10'>
@@ -45,29 +45,28 @@ const Register: React.FC<registerProps> = ({}) => {
             }}
           >
             {({ values, handleChange, isSubmitting }) => (
-              <Form className='space-y-4'> 
+              <Form className='space-y-4'>
                 <InputField
                   name='username'
                   placeholder='username'
                   label='Username'
+                  autoComplete='on'
                 />
                 <InputField
                   name='email'
-                  placeholder='email' 
+                  placeholder='email'
                   label='Email'
                   type='email'
+                  autoComplete='on'
                 />
                 <InputField
                   name='password'
                   placeholder='password'
                   label='Password'
                   type='password'
+                  autoComplete='on'
                 />
-                <Button
-                  loading={isSubmitting}
-                  text='Login'
-                  type='submit'
-                />
+                <Button loading={isSubmitting} text='login' type='submit' />
               </Form>
             )}
           </Formik>

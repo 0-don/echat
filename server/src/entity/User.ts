@@ -20,6 +20,9 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ nullable: true, default: false })
+  fake: boolean;
+
   @Field(() => String, { nullable: true })
   @Column({ default: 'guest', nullable: true })
   type: 'guest' | 'user' | string;

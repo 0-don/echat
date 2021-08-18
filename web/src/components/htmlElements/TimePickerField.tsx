@@ -1,7 +1,7 @@
 import { useFormikContext } from 'formik';
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import { UpdatedUser } from 'src/generated/graphql';
+import { UpdatedUser } from '../../generated/graphql';
 
 type TimePickerFieldProps = {
   label: 'to' | 'from' | string;
@@ -9,7 +9,7 @@ type TimePickerFieldProps = {
   maxTime?: Date;
   dayName?: string;
 };
-
+ 
 export type Schedule = {
   __typename?: string;
   id: number;

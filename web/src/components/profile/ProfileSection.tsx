@@ -6,14 +6,14 @@ import {
   COUNTRIES,
   LANGUAGES,
   SCHEDULES,
-} from 'src/constants';
+} from '../../constants';
 import {
   MeDocument,
   UpdatedUser,
   useMeQuery,
   useUpdateMeMutation,
-} from 'src/generated/graphql';
-import useFormStore from 'src/store/FormStore';
+} from '../../generated/graphql';
+import useFormStore from '../../store/FormStore';
 import {
   Button,
   InputField,

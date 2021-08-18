@@ -203,7 +203,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     Schedule
                   </h1>
 
-                  <div className='flex flex-wrap items-center'>
+                  <div className='flex flex-wrap items-center '>
                     {formikProps.values.schedules.map(({ available, name, to, from }) => (
                       <Fragment key={name}>
                         <div className='w-2/12'>{name}</div>

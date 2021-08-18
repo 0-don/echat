@@ -37,7 +37,7 @@ export const TimePickerField: React.FC<TimePickerFieldProps> = ({
       >
         {/* {label} */}
       </label>
-      <div className='mt-1 relative rounded-md shadow-sm'>
+      <div className='mt-1 relative rounded-md shadow-sm '>
         <DatePicker
           selected={getTime ? getTime[label] : new Date()}
           onChange={(date) =>

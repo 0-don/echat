@@ -16,7 +16,7 @@ export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {
   const [changeUserType] = useChangeUserTypeMutation();
   return (
     <>
-      <div className='bg-white text-center dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+      <div className='mt-5 bg-white text-center dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
         <div className='flex  justify-center'>
           <Image src={rocket} height={150} width={150} />
         </div>
@@ -27,13 +27,15 @@ export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {
           will be in touch with next steps. If you have any questions, please
           contact support.
         </p>
-        <Button
-          text='Submit Form'
-          onClick={async () => {
-            await changeUserType();
-            router.push('/');
-          }}
-        />
+        <div className='flex items-end justify-end'>
+          <Button
+            text='Submit Form'
+            onClick={async () => {
+              await changeUserType();
+              router.push('/');
+            }}
+          />
+        </div>
       </div>
     </>
   );

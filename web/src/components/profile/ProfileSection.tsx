@@ -1,5 +1,5 @@
 import { Form, Formik, FormikProps } from 'formik';
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   // AGES,
   GENDERS,
@@ -35,8 +35,6 @@ export type ProfileSectionProps = {
 export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
 }) => {
-
-
   const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
@@ -87,8 +85,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
         >
           {(formikProps) => (
             <>
-              <Form className='space-y-6 mt-5'>
-                <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+              <Form className='mt-5'>
+                <div className='bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
                   <h1 className='text-gray-900 dark:text-white mb-3'>
                     Profile
                   </h1>
@@ -138,134 +136,130 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
                 <ImageSection />
 
-                <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
-                  <h1 className='text-gray-900 dark:text-white mb-3'>
-                    Social Media
-                  </h1>
-                  <div className='flex'>
-                    <div className='w-6/12 p-2'>
-                      <InputField
-                        name='discord'
-                        value={formikProps.values.discord}
-                        label='Discord username'
-                        brandIcon='discord'
-                      />
-                      <InputField
-                        name='facebook'
-                        value={formikProps.values.facebook}
-                        label='Facebook username'
-                        brandIcon='facebook'
-                      />
-                      <InputField
-                        name='instagram'
-                        value={formikProps.values.instagram}
-                        label='Instagram username'
-                        brandIcon='instagram'
-                      />
-                      <InputField
-                        name='steam'
-                        value={formikProps.values.steam}
-                        label='Steam username'
-                        brandIcon='steam'
-                      />
-                    </div>
-                    <div className='w-6/12 p-2'>
-                      <InputField
-                        name='twitter'
-                        value={formikProps.values.twitter}
-                        label='Twitter Username'
-                        brandIcon='twitter'
-                      />
-                      <InputField
-                        name='snapchat'
-                        value={formikProps.values.snapchat}
-                        label='Snapchat Username'
-                        brandIcon='snapchat'
-                      />
-                      <InputField
-                        name='twitch'
-                        value={formikProps.values.twitch}
-                        label='Twitch Username'
-                        brandIcon='twitch'
-                      />
-                      <InputField
-                        name='tiktok'
-                        value={formikProps.values.tiktok}
-                        label='TikTok Username'
-                        brandIcon='tiktok'
-                      />
-                    </div>
-                  </div>
-                </div>
+                <div className='flex md:flex-nowrap flex-wrap-reverse mt-5'>
+                  <div className='md:w-6/12 w-full md:mr-2.5 bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+                    <h1 className='text-gray-900 dark:text-white mb-3'>
+                      Schedule
+                    </h1>
 
-                <div className='bg-white dark:bg-dark dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
-                  <h1 className='text-gray-900 dark:text-white mb-3'>
-                    Schedule
-                  </h1>
+                    {formikProps.values.schedules.map(
+                      ({ available, name, to, from }) => (
+                        <div key={name} className='flex items-center '>
+                          <div className='w-3/12'>{name}</div>
 
-                  <div className='flex flex-wrap items-center '>
-                    {formikProps.values.schedules.map(({ available, name, to, from }) => (
-                      <Fragment key={name}>
-                        <div className='w-2/12'>{name}</div>
-                        <div className='w-3/12'>
-                          {/* <DropdownField
-                            {...formikProps}
-                            fieldKey='from'
-                            fieldName='schedules'
-                            dayName={name}
-                            list={HOURS}
-                          /> */}
-                          <TimePickerField
-                            label='from'
-                            maxTime={to}
-                            dayName={name}
-                          />
-                        </div>
-                        <div className='w-1/12 text-center'>to</div>
-                        <div className='w-3/12'>
-                          {/* <DropdownField
-                            {...formikProps}
-                            fieldKey='to'
-                            fieldName='schedules'
-                            dayName={name}
-                            list={HOURS}
-                          /> */}
-                          <TimePickerField
-                            label='to'
-                            minTime={from}
-                            dayName={name}
-                          />
-                        </div>
-                        <div className='w-3/12  flex items-center justify-center'>
-                          {typeof available == 'boolean' && (
-                            <SwitchField
-                              checked={available}
-                              onChange={() => {
-                                formikProps.setFieldValue(
-                                  'schedules',
-                                  formikProps.values.schedules.map((day) =>
-                                    day.name === name
-                                      ? { ...day, available: !day.available }
-                                      : day
-                                  )
-                                );
-                              }}
+                          <div className={`w-3/12`}>
+                            <TimePickerField
+                              readOnly={!available}
+                              label='from'
+                              maxTime={to}
+                              dayName={name}
                             />
-                          )}
-                          Available
+                          </div>
+
+                          <div className='w-1/12 text-center'>to</div>
+
+                          <div className='w-3/12'>
+                            <TimePickerField
+                              readOnly={!available}
+                              label='to'
+                              minTime={from}
+                              dayName={name}
+                            />
+                          </div>
+
+                          <div className='w-2/12 flex items-center justify-center'>
+                            {typeof available == 'boolean' && (
+                              <SwitchField
+                                checked={available}
+                                onChange={() => {
+                                  formikProps.setFieldValue(
+                                    'schedules',
+                                    formikProps.values.schedules.map((day) =>
+                                      day.name === name
+                                        ? { ...day, available: !day.available }
+                                        : day
+                                    )
+                                  );
+                                }}
+                              />
+                            )}
+                          </div>
                         </div>
-                      </Fragment>
-                    ))}
+                      )
+                    )}
+                  </div>
+                  <div className='md:w-6/12 w-full md:ml-2.5 dark:bg-dark bg-white dark:text-white  shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5'>
+                    <h1 className='text-gray-900 dark:text-white mb-3'>
+                      Social Media
+                    </h1>
+                    <div className='flex'>
+                      <div className='w-6/12 p-2'>
+                        <InputField
+                          name='discord'
+                          value={formikProps.values.discord}
+                          label='Discord'
+                          brandIcon='discord'
+                        />
+                        <InputField
+                          name='facebook'
+                          value={formikProps.values.facebook}
+                          label='Facebook'
+                          brandIcon='facebook'
+                        />
+                        <InputField
+                          name='instagram'
+                          value={formikProps.values.instagram}
+                          label='Instagram'
+                          brandIcon='instagram'
+                        />
+                        <InputField
+                          name='steam'
+                          value={formikProps.values.steam}
+                          label='Steam'
+                          brandIcon='steam'
+                        />
+                      </div>
+                      <div className='w-6/12 p-2'>
+                        <InputField
+                          name='twitter'
+                          value={formikProps.values.twitter}
+                          label='Twitter'
+                          brandIcon='twitter'
+                        />
+                        <InputField
+                          name='snapchat'
+                          value={formikProps.values.snapchat}
+                          label='Snapchat'
+                          brandIcon='snapchat'
+                        />
+                        <InputField
+                          name='twitch'
+                          value={formikProps.values.twitch}
+                          label='Twitch'
+                          brandIcon='twitch'
+                        />
+                        <InputField
+                          name='tiktok'
+                          value={formikProps.values.tiktok}
+                          label='TikTok'
+                          brandIcon='tiktok'
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <Button
-                  loading={formikProps.isSubmitting}
-                  text='Next'
-                  type='button'
-                  onClick={() => {
-                    setStep(1);
-                  }}
-                />
+
+                <div className='flex items-end justify-end'>
+                  <Button
+                    loading={formikProps.isSubmitting}
+                    text='Next'
+                    type='button'
+                    onClick={() => {
+                      setStep(1);
+                    }}
+                  />
+                </div>
+
                 <FormikAutoSubmit />
               </Form>
             </>

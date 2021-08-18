@@ -50,12 +50,14 @@ const Login: React.FC<registerProps> = ({}) => {
                   name='usernameOrEmail'
                   placeholder='username or email'
                   label='Username or Email'
+                  autoComplete="on"
                 />
                 <InputField
                   name='password'
                   placeholder='password'
                   label='Password'
                   type='password'
+                  autoComplete="on"
                 />
 
                 <div className='text-sm'>
@@ -68,7 +70,7 @@ const Login: React.FC<registerProps> = ({}) => {
 
                 <Button
                   loading={isSubmitting}
-                  text='Login'
+                  text='login'
                   type='submit'
                 />
               </Form>

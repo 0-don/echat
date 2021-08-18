@@ -12,7 +12,7 @@ export const GameModal: React.FC = () => {
 
   return (
     <>
-      <Button text='add game' onClick={() => setOpen(!open)} />
+      <Button text='add game' icon='gamepad' onClick={() => setOpen(!open)} />
       <Modal open={open} setOpen={setOpen}>
         <div className='inline-block align-bottom bg-white dark:bg-dark rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full sm:p-6'>
           <button></button>
@@ -34,15 +34,16 @@ export const GameModal: React.FC = () => {
                   >
                     <div className='flex-1 flex flex-col text-purple'>
                       <div className='hover:bg-purple'>
-                      <img
-                        className='flex-shrink-0 mx-auto hover:border hover:border-purple transition duration-200 ease-in-out hover:transform hover:translate-x-4 hover:translate-y-4'
-                        src={boxArtUrl}
-                        alt='' 
-                      /></div>
+                        <img
+                          className='flex-shrink-0 mx-auto hover:border hover:border-purple transition duration-200 ease-in-out hover:transform hover:translate-x-4 hover:translate-y-4'
+                          src={boxArtUrl}
+                          alt=''
+                        />
+                      </div>
                       <h3 className='mt-6 text-black  dark:text-white text-sm font-medium'>
                         {name}
-                      </h3> 
-                    </div> 
+                      </h3>
+                    </div>
                   </li>
                 )
               )

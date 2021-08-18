@@ -252,7 +252,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                 <div className='flex items-end justify-end'>
                   <Button
                     loading={formikProps.isSubmitting}
-                    text='Next'
+                    text='next'
+                    icon="caret-right"
                     type='button'
                     onClick={() => {
                       setStep(1);

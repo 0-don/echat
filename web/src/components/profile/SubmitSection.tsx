@@ -4,7 +4,6 @@ import React from 'react';
 import { useChangeUserTypeMutation } from 'src/generated/graphql';
 import { Button } from '../htmlElements';
 import { useRouter } from 'next/router';
-import rocket from '/public/undraw_To_the_stars_qhyy.svg';
 import gaming from '/public/gaming.svg';
 
 interface SubmitSectionProps {

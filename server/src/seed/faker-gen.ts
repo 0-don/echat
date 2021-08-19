@@ -90,10 +90,11 @@ const main = async () => {
       .returning('*')
       .execute();
 
-    console.log(i);
     for (let x = 0; x < getRandomBetween(1, 4); x++) {
       let game = games[getRandomBetween(0, gamesLength)];
-      console.log(game.platforms)
+      if (!game.platforms) {
+        console.log(game);
+      }
       const userGame = {
         status: true,
         level: 'Newbie',
@@ -108,6 +109,8 @@ const main = async () => {
       };
       await UserGame.insert(userGame);
     }
+
+    console.log(i + 1);
   }
 
   console.log('finished');

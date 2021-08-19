@@ -215,6 +215,8 @@ const getFullGameData = async (name: string) => {
 };
 
 export const getGames = async () => {
+  fs.unlinkSync('games.json');
+
   axios.defaults.headers.common[
     'Authorization'
   ] = `Bearer ${await getAccessToken()}`;

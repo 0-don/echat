@@ -4,7 +4,7 @@ import { createConnection } from 'typeorm';
 import { ENTITIES } from '../constants';
 import { Game } from '../entity/Game';
 import { GameImage } from '../entity/GameImage';
-// import { getGames } from './getGames';
+import { getGames } from './getGames';
 import { log } from 'console';
 
 export interface Image {
@@ -29,7 +29,9 @@ export interface Games {
 }
 
 const main = async () => {
-  // await getGames();
+  if (process.env.CLIENT_ID) {
+    await getGames();
+  }
 
   const data = fs.readFileSync('games.json', 'utf-8');
 

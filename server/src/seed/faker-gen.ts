@@ -6,6 +6,7 @@ import { Image } from '../entity/Image';
 import { ENTITIES } from '../constants';
 import { coinFlip, getRandomBetween } from '../utils';
 import { Game } from '../entity/Game';
+import { UserGame } from '../entity/UserGame';
 
 const main = async () => {
   const conn = await createConnection({
@@ -91,23 +92,21 @@ const main = async () => {
 
     console.log(i);
     for (let x = 0; x < getRandomBetween(1, 4); x++) {
-      console.log(getRandomBetween(0, gamesLength))
       let game = games[getRandomBetween(0, gamesLength)];
-      console.log(game)
+      console.log(game.platforms)
       const userGame = {
         status: true,
         level: 'Newbie',
-        platforms: game?.platforms,
+        platforms: game.platforms ? game.platforms : undefined,
         description: coinFlip() ? faker.lorem.text() : undefined,
         price: getRandomBetween(1, 10),
+        userId,
+        gameId: game.id,
         per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
           getRandomBetween(0, 4)
         ],
-        userId,
-        gameId: game.id,
       };
-      await Game.insert(userGame);
-      console.log(`x: ${x}`);
+      await UserGame.insert(userGame);
     }
   }
 

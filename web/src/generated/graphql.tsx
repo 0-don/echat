@@ -256,7 +256,7 @@ export type UserGame = {
   id: Scalars['Int'];
   status: Scalars['Boolean'];
   level: Scalars['String'];
-  platforms: Scalars['JSON'];
+  platforms?: Maybe<Scalars['JSON']>;
   description?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   per: Scalars['String'];

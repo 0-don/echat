@@ -229,7 +229,7 @@ export const getGames = async () => {
       log(`Download ${popularity}/${topGames.length}: ${name}`);
       const game = await getFullGameData(name);
 
-      if (!game) {
+      if (!game || !game.platforms?.length) {
         continue;
       }
 

@@ -27,6 +27,7 @@ const Login: React.FC<registerProps> = ({}) => {
             onSubmit={async (values, { setErrors }) => {
               const response = await login({
                 variables: values,
+                // refetchQueries: [MeDocument]
                 update: (cache, { data }) => {
                   cache.writeQuery<MeQuery>({
                     query: MeDocument,
@@ -41,7 +42,7 @@ const Login: React.FC<registerProps> = ({}) => {
                 setErrors(toErrorMap(response.data.login.errors));
               } else if (response.data?.login.user) {
                 router.push('/');
-              } 
+              }
             }}
           >
             {({ values, handleChange, isSubmitting }) => (
@@ -50,29 +51,25 @@ const Login: React.FC<registerProps> = ({}) => {
                   name='usernameOrEmail'
                   placeholder='username or email'
                   label='Username or Email'
-                  autoComplete="on"
+                  autoComplete='on'
                 />
                 <InputField
                   name='password'
                   placeholder='password'
                   label='Password'
                   type='password'
-                  autoComplete="on"
+                  autoComplete='on'
                 />
 
                 <div className='text-sm'>
                   <NextLink href='/forgot-password'>
                     <a className='font-medium text-purple hover:text-purple-dark'>
-                       Forgot your password?
+                      Forgot your password?
                     </a>
                   </NextLink>
                 </div>
 
-                <Button
-                  loading={isSubmitting}
-                  text='login'
-                  type='submit'
-                />
+                <Button loading={isSubmitting} text='login' type='submit' />
               </Form>
             )}
           </Formik>

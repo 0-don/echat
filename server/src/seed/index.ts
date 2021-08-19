@@ -4,6 +4,8 @@ import faker from 'faker';
 import { User } from '../entity/User';
 import { Image } from '../entity/Image';
 import { ENTITIES } from '../constants';
+import { coinFlip, getRandomBetween } from '../utils';
+import { Game } from '../entity/Game';
 
 const main = async () => {
   const conn = await createConnection({
@@ -14,8 +16,11 @@ const main = async () => {
     entities: [ENTITIES],
   });
 
-  await User.delete({});
+  // await User.delete({});
 
+  const games = await Game.find({ order: { popularity: 'ASC' } });
+  const gamesLength = games.length;
+  gamesLength;
   for (let i = 0; i < 10; i++) {
     const user = {
       type: 'user',
@@ -23,18 +28,18 @@ const main = async () => {
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      description: faker.lorem.text(),
-      age: faker.datatype.datetime(),
-      gender: faker.name.gender(),
-      country: faker.address.country(),
-      discord: faker.internet.userName(),
-      twitter: faker.internet.userName(),
-      facebook: faker.internet.userName(),
-      snapchat: faker.internet.userName(),
-      instagram: faker.internet.userName(),
-      twitch: faker.internet.userName(),
-      steam: faker.internet.userName(),
-      tiktok: faker.internet.userName(),
+      description: coinFlip() ? faker.lorem.text() : undefined,
+      age: coinFlip() ? faker.datatype.datetime() : undefined,
+      gender: coinFlip() ? faker.name.gender() : undefined,
+      country: coinFlip() ? faker.internet.userName() : undefined,
+      discord: coinFlip() ? faker.internet.userName() : undefined,
+      twitter: coinFlip() ? faker.internet.userName() : undefined,
+      facebook: coinFlip() ? faker.internet.userName() : undefined,
+      snapchat: coinFlip() ? faker.internet.userName() : undefined,
+      instagram: coinFlip() ? faker.internet.userName() : undefined,
+      twitch: coinFlip() ? faker.internet.userName() : undefined,
+      steam: coinFlip() ? faker.internet.userName() : undefined,
+      tiktok: coinFlip() ? faker.internet.userName() : undefined,
     };
 
     const dbUser = await conn
@@ -83,8 +88,29 @@ const main = async () => {
       .values(images)
       .returning('*')
       .execute();
+
     console.log(i);
+    for (let x = 0; x < getRandomBetween(1, 4); x++) {
+      console.log(getRandomBetween(0, gamesLength))
+      let game = games[getRandomBetween(0, gamesLength)];
+      console.log(game)
+      const userGame = {
+        status: true,
+        level: 'Newbie',
+        platforms: game?.platforms,
+        description: coinFlip() ? faker.lorem.text() : undefined,
+        price: getRandomBetween(1, 10),
+        per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
+          getRandomBetween(0, 4)
+        ],
+        userId,
+        gameId: game.id,
+      };
+      await Game.insert(userGame);
+      console.log(`x: ${x}`);
+    }
   }
+
   console.log('finished');
 };
 main();

@@ -62,7 +62,7 @@
     "migration": "npx typeorm migration:create -n LanguagesMigration -d src/migration",
     "games-server": "ts-node src/game/gamesMigration.ts",
     "faker-gen": "nodemon --exec ts-node src/seed/index.ts",
-    "delete-all": "nodemon --exec ts-node src/seed/deleteAllData.ts"
+    "delete-all": "ts-node src/seed/deleteAllData.ts"
   },
   "nodemonConfig": {
     "ignore": [

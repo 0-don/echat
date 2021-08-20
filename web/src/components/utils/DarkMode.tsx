@@ -13,7 +13,7 @@ export const DarkMode: React.FC = () => {
     <SwitchField
       checked={hasHydrated && theme}
       onChange={changeTheme}
-      icons={['🌙', '☀️']}
+    
     />
   );
 };

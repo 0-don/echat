@@ -29,7 +29,9 @@ export interface Games {
 }
 
 const main = async () => {
-  await getGames();
+  if (process.env.CLIENT_ID) {
+    await getGames();
+  }
 
   const data = fs.readFileSync('games.json', 'utf-8');
 

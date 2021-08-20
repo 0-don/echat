@@ -40,35 +40,38 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
           ({ __typename, id, per, price, game, status, gameId }) => (
             <div
               key={game.boxArtUrl}
-              className='bg-white dark:bg-dark dark:text-white flex flex-col select-none mx-1 rounded-xl'
+              className='bg-white dark:bg-dark dark:text-white flex flex-col select-none mx-1'
             >
-              <h1 className='text-base my-1 font-semibold text-center text-black dark:text-white'>
+              <h1 className='font-semibold py-1 text-center text-black dark:text-white'>
                 {game.name}
               </h1>
-              <img src={game.boxArtUrl} className='h-auto' />
-              <div className='flex sm:flex-1 flex-col gap-2 p-1 '>
-                <div className='flex mt-auto items-center justify-between text-sm'>
-                  <div className='flex items-center justify-center'>
-                    <SwitchField
-                      checked={status}
-                      onChange={async () => {
-                        await switchUserGameStatus({
-                          variables: { id },
-                          refetchQueries: [{ query: GetUserGameDocument }],
-                        });
-                      }}
-                    />
-                    Status
-                  </div>
-                  <p className='text-black dark:text-white text-center'>
-                    <span className='text-green-500'>${price}</span> per {per}
-                  </p>
+              <div className='relative'>
+                <img
+                  src={game.boxArtUrl}
+                  className={`w-full ${!status && 'opacity-50'}`}
+                />
+                <div className='absolute top-0 right-0 bg-dark rounded-full mt-0.5 mr-0.5'>
+                  <SwitchField
+                    checked={status}
+                    onChange={async () => {
+                      await switchUserGameStatus({
+                        variables: { id },
+                        refetchQueries: [{ query: GetUserGameDocument }],
+                      });
+                    }}
+                  />
                 </div>
+              </div>
+
+              <div className='flex sm:flex-1 flex-col gap-2'>
+                <p className='text-black dark:text-white text-center mt-1'>
+                  <span className='text-green-500'>${price}</span> per {per}
+                </p>
 
                 <div className='flex justify-between mt-auto'>
                   <Button
                     text='edit'
-                    className='py-1 px-1.5'
+                    className='py-1 w-6/12 rounded-none'
                     icon='pen-alt'
                     onClick={() => {
                       setGameId(game.id);
@@ -77,7 +80,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
                   />
                   <Button
                     text='delete'
-                    className='py-1 px-1.5'
+                    className='py-1 w-6/12 rounded-none'
                     icon='trash-alt'
                     onClick={async () => {
                       await deleteUserGame({
@@ -98,7 +101,12 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
       </div>
       <div className='flex justify-end text-white dark:text-dark-dark'>
         {data?.getUserGame?.length && (
-          <Button text='next' type='button' icon="caret-right" onClick={() => setStep(2)} />
+          <Button
+            text='next'
+            type='button'
+            icon='caret-right'
+            onClick={() => setStep(2)}
+          />
         )}
       </div>
     </>

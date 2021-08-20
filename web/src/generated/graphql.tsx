@@ -276,7 +276,7 @@ export type UserGame = {
   id: Scalars['Int'];
   status: Scalars['Boolean'];
   level: Scalars['String'];
-  platforms: Scalars['JSON'];
+  platforms?: Maybe<Scalars['JSON']>;
   description?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   per: Scalars['String'];
@@ -299,7 +299,14 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
+  & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+  & { languages?: Maybe<Array<(
+    { __typename?: 'Language' }
+    & Pick<Language, 'id' | 'name'>
+  )>>, schedules?: Maybe<Array<(
+    { __typename?: 'Schedule' }
+    & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
+  )>> }
 );
 
 export type RegularUserResponseFragment = (
@@ -535,7 +542,31 @@ export const RegularErrorFragmentDoc = gql`
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
+  type
   username
+  gender
+  country
+  age
+  description
+  discord
+  twitter
+  facebook
+  snapchat
+  instagram
+  twitch
+  steam
+  tiktok
+  languages {
+    id
+    name
+  }
+  schedules {
+    id
+    name
+    from
+    to
+    available
+  }
 }
     `;
 export const RegularUserResponseFragmentDoc = gql`

@@ -215,6 +215,8 @@ const getFullGameData = async (name: string) => {
 };
 
 export const getGames = async () => {
+  fs.unlinkSync('games.json');
+
   axios.defaults.headers.common[
     'Authorization'
   ] = `Bearer ${await getAccessToken()}`;
@@ -229,7 +231,7 @@ export const getGames = async () => {
       log(`Download ${popularity}/${topGames.length}: ${name}`);
       const game = await getFullGameData(name);
 
-      if (!game) {
+      if (!game || !game.platforms?.length) {
         continue;
       }
 

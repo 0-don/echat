@@ -9,8 +9,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { GameImage } from './GameImage';
-import { UserGame } from './UserGame';
+import { ServiceImage } from './ServiceImage';
+import { UserService } from './UserService';
 
 type List = {
   id: number;
@@ -19,10 +19,14 @@ type List = {
 
 @ObjectType()
 @Entity()
-export class Game extends BaseEntity {
+export class Service extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Field(() => String)
+  @Column()
+  type: string;
 
   @Field(() => Int)
   @Column({ unique: true })
@@ -60,19 +64,19 @@ export class Game extends BaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   multiplayer_modes?: string[];
 
-  // GameImage
-  @OneToMany(() => GameImage, (gameImage) => gameImage.game, {
+  // ServiceImage
+  @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.service, {
     cascade: true,
   })
-  @Field(() => [GameImage], { nullable: true })
-  images: GameImage[];
+  @Field(() => [ServiceImage], { nullable: true })
+  images: ServiceImage[];
 
-  // UserGame
-  @OneToMany(() => UserGame, (userGame) => userGame.game, {
+  // UserService
+  @OneToMany(() => UserService, (userService) => userService.service, {
     cascade: true,
   })
-  @Field(() => UserGame, { nullable: true })
-  userGame: UserGame;
+  @Field(() => UserService, { nullable: true })
+  userService: UserService;
 
   @CreateDateColumn()
   created_at: Date;

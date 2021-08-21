@@ -11,10 +11,10 @@ import {
   Root,
   UseMiddleware,
 } from 'type-graphql';
-import { UserGame } from '../entity/UserGame';
+import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
-import { Game } from '../entity/Game';
+import { Service } from '../entity/Service';
 
 @InputType()
 export class Dropdown {
@@ -26,9 +26,9 @@ export class Dropdown {
 }
 
 @InputType()
-export class UpsertUserGame {
+export class UpsertUserService {
   @Field(() => Int)
-  gameId: number;
+  serviceId: number;
   @Field()
   level: string;
   @Field(() => [Dropdown])
@@ -41,11 +41,11 @@ export class UpsertUserGame {
   per: string;
 }
 
-@Resolver(UserGame)
-export class UserGameResolver {
-  @FieldResolver(() => Game)
-  game(@Root() userGame: UserGame, @Ctx() { gameLoader }: MyContext) {
-    return gameLoader.load(userGame.gameId);
+@Resolver(UserService)
+export class UserServiceResolver {
+  @FieldResolver(() => Service)
+  service(@Root() userService: UserService, @Ctx() { serviceLoader }: MyContext) {
+    return serviceLoader.load(userService.serviceId);
   }
 
   @Mutation(() => Boolean)
@@ -55,31 +55,31 @@ export class UserGameResolver {
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
-    const userGame = await UserGame.findOne({ id, userId });
-    await UserGame.update({ id, userId }, { status: !userGame?.status });
+    const userGame = await UserService.findOne({ id, userId });
+    await UserService.update({ id, userId }, { status: !userGame?.status });
     return true;
   }
 
-  @Query(() => [UserGame], { nullable: true })
+  @Query(() => [UserService], { nullable: true })
   @UseMiddleware(isAuth)
-  getUserGame(@Ctx() { req }: MyContext) {
+  getUserService(@Ctx() { req }: MyContext) {
     const { userId } = req.session;
-    return UserGame.find({ order: { gameId: 'ASC' }, where: { userId } });
+    return UserService.find({ order: { serviceId: 'ASC' }, where: { userId } });
   }
 
   @Mutation(() => Boolean)
-  async upsertUserGame(
-    @Arg('options') options: UpsertUserGame,
+  async upsertUserService(
+    @Arg('options') options: UpsertUserService,
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
 
-    let userGame = await UserGame.findOne({ gameId: options.gameId, userId });
+    let userService = await UserService.findOne({ serviceId: options.serviceId, userId });
 
-    if (!userGame) {
-      await UserGame.create({ ...options, userId }).save();
+    if (!userService) {
+      await UserService.create({ ...options, userId }).save();
     } else {
-      await UserGame.update({ gameId: options.gameId, userId }, { ...options });
+      await UserService.update({ serviceId: options.serviceId, userId }, { ...options });
     }
 
     return true;
@@ -87,13 +87,13 @@ export class UserGameResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async deleteUserGame(
+  async deleteUserService(
     @Arg('id', () => Int) id: number,
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
 
-    await UserGame.delete({ id, userId });
+    await UserService.delete({ id, userId });
 
     return true;
   }

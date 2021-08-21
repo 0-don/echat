@@ -2,8 +2,8 @@ import fs from 'fs';
 import 'dotenv/config';
 import { createConnection } from 'typeorm';
 import { ENTITIES } from '../constants';
-import { Game } from '../entity/Game';
-import { GameImage } from '../entity/GameImage';
+import { Service } from '../entity/Service';
+import { ServiceImage } from '../entity/ServiceImage';
 import { getGames } from './getGames';
 import { log } from 'console';
 
@@ -15,7 +15,7 @@ export interface Image {
   height: number;
 }
 
-export interface Games {
+export interface Services {
   twitchId: number;
   boxArtUrl: string;
   igdbId: number;
@@ -43,36 +43,36 @@ const main = async () => {
     entities: [ENTITIES],
   });
 
-  let games: Games[] = JSON.parse(data);
-  for (let game of games) {
-    log(`Upload ${game.popularity}/${games.length}: ${game.name}`);
-    let { images, ...gameData } = game;
+  let services: Services[] = JSON.parse(data);
+  for (let service of services) {
+    log(`Upload ${service.popularity}/${services.length}: ${service.name}`);
+    let { images, ...serviceData } = service;
 
-    let findGame;
-    findGame = await Game.findOne({ igdbId: gameData.igdbId });
-    if (!findGame) {
-      findGame = await conn
+    let findService;
+    findService = await Service.findOne({ igdbId: serviceData.igdbId });
+    if (!findService) {
+      findService = await conn
         .createQueryBuilder()
         .insert()
-        .into(Game)
-        .values(gameData)
+        .into(Service)
+        .values(serviceData)
         .returning('*')
         .execute();
     } else {
-      findGame = await conn
+      findService = await conn
         .createQueryBuilder()
-        .update(Game, gameData)
-        .where('igdbId = :igdbId', { igdbId: game.igdbId })
+        .update(Service, serviceData)
+        .where('igdbId = :igdbId', { igdbId: service.igdbId })
         .returning('*')
         .updateEntity(true)
         .execute();
     }
-    const gameId = findGame.raw[0].id;
+    const serviceId = findService.raw[0].id;
     if (images) {
-      images.forEach((image) => (image.gameId = gameId));
+      images.forEach((image) => (image.gameId = serviceId));
 
-      await GameImage.delete({ gameId });
-      await GameImage.insert(images);
+      await ServiceImage.delete({serviceId });
+      await ServiceImage.insert(images);
     }
   }
   process.exit();

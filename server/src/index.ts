@@ -15,16 +15,16 @@ import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
 
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';
+import { ServiceResolver } from './resolvers/ServiceResolver';
+import { UserServiceResolver } from './resolvers/UserServiceResolver';
 import {
   createUserLoader,
   createImageLoader,
   createLanguageLoader,
   createScheduleLoader,
-  createGameImageLoader,
+  createServiceImageLoader,
+  createServiceLoader,
 } from './utils/loaders';
-import { GameResolver } from './resolvers/GameResolver';
-import { UserGameResolver } from './resolvers/UserGameResolver';
-import { createGameLoader } from './utils/loaders/createGameLoader';
 
 const PgSession = connectPgSimple(session);
 
@@ -67,9 +67,14 @@ const PgSession = connectPgSimple(session);
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ImageResolver, GameResolver, UserGameResolver],
+      resolvers: [
+        UserResolver,
+        ImageResolver,
+        ServiceResolver,
+        UserServiceResolver,
+      ],
       validate: false,
-      dateScalarMode: "isoDate",
+      dateScalarMode: 'isoDate',
     }),
     context: ({ req, res }) => ({
       req,
@@ -78,8 +83,8 @@ const PgSession = connectPgSimple(session);
       imageLoader: createImageLoader(),
       languageLoader: createLanguageLoader(),
       scheduleLoader: createScheduleLoader(),
-      gameImageLoader: createGameImageLoader(),
-      gameLoader: createGameLoader(),
+      serviceImageLoader: createServiceImageLoader(),
+      serviceLoader: createServiceLoader(),
     }),
     uploads: false,
     introspection: true,

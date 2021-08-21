@@ -11,7 +11,7 @@ import {
 import { Image } from './Image';
 import { Schedule } from './Schedule';
 import { Language } from './Language';
-import { UserGame } from './UserGame';
+import { UserService } from './UserService';
 
 @ObjectType()
 @Entity()
@@ -103,9 +103,9 @@ export class User extends BaseEntity {
   images: Image[];
 
   // UserGame
-  @OneToMany(() => UserGame, (user) => user.user)
-  @Field(() => [UserGame], { nullable: true })
-  games: UserGame[];
+  @OneToMany(() => UserService, (userService) => userService.user)
+  @Field(() => [UserService], { nullable: true })
+  services: UserService[];
 
   // Schedule
   @OneToMany(() => Schedule, (schedule) => schedule.user)

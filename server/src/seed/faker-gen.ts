@@ -5,8 +5,8 @@ import { User } from '../entity/User';
 import { Image } from '../entity/Image';
 import { ENTITIES } from '../constants';
 import { coinFlip, getRandomBetween } from '../utils';
-import { Game } from '../entity/Game';
-import { UserGame } from '../entity/UserGame';
+import { Service } from '../entity/Service';
+import { UserService } from '../entity/UserService';
 
 const main = async () => {
   const conn = await createConnection({
@@ -19,9 +19,9 @@ const main = async () => {
 
   // await User.delete({});
 
-  const games = await Game.find({ order: { popularity: 'ASC' } });
-  const gamesLength = games.length;
-  gamesLength;
+  const services = await Service.find({ order: { popularity: 'ASC' } });
+  const servicesLength = services.length;
+  servicesLength;
   for (let i = 0; i < 10; i++) {
     const user = {
       type: 'user',
@@ -91,23 +91,23 @@ const main = async () => {
       .execute();
 
     for (let x = 0; x < getRandomBetween(1, 4); x++) {
-      let game = games[getRandomBetween(0, gamesLength)];
-      if (!game.platforms) {
-        console.log(game);
+      let service = services[getRandomBetween(0, servicesLength)];
+      if (!service.platforms) {
+        console.log(service);
       }
-      const userGame = {
+      const userService = {
         status: true,
         level: 'Newbie',
-        platforms: game.platforms ? game.platforms : undefined,
+        platforms: service.platforms ? service.platforms : undefined,
         description: coinFlip() ? faker.lorem.text() : undefined,
         price: getRandomBetween(1, 10),
         userId,
-        gameId: game.id,
+        serviceId: service.id,
         per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
           getRandomBetween(0, 4)
         ],
       };
-      await UserGame.insert(userGame);
+      await UserService.insert(userService);
     }
 
     console.log(i + 1);

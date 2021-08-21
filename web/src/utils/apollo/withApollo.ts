@@ -2,21 +2,24 @@ import { GRAPHQL_SERVER_URL } from "../../constants";
 import { withApollo } from "next-apollo";
 import { customFetch } from "./customFetch";
 
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { NextPageContext } from "next";
 import { createUploadLink } from "apollo-upload-client";
-import ws from "ws";
+import * as WebSocket from "ws";
+
 import { WebSocketLink } from "@apollo/client/link/ws";
-import { split, HttpLink } from "@apollo/client";
+import { split } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 
-const wsLink = new WebSocketLink({
-  uri: "ws://localhost:4001/subscriptions/graphql",
-  options: {
-    reconnect: true,
-  },
-  webSocketImpl: ws,
-});
+const wsLink =
+  typeof window === "undefined"
+    ? null
+    : new WebSocketLink({
+        uri: "ws://localhost:4001/graphql",
+        options: {
+          reconnect: true,
+        },
+      });
 
 const httpLink = createUploadLink({
   uri: GRAPHQL_SERVER_URL,
@@ -31,24 +34,27 @@ const httpLink = createUploadLink({
   // },
 });
 
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === "OperationDefinition" &&
-      definition.operation === "subscription"
-    );
-  },
-  wsLink,
-  httpLink
-);
+const splitLink = !(typeof window === "undefined")
+  ? split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      wsLink,
+      httpLink
+    )
+  : httpLink;
 
-const createClient = (ctx: NextPageContext) =>
-  new ApolloClient({
+const createClient = (ctx: NextPageContext) => {
+  return new ApolloClient({
     connectToDevTools: true,
     ssrMode: typeof window === "undefined",
     cache: new InMemoryCache(),
     link: splitLink,
   });
+};
 
 export default withApollo(createClient);

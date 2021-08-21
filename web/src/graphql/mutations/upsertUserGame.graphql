@@ -1,3 +1,0 @@
-mutation UpsertUserGame($options: UpsertUserGame!) {
-  upsertUserGame(options: $options)
-}

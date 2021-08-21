@@ -10,38 +10,40 @@ import {
 import { LEVELS, PERS } from 'src/constants';
 
 import {
-  GetUserGameDocument,
-  UpsertUserGame,
-  useGetAllGamesQuery,
-  useGetUserGameQuery,
-  useUpsertUserGameMutation,
+  GetUserServiceDocument,
+  UpsertUserService,
+  useGetAllServicesQuery,
+  useGetUserServiceQuery,
+  useUpsertUserServiceMutation,
 } from 'src/generated/graphql';
 
-interface UpsertGameModalProps {
-  gameId: number;
+interface UpsertServiceModalProps {
+  serviceId: number;
   open?: boolean;
   setOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
-  gameId,
+export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
+  serviceId,
   open,
   setOpen,
 }) => {
   const [localOpen, setLocalOpen] = useState(false);
-  const [upsertUserGame] = useUpsertUserGameMutation();
+  const [upsertUserGame] = useUpsertUserServiceMutation();
   const { data: allGamesData, loading: allGamesLoading } =
-    useGetAllGamesQuery();
+    useGetAllServicesQuery();
   const { data: userGameData, loading: userGameLoading } =
-    useGetUserGameQuery();
+    useGetUserServiceQuery();
 
   let game =
     !allGamesLoading &&
-    allGamesData?.getAllGames?.find((game) => game.id === gameId);
+    allGamesData?.getAllServices?.find((service) => service.id === serviceId);
 
   let userGame =
     !userGameLoading &&
-    userGameData?.getUserGame?.find((game) => game.gameId === gameId);
+    userGameData?.getUserService?.find(
+      (service) => service.serviceId === serviceId
+    );
 
   if (game && game?.images?.length && LEVELS?.length && PERS?.length) {
     return (
@@ -70,7 +72,7 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
             </h1>
             <Formik
               initialValues={{
-                gameId,
+                serviceId,
                 level:
                   userGame && userGame.level ? userGame.level : LEVELS[0].name,
                 platforms:
@@ -85,12 +87,12 @@ export const UpsertGameModal: React.FC<UpsertGameModalProps> = ({
               onSubmit={async (values) => {
                 await upsertUserGame({
                   variables: { options: values },
-                  refetchQueries: [{ query: GetUserGameDocument }],
+                  refetchQueries: [{ query: GetUserServiceDocument }],
                 });
                 setOpen === undefined ? setLocalOpen(false) : setOpen(false);
               }}
             >
-              {(formikProps: FormikProps<UpsertUserGame>) => (
+              {(formikProps: FormikProps<UpsertUserService>) => (
                 <Form className='p-5'>
                   <div className='sm:flex'>
                     <div className='sm:w-6/12 sm:mr-2.5'>

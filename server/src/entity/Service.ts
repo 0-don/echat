@@ -26,7 +26,7 @@ export class Service extends BaseEntity {
 
   @Field(() => String)
   @Column()
-  type: string;
+  type: 'Games' | 'Interactive Entertaiment' | 'More Lifestyles' | string;
 
   @Field(() => Int)
   @Column({ unique: true })

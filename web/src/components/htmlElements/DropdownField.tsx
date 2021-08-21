@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
 import { FormikProps } from 'formik';
-import { UpdatedUser, UpsertUserGame } from 'src/generated/graphql';
+import { UpdatedUser, UpsertUserService } from 'src/generated/graphql';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -13,7 +13,7 @@ type DropdownFieldProps = {
   fieldKey?: string;
   list: DropdownItem[];
   dayName?: string;
-} & FormikProps<UpdatedUser | UpsertUserGame>;
+} & FormikProps<UpdatedUser | UpsertUserService>;
 
 type DropdownItem = {
   __typename?: string;

@@ -50,7 +50,7 @@ export class UserServiceResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async switchUserGameStatus(
+  async switchUserServiceStatus(
     @Arg('id', () => Int) id: number,
     @Ctx() { req }: MyContext
   ) {

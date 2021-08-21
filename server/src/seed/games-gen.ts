@@ -4,11 +4,11 @@ import { createConnection } from 'typeorm';
 import { ENTITIES } from '../constants';
 import { Service } from '../entity/Service';
 import { ServiceImage } from '../entity/ServiceImage';
-import { getGames } from './getGames';
+// import { getGames } from './getGames';
 import { log } from 'console';
 
 export interface Image {
-  gameId: number;
+  serviceId: number;
   type: string;
   url: string;
   width: number;
@@ -29,9 +29,9 @@ export interface Services {
 }
 
 const main = async () => {
-  if (process.env.CLIENT_ID) {
-    await getGames();
-  }
+  // if (process.env.CLIENT_ID) {
+  //   await getGames();
+  // }
 
   const data = fs.readFileSync('games.json', 'utf-8');
 
@@ -55,13 +55,13 @@ const main = async () => {
         .createQueryBuilder()
         .insert()
         .into(Service)
-        .values(serviceData)
+        .values({ ...serviceData, type: 'Games' })
         .returning('*')
         .execute();
     } else {
       findService = await conn
         .createQueryBuilder()
-        .update(Service, serviceData)
+        .update(Service, { ...serviceData, type: 'Games' })
         .where('igdbId = :igdbId', { igdbId: service.igdbId })
         .returning('*')
         .updateEntity(true)
@@ -69,9 +69,9 @@ const main = async () => {
     }
     const serviceId = findService.raw[0].id;
     if (images) {
-      images.forEach((image) => (image.gameId = serviceId));
+      images.forEach((image) => (image.serviceId = serviceId));
 
-      await ServiceImage.delete({serviceId });
+      await ServiceImage.delete({ serviceId });
       await ServiceImage.insert(images);
     }
   }

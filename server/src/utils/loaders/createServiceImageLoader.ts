@@ -5,9 +5,9 @@ import { ServiceImage } from '../../entity/ServiceImage';
 export const createServiceImageLoader = () =>
   new DataLoader<{ serviceId: number }, ServiceImage[]>(async (keys) => {
     const serviceImages = await ServiceImage.find({ where: keys });
-    const gs = _.groupBy(serviceImages, 'gameId');
+    const gs = _.groupBy(serviceImages, 'serviceId');
 
     const sortedServiceImages = keys.map((k) => gs[k.serviceId] || []);
-
+    console.log(sortedServiceImages);
     return sortedServiceImages;
   });

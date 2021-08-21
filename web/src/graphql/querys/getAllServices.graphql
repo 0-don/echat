@@ -1,5 +1,5 @@
-query GetAllGames {
-  getAllGames {
+query GetAllServices {
+  getAllServices {
     id
     name
     popularity

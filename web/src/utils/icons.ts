@@ -18,9 +18,22 @@ import {
   faCheck,
   faGamepad,
   faCaretRight,
+  faMoon,
+  faToolbox,
+  faDoorOpen,
+  faRunning
 } from '@fortawesome/free-solid-svg-icons';
 
+// import {
+//  faWr
+  
+// } from '@fortawesome/free-regular-svg-icons';
+
 library.add(
+  faRunning,
+  faDoorOpen,
+  faToolbox,
+  faMoon,
   faCaretRight,
   faGamepad,
   faCheck,

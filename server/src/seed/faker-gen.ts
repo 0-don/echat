@@ -22,7 +22,7 @@ const main = async () => {
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const servicesLength = services.length;
   servicesLength;
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 300; i++) {
     const user = {
       type: 'user',
       fake: true,

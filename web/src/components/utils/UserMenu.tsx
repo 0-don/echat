@@ -2,9 +2,9 @@ import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import React, { Fragment } from 'react';
 import {
-  useMeQuery,
   useUserImagesQuery,
   useLogoutMutation,
+  useMeQuery,
 } from 'src/generated/graphql';
 import NextLink from 'next/link';
 import user from '/public/user.png';
@@ -21,7 +21,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
   const [logout] = useLogoutMutation();
 
   const profileUrl = userImages?.userImages?.find(
-    ({ type }) => type === 'profilex'
+    ({ type }) => type === 'profile'
   )?.url;
 
   const userTop = data && (
@@ -111,13 +111,13 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
             />
             <div
               onClick={async () => {
-                router.push('/');
                 await logout();
                 await apolloClient.resetStore();
+                router.push('/');
               }}
               className='block py-2 text-sm'
             >
-              Logout
+              Logout#
             </div>
           </div>
         </Menu.Item>

@@ -5,10 +5,11 @@ import NextLink from 'next/link';
 import useDarkModeStore from '../store/DarkModeStore';
 import { UserMenu } from './utils/UserMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMeQuery } from 'src/generated/graphql';
 
 export const NavBar: React.FC = ({}) => {
   const { theme, hasHydrated } = useDarkModeStore();
-
+  const { data } = useMeQuery();
   return (
     <Disclosure as='nav' className='bg-white dark:bg-dark shadow mb-1'>
       {({ open }) => (
@@ -54,17 +55,18 @@ export const NavBar: React.FC = ({}) => {
                 </div>
               </div>
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
-                <NextLink href='/setting/profile'>
-                  <a className='rounded-full text-sm px-1.5 text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark hover:bg-purple '>
-                    <FontAwesomeIcon
-                      size='xs'
-                      className='dark:text-white text-black mr-1'
-                      icon='gamepad'
-                    />
-                    gamer form
-                  </a>
-                </NextLink>
-
+                {data?.me && (
+                  <NextLink href='/setting/profile'>
+                    <a className='rounded-full text-sm px-1.5 text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark hover:bg-purple '>
+                      <FontAwesomeIcon
+                        size='xs'
+                        className='dark:text-white text-black mr-1'
+                        icon='gamepad'
+                      />
+                      gamer form
+                    </a>
+                  </NextLink>
+                )}
                 {/* UserMenu */}
                 <UserMenu />
               </div>

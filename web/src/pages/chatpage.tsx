@@ -1,39 +1,29 @@
 
+import { useEffect } from "react";
 import Chats from "../components/chat/Chats";
 import SendMessage from "../components/chat/SendMessage";
-import { useState } from "react";
-
+import { useMeQuery } from "../generated/graphql";
 import withApollo from '../utils/apollo/withApollo';
 
 
 const Chatpage = () => {
-  const [name, setName] = useState<string>("");
-  const [entered, setEntered] = useState<boolean>(false);
-
-  return (
-    
+const { data, loading } = useMeQuery();
+ 
+if(!loading && data?.me){
+   return (
       <div className="App">
-        {!entered && (
-          <div>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></input>
-            <button onClick={() => setEntered(true)}>Enter chat</button>
-          </div>
-        )}
-
-        {name !== "" && entered && (
-          <div>
+        { (
+          <div> 
             <Chats />
-            <SendMessage name={name} />
+            <SendMessage name={data.me.username} />
           </div>
         )}
       </div>
-
   );
+}else{
+ return (<div>Is loading</div>)
 };
+}
+ 
 
 export default withApollo({ ssr: false }) (Chatpage);

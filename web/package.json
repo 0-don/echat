@@ -12,7 +12,7 @@
     "@apollo/client": "^3.4.8",
     "apollo-link-ws": "^1.0.20",
     "apollo-upload-client": "^16.0.0",
-    "bufferutil": "^4.0.3",
+ 
     "dayjs": "^1.10.6",
     "formik": "^2.2.9",
     "gql": "^1.1.2",
@@ -26,7 +26,7 @@
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.4",
     "subscriptions-transport-ws": "^0.9.19",
-    "utf-8-validate": "^5.0.5",
+   
     "ws": "^8.2.0",
     "zustand": "^3.5.7"
   },

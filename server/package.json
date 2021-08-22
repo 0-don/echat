@@ -47,13 +47,14 @@
     "@types/probe-image-size": "^7.0.1",
     "@types/psl": "^1.1.0",
     "@types/uuid": "^8.3.1",
+    "concurrently": "^6.2.1",
     "cross-env": "^7.0.3",
     "gen-env-types": "^1.3.0",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "games": "nodemon --exec ts-node src/seed/games-gen.ts",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",

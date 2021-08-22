@@ -11,8 +11,7 @@ import cors from 'cors';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
-import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
-
+import { COOKIE_NAME, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';
 import { ServiceResolver } from './resolvers/ServiceResolver';
@@ -36,9 +35,9 @@ const PgSession = connectPgSimple(session);
     url: process.env.DATABASE_URL,
     synchronize: true,
     logging: true,
-    entities: [ENTITIES],
-    migrations: [MIGRATIONS],
-    subscribers: [MIGRATIONS],
+    entities: [__dirname + '/entity/*'],
+    migrations: [__dirname + '/migration/*'],
+    subscribers: [__dirname + '/subscriber/*'],
   });
   await conn.runMigrations();
 
@@ -74,7 +73,6 @@ const PgSession = connectPgSimple(session);
         UserServiceResolver,
       ],
       validate: false,
-      dateScalarMode: 'isoDate',
     }),
     context: ({ req, res }) => ({
       req,
@@ -95,7 +93,7 @@ const PgSession = connectPgSimple(session);
 
   app.listen(parseInt(process.env.SERVER_PORT!), () => {
     log(`
-    🚀  Server is running!
+    🚀  Server is running!!
     🔉  Listening on port ${process.env.SERVER_PORT}
     📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
   `);

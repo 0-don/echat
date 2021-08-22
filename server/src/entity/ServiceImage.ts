@@ -36,6 +36,8 @@ export class ServiceImage extends BaseEntity {
   serviceId: number;
 
   @Field(() => Service)
-  @ManyToOne(() => Service, (service) => service.images)
+  @ManyToOne(() => Service, (service) => service.images, {
+    onDelete: 'CASCADE',
+  })
   service: Service;
 }

@@ -54,6 +54,6 @@ export class UserService extends BaseEntity {
   serviceId: number;
 
   @Field(() => Service)
-  @ManyToOne(() => Service, (user) => user.userService)
+  @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
   service: Service;
 }

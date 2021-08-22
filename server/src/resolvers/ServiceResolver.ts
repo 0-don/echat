@@ -8,7 +8,6 @@ import { getRepository } from 'typeorm';
 export class ServiceResolver {
   @FieldResolver(() => [ServiceImage], { nullable: true })
   images(@Root() service: Service, @Ctx() { serviceImageLoader }: MyContext) {
-    // console.log(service)
     return serviceImageLoader.load({ serviceId: service.id });
   }
 

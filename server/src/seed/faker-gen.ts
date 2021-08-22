@@ -3,10 +3,10 @@ import { createConnection } from 'typeorm';
 import faker from 'faker';
 import { User } from '../entity/User';
 import { Image } from '../entity/Image';
-import { ENTITIES } from '../constants';
 import { coinFlip, getRandomBetween } from '../utils';
 import { Service } from '../entity/Service';
 import { UserService } from '../entity/UserService';
+import { log } from 'console';
 
 const main = async () => {
   const conn = await createConnection({
@@ -14,7 +14,7 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     synchronize: true,
     // logging: true,
-    entities: [ENTITIES],
+    entities: [__dirname + '/../entity/*'],
   });
 
   // await User.delete({});
@@ -22,7 +22,7 @@ const main = async () => {
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const servicesLength = services.length;
   servicesLength;
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1000; i++) {
     const user = {
       type: 'user',
       fake: true,
@@ -92,9 +92,7 @@ const main = async () => {
 
     for (let x = 0; x < getRandomBetween(1, 4); x++) {
       let service = services[getRandomBetween(0, servicesLength)];
-      if (!service.platforms) {
-        console.log(service);
-      }
+
       const userService = {
         status: true,
         level: 'Newbie',
@@ -110,9 +108,9 @@ const main = async () => {
       await UserService.insert(userService);
     }
 
-    console.log(i + 1);
+    log(i + 1);
   }
 
-  console.log('finished');
+  log('finished');
 };
 main();

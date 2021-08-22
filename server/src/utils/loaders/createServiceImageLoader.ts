@@ -8,6 +8,5 @@ export const createServiceImageLoader = () =>
     const gs = _.groupBy(serviceImages, 'serviceId');
 
     const sortedServiceImages = keys.map((k) => gs[k.serviceId] || []);
-    console.log(sortedServiceImages);
     return sortedServiceImages;
   });

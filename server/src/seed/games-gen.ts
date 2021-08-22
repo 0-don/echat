@@ -1,10 +1,9 @@
 import fs from 'fs';
 import 'dotenv/config';
 import { createConnection } from 'typeorm';
-import { ENTITIES } from '../constants';
 import { Service } from '../entity/Service';
 import { ServiceImage } from '../entity/ServiceImage';
-// import { getGames } from './getGames';
+import { getGames } from './getGames';
 import { log } from 'console';
 
 export interface Image {
@@ -16,6 +15,7 @@ export interface Image {
 }
 
 export interface Services {
+  type: string;
   twitchId: number;
   boxArtUrl: string;
   igdbId: number;
@@ -29,9 +29,9 @@ export interface Services {
 }
 
 const main = async () => {
-  // if (process.env.CLIENT_ID) {
-  //   await getGames();
-  // }
+  if (process.env.TWITCH_CLIENT_ID) {
+    await getGames();
+  }
 
   const data = fs.readFileSync('games.json', 'utf-8');
 
@@ -40,7 +40,7 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     synchronize: true,
     // logging: true,
-    entities: [ENTITIES],
+    entities: [__dirname + '/../entity/*'],
   });
 
   let services: Services[] = JSON.parse(data);
@@ -55,13 +55,13 @@ const main = async () => {
         .createQueryBuilder()
         .insert()
         .into(Service)
-        .values({ ...serviceData, type: 'Games' })
+        .values({ ...serviceData })
         .returning('*')
         .execute();
     } else {
       findService = await conn
         .createQueryBuilder()
-        .update(Service, { ...serviceData, type: 'Games' })
+        .update(Service, { ...serviceData })
         .where('igdbId = :igdbId', { igdbId: service.igdbId })
         .returning('*')
         .updateEntity(true)

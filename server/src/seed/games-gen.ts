@@ -29,7 +29,7 @@ export interface Services {
 }
 
 const main = async () => {
-  if (process.env.TWITCH_CLIENT_ID) {
+  if (process.env.TWITCH_CLIENT_ID && !fs.existsSync('games.json')) {
     await getGames();
   }
 
@@ -44,30 +44,35 @@ const main = async () => {
   });
 
   let services: Services[] = JSON.parse(data);
+
   for (let service of services) {
     log(`Upload ${service.popularity}/${services.length}: ${service.name}`);
     let { images, ...serviceData } = service;
 
     let findService;
+
     findService = await Service.findOne({ igdbId: serviceData.igdbId });
+
     if (!findService) {
       findService = await conn
         .createQueryBuilder()
         .insert()
         .into(Service)
-        .values({ ...serviceData })
+        .values(serviceData)
         .returning('*')
         .execute();
     } else {
       findService = await conn
         .createQueryBuilder()
-        .update(Service, { ...serviceData })
-        .where('igdbId = :igdbId', { igdbId: service.igdbId })
+        .update(Service, serviceData)
+        .where('igdbId = :igdbId', { igdbId: serviceData.igdbId })
         .returning('*')
         .updateEntity(true)
         .execute();
     }
+
     const serviceId = findService.raw[0].id;
+
     if (images) {
       images.forEach((image) => (image.serviceId = serviceId));
 
@@ -75,7 +80,6 @@ const main = async () => {
       await ServiceImage.insert(images);
     }
   }
-  process.exit();
 };
 
 main();

@@ -12,5 +12,7 @@ declare namespace NodeJS {
     CLOUDINARY_API_KEY: string;
     CLOUDINARY_API_SECRET: string;
     CLOUDINARY_URL: string;
+    TWITCH_CLIENT_ID: string;
+    TWITCH_CLIENT_SECRET: string;
   }
 }

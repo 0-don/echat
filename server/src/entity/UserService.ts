@@ -6,6 +6,8 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Service } from './Service';
 import { User } from './User';
@@ -56,4 +58,10 @@ export class UserService extends BaseEntity {
   @Field(() => Service)
   @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
   service: Service;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

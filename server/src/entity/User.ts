@@ -86,11 +86,6 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 
   // Language
   @OneToMany(() => Language, (language) => language.user)
@@ -112,6 +107,12 @@ export class User extends BaseEntity {
   @Field(() => [Schedule], { nullable: true })
   schedules: Schedule[];
 
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+  
   @Column({ nullable: true })
   resetToken: string;
 }

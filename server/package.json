@@ -58,7 +58,8 @@
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "games-gen": "ts-node src/seed/games-gen.ts",
     "faker-gen": "ts-node src/seed/faker-gen.ts",
-    "delete-all": "ts-node src/seed/deleteAllData.ts"
+    "delete-all": "ts-node src/seed/deleteAllData.ts",
+    "postinstall": "tsc"
   },
   "nodemonConfig": {
     "ignore": [

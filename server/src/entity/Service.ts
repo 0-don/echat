@@ -28,21 +28,21 @@ export class Service extends BaseEntity {
   @Column()
   type: 'Games' | 'Interactive Entertaiment' | 'More Lifestyles' | string;
 
-  @Field(() => Int)
-  @Column({ unique: true })
-  igdbId: number;
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  igdbId?: number;
 
-  @Field(() => Int)
-  @Column({ unique: true })
-  twitchId: number;
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  twitchId?: number;
 
   @Field()
   @Column()
   name: string;
 
-  @Field(() => Int)
-  @Column()
-  popularity: number;
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  popularity?: number;
 
   @Field()
   @Column()

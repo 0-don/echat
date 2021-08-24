@@ -11,7 +11,7 @@ export const NavBar: React.FC = ({}) => {
   const { theme, hasHydrated } = useDarkModeStore();
   const { data } = useMeQuery();
   return (
-    <Disclosure as='nav' className='bg-white dark:bg-dark shadow mb-1'>
+    <Disclosure as='nav' className='bg-white dark:bg-dark shadow'>
       {({ open }) => (
         <>
           <div className='max-w-7xl mx-auto'>

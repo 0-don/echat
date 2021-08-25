@@ -8,3 +8,4 @@ dist
 files
 ormconfig.json
 yarn-error.log
+build/

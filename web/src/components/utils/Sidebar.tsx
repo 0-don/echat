@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/outline';
 import { useGetAllServicesQuery } from 'src/generated/graphql';
 import _ from 'lodash';
+import { useRouter } from 'next/router';
 
 interface SidebarProps {}
 
@@ -19,6 +20,8 @@ type TabState = {
 export const Sidebar: React.FC<SidebarProps> = ({}) => {
   const { data } = useGetAllServicesQuery();
   const groupedServices = _.groupBy(data?.getAllServices, 'type');
+
+  const router = useRouter();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tabs, setTabs] = useState<TabState[]>(
@@ -54,8 +57,14 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
         (tab) =>
           tab.key === key &&
           tab.state === true &&
-          groupedServices[key].map(({ id, name }) => (
-            <div className='mt-2 space-y-2 px-7' key={id}>
+          groupedServices[key].map(({ id, name, slug }) => (
+            <div
+              className='mt-2 space-y-2 px-7'
+              key={id}
+              onClick={() => {
+                router.push(`/browse/${slug}`);
+              }}
+            >
               {name}
             </div>
           ))

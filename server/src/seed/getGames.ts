@@ -27,6 +27,7 @@ export type GameType = {
     genres: GameResultType;
     multiplayer_modes: GameResultType;
     platforms: GameResultType;
+    slug: string;
   }[];
 };
 export type ImageSize =
@@ -75,7 +76,7 @@ const getTopGames = async () => {
 const searchGame = async (name: string) => {
   const { data }: GameType = await axios.post(
     'games',
-    `search "${name}"; fields name,first_release_date,summary,screenshots,artworks,cover,genres,multiplayer_modes,platforms;`
+    `search "${name}"; fields name,first_release_date,summary,screenshots,artworks,cover,genres,multiplayer_modes,platforms, slug;`
   );
 
   return data.map((game) => {
@@ -211,13 +212,14 @@ const getFullGameData = async (name: string) => {
     genres,
     multiplayer_modes,
     type: 'Games',
+    slug: game.slug,
     images: [...(screenshots || []), ...(covers || []), ...(artworks || [])],
   };
 };
 
 export const getGames = async () => {
-  fs.unlinkSync('games.json');
-  
+  // fs.unlinkSync('games.json');
+
   axios.defaults.headers.common[
     'Authorization'
   ] = `Bearer ${await getAccessToken()}`;

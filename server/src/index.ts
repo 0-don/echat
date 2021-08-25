@@ -30,7 +30,7 @@ const PgSession = connectPgSimple(session);
 (async () => {
   const app = express();
 
-  const conn = await createConnection({
+  await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: true,
@@ -39,7 +39,6 @@ const PgSession = connectPgSimple(session);
     migrations: [__dirname + '/migration/*'],
     subscribers: [__dirname + '/subscriber/*'],
   });
-  await conn.runMigrations();
 
   // parse application/json
   app.set('trust proxy', 1);

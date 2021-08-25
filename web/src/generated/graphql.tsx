@@ -179,7 +179,8 @@ export type Service = {
   igdbId?: Maybe<Scalars['Int']>;
   twitchId?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
-  popularity?: Maybe<Scalars['Int']>;
+  slug: Scalars['String'];
+  popularity: Scalars['Int'];
   boxArtUrl: Scalars['String'];
   first_release_date?: Maybe<Scalars['DateTime']>;
   platforms?: Maybe<Scalars['JSON']>;
@@ -439,7 +440,7 @@ export type GetAllServicesQuery = (
   { __typename?: 'Query' }
   & { getAllServices?: Maybe<Array<(
     { __typename?: 'Service' }
-    & Pick<Service, 'id' | 'type' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'genres' | 'platforms' | 'multiplayer_modes'>
+    & Pick<Service, 'id' | 'type' | 'name' | 'slug' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'genres' | 'platforms' | 'multiplayer_modes'>
     & { images?: Maybe<Array<(
       { __typename?: 'ServiceImage' }
       & Pick<ServiceImage, 'id' | 'type' | 'url' | 'width' | 'height'>
@@ -951,6 +952,7 @@ export const GetAllServicesDocument = gql`
     id
     type
     name
+    slug
     popularity
     boxArtUrl
     first_release_date

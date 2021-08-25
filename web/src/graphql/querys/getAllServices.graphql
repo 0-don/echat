@@ -3,6 +3,7 @@ query GetAllServices {
     id
     type
     name
+    slug
     popularity
     boxArtUrl
     first_release_date

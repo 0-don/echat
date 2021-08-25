@@ -37,12 +37,16 @@ export class Service extends BaseEntity {
   twitchId?: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   name: string;
 
-  @Field(() => Int, { nullable: true })
-  @Column({ nullable: true })
-  popularity?: number;
+  @Field()
+  @Column({ unique: true })
+  slug: string;
+
+  @Field(() => Int)
+  @Column()
+  popularity: number;
 
   @Field()
   @Column()
@@ -63,6 +67,7 @@ export class Service extends BaseEntity {
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
   multiplayer_modes?: string[];
+
 
   // ServiceImage
   @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.service, {

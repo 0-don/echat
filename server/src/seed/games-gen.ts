@@ -26,6 +26,7 @@ export interface Services {
   genres: { id: number; name: string }[];
   multiplayer_modes: string[];
   images: Image[] | undefined;
+  slug: string;
 }
 
 const main = async () => {

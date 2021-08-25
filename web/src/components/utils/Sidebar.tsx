@@ -35,7 +35,6 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
     <div className='text-white' key={key}>
       <div
         onClick={() => {
-          console.log(key);
           setTabs(
             tabs.map((tab) =>
               tab.key === key ? { ...tab, state: !tab.state } : tab

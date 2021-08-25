@@ -9,7 +9,9 @@ import { NextPage } from 'next';
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const { data, loading } = useGetUsersQuery();
+
   console.log(slug);
+
   if (loading || !data?.getUsers) {
     return <Loading />;
   }
@@ -50,5 +52,12 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     </Wrapper>
   );
 };
+
+Browse.getInitialProps = ({ query }) => {
+  return {
+    slug: query.slug as string,
+  };
+};
+
 
 export default withApollo({ ssr: true })(Browse);

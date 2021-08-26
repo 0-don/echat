@@ -10,8 +10,6 @@ import { NextPage } from 'next';
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const { data, loading } = useGetUsersQuery();
 
-  console.log(slug);
-
   if (loading || !data?.getUsers) {
     return <Loading />;
   }

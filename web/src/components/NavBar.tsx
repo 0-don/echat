@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import NextLink from 'next/link';
@@ -6,10 +6,27 @@ import useDarkModeStore from '../store/DarkModeStore';
 import { UserMenu } from './utils/UserMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMeQuery } from 'src/generated/graphql';
+import { Loading } from './utils';
+
+const currentURL = () =>
+  typeof window !== 'undefined'
+    ? new URL(window.location.href).pathname.split('/')
+    : undefined;
 
 export const NavBar: React.FC = ({}) => {
   const { theme, hasHydrated } = useDarkModeStore();
   const { data } = useMeQuery();
+
+  const [activeMenu, setActiveMenu] = useState<string[] | undefined>();
+
+  useEffect(() => {
+    setActiveMenu(currentURL());
+  }, []);
+
+  if (!activeMenu) {
+    return <Loading />;
+  }
+
   return (
     <Disclosure as='nav' className='bg-white dark:bg-dark shadow'>
       {({ open }) => (
@@ -48,8 +65,25 @@ export const NavBar: React.FC = ({}) => {
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <NextLink href='/'>
-                    <a className='border-purple text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white'>
+                    <a
+                      className={`${
+                        activeMenu?.length === 2
+                          ? 'border-purple'
+                          : 'border-white'
+                      } text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white`}
+                    >
                       Home
+                    </a>
+                  </NextLink>
+                  <NextLink href='/browse/league-of-legends'>
+                    <a
+                      className={`${
+                        activeMenu?.length && activeMenu[1] === 'browse'
+                          ? 'border-purple'
+                          : 'border-white'
+                      } text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white`}
+                    >
+                      Browse
                     </a>
                   </NextLink>
                 </div>
@@ -76,8 +110,23 @@ export const NavBar: React.FC = ({}) => {
           <Disclosure.Panel className='sm:hidden'>
             <div className='pt-2 pb-4 space-y-1'>
               <NextLink href='/'>
-                <a className='bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium'>
+                <a
+                  className={`${
+                    activeMenu?.length === 2 ? 'bg-indigo-50' : 'bg-purple'
+                  }border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                >
                   Home
+                </a>
+              </NextLink>
+              <NextLink href='/browse/league-of-legends'>
+                <a
+                  className={`${
+                    activeMenu?.length && activeMenu[1] === 'browse'
+                      ? 'bg-purple'
+                      : 'bg-indigo-50'
+                  } border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                >
+                  Browse
                 </a>
               </NextLink>
             </div>

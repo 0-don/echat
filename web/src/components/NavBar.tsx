@@ -63,7 +63,7 @@ export const NavBar: React.FC = ({}) => {
                         className='dark:text-white text-black mr-1'
                         icon='gamepad'
                       />
-                      gamer form
+                      service form
                     </a>
                   </NextLink>
                 )}

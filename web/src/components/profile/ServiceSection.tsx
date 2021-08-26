@@ -10,7 +10,7 @@ import useFormStore from 'src/store/FormStore';
 import { Button, SwitchField } from '../htmlElements';
 import { Loading } from '../utils';
 import { ServiceModal } from './modals/ServiceModal';
-import { UpsertServiceModal } from './modals/UpsertGameModal';
+import { UpsertServiceModal } from './modals/UpsertServiceModal';
 
 interface ServiceSectionProps {
   formikRef?: React.RefObject<FormikProps<any>>;

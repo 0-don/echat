@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useGetAllServicesQuery } from 'src/generated/graphql';
 import { Loading } from 'src/components/utils/Loading';
 import { Button, Modal } from 'src/components/htmlElements';
-import { UpsertServiceModal } from './UpsertGameModal';
+import { UpsertServiceModal } from './UpsertServiceModal';
 
 export const ServiceModal: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -12,7 +12,7 @@ export const ServiceModal: React.FC = () => {
 
   return (
     <>
-      <Button text='add game' icon='gamepad' onClick={() => setOpen(!open)} />
+      <Button text='add service' icon='gamepad' onClick={() => setOpen(!open)} />
       <Modal open={open} setOpen={setOpen}>
         <div className='inline-block align-bottom bg-white dark:bg-dark rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full sm:p-6'>
           <button></button>
@@ -22,7 +22,7 @@ export const ServiceModal: React.FC = () => {
           >
             {!loading && data && data.getAllServices ? (
               data?.getAllServices.map(
-                ({ id, boxArtUrl, name, genres, multiplayer_modes }) => (
+                ({ id, boxArtUrl, name, }) => (
                   <li
                     key={id}
                     onClick={() => {

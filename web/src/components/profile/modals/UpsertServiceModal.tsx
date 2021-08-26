@@ -29,23 +29,23 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
   setOpen,
 }) => {
   const [localOpen, setLocalOpen] = useState(false);
-  const [upsertUserGame] = useUpsertUserServiceMutation();
-  const { data: allGamesData, loading: allGamesLoading } =
+  const [upsertUserService] = useUpsertUserServiceMutation();
+  const { data: allServicesData, loading: allServicesLoading } =
     useGetAllServicesQuery();
-  const { data: userGameData, loading: userGameLoading } =
+  const { data: userServiceData, loading: userServiceLoading } =
     useGetUserServiceQuery();
 
-  let game =
-    !allGamesLoading &&
-    allGamesData?.getAllServices?.find((service) => service.id === serviceId);
+  let service =
+    !allServicesLoading &&
+    allServicesData?.getAllServices?.find((service) => service.id === serviceId);
 
   let userGame =
-    !userGameLoading &&
-    userGameData?.getUserService?.find(
+    !userServiceLoading &&
+    userServiceData?.getUserService?.find(
       (service) => service.serviceId === serviceId
     );
 
-  if (game && game?.images?.length && LEVELS?.length && PERS?.length) {
+  if (service && service?.images?.length && LEVELS?.length && PERS?.length) {
     return (
       <>
         <Modal
@@ -56,19 +56,19 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
             <img
               className='h-32 w-full object-cover lg:h-48'
               src={
-                game.images[Math.floor(Math.random() * game.images.length)].url
+                service.images[Math.floor(Math.random() * service.images.length)].url
               }
               alt=''
             />
             <div className='flex justify-center -mt-16 sm:-mt-16'>
               <img
                 className='h-24 shadow-xl sm:h-32'
-                src={game.boxArtUrl}
+                src={service.boxArtUrl}
                 alt=''
               />
             </div>
             <h1 className='text-3xl bg-white dark:bg-dark dark:text-white'>
-              {game.name}
+              {service.name}
             </h1>
             <Formik
               initialValues={{
@@ -78,14 +78,14 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
                 platforms:
                   userGame && userGame.platforms
                     ? userGame.platforms
-                    : [game.platforms[0]],
+                    : [service.platforms[0]],
                 description:
                   userGame && userGame.description ? userGame.description : '',
                 price: userGame && userGame.price ? userGame.price : 0,
                 per: userGame && userGame.price ? userGame.per : PERS[0].name,
               }}
               onSubmit={async (values) => {
-                await upsertUserGame({
+                await upsertUserService({
                   variables: { options: values },
                   refetchQueries: [{ query: GetUserServiceDocument }],
                 });
@@ -107,7 +107,7 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
                         {...formikProps}
                         fieldName='platforms'
                         //  @ts-ignore
-                        list={game.platforms}
+                        list={service.platforms}
                       />
                     </div>
                   </div>

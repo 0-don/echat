@@ -1,5 +1,5 @@
-query GetUserService {
-  getUserService {
+query GetMeUserService {
+  getMeUserService {
     id
     status
     serviceId

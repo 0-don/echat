@@ -65,9 +65,20 @@ export class UserServiceResolver {
 
   @Query(() => [UserService], { nullable: true })
   @UseMiddleware(isAuth)
-  getUserService(@Ctx() { req }: MyContext) {
+  getMeUserService(@Ctx() { req }: MyContext) {
     const { userId } = req.session;
     return UserService.find({ order: { serviceId: 'ASC' }, where: { userId } });
+  }
+
+  @Query(() => [UserService], { nullable: true })
+  @UseMiddleware(isAuth)
+  filterUserService(
+    @Ctx() { req }: MyContext,
+    @Arg('id', () => Int) id: number
+  ) {
+    const { userId } = req.session;
+    userId;
+    return UserService.find({ id });
   }
 
   @Mutation(() => Boolean)

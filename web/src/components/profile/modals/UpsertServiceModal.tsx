@@ -11,10 +11,10 @@ import { LEVELS, PERS } from 'src/constants';
 import gray from '/public/gray.png';
 
 import {
-  GetUserServiceDocument,
+  GetMeUserServiceDocument,
   UpsertUserService,
   useGetAllServicesQuery,
-  useGetUserServiceQuery,
+  useGetMeUserServiceQuery,
   useUpsertUserServiceMutation,
 } from 'src/generated/graphql';
 
@@ -33,8 +33,8 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
   const [upsertUserService] = useUpsertUserServiceMutation();
   const { data: allServicesData, loading: allServicesLoading } =
     useGetAllServicesQuery();
-  const { data: userServiceData, loading: userServiceLoading } =
-    useGetUserServiceQuery();
+  const { data: MeUserServiceData, loading: MeUserServiceLoading } =
+    useGetMeUserServiceQuery();
 
   let service =
     !allServicesLoading &&
@@ -43,8 +43,8 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
     );
 
   let userGame =
-    !userServiceLoading &&
-    userServiceData?.getUserService?.find(
+    !MeUserServiceLoading &&
+    MeUserServiceData?.getMeUserService?.find(
       (service) => service.serviceId === serviceId
     );
 
@@ -96,7 +96,7 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
               onSubmit={async (values) => {
                 await upsertUserService({
                   variables: { options: values },
-                  refetchQueries: [{ query: GetUserServiceDocument }],
+                  refetchQueries: [{ query: GetMeUserServiceDocument }],
                 });
                 setOpen === undefined ? setLocalOpen(false) : setOpen(false);
               }}

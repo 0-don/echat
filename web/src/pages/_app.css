@@ -11,7 +11,11 @@ html {
     0 1px rgba(255, 255, 255, 0.08);
 }
 
-
+@media (min-width: 768px) {
+  .sidebar {
+    min-height: calc(100vh - 64px);
+  }
+}
 
 .progress-bar {
   height: 16px;

@@ -140,7 +140,8 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getAllServices?: Maybe<Array<Service>>;
   findService?: Maybe<Array<Service>>;
-  getUserService?: Maybe<Array<UserService>>;
+  getMeUserService?: Maybe<Array<UserService>>;
+  filterUserService?: Maybe<Array<UserService>>;
 };
 
 
@@ -151,6 +152,11 @@ export type QueryUserImagesArgs = {
 
 export type QueryFindServiceArgs = {
   service: Scalars['String'];
+};
+
+
+export type QueryFilterUserServiceArgs = {
+  id: Scalars['Int'];
 };
 
 export type Schedule = {
@@ -448,12 +454,12 @@ export type GetAllServicesQuery = (
   )>> }
 );
 
-export type GetUserServiceQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetMeUserServiceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserServiceQuery = (
+export type GetMeUserServiceQuery = (
   { __typename?: 'Query' }
-  & { getUserService?: Maybe<Array<(
+  & { getMeUserService?: Maybe<Array<(
     { __typename?: 'UserService' }
     & Pick<UserService, 'id' | 'status' | 'serviceId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
     & { service: (
@@ -996,9 +1002,9 @@ export function useGetAllServicesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetAllServicesQueryHookResult = ReturnType<typeof useGetAllServicesQuery>;
 export type GetAllServicesLazyQueryHookResult = ReturnType<typeof useGetAllServicesLazyQuery>;
 export type GetAllServicesQueryResult = Apollo.QueryResult<GetAllServicesQuery, GetAllServicesQueryVariables>;
-export const GetUserServiceDocument = gql`
-    query GetUserService {
-  getUserService {
+export const GetMeUserServiceDocument = gql`
+    query GetMeUserService {
+  getMeUserService {
     id
     status
     serviceId
@@ -1024,31 +1030,31 @@ export const GetUserServiceDocument = gql`
     `;
 
 /**
- * __useGetUserServiceQuery__
+ * __useGetMeUserServiceQuery__
  *
- * To run a query within a React component, call `useGetUserServiceQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserServiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetMeUserServiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeUserServiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserServiceQuery({
+ * const { data, loading, error } = useGetMeUserServiceQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetUserServiceQuery(baseOptions?: Apollo.QueryHookOptions<GetUserServiceQuery, GetUserServiceQueryVariables>) {
+export function useGetMeUserServiceQuery(baseOptions?: Apollo.QueryHookOptions<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserServiceQuery, GetUserServiceQueryVariables>(GetUserServiceDocument, options);
+        return Apollo.useQuery<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>(GetMeUserServiceDocument, options);
       }
-export function useGetUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserServiceQuery, GetUserServiceQueryVariables>) {
+export function useGetMeUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserServiceQuery, GetUserServiceQueryVariables>(GetUserServiceDocument, options);
+          return Apollo.useLazyQuery<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>(GetMeUserServiceDocument, options);
         }
-export type GetUserServiceQueryHookResult = ReturnType<typeof useGetUserServiceQuery>;
-export type GetUserServiceLazyQueryHookResult = ReturnType<typeof useGetUserServiceLazyQuery>;
-export type GetUserServiceQueryResult = Apollo.QueryResult<GetUserServiceQuery, GetUserServiceQueryVariables>;
+export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServiceQuery>;
+export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
+export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {
@@ -1212,7 +1218,7 @@ export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImag
 export const namedOperations = {
   Query: {
     GetAllServices: 'GetAllServices',
-    GetUserService: 'GetUserService',
+    GetMeUserService: 'GetMeUserService',
     GetUsers: 'GetUsers',
     Me: 'Me',
     UserImages: 'UserImages'

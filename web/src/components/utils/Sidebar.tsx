@@ -72,7 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
   ));
 
   return (
-    <div className='md:flex flex-col md:flex-row md:min-h-screen'>
+    <div className='md:flex flex-col md:flex-row sidebar'>
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as='div'
@@ -132,7 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col w-64 px-2 bg-gray-800 space-y-1'>
+        <nav className='flex flex-col w-64 px-2 bg-dark-dark space-y-1'>
           {items}
         </nav>
       </div>

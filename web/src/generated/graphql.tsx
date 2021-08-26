@@ -222,8 +222,8 @@ export type UpdatedUser = {
 
 export type UpsertUserService = {
   serviceId: Scalars['Int'];
-  level: Scalars['String'];
-  platforms: Array<Dropdown>;
+  level?: Maybe<Scalars['String']>;
+  platforms?: Maybe<Array<Dropdown>>;
   description?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   per: Scalars['String'];

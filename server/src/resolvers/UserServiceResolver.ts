@@ -29,10 +29,10 @@ export class Dropdown {
 export class UpsertUserService {
   @Field(() => Int)
   serviceId: number;
-  @Field()
-  level: string;
-  @Field(() => [Dropdown])
-  platforms: [Dropdown];
+  @Field({ nullable: true })
+  level?: string;
+  @Field(() => [Dropdown], { nullable: true })
+  platforms?: [Dropdown];
   @Field({ nullable: true })
   description?: string;
   @Field(() => Int)
@@ -44,7 +44,10 @@ export class UpsertUserService {
 @Resolver(UserService)
 export class UserServiceResolver {
   @FieldResolver(() => Service)
-  service(@Root() userService: UserService, @Ctx() { serviceLoader }: MyContext) {
+  service(
+    @Root() userService: UserService,
+    @Ctx() { serviceLoader }: MyContext
+  ) {
     return serviceLoader.load(userService.serviceId);
   }
 
@@ -74,12 +77,18 @@ export class UserServiceResolver {
   ) {
     const { userId } = req.session;
 
-    let userService = await UserService.findOne({ serviceId: options.serviceId, userId });
+    let userService = await UserService.findOne({
+      serviceId: options.serviceId,
+      userId,
+    });
 
     if (!userService) {
       await UserService.create({ ...options, userId }).save();
     } else {
-      await UserService.update({ serviceId: options.serviceId, userId }, { ...options });
+      await UserService.update(
+        { serviceId: options.serviceId, userId },
+        { ...options }
+      );
     }
 
     return true;

@@ -8,6 +8,7 @@ import {
   TextAreaField,
 } from 'src/components/htmlElements';
 import { LEVELS, PERS } from 'src/constants';
+import gray from '/public/gray.png';
 
 import {
   GetUserServiceDocument,
@@ -37,7 +38,9 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
 
   let service =
     !allServicesLoading &&
-    allServicesData?.getAllServices?.find((service) => service.id === serviceId);
+    allServicesData?.getAllServices?.find(
+      (service) => service.id === serviceId
+    );
 
   let userGame =
     !userServiceLoading &&
@@ -45,7 +48,7 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
       (service) => service.serviceId === serviceId
     );
 
-  if (service && service?.images?.length && LEVELS?.length && PERS?.length) {
+  if (service && LEVELS?.length && PERS?.length) {
     return (
       <>
         <Modal
@@ -56,7 +59,11 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
             <img
               className='h-32 w-full object-cover lg:h-48'
               src={
-                service.images[Math.floor(Math.random() * service.images.length)].url
+                service?.images?.length
+                  ? service.images[
+                      Math.floor(Math.random() * service.images.length)
+                    ].url
+                  : gray.src
               }
               alt=''
             />
@@ -78,7 +85,9 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
                 platforms:
                   userGame && userGame.platforms
                     ? userGame.platforms
-                    : [service.platforms[0]],
+                    : service.platforms
+                    ? [service.platforms[0]]
+                    : undefined,
                 description:
                   userGame && userGame.description ? userGame.description : '',
                 price: userGame && userGame.price ? userGame.price : 0,
@@ -103,12 +112,14 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
                       />
                     </div>
                     <div className='sm:w-6/12 sm:ml-2.5'>
-                      <DropdownField
-                        {...formikProps}
-                        fieldName='platforms'
-                        //  @ts-ignore
-                        list={service.platforms}
-                      />
+                      {formikProps.values.platforms?.length && (
+                        <DropdownField
+                          {...formikProps}
+                          fieldName='platforms'
+                          //  @ts-ignore
+                          list={service.platforms}
+                        />
+                      )}
                     </div>
                   </div>
                   <div className='sm:flex mb-3'>

@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@graphql-tools/schema": "^8.1.2",
+    "apollo-link-ws": "^1.0.20",
     "apollo-server-express": "^2.25.2",
     "argon2": "^0.28.2",
     "axios": "^0.21.1",
@@ -27,6 +29,7 @@
     "probe-image-size": "^7.2.1",
     "psl": "^1.8.0",
     "reflect-metadata": "^0.1.13",
+    "subscriptions-transport-ws": "^0.9.19",
     "twitch": "^4.6.5",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.34",

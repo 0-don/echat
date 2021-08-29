@@ -1,9 +1,9 @@
 import { FormikProps } from 'formik';
 import React, { useState } from 'react';
 import {
-  GetUserServiceDocument,
+  GetMeUserServiceDocument,
   useDeleteUserServiceMutation,
-  useGetUserServiceQuery,
+  useGetMeUserServiceQuery,
   useSwitchUserServiceStatusMutation,
 } from 'src/generated/graphql';
 import useFormStore from 'src/store/FormStore';
@@ -21,7 +21,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
 }) => {
   formikRef;
   const { setStep } = useFormStore();
-  const { data, loading } = useGetUserServiceQuery();
+  const { data, loading } = useGetMeUserServiceQuery();
   const [deleteUserService] = useDeleteUserServiceMutation();
   const [switchUserServiceStatus] = useSwitchUserServiceStatusMutation();
   const [serviceOpen, setServiceOpen] = useState(false);
@@ -42,7 +42,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
         <ServiceModal />
       </div>
       <div className='grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
-        {data?.getUserService?.map(
+        {data?.getMeUserService?.map(
           ({ __typename, id, per, price, service, status }) => (
             <div
               key={service.boxArtUrl}
@@ -62,7 +62,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
                     onChange={async () => {
                       await switchUserServiceStatus({
                         variables: { id },
-                        refetchQueries: [{ query: GetUserServiceDocument }],
+                        refetchQueries: [{ query: GetMeUserServiceDocument }],
                       });
                     }}
                   />
@@ -106,7 +106,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
         )}
       </div>
       <div className='flex justify-end text-white dark:text-dark-dark'>
-        {data?.getUserService?.length && (
+        {data?.getMeUserService?.length && (
           <Button
             text='next'
             type='button'

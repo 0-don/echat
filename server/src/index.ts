@@ -8,14 +8,17 @@ import { ApolloServer } from 'apollo-server-express';
 import connectPgSimple from 'connect-pg-simple';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { createServer } from 'http';
 import { graphqlUploadExpress } from 'graphql-upload';
-import { buildSchema } from 'type-graphql';
+import { buildTypeDefsAndResolvers } from 'type-graphql';
+import { execute, subscribe } from 'graphql';
 import { createConnection } from 'typeorm';
 import { COOKIE_NAME, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';
 import { ServiceResolver } from './resolvers/ServiceResolver';
 import { UserServiceResolver } from './resolvers/UserServiceResolver';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
   createUserLoader,
   createImageLoader,
@@ -24,11 +27,14 @@ import {
   createServiceImageLoader,
   createServiceLoader,
 } from './utils/loaders';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { ChatResolver } from './resolvers/ChatResolver';
 
 const PgSession = connectPgSimple(session);
 
 (async () => {
   const app = express();
+  const httpServer = createServer(app);
 
   await createConnection({
     type: 'postgres',
@@ -63,16 +69,24 @@ const PgSession = connectPgSimple(session);
     })
   );
 
+  const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
+    resolvers: [
+      ChatResolver,
+      UserResolver,
+      ImageResolver,
+      ServiceResolver,
+      UserServiceResolver,
+    ],
+    validate: false
+  });
+
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
+
   const server = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [
-        UserResolver,
-        ImageResolver,
-        ServiceResolver,
-        UserServiceResolver,
-      ],
-      validate: false,
-    }),
+    schema,
     context: ({ req, res }) => ({
       req,
       res,
@@ -87,14 +101,21 @@ const PgSession = connectPgSimple(session);
     introspection: true,
   });
 
+  await server.start();
   app.use(graphqlUploadExpress({ maxFileSize: 100000000, maxFiles: 10 }));
   server.applyMiddleware({ app, cors: false });
 
-  app.listen(parseInt(process.env.SERVER_PORT!), () => {
+  SubscriptionServer.create(
+    { schema, execute, subscribe },
+    { server: httpServer, path: server.graphqlPath }
+  );
+
+  httpServer.listen(parseInt(process.env.SERVER_PORT!), () => {
     log(`
     🚀  Server is running!!
     🔉  Listening on port ${process.env.SERVER_PORT}
     📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
+    📭  Subscription at ws://localhost:${process.env.SERVER_PORT}/graphql
   `);
   });
 })();

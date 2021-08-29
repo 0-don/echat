@@ -20,6 +20,13 @@ export type Scalars = {
   Upload: File;
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  id: Scalars['Float'];
+  message: Scalars['String'];
+  name: Scalars['String'];
+};
+
 
 export type Dropdown = {
   id: Scalars['Int'];
@@ -77,6 +84,7 @@ export type Mutation = {
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
+  createChat: Chat;
 };
 
 
@@ -132,6 +140,12 @@ export type MutationDeleteUserServiceArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationCreateChatArgs = {
+  message: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getUsers?: Maybe<Array<User>>;
@@ -142,6 +156,7 @@ export type Query = {
   findService?: Maybe<Array<Service>>;
   getMeUserService?: Maybe<Array<UserService>>;
   filterUserService?: Maybe<Array<UserService>>;
+  getChats: Array<Chat>;
 };
 
 
@@ -205,6 +220,11 @@ export type ServiceImage = {
   height: Scalars['Int'];
   serviceId: Scalars['Float'];
   service: Service;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  messageSent: Chat;
 };
 
 export type UpdatedUser = {

@@ -45,7 +45,7 @@ const Chats = () => {
     <div>
       {data.getChats.map((chat: any) => (
         <div key={chat.id}>
-          <p>
+          <p className='text-white'>
             {chat.name}: {chat.message}
           </p>
         </div>

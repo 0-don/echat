@@ -36,7 +36,7 @@ const SendMessage: FC<SendMessageProps> = ({ name }) => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       ></input>
-      <button onClick={handleSend}>Send message</button>
+      <button className='text-white' onClick={handleSend}>Send message</button>
     </div>
   );
 };

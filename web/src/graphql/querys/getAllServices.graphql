@@ -1,7 +1,9 @@
-query GetAllGames {
-  getAllGames {
+query GetAllServices {
+  getAllServices {
     id
+    type
     name
+    slug
     popularity
     boxArtUrl
     first_release_date

@@ -3,10 +3,10 @@ import { createConnection } from 'typeorm';
 import faker from 'faker';
 import { User } from '../entity/User';
 import { Image } from '../entity/Image';
-import { ENTITIES } from '../constants';
 import { coinFlip, getRandomBetween } from '../utils';
-import { Game } from '../entity/Game';
-import { UserGame } from '../entity/UserGame';
+import { Service } from '../entity/Service';
+import { UserService } from '../entity/UserService';
+import { log } from 'console';
 
 const main = async () => {
   const conn = await createConnection({
@@ -14,15 +14,15 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     synchronize: true,
     // logging: true,
-    entities: [ENTITIES],
+    entities: [__dirname + '/../entity/*'],
   });
 
   // await User.delete({});
 
-  const games = await Game.find({ order: { popularity: 'ASC' } });
-  const gamesLength = games.length;
-  gamesLength;
-  for (let i = 0; i < 10; i++) {
+  const services = await Service.find({ order: { popularity: 'ASC' } });
+  const servicesLength = services.length;
+  servicesLength;
+  for (let i = 0; i < 300; i++) {
     const user = {
       type: 'user',
       fake: true,
@@ -91,28 +91,26 @@ const main = async () => {
       .execute();
 
     for (let x = 0; x < getRandomBetween(1, 4); x++) {
-      let game = games[getRandomBetween(0, gamesLength)];
-      if (!game.platforms) {
-        console.log(game);
-      }
-      const userGame = {
+      let service = services[getRandomBetween(0, servicesLength)];
+
+      const userService = {
         status: true,
         level: 'Newbie',
-        platforms: game.platforms ? game.platforms : undefined,
+        platforms: service.platforms ? service.platforms : undefined,
         description: coinFlip() ? faker.lorem.text() : undefined,
         price: getRandomBetween(1, 10),
         userId,
-        gameId: game.id,
+        serviceId: service.id,
         per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
           getRandomBetween(0, 4)
         ],
       };
-      await UserGame.insert(userGame);
+      await UserService.insert(userService);
     }
 
-    console.log(i + 1);
+    log(i + 1);
   }
 
-  console.log('finished');
+  log('finished');
 };
 main();

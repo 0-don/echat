@@ -1,87 +1,34 @@
-import React, { Fragment } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import React, { useEffect, useState } from 'react';
+import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import NextLink from 'next/link';
-import {
-  useLogoutMutation,
-  useMeQuery,
-  useUserImagesQuery,
-} from '../generated/graphql';
-import { useApolloClient } from '@apollo/client';
-import { DarkMode } from './utils/DarkMode';
 import useDarkModeStore from '../store/DarkModeStore';
-import { useRouter } from 'next/router';
-import gray from '/public/gray.png';
+import { UserMenu } from './utils/UserMenu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMeQuery } from 'src/generated/graphql';
+import { Loading } from './utils';
+
+const currentURL = () =>
+  typeof window !== 'undefined'
+    ? new URL(window.location.href).pathname.split('/')
+    : undefined;
 
 export const NavBar: React.FC = ({}) => {
-  const router = useRouter();  
-  const apolloClient = useApolloClient();
-
-  const { data, loading } = useMeQuery();
-  const { data: userImages } = useUserImagesQuery();
-  const [logout] = useLogoutMutation();
   const { theme, hasHydrated } = useDarkModeStore();
+  const { data } = useMeQuery();
 
-  const profileUrl = userImages?.userImages?.find(
-    ({ type }) => type === 'profile'
-  )?.url;
+  const [activeMenu, setActiveMenu] = useState<string[] | undefined>();
 
-  let userMenu: JSX.Element | null = null;
-  // data is loading
-  if (loading) {
-    // user not logged in
-  } else if (!data?.me) {
-    userMenu = (
-      <>
-        <Menu.Item>
-          <NextLink href='/register'>
-            <a className='block px-4 py-2 text-sm text-gray-700 dark:text-white  hover:bg-purple'>
-              Register
-            </a>
-          </NextLink>
-        </Menu.Item>
-        <Menu.Item>
-          <NextLink href='/login'>
-            <a className='block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-purple '>
-              Login
-            </a>
-          </NextLink>
-        </Menu.Item>
-      </>
-    );
-  } else {
-    userMenu = (
-      <>
-        <Menu.Item>
-          <div className='block px-4 py-2 text-sm text-gray-700 dark:text-white'>
-            {`Hello ${data.me!.username}`}
-          </div>
-        </Menu.Item>
-        <Menu.Item>
-          <NextLink href='/setting/profile'>
-            <a className='block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-purple hover:text-white'>
-              Settings
-            </a>
-          </NextLink>
-        </Menu.Item>
-        <Menu.Item>
-          <div
-            onClick={async () => {
-              router.push('/');
-              await logout();
-              await apolloClient.resetStore();
-            }}
-            className='block px-4 py-2 text-sm text-gray-700dark:text-white hover:bg-purple hover:text-white'
-          >
-            Logout
-          </div>
-        </Menu.Item>
-      </>
-    );
+  useEffect(() => {
+    setActiveMenu(currentURL());
+  }, []);
+
+  if (!activeMenu) {
+    return <Loading />;
   }
 
   return (
-    <Disclosure as='nav' className='bg-white dark:bg-dark shadow mb-1'>
+    <Disclosure as='nav' className='bg-white dark:bg-dark shadow'>
       {({ open }) => (
         <>
           <div className='max-w-7xl mx-auto'>
@@ -118,48 +65,44 @@ export const NavBar: React.FC = ({}) => {
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <NextLink href='/'>
-                    <a className='border-purple text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white'>
+                    <a
+                      className={`${
+                        activeMenu?.length === 2
+                          ? 'border-purple'
+                          : 'border-white'
+                      } text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white`}
+                    >
                       Home
+                    </a>
+                  </NextLink>
+                  <NextLink href='/browse/league-of-legends'>
+                    <a
+                      className={`${
+                        activeMenu?.length && activeMenu[1] === 'browse'
+                          ? 'border-purple'
+                          : 'border-white'
+                      } text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-white`}
+                    >
+                      Browse
                     </a>
                   </NextLink>
                 </div>
               </div>
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
-                <Menu as='div' className='ml-3 relative'>
-                  {({ open }) => (
-                    <>
-                      <div>
-                        <Menu.Button className='bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple'>
-                          <span className='sr-only'>Open user menu</span>
-                          <img
-                            className='h-8 w-8 rounded-full'
-                            src={profileUrl ? profileUrl : gray.src}
-                            alt=''
-                          />
-                        </Menu.Button>
-                      </div>
-                      <Transition
-                        show={open}
-                        as={Fragment}
-                        enter='transition ease-out duration-200'
-                        enterFrom='transform opacity-0 scale-95'
-                        enterTo='transform opacity-100 scale-100'
-                        leave='transition ease-in duration-75'
-                        leaveFrom='transform opacity-100 scale-100'
-                        leaveTo='transform opacity-0 scale-95'
-                      >
-                        <Menu.Items
-                          static
-                          className='z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-dark text-white ring-1 ring-black ring-opacity-5 focus:outline-none'
-                        >
-                          {userMenu}
-                        </Menu.Items>
-                      </Transition>
-                    </>
-                  )}
-                </Menu>
-
-                <DarkMode />
+                {data?.me && (
+                  <NextLink href='/setting/profile'>
+                    <a className='rounded-full text-sm px-1.5 text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark hover:bg-purple '>
+                      <FontAwesomeIcon
+                        size='xs'
+                        className='dark:text-white text-black mr-1'
+                        icon='gamepad'
+                      />
+                      service form
+                    </a>
+                  </NextLink>
+                )}
+                {/* UserMenu */}
+                <UserMenu />
               </div>
             </div>
           </div>
@@ -167,8 +110,23 @@ export const NavBar: React.FC = ({}) => {
           <Disclosure.Panel className='sm:hidden'>
             <div className='pt-2 pb-4 space-y-1'>
               <NextLink href='/'>
-                <a className='bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium'>
+                <a
+                  className={`${
+                    activeMenu?.length === 2 ? 'bg-indigo-50' : 'bg-purple'
+                  }border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                >
                   Home
+                </a>
+              </NextLink>
+              <NextLink href='/browse/league-of-legends'>
+                <a
+                  className={`${
+                    activeMenu?.length && activeMenu[1] === 'browse'
+                      ? 'bg-purple'
+                      : 'bg-indigo-50'
+                  } border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                >
+                  Browse
                 </a>
               </NextLink>
             </div>

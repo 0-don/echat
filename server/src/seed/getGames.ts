@@ -27,6 +27,7 @@ export type GameType = {
     genres: GameResultType;
     multiplayer_modes: GameResultType;
     platforms: GameResultType;
+    slug: string;
   }[];
 };
 export type ImageSize =
@@ -42,18 +43,18 @@ export type ImageSize =
   | 'micro';
 
 axios.defaults.baseURL = 'https://api.igdb.com/v4';
-axios.defaults.headers.common['Client-ID'] = process.env.CLIENT_ID!;
+axios.defaults.headers.common['Client-ID'] = process.env.TWITCH_CLIENT_ID!;
 
 const authProvider = new ClientCredentialsAuthProvider(
-  process.env.CLIENT_ID!,
-  process.env.CLIENT_SECRET!
+  process.env.TWITCH_CLIENT_ID!,
+  process.env.TWITCH_CLIENT_SECRET!
 );
 const apiClient = new ApiClient({ authProvider });
 
 const getAccessToken = async () => {
   const url = `https://id.twitch.tv/oauth2/token?client_id=${process.env
-    .CLIENT_ID!}&client_secret=${process.env
-    .CLIENT_SECRET!}&grant_type=client_credentials`;
+    .TWITCH_CLIENT_ID!}&client_secret=${process.env
+    .TWITCH_CLIENT_SECRET!}&grant_type=client_credentials`;
 
   const { data } = await axios.post(url);
 
@@ -75,7 +76,7 @@ const getTopGames = async () => {
 const searchGame = async (name: string) => {
   const { data }: GameType = await axios.post(
     'games',
-    `search "${name}"; fields name,first_release_date,summary,screenshots,artworks,cover,genres,multiplayer_modes,platforms;`
+    `search "${name}"; fields name,first_release_date,summary,screenshots,artworks,cover,genres,multiplayer_modes,platforms, slug;`
   );
 
   return data.map((game) => {
@@ -210,12 +211,14 @@ const getFullGameData = async (name: string) => {
     platforms,
     genres,
     multiplayer_modes,
+    type: 'Games',
+    slug: game.slug,
     images: [...(screenshots || []), ...(covers || []), ...(artworks || [])],
   };
 };
 
 export const getGames = async () => {
-  fs.unlinkSync('games.json');
+  // fs.unlinkSync('games.json');
 
   axios.defaults.headers.common[
     'Authorization'

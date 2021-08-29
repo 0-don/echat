@@ -4,9 +4,9 @@ import {
   createImageLoader,
   createLanguageLoader,
   createScheduleLoader,
+  createServiceImageLoader,
+  createServiceLoader,
 } from '../loaders';
-import { createGameImageLoader } from '../loaders/createGameImageLoader';
-import { createGameLoader } from '../loaders/createGameLoader';
 
 export type MyContext = {
   // @ts-ignore
@@ -16,6 +16,6 @@ export type MyContext = {
   imageLoader: ReturnType<typeof createImageLoader>;
   languageLoader: ReturnType<typeof createLanguageLoader>;
   scheduleLoader: ReturnType<typeof createScheduleLoader>;
-  gameImageLoader: ReturnType<typeof createGameImageLoader>;
-  gameLoader: ReturnType<typeof createGameLoader>;
+  serviceImageLoader: ReturnType<typeof createServiceImageLoader>;
+  serviceLoader: ReturnType<typeof createServiceLoader>;
 };

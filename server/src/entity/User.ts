@@ -11,7 +11,7 @@ import {
 import { Image } from './Image';
 import { Schedule } from './Schedule';
 import { Language } from './Language';
-import { UserGame } from './UserGame';
+import { UserService } from './UserService';
 
 @ObjectType()
 @Entity()
@@ -86,11 +86,6 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 
   // Language
   @OneToMany(() => Language, (language) => language.user)
@@ -103,15 +98,21 @@ export class User extends BaseEntity {
   images: Image[];
 
   // UserGame
-  @OneToMany(() => UserGame, (user) => user.user)
-  @Field(() => [UserGame], { nullable: true })
-  games: UserGame[];
+  @OneToMany(() => UserService, (userService) => userService.user)
+  @Field(() => [UserService], { nullable: true })
+  services: UserService[];
 
   // Schedule
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   @Field(() => [Schedule], { nullable: true })
   schedules: Schedule[];
 
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+  
   @Column({ nullable: true })
   resetToken: string;
 }

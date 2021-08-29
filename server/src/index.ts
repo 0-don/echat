@@ -11,36 +11,34 @@ import cors from 'cors';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
-import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from './constants';
-
+import { COOKIE_NAME, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';
+import { ServiceResolver } from './resolvers/ServiceResolver';
+import { UserServiceResolver } from './resolvers/UserServiceResolver';
 import {
   createUserLoader,
   createImageLoader,
   createLanguageLoader,
   createScheduleLoader,
-  createGameImageLoader,
+  createServiceImageLoader,
+  createServiceLoader,
 } from './utils/loaders';
-import { GameResolver } from './resolvers/GameResolver';
-import { UserGameResolver } from './resolvers/UserGameResolver';
-import { createGameLoader } from './utils/loaders/createGameLoader';
 
 const PgSession = connectPgSimple(session);
 
 (async () => {
   const app = express();
 
-  const conn = await createConnection({
+  await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: true,
     logging: true,
-    entities: [ENTITIES],
-    migrations: [MIGRATIONS],
-    subscribers: [MIGRATIONS],
+    entities: [__dirname + '/entity/*'],
+    migrations: [__dirname + '/migration/*'],
+    subscribers: [__dirname + '/subscriber/*'],
   });
-  await conn.runMigrations();
 
   // parse application/json
   app.set('trust proxy', 1);
@@ -67,9 +65,13 @@ const PgSession = connectPgSimple(session);
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ImageResolver, GameResolver, UserGameResolver],
+      resolvers: [
+        UserResolver,
+        ImageResolver,
+        ServiceResolver,
+        UserServiceResolver,
+      ],
       validate: false,
-      dateScalarMode: "isoDate",
     }),
     context: ({ req, res }) => ({
       req,
@@ -78,8 +80,8 @@ const PgSession = connectPgSimple(session);
       imageLoader: createImageLoader(),
       languageLoader: createLanguageLoader(),
       scheduleLoader: createScheduleLoader(),
-      gameImageLoader: createGameImageLoader(),
-      gameLoader: createGameLoader(),
+      serviceImageLoader: createServiceImageLoader(),
+      serviceLoader: createServiceLoader(),
     }),
     uploads: false,
     introspection: true,
@@ -90,7 +92,7 @@ const PgSession = connectPgSimple(session);
 
   app.listen(parseInt(process.env.SERVER_PORT!), () => {
     log(`
-    🚀  Server is running!
+    🚀  Server is running!!
     🔉  Listening on port ${process.env.SERVER_PORT}
     📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
   `);

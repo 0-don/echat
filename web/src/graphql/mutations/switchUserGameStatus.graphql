@@ -1,3 +1,0 @@
-mutation SwitchUserGameStatus($id: Int!) {
-  switchUserGameStatus(id: $id)
-}

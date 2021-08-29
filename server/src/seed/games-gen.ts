@@ -1,21 +1,21 @@
 import fs from 'fs';
 import 'dotenv/config';
 import { createConnection } from 'typeorm';
-import { ENTITIES } from '../constants';
-import { Game } from '../entity/Game';
-import { GameImage } from '../entity/GameImage';
+import { Service } from '../entity/Service';
+import { ServiceImage } from '../entity/ServiceImage';
 import { getGames } from './getGames';
 import { log } from 'console';
 
 export interface Image {
-  gameId: number;
+  serviceId: number;
   type: string;
   url: string;
   width: number;
   height: number;
 }
 
-export interface Games {
+export interface Services {
+  type: string;
   twitchId: number;
   boxArtUrl: string;
   igdbId: number;
@@ -26,10 +26,11 @@ export interface Games {
   genres: { id: number; name: string }[];
   multiplayer_modes: string[];
   images: Image[] | undefined;
+  slug: string;
 }
 
 const main = async () => {
-  if (process.env.CLIENT_ID) {
+  if (process.env.TWITCH_CLIENT_ID && !fs.existsSync('games.json')) {
     await getGames();
   }
 
@@ -40,42 +41,46 @@ const main = async () => {
     url: process.env.DATABASE_URL,
     synchronize: true,
     // logging: true,
-    entities: [ENTITIES],
+    entities: [__dirname + '/../entity/*'],
   });
 
-  let games: Games[] = JSON.parse(data);
-  for (let game of games) {
-    log(`Upload ${game.popularity}/${games.length}: ${game.name}`);
-    let { images, ...gameData } = game;
+  let services: Services[] = JSON.parse(data);
 
-    let findGame;
-    findGame = await Game.findOne({ igdbId: gameData.igdbId });
-    if (!findGame) {
-      findGame = await conn
+  for (let service of services) {
+    log(`Upload ${service.popularity}/${services.length}: ${service.name}`);
+    let { images, ...serviceData } = service;
+
+    let findService;
+
+    findService = await Service.findOne({ igdbId: serviceData.igdbId });
+
+    if (!findService) {
+      findService = await conn
         .createQueryBuilder()
         .insert()
-        .into(Game)
-        .values(gameData)
+        .into(Service)
+        .values(serviceData)
         .returning('*')
         .execute();
     } else {
-      findGame = await conn
+      findService = await conn
         .createQueryBuilder()
-        .update(Game, gameData)
-        .where('igdbId = :igdbId', { igdbId: game.igdbId })
+        .update(Service, serviceData)
+        .where('igdbId = :igdbId', { igdbId: serviceData.igdbId })
         .returning('*')
         .updateEntity(true)
         .execute();
     }
-    const gameId = findGame.raw[0].id;
-    if (images) {
-      images.forEach((image) => (image.gameId = gameId));
 
-      await GameImage.delete({ gameId });
-      await GameImage.insert(images);
+    const serviceId = findService.raw[0].id;
+
+    if (images) {
+      images.forEach((image) => (image.serviceId = serviceId));
+
+      await ServiceImage.delete({ serviceId });
+      await ServiceImage.insert(images);
     }
   }
-  process.exit();
 };
 
 main();

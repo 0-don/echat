@@ -1,0 +1,3 @@
+mutation SwitchUserServiceStatus($id: Int!) {
+  switchUserServiceStatus(id: $id)
+}

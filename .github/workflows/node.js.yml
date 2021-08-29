@@ -36,11 +36,9 @@ jobs:
           envkey_CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           envkey_CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           envkey_CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
-          envkey_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          envkey_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          envkey_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          envkey_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
       - run: yarn
-        working-directory: ./server
-      - run: yarn build
         working-directory: ./server
       - run: pm2 delete server
         working-directory: ./server

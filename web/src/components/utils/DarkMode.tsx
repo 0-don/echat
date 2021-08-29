@@ -1,19 +1,7 @@
 import useDarkModeStore from '../../store/DarkModeStore';
-import { useEffect } from 'react';
 import { SwitchField } from '../htmlElements';
 
 export const DarkMode: React.FC = () => {
-  const { theme, hasHydrated, changeTheme, startTheme } = useDarkModeStore();
-
-  useEffect(() => {
-    startTheme();
-  }, []);
-
-  return (
-    <SwitchField
-      checked={hasHydrated && theme}
-      onChange={changeTheme}
-    
-    />
-  );
+  const { theme, hasHydrated, changeTheme } = useDarkModeStore();
+  return <SwitchField checked={hasHydrated && theme} onChange={changeTheme} />;
 };

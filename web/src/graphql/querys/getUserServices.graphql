@@ -1,0 +1,23 @@
+query FilterUserService($slug: String!) {
+  filterUserService(slug: $slug) {
+    id
+    status
+    level
+    platforms
+    description
+    price
+    per
+    user {
+      id
+      username
+      age
+      gender
+      country
+      images {
+        id
+        type
+        url
+      }
+    }
+  }
+}

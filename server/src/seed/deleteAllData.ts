@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { createConnection } from 'typeorm';
-import { Service } from '../entity/Service';
+// import { Service } from '../entity/Service';
 import { User } from '../entity/User';
 import { log } from 'console';
 
@@ -13,7 +13,7 @@ const main = async () => {
   });
 
   await User.delete({ fake: true });
-  await Service.delete({ type: 'Games' });
+  // await Service.delete({ type: 'Games' });
 
   log('finished');
 };

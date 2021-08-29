@@ -5,7 +5,6 @@ import { customFetch } from "./customFetch";
 import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { NextPageContext } from "next";
 import { createUploadLink } from "apollo-upload-client";
-import * as WebSocket from "ws";
 
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { split } from "@apollo/client";

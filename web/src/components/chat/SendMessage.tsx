@@ -29,7 +29,7 @@ const SendMessage: FC<SendMessageProps> = ({ name }) => {
   };
 
   return (
-    <div>
+    <div >
       <input
         type="text"
         id="message"

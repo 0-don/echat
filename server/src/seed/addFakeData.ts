@@ -4,9 +4,9 @@ import faker from "faker";
 import { Language } from "../entity/Language";
 import { User } from "../entity/User";
 import { Image } from "../entity/Image";
-import { Game } from "../entity/Game";
-import { GameImage } from "../entity/GameImage";
-import { UserGame } from "../entity/UserGame";
+import { Service } from "../entity/Service";
+import { ServiceImage } from "../entity/ServiceImage";
+import { UserService } from "../entity/UserService";
 import { Schedule } from "../entity/Schedule";
 const addFakeData = async () => {
   const conn = await createConnection({
@@ -16,14 +16,22 @@ const addFakeData = async () => {
     username: "postgres",
     password: "root",
     database: "Echat",
-    entities: [User, Language, Image, Game, GameImage, UserGame, Schedule],
+    entities: [
+      User,
+      Language,
+      Image,
+      Service,
+      ServiceImage,
+      UserService,
+      Schedule,
+    ],
   });
 
   await User.delete({});
 
   for (let i = 0; i < 10; i++) {
     const user = {
-      type: 'user',
+      type: "user",
       fake: true,
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -87,6 +95,6 @@ const addFakeData = async () => {
       .execute();
     console.log(i);
   }
-  console.log('finished');
+  console.log("finished");
 };
 addFakeData();

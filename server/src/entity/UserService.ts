@@ -6,13 +6,15 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { Game } from './Game';
+import { Service } from './Service';
 import { User } from './User';
 
 @ObjectType()
 @Entity()
-export class UserGame extends BaseEntity {
+export class UserService extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,14 +48,20 @@ export class UserGame extends BaseEntity {
   userId: number;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.games, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.services, { onDelete: 'CASCADE' })
   user: User;
 
   @Field(() => Int)
   @Column()
-  gameId: number;
+  serviceId: number;
 
-  @Field(() => Game)
-  @ManyToOne(() => Game, (user) => user.userGame)
-  game: Game;
+  @Field(() => Service)
+  @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
+  service: Service;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

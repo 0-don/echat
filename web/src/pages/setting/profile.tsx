@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
 import { ProfileSection } from 'src/components/profile/ProfileSection';
-import { GameSection } from 'src/components/profile/GameSection';
+import { ServiceSection } from 'src/components/profile/ServiceSection';
 import { SubmitSection } from 'src/components/profile/SubmitSection';
 import { FormSteps } from 'src/components/utils/FormSteps';
 import useFormStore from 'src/store/FormStore';
@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     formInit([
       { id: 0, name: 'Profile', status: 'current' },
-      { id: 1, name: 'Games', status: 'upcoming' },
+      { id: 1, name: 'Service', status: 'upcoming' },
       { id: 2, name: 'Submit', status: 'upcoming' },
     ]);
   }, []);
@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
     <Wrapper navbar>
       <FormSteps />
       {hasHydrated && currentStep === 'Profile' && <ProfileSection />}
-      {hasHydrated && currentStep === 'Games' && <GameSection />}
+      {hasHydrated && currentStep === 'Service' && <ServiceSection />}
       {hasHydrated && currentStep === 'Submit' && <SubmitSection />}
     </Wrapper>
   );

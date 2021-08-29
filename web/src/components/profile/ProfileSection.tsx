@@ -94,7 +94,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     Profile
                   </h1>
                   <div className='md:flex'>
-                    <div className='md:w-6/12 p-2'>
+                    <div className='md:w-6/12 md:mr-1'>
                       <InputField
                         name='username'
                         value={formikProps.values.username}
@@ -108,26 +108,26 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         label='Description'
                       />
                     </div>
-                    <div className='md:w-6/12 p-2'>
-                      <div className='flex'>
-                        <div className='w-3/4 mr-1'>
-                          <DropdownField
-                            {...formikProps}
-                            fieldName='country'
-                            list={COUNTRIES}
-                          />
-                        </div>
-                        <div className='w-3/4 mr-1'>
+                    <div className='md:w-6/12 md:ml-1'>
+                      <div className='md:flex '>
+                        <DropdownField
+                          {...formikProps}
+                          fieldName='country'
+                          list={COUNTRIES}
+                          className='md:w-6/12 md:mr-1'
+                        />
+                        <div className='flex md:w-6/12'>
                           <DropdownField
                             {...formikProps}
                             fieldName='gender'
                             list={GENDERS}
+                            className='w-6/12 mr-0.5'
                           />
-                        </div>
-                        <div className='w-3/4 mr-1'>
-                          <DatePickerField name='age' />
+
+                          <DatePickerField name='age' className='w-6/12 ml-0.5' />
                         </div>
                       </div>
+
                       <DropdownField
                         {...formikProps}
                         fieldName='languages'

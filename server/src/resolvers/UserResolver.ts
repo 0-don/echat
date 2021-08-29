@@ -46,8 +46,15 @@ export class UserResolver {
   }
 
   @Query(() => [User], { nullable: true })
-  getUsers() {
-    return User.find({ where: { type: 'user' } });
+  async getUsers() {
+    const users = await getConnection()
+      .createQueryBuilder()
+      .select()
+      .from(User, 'user')
+      .where('user.type = :type', { type: 'user' })
+      .limit(50)
+      .execute();
+    return users;
   }
 
   @Query(() => User, { nullable: true })

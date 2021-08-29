@@ -9,8 +9,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { GameImage } from './GameImage';
-import { UserGame } from './UserGame';
+import { ServiceImage } from './ServiceImage';
+import { UserService } from './UserService';
 
 type List = {
   id: number;
@@ -19,22 +19,30 @@ type List = {
 
 @ObjectType()
 @Entity()
-export class Game extends BaseEntity {
+export class Service extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Int)
-  @Column({ unique: true })
-  igdbId: number;
+  @Field(() => String)
+  @Column()
+  type: 'Games' | 'Interactive Entertaiment' | 'More Lifestyles' | string;
 
-  @Field(() => Int)
-  @Column({ unique: true })
-  twitchId: number;
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  igdbId?: number;
+
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  twitchId?: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   name: string;
+
+  @Field()
+  @Column({ unique: true })
+  slug: string;
 
   @Field(() => Int)
   @Column()
@@ -60,19 +68,20 @@ export class Game extends BaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   multiplayer_modes?: string[];
 
-  // GameImage
-  @OneToMany(() => GameImage, (gameImage) => gameImage.game, {
-    cascade: true,
-  })
-  @Field(() => [GameImage], { nullable: true })
-  images: GameImage[];
 
-  // UserGame
-  @OneToMany(() => UserGame, (userGame) => userGame.game, {
+  // ServiceImage
+  @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.service, {
     cascade: true,
   })
-  @Field(() => UserGame, { nullable: true })
-  userGame: UserGame;
+  @Field(() => [ServiceImage], { nullable: true })
+  images: ServiceImage[];
+
+  // UserService
+  @OneToMany(() => UserService, (userService) => userService.service, {
+    cascade: true,
+  })
+  @Field(() => UserService, { nullable: true })
+  userService: UserService;
 
   @CreateDateColumn()
   created_at: Date;

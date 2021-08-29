@@ -6,11 +6,11 @@ import {
   BaseEntity,
   ManyToOne,
 } from 'typeorm';
-import { Game } from './Game';
+import { Service } from './Service';
 
 @ObjectType()
 @Entity()
-export class GameImage extends BaseEntity {
+export class ServiceImage extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -33,9 +33,11 @@ export class GameImage extends BaseEntity {
 
   @Field()
   @Column()
-  gameId: number;
+  serviceId: number;
 
-  @Field(() => Game)
-  @ManyToOne(() => Game, (game) => game.images)
-  game: Game;
+  @Field(() => Service)
+  @ManyToOne(() => Service, (service) => service.images, {
+    onDelete: 'CASCADE',
+  })
+  service: Service;
 }

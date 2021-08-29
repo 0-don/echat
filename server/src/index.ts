@@ -9,22 +9,21 @@ import connectPgSimple from "connect-pg-simple";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { graphqlUploadExpress } from "graphql-upload";
-import { buildTypeDefsAndResolvers } from "type-graphql";
+
 import { createConnection } from "typeorm";
-import { COOKIE_NAME, ENTITIES, MIGRATIONS, __prod__ } from "./constants";
-import dotenv from "dotenv";
+import { COOKIE_NAME, __prod__ } from "./constants";
 import { UserResolver } from "./resolvers/UserResolver";
 import { ImageResolver } from "./resolvers/ImageResolver";
+
 import {
   createUserLoader,
   createImageLoader,
   createLanguageLoader,
   createScheduleLoader,
-  createGameImageLoader,
+  createServiceImageLoader,
+  createServiceLoader,
 } from "./utils/loaders";
-import { GameResolver } from "./resolvers/GameResolver";
-import { UserGameResolver } from "./resolvers/UserGameResolver";
-import { createGameLoader } from "./utils/loaders/createGameLoader";
+
 import { ChatResolver } from "./resolvers/ChatResolver";
 import { createServer } from "http";
 import { SubscriptionServer } from "subscriptions-transport-ws";
@@ -32,8 +31,9 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 
 import { execute, subscribe } from "graphql";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { ServiceResolver } from "./resolvers/ServiceResolver";
+import { buildTypeDefsAndResolvers } from "type-graphql";
 
-dotenv.config();
 const PgSession = connectPgSimple(session);
 
 const main = async () => {
@@ -41,16 +41,15 @@ const main = async () => {
 
   const httpServer = createServer(app);
 
-  const conn = await createConnection({
+  await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
     logging: true,
-    entities: [ENTITIES],
-    migrations: [MIGRATIONS],
-    subscribers: [MIGRATIONS],
+    entities: [__dirname + "/entity/*"],
+    migrations: [__dirname + "/migration/*"],
+    subscribers: [__dirname + "/subscriber/*"],
   });
-  await conn.runMigrations();
 
   // parse application/json
   app.set("trust proxy", 1);
@@ -76,13 +75,7 @@ const main = async () => {
   );
 
   const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-    resolvers: [
-      UserResolver,
-      ImageResolver,
-      GameResolver,
-      UserGameResolver,
-      ChatResolver,
-    ],
+    resolvers: [UserResolver, ImageResolver, ServiceResolver, ChatResolver],
 
     validate: false,
     dateScalarMode: "isoDate",
@@ -102,8 +95,8 @@ const main = async () => {
       imageLoader: createImageLoader(),
       languageLoader: createLanguageLoader(),
       scheduleLoader: createScheduleLoader(),
-      gameImageLoader: createGameImageLoader(),
-      gameLoader: createGameLoader(),
+      serviceImageLoader: createServiceImageLoader(),
+      serviceLoader: createServiceLoader(),
     }),
     introspection: true,
   });

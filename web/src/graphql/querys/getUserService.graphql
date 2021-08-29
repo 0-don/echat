@@ -1,14 +1,14 @@
-query GetUserGame {
-  getUserGame {
+query GetUserService {
+  getUserService {
     id
     status
-    gameId
+    serviceId
     level
     platforms
     description
     price
     per
-    game {
+    service {
       id
       igdbId
       twitchId

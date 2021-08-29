@@ -1,29 +1,31 @@
 import { FormikProps } from 'formik';
 import React, { useState } from 'react';
 import {
-  GetUserGameDocument,
-  useDeleteUserGameMutation,
-  useGetUserGameQuery,
-  useSwitchUserGameStatusMutation,
+  GetUserServiceDocument,
+  useDeleteUserServiceMutation,
+  useGetUserServiceQuery,
+  useSwitchUserServiceStatusMutation,
 } from 'src/generated/graphql';
 import useFormStore from 'src/store/FormStore';
 import { Button, SwitchField } from '../htmlElements';
 import { Loading } from '../utils';
-import { GameModal } from './modals/GameModal';
-import { UpsertGameModal } from './modals/UpsertGameModal';
+import { ServiceModal } from './modals/ServiceModal';
+import { UpsertServiceModal } from './modals/UpsertServiceModal';
 
-interface GameSectionProps {
+interface ServiceSectionProps {
   formikRef?: React.RefObject<FormikProps<any>>;
 }
 
-export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
+export const ServiceSection: React.FC<ServiceSectionProps> = ({
+  formikRef,
+}) => {
   formikRef;
   const { setStep } = useFormStore();
-  const { data, loading } = useGetUserGameQuery();
-  const [deleteUserGame] = useDeleteUserGameMutation();
-  const [switchUserGameStatus] = useSwitchUserGameStatusMutation();
-  const [gameOpen, setGameOpen] = useState(false);
-  const [gameId, setGameId] = useState(0);
+  const { data, loading } = useGetUserServiceQuery();
+  const [deleteUserService] = useDeleteUserServiceMutation();
+  const [switchUserServiceStatus] = useSwitchUserServiceStatusMutation();
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const [serviceId, setServiceId] = useState(0);
 
   if (loading) {
     return <Loading />;
@@ -31,32 +33,36 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
 
   return (
     <>
-      <UpsertGameModal gameId={gameId} open={gameOpen} setOpen={setGameOpen} />
+      <UpsertServiceModal
+        serviceId={serviceId}
+        open={serviceOpen}
+        setOpen={setServiceOpen}
+      />
       <div className='flex justify-end my-3 '>
-        <GameModal />
+        <ServiceModal />
       </div>
       <div className='grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
-        {data?.getUserGame?.map(
-          ({ __typename, id, per, price, game, status, gameId }) => (
+        {data?.getUserService?.map(
+          ({ __typename, id, per, price, service, status }) => (
             <div
-              key={game.boxArtUrl}
+              key={service.boxArtUrl}
               className='bg-white dark:bg-dark dark:text-white flex flex-col select-none mx-1'
             >
               <h1 className='font-semibold py-1 text-center text-black dark:text-white'>
-                {game.name}
+                {service.name}
               </h1>
               <div className='relative'>
                 <img
-                  src={game.boxArtUrl}
+                  src={service.boxArtUrl}
                   className={`w-full ${!status && 'opacity-50'}`}
                 />
                 <div className='absolute top-0 right-0 bg-dark rounded-full mt-0.5 mr-0.5'>
                   <SwitchField
                     checked={status}
                     onChange={async () => {
-                      await switchUserGameStatus({
+                      await switchUserServiceStatus({
                         variables: { id },
-                        refetchQueries: [{ query: GetUserGameDocument }],
+                        refetchQueries: [{ query: GetUserServiceDocument }],
                       });
                     }}
                   />
@@ -74,8 +80,8 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
                     className='py-1 w-6/12 rounded-none'
                     icon='pen-alt'
                     onClick={() => {
-                      setGameId(game.id);
-                      setGameOpen(!gameOpen);
+                      setServiceId(service.id);
+                      setServiceOpen(!serviceOpen);
                     }}
                   />
                   <Button
@@ -83,7 +89,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
                     className='py-1 w-6/12 rounded-none'
                     icon='trash-alt'
                     onClick={async () => {
-                      await deleteUserGame({
+                      await deleteUserService({
                         variables: { id },
                         update(c) {
                           const normalizedId = c.identify({ id, __typename });
@@ -100,7 +106,7 @@ export const GameSection: React.FC<GameSectionProps> = ({ formikRef }) => {
         )}
       </div>
       <div className='flex justify-end text-white dark:text-dark-dark'>
-        {data?.getUserGame?.length && (
+        {data?.getUserService?.length && (
           <Button
             text='next'
             type='button'

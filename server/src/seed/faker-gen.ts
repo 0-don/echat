@@ -22,7 +22,7 @@ const main = async () => {
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const servicesLength = services.length;
   servicesLength;
-  for (let i = 0; i < 300; i++) {
+  for (let i = 0; i < 1000; i++) {
     const user = {
       type: 'user',
       fake: true,
@@ -90,7 +90,7 @@ const main = async () => {
       .returning('*')
       .execute();
 
-    for (let x = 0; x < getRandomBetween(1, 4); x++) {
+    for (let x = 0; x < getRandomBetween(4, 8); x++) {
       let service = services[getRandomBetween(0, servicesLength)];
 
       const userService = {

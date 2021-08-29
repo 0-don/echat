@@ -15,6 +15,7 @@ import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
 import { Service } from '../entity/Service';
+import { User } from '../entity/User';
 
 @InputType()
 export class Dropdown {
@@ -51,6 +52,11 @@ export class UserServiceResolver {
     return serviceLoader.load(userService.serviceId);
   }
 
+  @FieldResolver(() => [User])
+  user(@Root() userService: UserService, @Ctx() { userLoader }: MyContext) {
+    return userLoader.load(userService.userId);
+  }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async switchUserServiceStatus(
@@ -72,13 +78,14 @@ export class UserServiceResolver {
 
   @Query(() => [UserService], { nullable: true })
   @UseMiddleware(isAuth)
-  filterUserService(
-    @Ctx() { req }: MyContext,
-    @Arg('id', () => Int) id: number
-  ) {
-    const { userId } = req.session;
-    userId;
-    return UserService.find({ id });
+  async filterUserService(@Arg('slug') slug: string) {
+    const service = await Service.findOne({ slug });
+
+    if (!service) {
+      return null;
+    }
+    const userService = await UserService.find({ serviceId: service.id });
+    return userService;
   }
 
   @Mutation(() => Boolean)

@@ -17,7 +17,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     <Wrapper navbar className=''>
       <div className='flex'>
         <Sidebar />
-        <div className='mt-2 grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mx-auto text-white'>
+        <div className='mt-2 grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 text-white'>
           {!userServiceLoading &&
             userService?.filterUserService?.map(({ user }, index) => (
               <div

@@ -1,11 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import {
-  HomeIcon,
-  MenuIcon,
-  XIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/outline';
+import { MenuIcon, XIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import { useGetAllServicesQuery } from 'src/generated/graphql';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
@@ -79,7 +74,12 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
         </span>
         <span className='text-sm font-bold'>{key}</span>
         <span aria-hidden='true' className='ml-auto'>
-          <ChevronDownIcon className='h-6 w-6' aria-hidden='true' />
+          <ChevronDownIcon
+            className={`${
+              tabs[index].state && '-rotate-180'
+            } h-6 w-6 transform transition-all`}
+            aria-hidden='true'
+          />
         </span>
       </div>
 

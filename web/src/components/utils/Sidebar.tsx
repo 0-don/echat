@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
         }}
         className={`${
           tabs[index].state ? 'bg-purple' : 'bg-dark'
-        } mt-2  flex items-center p-2 transition-colors rounded-md dark:text-light hover:bg-purple`}
+        } mb-2 flex items-center p-2 transition-colors rounded-md dark:text-light hover:bg-purple`}
       >
         <span aria-hidden='true'>
           <FontAwesomeIcon
@@ -165,7 +165,7 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col w-64 px-2 bg-dark-dark space-y-1'>
+        <nav className='flex flex-col w-72 px-2 bg-dark-dark space-y-1'>
           {items}
         </nav>
       </div>

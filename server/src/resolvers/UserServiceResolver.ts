@@ -77,7 +77,6 @@ export class UserServiceResolver {
   }
 
   @Query(() => [UserService], { nullable: true })
-  @UseMiddleware(isAuth)
   async filterUserService(@Arg('slug') slug: string) {
     const service = await Service.findOne({ slug });
 
@@ -85,10 +84,12 @@ export class UserServiceResolver {
       return null;
     }
     const userService = await UserService.find({ serviceId: service.id });
+    
     return userService;
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async upsertUserService(
     @Arg('options') options: UpsertUserService,
     @Ctx() { req }: MyContext

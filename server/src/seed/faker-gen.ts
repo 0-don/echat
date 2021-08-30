@@ -17,11 +17,9 @@ const main = async () => {
     entities: [__dirname + '/../entity/*'],
   });
 
-  // await User.delete({});
-
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const servicesLength = services.length;
-  servicesLength;
+
   for (let i = 0; i < 1000; i++) {
     const user = {
       type: 'user',

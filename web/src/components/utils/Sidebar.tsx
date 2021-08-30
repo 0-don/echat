@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   HomeIcon,
@@ -9,29 +9,54 @@ import {
 import { useGetAllServicesQuery } from 'src/generated/graphql';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
+import { Loading } from './Loading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface SidebarProps {}
 
 type TabState = {
   key: string;
   state: boolean;
+  icon: string;
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({}) => {
-  const { data } = useGetAllServicesQuery();
-  const groupedServices = _.groupBy(data?.getAllServices, 'type');
+const sidebarIcon = (key: string) => {
+  switch (key) {
+    case 'Interactive Entertainment':
+      return 'trophy';
+    case 'Games':
+      return 'gamepad';
+    case 'More Lifestyles':
+      return 'couch';
+    default:
+      return 'star';
+  }
+};
+const checkUrl = (string: string) => window.location.href.includes(string);
 
+export const Sidebar: React.FC<SidebarProps> = ({}) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [tabs, setTabs] = useState<TabState[]>(
-    Object.keys(groupedServices).map((key) => ({
-      key,
-      state: false,
-    }))
-  );
+  const { data, loading } = useGetAllServicesQuery();
+  const groupedServices = _.groupBy(data?.getAllServices, 'type');
+  const [tabs, setTabs] = useState<TabState[]>();
 
-  const items = Object.keys(groupedServices).map((key) => (
+  useEffect(() => {
+    setTabs(
+      Object.keys(groupedServices).map((key) => ({
+        key,
+        state: false,
+        icon: sidebarIcon(key),
+      }))
+    );
+  }, [data]);
+
+  if (loading || !tabs) {
+    return <Loading />;
+  }
+
+  const items = Object.keys(groupedServices).map((key, index) => (
     <div className='text-white' key={key}>
       <div
         onClick={() => {
@@ -41,10 +66,16 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
             )
           );
         }}
-        className='mt-2 flex items-center p-2 transition-colors rounded-md dark:text-light hover:bg-indigo-600'
+        className={`${
+          tabs[index].state ? 'bg-purple' : 'bg-dark'
+        } mt-2  flex items-center p-2 transition-colors rounded-md dark:text-light hover:bg-purple`}
       >
         <span aria-hidden='true'>
-          <HomeIcon className=' mr-4 h-6 w-6' aria-hidden='true' />
+          <FontAwesomeIcon
+            size='xs'
+            className='dark:text-white text-black mr-1'
+            icon={tabs[index].icon as any}
+          />
         </span>
         <span className='text-sm font-bold'>{key}</span>
         <span aria-hidden='true' className='ml-auto'>
@@ -58,8 +89,10 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
           tab.state === true &&
           groupedServices[key].map(({ id, name, slug }) => (
             <div
-              className='mt-2 space-y-2 px-7'
-              key={id}
+              className={`${
+                checkUrl(slug) && 'text-purple'
+              } mt-2 space-y-2 px-7 hover:text-purple`}
+              key={slug}
               onClick={() => {
                 router.push(`/browse/${slug}`);
               }}

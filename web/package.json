@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "apollo-upload-client": "^16.0.0",
+    "country-flag-icons": "^1.4.7",
     "dayjs": "^1.10.6",
     "formik": "^2.2.9",
     "graphql": "^15.5.1",
@@ -40,6 +41,7 @@
     "@tailwindcss/forms": "^0.3.3",
     "@types/apollo-upload-client": "^14.1.0",
     "@types/babel-plugin-macros": "^2.8.5",
+    "@types/country-flag-icons": "^1.2.0",
     "@types/lodash": "^4.14.172",
     "@types/node": "^16.0.1",
     "@types/react": "^17.0.14",

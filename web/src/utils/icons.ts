@@ -21,7 +21,10 @@ import {
   faMoon,
   faToolbox,
   faDoorOpen,
-  faRunning
+  faRunning,
+  faTrophy,
+  faCouch,
+  faStar
 } from '@fortawesome/free-solid-svg-icons';
 
 // import {
@@ -30,6 +33,9 @@ import {
 // } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faStar,
+  faCouch,
+  faTrophy,
   faRunning,
   faDoorOpen,
   faToolbox,

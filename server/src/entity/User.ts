@@ -12,6 +12,7 @@ import { Image } from './Image';
 import { Schedule } from './Schedule';
 import { Language } from './Language';
 import { UserService } from './UserService';
+import { TypeormLoader } from 'type-graphql-dataloader';
 
 @ObjectType()
 @Entity()
@@ -86,25 +87,28 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
-
   // Language
   @OneToMany(() => Language, (language) => language.user)
   @Field(() => [Language], { nullable: true })
+  @TypeormLoader()
   languages: Language[];
 
   // Image
   @OneToMany(() => Image, (image) => image.user)
   @Field(() => [Image], { nullable: true })
+  @TypeormLoader()
   images: Image[];
 
   // UserGame
   @OneToMany(() => UserService, (userService) => userService.user)
   @Field(() => [UserService], { nullable: true })
+  @TypeormLoader()
   services: UserService[];
 
   // Schedule
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   @Field(() => [Schedule], { nullable: true })
+  @TypeormLoader()
   schedules: Schedule[];
 
   @CreateDateColumn()
@@ -112,7 +116,7 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn()
   updated_at: Date;
-  
+
   @Column({ nullable: true })
   resetToken: string;
 }

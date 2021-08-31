@@ -12,23 +12,16 @@ import { createServer } from 'http';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { buildTypeDefsAndResolvers } from 'type-graphql';
 import { execute, subscribe } from 'graphql';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { COOKIE_NAME, __prod__ } from './constants';
 import { UserResolver } from './resolvers/UserResolver';
 import { ImageResolver } from './resolvers/ImageResolver';
 import { ServiceResolver } from './resolvers/ServiceResolver';
 import { UserServiceResolver } from './resolvers/UserServiceResolver';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import {
-  createUserLoader,
-  createImageLoader,
-  createLanguageLoader,
-  createScheduleLoader,
-  createServiceImageLoader,
-  createServiceLoader,
-} from './utils/loaders';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { ChatResolver } from './resolvers/ChatResolver';
+import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
 
 const PgSession = connectPgSimple(session);
 
@@ -77,7 +70,7 @@ const PgSession = connectPgSimple(session);
       ServiceResolver,
       UserServiceResolver,
     ],
-    validate: false
+    validate: false,
   });
 
   const schema = makeExecutableSchema({
@@ -87,18 +80,12 @@ const PgSession = connectPgSimple(session);
 
   const server = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({
-      req,
-      res,
-      userLoader: createUserLoader(),
-      imageLoader: createImageLoader(),
-      languageLoader: createLanguageLoader(),
-      scheduleLoader: createScheduleLoader(),
-      serviceImageLoader: createServiceImageLoader(),
-      serviceLoader: createServiceLoader(),
-    }),
+    context: ({ req, res }) => ({ req, res }),
     uploads: false,
     introspection: true,
+    plugins: [
+      ApolloServerLoaderPlugin({ typeormGetConnection: getConnection }),
+    ],
   });
 
   await server.start();

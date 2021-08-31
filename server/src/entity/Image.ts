@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from 'type-graphql';
+import { TypeormLoader } from 'type-graphql-dataloader';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -33,5 +34,6 @@ export class Image extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.images, { onDelete: 'CASCADE' })
+  @TypeormLoader()
   user: User;
 }

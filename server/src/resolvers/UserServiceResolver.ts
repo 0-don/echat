@@ -2,20 +2,17 @@ import {
   Arg,
   Ctx,
   Field,
-  FieldResolver,
   InputType,
   Int,
   Mutation,
   Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
 import { Service } from '../entity/Service';
-import { User } from '../entity/User';
 
 @InputType()
 export class Dropdown {
@@ -44,19 +41,6 @@ export class UpsertUserService {
 
 @Resolver(UserService)
 export class UserServiceResolver {
-  @FieldResolver(() => Service)
-  service(
-    @Root() userService: UserService,
-    @Ctx() { serviceLoader }: MyContext
-  ) {
-    return serviceLoader.load(userService.serviceId);
-  }
-
-  @FieldResolver(() => [User])
-  user(@Root() userService: UserService, @Ctx() { userLoader }: MyContext) {
-    return userLoader.load(userService.userId);
-  }
-
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async switchUserServiceStatus(

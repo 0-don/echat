@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { ServiceImage } from './ServiceImage';
 import { UserService } from './UserService';
+import { TypeormLoader } from 'type-graphql-dataloader';
 
 type List = {
   id: number;
@@ -68,19 +69,20 @@ export class Service extends BaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   multiplayer_modes?: string[];
 
-
   // ServiceImage
+  @Field(() => [ServiceImage], { nullable: true })
   @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.service, {
     cascade: true,
   })
-  @Field(() => [ServiceImage], { nullable: true })
+  @TypeormLoader()
   images: ServiceImage[];
 
   // UserService
+  @Field(() => UserService, { nullable: true })
   @OneToMany(() => UserService, (userService) => userService.service, {
     cascade: true,
   })
-  @Field(() => UserService, { nullable: true })
+  @TypeormLoader()
   userService: UserService;
 
   @CreateDateColumn()

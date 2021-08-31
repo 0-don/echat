@@ -9,8 +9,11 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Service } from './Service';
+import { ServiceImage } from './ServiceImage';
 import { User } from './User';
 
 @ObjectType()
@@ -61,6 +64,13 @@ export class UserService extends BaseEntity {
   @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
   @TypeormLoader()
   service: Service;
+
+  // ServiceImage
+  @Field(() => [ServiceImage], { nullable: true })
+  @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.userService)
+  @TypeormLoader()
+  @JoinColumn({ name: 'serviceId' })
+  images: ServiceImage[];
 
   @CreateDateColumn()
   created_at: Date;

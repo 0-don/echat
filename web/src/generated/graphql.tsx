@@ -261,6 +261,7 @@ export type User = {
   type?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
+  lastOnline: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;
@@ -459,6 +460,27 @@ export type UpsertUserServiceMutation = (
   & Pick<Mutation, 'upsertUserService'>
 );
 
+export type FilterUserServiceQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type FilterUserServiceQuery = (
+  { __typename?: 'Query' }
+  & { filterUserService?: Maybe<Array<(
+    { __typename?: 'UserService' }
+    & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'country' | 'lastOnline'>
+      & { images?: Maybe<Array<(
+        { __typename?: 'Image' }
+        & Pick<Image, 'id' | 'type' | 'url'>
+      )>> }
+    ) }
+  )>> }
+);
+
 export type GetAllServicesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -485,27 +507,6 @@ export type GetMeUserServiceQuery = (
     & { service: (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
-    ) }
-  )>> }
-);
-
-export type FilterUserServiceQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-export type FilterUserServiceQuery = (
-  { __typename?: 'Query' }
-  & { filterUserService?: Maybe<Array<(
-    { __typename?: 'UserService' }
-    & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-    & { user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'country'>
-      & { images?: Maybe<Array<(
-        { __typename?: 'Image' }
-        & Pick<Image, 'id' | 'type' | 'url'>
-      )>> }
     ) }
   )>> }
 );
@@ -538,7 +539,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { languages?: Maybe<Array<(
       { __typename?: 'Language' }
       & Pick<Language, 'id' | 'name'>
@@ -993,6 +994,60 @@ export function useUpsertUserServiceMutation(baseOptions?: Apollo.MutationHookOp
 export type UpsertUserServiceMutationHookResult = ReturnType<typeof useUpsertUserServiceMutation>;
 export type UpsertUserServiceMutationResult = Apollo.MutationResult<UpsertUserServiceMutation>;
 export type UpsertUserServiceMutationOptions = Apollo.BaseMutationOptions<UpsertUserServiceMutation, UpsertUserServiceMutationVariables>;
+export const FilterUserServiceDocument = gql`
+    query FilterUserService($slug: String!) {
+  filterUserService(slug: $slug) {
+    id
+    status
+    level
+    platforms
+    description
+    price
+    per
+    user {
+      id
+      username
+      age
+      gender
+      country
+      lastOnline
+      images {
+        id
+        type
+        url
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useFilterUserServiceQuery__
+ *
+ * To run a query within a React component, call `useFilterUserServiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFilterUserServiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFilterUserServiceQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useFilterUserServiceQuery(baseOptions: Apollo.QueryHookOptions<FilterUserServiceQuery, FilterUserServiceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FilterUserServiceQuery, FilterUserServiceQueryVariables>(FilterUserServiceDocument, options);
+      }
+export function useFilterUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FilterUserServiceQuery, FilterUserServiceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FilterUserServiceQuery, FilterUserServiceQueryVariables>(FilterUserServiceDocument, options);
+        }
+export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserServiceQuery>;
+export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
+export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
 export const GetAllServicesDocument = gql`
     query GetAllServices {
   getAllServices {
@@ -1096,59 +1151,6 @@ export function useGetMeUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServiceQuery>;
 export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
 export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
-export const FilterUserServiceDocument = gql`
-    query FilterUserService($slug: String!) {
-  filterUserService(slug: $slug) {
-    id
-    status
-    level
-    platforms
-    description
-    price
-    per
-    user {
-      id
-      username
-      age
-      gender
-      country
-      images {
-        id
-        type
-        url
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useFilterUserServiceQuery__
- *
- * To run a query within a React component, call `useFilterUserServiceQuery` and pass it any options that fit your needs.
- * When your component renders, `useFilterUserServiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFilterUserServiceQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useFilterUserServiceQuery(baseOptions: Apollo.QueryHookOptions<FilterUserServiceQuery, FilterUserServiceQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FilterUserServiceQuery, FilterUserServiceQueryVariables>(FilterUserServiceDocument, options);
-      }
-export function useFilterUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FilterUserServiceQuery, FilterUserServiceQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FilterUserServiceQuery, FilterUserServiceQueryVariables>(FilterUserServiceDocument, options);
-        }
-export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserServiceQuery>;
-export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
-export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {
@@ -1221,6 +1223,7 @@ export const MeDocument = gql`
     gender
     country
     age
+    lastOnline
     description
     discord
     twitter
@@ -1311,9 +1314,9 @@ export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQ
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
 export const namedOperations = {
   Query: {
+    FilterUserService: 'FilterUserService',
     GetAllServices: 'GetAllServices',
     GetMeUserService: 'GetMeUserService',
-    FilterUserService: 'FilterUserService',
     GetUsers: 'GetUsers',
     Me: 'Me',
     UserImages: 'UserImages'

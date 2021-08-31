@@ -21,12 +21,14 @@ const main = async () => {
   const servicesLength = services.length;
 
   for (let i = 0; i < 1000; i++) {
+
     const user = {
       type: 'user',
       fake: true,
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
+      lastOnline: new Date(Date.now() + ( 3600 * 1000 * 24 * getRandomBetween(1, 8))),
       description: coinFlip() ? faker.lorem.text() : undefined,
       age: coinFlip() ? faker.datatype.datetime() : undefined,
       gender: coinFlip() ? faker.name.gender() : undefined,
@@ -40,6 +42,7 @@ const main = async () => {
       steam: coinFlip() ? faker.internet.userName() : undefined,
       tiktok: coinFlip() ? faker.internet.userName() : undefined,
     };
+    // console.log(user)
 
     const dbUser = await conn
       .createQueryBuilder()

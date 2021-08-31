@@ -13,6 +13,7 @@ query FilterUserService($slug: String!) {
       age
       gender
       country
+      lastOnline
       images {
         id
         type

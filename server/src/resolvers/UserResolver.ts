@@ -42,11 +42,20 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   me(@Ctx() { req }: MyContext) {
     // you are not logged in
-    if (!req.session.userId) {
+    const id: number = req.session.userId;
+
+    if (!id) {
       return null;
     }
 
-    return User.findOne(req.session.userId);
+    return getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set({ lastOnline: new Date() })
+      .where('id = :id', { id })
+      .returning('*')
+      .execute()
+      .then((response) => response.raw[0]);
   }
 
   @Mutation(() => Boolean)

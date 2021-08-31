@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Dispatch, Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { MenuIcon, XIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import { useGetAllServicesQuery } from 'src/generated/graphql';
@@ -7,7 +7,10 @@ import { useRouter } from 'next/router';
 import { Loading } from './Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-interface SidebarProps {}
+interface SidebarProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: Dispatch<React.SetStateAction<boolean>>;
+}
 
 type TabState = {
   key: string;
@@ -29,8 +32,10 @@ const sidebarIcon = (key: string) => {
 };
 const checkUrl = (string: string) => window.location.href.includes(string);
 
-export const Sidebar: React.FC<SidebarProps> = ({}) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export const Sidebar: React.FC<SidebarProps> = ({
+  setSidebarOpen,
+  sidebarOpen,
+}) => {
   const router = useRouter();
 
   const { data, loading } = useGetAllServicesQuery();
@@ -165,19 +170,10 @@ export const Sidebar: React.FC<SidebarProps> = ({}) => {
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col w-72 px-2 bg-dark-dark space-y-1'>
+        <nav className='flex flex-col lg:w-72 px-2 bg-dark-dark space-y-1'>
           {items}
         </nav>
       </div>
-
-      <button
-        type='button'
-        className='md:hidden -ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'
-        onClick={() => setSidebarOpen(true)}
-      >
-        <span className='sr-only'>Open sidebar</span>
-        <MenuIcon className='h-6 w-6 text-white' aria-hidden='true' />
-      </button>
     </div>
   );
 };

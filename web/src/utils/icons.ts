@@ -24,7 +24,8 @@ import {
   faRunning,
   faTrophy,
   faCouch,
-  faStar
+  faStar,
+  faCoins
 } from '@fortawesome/free-solid-svg-icons';
 
 // import {
@@ -33,6 +34,7 @@ import {
 // } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faCoins,
   faStar,
   faCouch,
   faTrophy,

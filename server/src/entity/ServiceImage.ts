@@ -6,8 +6,10 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Service } from './Service';
+import { UserService } from './UserService';
 
 @ObjectType()
 @Entity()
@@ -42,4 +44,12 @@ export class ServiceImage extends BaseEntity {
   })
   @TypeormLoader()
   service: Service;
+
+  @Field(() => UserService)
+  @ManyToOne(() => UserService, (userService) => userService.images, {
+    onDelete: 'CASCADE',
+  })
+
+  @TypeormLoader()
+  userService: UserService;
 }

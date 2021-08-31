@@ -39,6 +39,10 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @Field()
+  @Column({ default: new Date(), type: 'timestamptz' })
+  lastOnline: Date;
+
   @Field({ nullable: true })
   @Column({ nullable: true })
   description: string;
@@ -88,26 +92,26 @@ export class User extends BaseEntity {
   tiktok: string;
 
   // Language
-  @OneToMany(() => Language, (language) => language.user)
   @Field(() => [Language], { nullable: true })
+  @OneToMany(() => Language, (language) => language.user)
   @TypeormLoader()
   languages: Language[];
 
   // Image
-  @OneToMany(() => Image, (image) => image.user)
   @Field(() => [Image], { nullable: true })
+  @OneToMany(() => Image, (image) => image.user)
   @TypeormLoader()
   images: Image[];
 
   // UserGame
-  @OneToMany(() => UserService, (userService) => userService.user)
   @Field(() => [UserService], { nullable: true })
+  @OneToMany(() => UserService, (userService) => userService.user)
   @TypeormLoader()
   services: UserService[];
 
   // Schedule
-  @OneToMany(() => Schedule, (schedule) => schedule.user)
   @Field(() => [Schedule], { nullable: true })
+  @OneToMany(() => Schedule, (schedule) => schedule.user)
   @TypeormLoader()
   schedules: Schedule[];
 

@@ -30,6 +30,7 @@ module.exports = {
         dark: '#0e0e10',
       },
       black: colors.black,
+      yellow: colors.yellow,
       white: colors.white,
       gray: colors.coolGray,
       indigo: colors.indigo,

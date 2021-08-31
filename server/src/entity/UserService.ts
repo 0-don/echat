@@ -1,5 +1,6 @@
 import GraphQLJSON from 'graphql-type-json';
 import { Field, Int, ObjectType } from 'type-graphql';
+import { TypeormLoader } from 'type-graphql-dataloader';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -49,6 +50,7 @@ export class UserService extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.services, { onDelete: 'CASCADE' })
+  @TypeormLoader()
   user: User;
 
   @Field(() => Int)
@@ -57,6 +59,7 @@ export class UserService extends BaseEntity {
 
   @Field(() => Service)
   @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
+  @TypeormLoader()
   service: Service;
 
   @CreateDateColumn()

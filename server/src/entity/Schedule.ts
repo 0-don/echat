@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from 'type-graphql';
+import { TypeormLoader } from 'type-graphql-dataloader';
 import { Entity, Column, BaseEntity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { User } from './User';
 
@@ -31,5 +32,6 @@ export class Schedule extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.schedules, { onDelete: 'CASCADE' })
+  @TypeormLoader()
   user: User;
 }

@@ -2,11 +2,9 @@ import { MyContext } from '../utils/types/MyContext';
 import {
   Arg,
   Ctx,
-  FieldResolver,
   Mutation,
   Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { Image } from '../entity/Image';
@@ -16,16 +14,11 @@ import { fileUpload } from '../utils/fileUpload';
 import { getConnection } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { log } from 'console';
-import { User } from '../entity/User';
 
 type ImageTypes = 'profile' | 'cover' | 'secondary';
 
 @Resolver(Image)
 export class ImageResolver {
-  @FieldResolver(() => User)
-  user(@Root() images: Image, @Ctx() { userLoader }: MyContext) {
-    return userLoader.load(images.userId);
-  }
 
   @Mutation(() => Boolean)
   async deleteAllImages() {

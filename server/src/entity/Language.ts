@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from 'type-graphql';
+import { TypeormLoader } from 'type-graphql-dataloader';
 import {
   Entity,
   Column,
@@ -26,6 +27,7 @@ export class Language extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.languages, { onDelete: 'CASCADE' })
+  @TypeormLoader()
   user: User;
 
 }

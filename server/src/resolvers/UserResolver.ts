@@ -3,11 +3,9 @@ import { Session } from '../entity/Session';
 import {
   Arg,
   Ctx,
-  FieldResolver,
   Mutation,
   Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from 'type-graphql';
 import argon2 from 'argon2';
@@ -20,7 +18,6 @@ import { v4 } from 'uuid';
 import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
 import { Language } from '../entity/Language';
-import { Image } from '../entity/Image';
 import {
   EmailUsernamePasswordInput,
   UpdatedUser,
@@ -30,21 +27,6 @@ import { Schedule } from '../entity/Schedule';
 
 @Resolver(User)
 export class UserResolver {
-  @FieldResolver(() => [Image], { nullable: true })
-  images(@Root() user: User, @Ctx() { imageLoader }: MyContext) {
-    return imageLoader.load({ userId: user.id });
-  }
-
-  @FieldResolver(() => [Language], { nullable: true })
-  languages(@Root() user: User, @Ctx() { languageLoader }: MyContext) {
-    return languageLoader.load({ userId: user.id });
-  }
-
-  @FieldResolver(() => [Schedule], { nullable: true })
-  schedules(@Root() user: User, @Ctx() { scheduleLoader }: MyContext) {
-    return scheduleLoader.load({ userId: user.id });
-  }
-
   @Query(() => [User], { nullable: true })
   async getUsers() {
     const users = await getConnection()

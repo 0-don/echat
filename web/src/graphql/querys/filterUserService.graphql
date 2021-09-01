@@ -7,6 +7,11 @@ query FilterUserService($slug: String!) {
     description
     price
     per
+    images {
+      id
+      type
+      url
+    }
     user {
       id
       username

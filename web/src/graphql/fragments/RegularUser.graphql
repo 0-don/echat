@@ -1,31 +1,32 @@
 fragment RegularUser on User {
-  id
-  type
-  username
-  gender
-  country
-  age
-  description
-
-  discord
-  twitter
-  facebook
-  snapchat
-  instagram
-  twitch
-  steam
-  tiktok
-
-  languages {
     id
-    name
-  }
+    type
+    username
+    gender
+    country
+    age
+    lastOnline
+    description
 
-  schedules {
-    id
-    name
-    from
-    to
-    available
-  }
+    discord
+    twitter
+    facebook
+    snapchat
+    instagram
+    twitch
+    steam
+    tiktok
+
+    languages {
+      id
+      name
+    }
+
+    schedules {
+      id
+      name
+      from
+      to
+      available
+    }
 }

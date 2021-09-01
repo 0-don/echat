@@ -22,7 +22,6 @@ const SendMessage: FC<SendMessageProps> = ({ name }) => {
   const handleSend = () => {
     sendMessage({ variables: { name: name, message: input } })
       .then((data) => {
-        console.log(data);
         setInput('');
       })
       .catch((err) => console.log(err));

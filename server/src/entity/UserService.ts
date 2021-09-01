@@ -10,7 +10,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  JoinColumn,
 } from 'typeorm';
 import { Service } from './Service';
 import { ServiceImage } from './ServiceImage';
@@ -68,8 +67,8 @@ export class UserService extends BaseEntity {
   // ServiceImage
   @Field(() => [ServiceImage], { nullable: true })
   @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.userService)
+  // @JoinColumn({ name: 'serviceId', referencedColumnName: 'serviceId' })
   @TypeormLoader()
-  @JoinColumn({ name: 'serviceId' })
   images: ServiceImage[];
 
   @CreateDateColumn()

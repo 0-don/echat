@@ -1,7 +1,5 @@
 import { Service } from '../entity/Service';
-import { Arg, Query, Resolver } from 'type-graphql';
-
-import { getRepository } from 'typeorm';
+import { Arg, Int, Query, Resolver } from 'type-graphql';
 
 @Resolver(Service)
 export class ServiceResolver {
@@ -12,17 +10,16 @@ export class ServiceResolver {
     });
   }
 
-  @Query(() => [Service], { nullable: true })
-  async findService(@Arg('service') service: string) {
-    service;
-    const foundService = await getRepository(Service)
-      .createQueryBuilder('service')
-      .where('service.platforms @> :platforms', {
-        platforms: JSON.stringify(['PC', 'Mac']),
-      })
-      // .where(`platforms @> '["PC", "Mac"]'`)
-      .getMany();
+  @Query(() => Service, { nullable: true })
+  async getService(@Arg('id', () => Int) id: number) {
+    // const foundService = await getRepository(Service)
+    //   .createQueryBuilder('service')
+    //   .where('service.platforms @> :platforms', {
+    //     platforms: JSON.stringify(['PC', 'Mac']),
+    //   })
+    //   // .where(`platforms @> '["PC", "Mac"]'`)
+    //   .getMany();
 
-    return foundService;
+    return Service.findOne(id);
   }
 }

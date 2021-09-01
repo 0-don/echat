@@ -1,15 +1,17 @@
-import React, { Dispatch, Fragment, useEffect, useState } from 'react';
+import React, { Dispatch, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { MenuIcon, XIcon, ChevronDownIcon } from '@heroicons/react/outline';
-import { useGetAllServicesQuery } from 'src/generated/graphql';
+import { XIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import {
+  GetAllServicesQuery,
+} from 'src/generated/graphql';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
-import { Loading } from './Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<React.SetStateAction<boolean>>;
+  data: GetAllServicesQuery;
 }
 
 type TabState = {
@@ -35,26 +37,19 @@ const checkUrl = (string: string) => window.location.href.includes(string);
 export const Sidebar: React.FC<SidebarProps> = ({
   setSidebarOpen,
   sidebarOpen,
+  data,
 }) => {
   const router = useRouter();
 
-  const { data, loading } = useGetAllServicesQuery();
   const groupedServices = _.groupBy(data?.getAllServices, 'type');
-  const [tabs, setTabs] = useState<TabState[]>();
 
-  useEffect(() => {
-    setTabs(
-      Object.keys(groupedServices).map((key) => ({
-        key,
-        state: false,
-        icon: sidebarIcon(key),
-      }))
-    );
-  }, [data]);
-
-  if (loading || !tabs) {
-    return <Loading />;
-  }
+  const [tabs, setTabs] = useState<TabState[]>(
+    Object.keys(groupedServices).map((key) => ({
+      key,
+      state: false,
+      icon: sidebarIcon(key),
+    }))
+  );
 
   const items = Object.keys(groupedServices).map((key, index) => (
     <div className='text-white' key={key}>

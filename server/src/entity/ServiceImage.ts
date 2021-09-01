@@ -6,7 +6,6 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 import { Service } from './Service';
 import { UserService } from './UserService';
@@ -34,7 +33,7 @@ export class ServiceImage extends BaseEntity {
   @Column()
   height: number;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   serviceId: number;
 
@@ -49,7 +48,6 @@ export class ServiceImage extends BaseEntity {
   @ManyToOne(() => UserService, (userService) => userService.images, {
     onDelete: 'CASCADE',
   })
-
   @TypeormLoader()
   userService: UserService;
 }

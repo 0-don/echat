@@ -2,17 +2,24 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Int,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
 import { Service } from '../entity/Service';
+import { groupBy } from 'lodash';
+import { ServiceImage } from '../entity/ServiceImage';
+import { Loader } from 'type-graphql-dataloader';
+import { getRepository, In } from 'typeorm';
+import DataLoader from 'dataloader';
 
 @InputType()
 export class Dropdown {
@@ -41,6 +48,21 @@ export class UpsertUserService {
 
 @Resolver(UserService)
 export class UserServiceResolver {
+  @FieldResolver()
+  @Loader<number, ServiceImage[]>(async (serviceIds) => {
+    const serviceImages = await getRepository(ServiceImage).find({
+      where: { serviceId: In([...serviceIds]) },
+    });
+    const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
+    return serviceIds.map(
+      (serviceId) => serviceImageByserviceId[serviceId] ?? []
+    );
+  })
+  images(@Root() root: UserService) {
+    return (dataloader: DataLoader<number, ServiceImage[]>) =>
+      dataloader.load(root.serviceId);
+  }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async switchUserServiceStatus(
@@ -68,7 +90,7 @@ export class UserServiceResolver {
       return null;
     }
     const userService = await UserService.find({ serviceId: service.id });
-    
+
     return userService;
   }
 

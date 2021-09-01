@@ -153,7 +153,7 @@ export type Query = {
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
   getAllServices?: Maybe<Array<Service>>;
-  findService?: Maybe<Array<Service>>;
+  getService?: Maybe<Service>;
   getMeUserService?: Maybe<Array<UserService>>;
   filterUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
@@ -165,8 +165,8 @@ export type QueryUserImagesArgs = {
 };
 
 
-export type QueryFindServiceArgs = {
-  service: Scalars['String'];
+export type QueryGetServiceArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -218,8 +218,9 @@ export type ServiceImage = {
   url: Scalars['String'];
   width: Scalars['Int'];
   height: Scalars['Int'];
-  serviceId: Scalars['Float'];
+  serviceId: Scalars['Int'];
   service: Service;
+  userService: UserService;
 };
 
 export type Subscription = {
@@ -299,6 +300,7 @@ export type UserService = {
   user: User;
   serviceId: Scalars['Int'];
   service: Service;
+  images?: Maybe<Array<ServiceImage>>;
 };
 
 export type RegularErrorFragment = (
@@ -308,7 +310,7 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+  & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
   & { languages?: Maybe<Array<(
     { __typename?: 'Language' }
     & Pick<Language, 'id' | 'name'>
@@ -470,7 +472,10 @@ export type FilterUserServiceQuery = (
   & { filterUserService?: Maybe<Array<(
     { __typename?: 'UserService' }
     & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-    & { user: (
+    & { images?: Maybe<Array<(
+      { __typename?: 'ServiceImage' }
+      & Pick<ServiceImage, 'id' | 'type' | 'url'>
+    )>>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'country' | 'lastOnline'>
       & { images?: Maybe<Array<(
@@ -577,6 +582,7 @@ export const RegularUserFragmentDoc = gql`
   gender
   country
   age
+  lastOnline
   description
   discord
   twitter
@@ -1004,6 +1010,11 @@ export const FilterUserServiceDocument = gql`
     description
     price
     per
+    images {
+      id
+      type
+      url
+    }
     user {
       id
       username

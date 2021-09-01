@@ -42,7 +42,6 @@ const main = async () => {
       steam: coinFlip() ? faker.internet.userName() : undefined,
       tiktok: coinFlip() ? faker.internet.userName() : undefined,
     };
-    // console.log(user)
 
     const dbUser = await conn
       .createQueryBuilder()

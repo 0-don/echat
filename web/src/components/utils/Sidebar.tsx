@@ -1,9 +1,7 @@
 import React, { Dispatch, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, ChevronDownIcon } from '@heroicons/react/outline';
-import {
-  GetAllServicesQuery,
-} from 'src/generated/graphql';
+import { GetAllServicesQuery } from 'src/generated/graphql';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -165,9 +163,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col lg:w-72 px-2 bg-dark-dark space-y-1'>
-          {items}
-        </nav>
+        <nav className='flex flex-col lg:w-72 px-2 space-y-1'>{items}</nav>
       </div>
     </div>
   );

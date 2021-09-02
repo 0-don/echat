@@ -9,6 +9,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { PaginatedUserService } from 'src/generated/graphql';
 
 const createClient = (ctx: NextPageContext) => {
   const wsLink =
@@ -49,7 +50,29 @@ const createClient = (ctx: NextPageContext) => {
   return new ApolloClient({
     connectToDevTools: true,
     ssrMode: typeof window === 'undefined',
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            filterUserService: {
+              keyArgs: [],
+              merge(
+                existing: PaginatedUserService | undefined,
+                incoming: PaginatedUserService
+              ): PaginatedUserService {
+                return {
+                  ...incoming,
+                  userService: [
+                    ...(existing?.userService || []),
+                    ...incoming.userService,
+                  ],
+                };
+              },
+            },
+          },
+        },
+      },
+    }),
     link,
   });
 };

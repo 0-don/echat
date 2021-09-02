@@ -117,7 +117,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
               }}
               className='block py-2 text-sm'
             >
-              Logout#
+              Logout
             </div>
           </div>
         </Menu.Item>

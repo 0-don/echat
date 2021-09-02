@@ -146,6 +146,12 @@ export type MutationCreateChatArgs = {
   name: Scalars['String'];
 };
 
+export type PaginatedUserService = {
+  __typename?: 'PaginatedUserService';
+  userService: Array<UserService>;
+  hasMore: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getUsers?: Maybe<Array<User>>;
@@ -155,7 +161,7 @@ export type Query = {
   getAllServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
   getMeUserService?: Maybe<Array<UserService>>;
-  filterUserService?: Maybe<Array<UserService>>;
+  filterUserService: PaginatedUserService;
   getChats: Array<Chat>;
 };
 
@@ -171,6 +177,8 @@ export type QueryGetServiceArgs = {
 
 
 export type QueryFilterUserServiceArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
   slug: Scalars['String'];
 };
 
@@ -301,6 +309,8 @@ export type UserService = {
   serviceId: Scalars['Int'];
   service: Service;
   images?: Maybe<Array<ServiceImage>>;
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type RegularErrorFragment = (
@@ -464,26 +474,32 @@ export type UpsertUserServiceMutation = (
 
 export type FilterUserServiceQueryVariables = Exact<{
   slug: Scalars['String'];
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
 }>;
 
 
 export type FilterUserServiceQuery = (
   { __typename?: 'Query' }
-  & { filterUserService?: Maybe<Array<(
-    { __typename?: 'UserService' }
-    & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-    & { images?: Maybe<Array<(
-      { __typename?: 'ServiceImage' }
-      & Pick<ServiceImage, 'id' | 'type' | 'url'>
-    )>>, user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'country' | 'lastOnline'>
+  & { filterUserService: (
+    { __typename?: 'PaginatedUserService' }
+    & Pick<PaginatedUserService, 'hasMore'>
+    & { userService: Array<(
+      { __typename?: 'UserService' }
+      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'createdAt' | 'serviceId'>
       & { images?: Maybe<Array<(
-        { __typename?: 'Image' }
-        & Pick<Image, 'id' | 'type' | 'url'>
-      )>> }
-    ) }
-  )>> }
+        { __typename?: 'ServiceImage' }
+        & Pick<ServiceImage, 'id' | 'type' | 'url'>
+      )>>, user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'country' | 'lastOnline'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'id' | 'type' | 'url'>
+        )>> }
+      ) }
+    )> }
+  ) }
 );
 
 export type GetAllServicesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1001,31 +1017,36 @@ export type UpsertUserServiceMutationHookResult = ReturnType<typeof useUpsertUse
 export type UpsertUserServiceMutationResult = Apollo.MutationResult<UpsertUserServiceMutation>;
 export type UpsertUserServiceMutationOptions = Apollo.BaseMutationOptions<UpsertUserServiceMutation, UpsertUserServiceMutationVariables>;
 export const FilterUserServiceDocument = gql`
-    query FilterUserService($slug: String!) {
-  filterUserService(slug: $slug) {
-    id
-    status
-    level
-    platforms
-    description
-    price
-    per
-    images {
+    query FilterUserService($slug: String!, $limit: Int!, $cursor: String) {
+  filterUserService(slug: $slug, limit: $limit, cursor: $cursor) {
+    hasMore
+    userService {
       id
-      type
-      url
-    }
-    user {
-      id
-      username
-      age
-      gender
-      country
-      lastOnline
+      status
+      level
+      platforms
+      description
+      price
+      per
+      createdAt
       images {
         id
         type
         url
+      }
+      serviceId
+      user {
+        id
+        username
+        age
+        gender
+        country
+        lastOnline
+        images {
+          id
+          type
+          url
+        }
       }
     }
   }
@@ -1045,6 +1066,8 @@ export const FilterUserServiceDocument = gql`
  * const { data, loading, error } = useFilterUserServiceQuery({
  *   variables: {
  *      slug: // value for 'slug'
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */

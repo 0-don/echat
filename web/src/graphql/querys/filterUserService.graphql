@@ -1,28 +1,33 @@
-query FilterUserService($slug: String!) {
-  filterUserService(slug: $slug) {
-    id
-    status
-    level
-    platforms
-    description
-    price
-    per
-    images {
+query FilterUserService($slug: String!, $limit: Int!, $cursor: String) {
+  filterUserService(slug: $slug, limit: $limit, cursor: $cursor) {
+    hasMore
+    userService {
       id
-      type
-      url
-    }
-    user {
-      id
-      username
-      age
-      gender
-      country
-      lastOnline
+      status
+      level
+      platforms
+      description
+      price
+      per
+      createdAt
       images {
         id
         type
         url
+      }
+      serviceId
+      user {
+        id
+        username
+        age
+        gender
+        country
+        lastOnline
+        images {
+          id
+          type
+          url
+        }
       }
     }
   }

@@ -59,6 +59,7 @@ export class UserService extends BaseEntity {
   @Column()
   serviceId: number;
 
+  // Service
   @Field(() => Service)
   @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
   @TypeormLoader()
@@ -67,13 +68,14 @@ export class UserService extends BaseEntity {
   // ServiceImage
   @Field(() => [ServiceImage], { nullable: true })
   @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.userService)
-  // @JoinColumn({ name: 'serviceId', referencedColumnName: 'serviceId' })
   @TypeormLoader()
   images: ServiceImage[];
 
+  @Field(() => String)
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
+  @Field(() => String)
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }

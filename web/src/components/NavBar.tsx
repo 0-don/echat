@@ -6,7 +6,7 @@ import useDarkModeStore from '../store/DarkModeStore';
 import { UserMenu } from './utils/UserMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMeQuery } from 'src/generated/graphql';
-import { Loading } from './utils';
+
 
 const currentURL = () =>
   typeof window !== 'undefined'
@@ -23,9 +23,6 @@ export const NavBar: React.FC = ({}) => {
     setActiveMenu(currentURL());
   }, []);
 
-  if (!activeMenu) {
-    return <Loading />;
-  }
 
   return (
     <Disclosure as='nav' className='bg-white dark:bg-dark shadow'>

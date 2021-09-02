@@ -1,4 +1,4 @@
-import { GRAPHQL_SERVER_URL } from '../../constants';
+import { GRAPHQL_SERVER_URL, __prod__ } from '../../constants';
 import { withApollo } from 'next-apollo';
 import { customFetch } from './customFetch';
 
@@ -14,7 +14,9 @@ const createClient = (ctx: NextPageContext) => {
   const wsLink =
     typeof window !== 'undefined' &&
     new WebSocketLink({
-      uri: 'ws://localhost:4001/graphql',
+      uri: __prod__
+        ? 'wss://aktoryes.de/graphql'
+        : 'ws://localhost:4001/graphql',
       options: { reconnect: true },
     });
 

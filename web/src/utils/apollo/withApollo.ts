@@ -15,8 +15,8 @@ const createClient = (ctx: NextPageContext) => {
     typeof window !== 'undefined' &&
     new WebSocketLink({
       uri: __prod__
-        ? 'wss://aktoryes.de/graphql'
-        : 'ws://localhost:4001/graphql',
+        ? `wss://${new URL(window.location.href).hostname}/graphql`
+        : `ws://${new URL(GRAPHQL_SERVER_URL).host}/graphql`,
       options: { reconnect: true },
     });
 

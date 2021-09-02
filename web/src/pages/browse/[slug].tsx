@@ -27,7 +27,7 @@ import { Loading } from 'src/components/utils';
 dayjs.extend(relativeTime);
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
-  const [randomNumber, setRandomNumber] = useState<number>(0);
+  // const [randomNumber, setRandomNumber] = useState<number>(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data, loading } = useGetAllServicesQuery();
 
@@ -41,10 +41,10 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const service = data.getAllServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
 
-  useEffect(() => {
-    images?.length &&
-      setRandomNumber(Math.floor(Math.random() * images.length));
-  }, []);
+  // useEffect(() => {
+  //   images?.length &&
+  //     setRandomNumber(Math.floor(Math.random() * images.length));
+  // }, []);
 
   return (
     <Wrapper navbar className=''>
@@ -57,8 +57,8 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
 
       <div className='relative'>
         <img
-          className='absolute h-32 w-full object-cover lg:h-64 opacity-20 mb-1'
-          src={images ? images[randomNumber].url : gray.src}
+          className='absolute h-32 w-full object-cover lg:h-64 opacity-80 mb-1'
+          src={images ? images[0].url : gray.src}
           alt=''
         />
         <div className='flex antialiased dark:text-light absolute top-5'>
@@ -71,7 +71,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
             <h1 className='text-white text-4xl pb-6 font-bold'>
               {service?.name}
             </h1>
-            <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-white'>
+            <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-white mt-5'>
               {!userServiceLoading &&
                 userService?.filterUserService?.map(
                   ({ user, price }, index) => (

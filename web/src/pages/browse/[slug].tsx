@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import withApollo from 'src/utils/apollo/withApollo';
 import { Wrapper } from 'src/components/Wrapper';
 import { Sidebar } from 'src/components/utils/Sidebar';

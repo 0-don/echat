@@ -78,7 +78,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
-  
             await updateMe({
               variables: { options: values },
               refetchQueries: [{ query: MeDocument }],
@@ -124,7 +123,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             className='w-6/12 mr-0.5'
                           />
 
-                          <DatePickerField name='age' className='w-6/12 ml-0.5' />
+                          <DatePickerField
+                            name='age'
+                            className='w-6/12 ml-0.5'
+                          />
                         </div>
                       </div>
 

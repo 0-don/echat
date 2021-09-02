@@ -6,6 +6,7 @@ import {
   InputType,
   Int,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
   Root,
@@ -14,12 +15,12 @@ import {
 import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
-import { Service } from '../entity/Service';
 import { groupBy } from 'lodash';
 import { ServiceImage } from '../entity/ServiceImage';
 import { Loader } from 'type-graphql-dataloader';
 import { getRepository, In } from 'typeorm';
 import DataLoader from 'dataloader';
+import { Service } from '../entity/Service';
 
 @InputType()
 export class Dropdown {
@@ -44,6 +45,14 @@ export class UpsertUserService {
   price: number;
   @Field()
   per: string;
+}
+
+@ObjectType()
+class PaginatedUserService {
+  @Field(() => [UserService])
+  userService: UserService[];
+  @Field()
+  hasMore: boolean;
 }
 
 @Resolver(UserService)
@@ -82,16 +91,44 @@ export class UserServiceResolver {
     return UserService.find({ order: { serviceId: 'ASC' }, where: { userId } });
   }
 
-  @Query(() => [UserService], { nullable: true })
-  async filterUserService(@Arg('slug') slug: string) {
-    const service = await Service.findOne({ slug });
+  @Query(() => PaginatedUserService)
+  async filterUserService(
+    // @Arg('serviceId', () => Int) serviceId: number,
+    @Arg('slug') slug: string,
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+  ) {
+    // 20 -> 21
+    const realLimit = Math.min(50, limit);
+    const reaLimitPlusOne = realLimit + 1;
+    const replacements: any[] = [reaLimitPlusOne];
 
-    if (!service) {
-      return null;
+    if (cursor) {
+      replacements.push(new Date(parseInt(cursor)));
     }
-    const userService = await UserService.find({ serviceId: service.id });
+    const { id } = (await Service.findOne({ slug })) as Service;
 
-    return userService;
+    const qb = getRepository(UserService).createQueryBuilder();
+
+    qb.andWhere('"serviceId" = :id', { id });
+
+    if (cursor) {
+      qb.andWhere('"createdAt" < :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    const userService = await qb
+      .orderBy('"createdAt"', 'DESC')
+      .limit(reaLimitPlusOne)
+      .getMany();
+
+
+
+    return {
+      userService: userService.slice(0, realLimit),
+      hasMore: userService.length === reaLimitPlusOne,
+    };
   }
 
   @Mutation(() => Boolean)

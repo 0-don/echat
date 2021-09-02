@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'src/components/htmlElements';
-import { Loading } from 'src/components/utils';
+
 import { getRandomBetween } from 'src/utils';
 import Image from 'next/image';
 
@@ -31,22 +31,24 @@ dayjs.extend(relativeTime);
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   // const [randomNumber, setRandomNumber] = useState<number>(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data, loading } = useGetAllServicesQuery();
+  const { data } = useGetAllServicesQuery();
+  const {
+    data: userService,
+    loading: userServiceLoading,
+    fetchMore,
+    variables,
+  } = useFilterUserServiceQuery({
+    variables: { limit: 1, cursor: null, slug },
+  });
 
-  const { data: userService, loading: userServiceLoading } =
-    useFilterUserServiceQuery({ variables: { slug } });
-
-  if (!data || loading || userServiceLoading) {
-    return <Loading />;
+  if (!data) {
+    return null;
   }
 
-  const service = data.getAllServices?.find((service) => service.slug === slug);
+  const service = data?.getAllServices?.find(
+    (service) => service.slug === slug
+  );
   const images = service?.images?.filter((image) => image.width > 1200);
-
-  // useEffect(() => {
-  //   images?.length &&
-  //     setRandomNumber(Math.floor(Math.random() * images.length));
-  // }, []);
 
   return (
     <Wrapper navbar className=''>
@@ -90,7 +92,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
             </h1>
             <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
               {!userServiceLoading &&
-                userService?.filterUserService?.map(
+                userService?.filterUserService?.userService.map(
                   ({ user, price }, index) => (
                     <div
                       key={index}
@@ -138,6 +140,22 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
                     </div>
                   )
                 )}
+              {
+                <Button
+                  text='more'
+                  onClick={async () => {
+                    await fetchMore({
+                      variables: {
+                        limit: variables?.limit,
+                        cursor:
+                          userService?.filterUserService.userService[
+                            userService.filterUserService.userService.length - 1
+                          ].createdAt,
+                      },
+                    });
+                  }}
+                />
+              }
             </div>
           </div>
         </div>

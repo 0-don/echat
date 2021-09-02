@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import withApollo from 'src/utils/apollo/withApollo';
 import { Wrapper } from 'src/components/Wrapper';
 import { Sidebar } from 'src/components/utils/Sidebar';
@@ -13,6 +13,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'src/components/htmlElements';
 import { Loading } from 'src/components/utils';
+import { getRandomBetween } from 'src/utils';
+import Image from 'next/image';
 
 {
   /* <span
@@ -48,36 +50,51 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
 
   return (
     <Wrapper navbar className=''>
-      <div className='flex justify-end md:hidden'>
-        <Button
-          text='service filter'
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        />
-      </div>
-
       <div className='relative'>
-        <img
-          className='absolute h-32 w-full object-cover lg:h-64 opacity-80 mb-1'
-          src={images ? images[0].url : gray.src}
+        {/* <img
+          className='img-fade absolute w-full object-cover opacity-40 mb-1'
+          src={
+            images?.length
+              ? images[getRandomBetween(0, images.length)].url
+              : gray.src
+          }
+          alt=''
+        /> */}
+        <Image
+          className='img-fade absolute w-full object-cover opacity-40 mb-1'
+          width={'100%'}
+          height={'100%'}
+          layout='responsive'
+          src={
+            images?.length
+              ? images[getRandomBetween(0, images.length)].url
+              : gray.src
+          }
           alt=''
         />
-        <div className='flex antialiased dark:text-light absolute top-5'>
+        <div className='flex justify-end md:hidden absolute top-5 right-3 z-10'>
+          <Button
+            text='service filter'
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          />
+        </div>
+        <div className='flex w-full antialiased dark:text-light absolute top-5'>
           <Sidebar
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
             data={data}
           />
-          <div className='flex-1 '>
-            <h1 className='text-white text-4xl pb-6 font-bold'>
+          <div className='xl:mx-16'>
+            <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
               {service?.name}
             </h1>
-            <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-white mt-5'>
+            <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
               {!userServiceLoading &&
                 userService?.filterUserService?.map(
                   ({ user, price }, index) => (
                     <div
                       key={index}
-                      className='bg-white dark:bg-dark flex flex-col rounded-xl'
+                      className='bg-white dark:bg-dark flex flex-col'
                     >
                       <img
                         src={
@@ -135,4 +152,4 @@ Browse.getInitialProps = ({ query }) => {
   };
 };
 
-export default withApollo({ ssr: true })(Browse);
+export default withApollo({ ssr: false })(Browse);

@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ['static-cdn.jtvnw.net'],
+    domains: ['static-cdn.jtvnw.net', 'placeimg.com', 'images.igdb.com'],
   },
   async redirects() {
     return [

@@ -10,6 +10,7 @@ import {
 import {
   MeDocument,
   UpdatedUser,
+  useGetCountriesQuery,
   useMeQuery,
   useUpdateMeMutation,
 } from 'src/generated/graphql';
@@ -35,10 +36,12 @@ export type ProfileSectionProps = {
 export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
 }) => {
+  const { data: getCountries } = useGetCountriesQuery();
   const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
 
+  const countries = getCountries?.getCountries.map((country) => country);
   const userLanguage = user?.me?.languages?.map(({ id, name }) => ({
     id,
     name,
@@ -51,8 +54,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
       from: new Date(sched.from),
     })
   );
-
-  if (!loading && user) {
+  console.log(countries);
+  if (!loading && user && countries) {
     return (
       <>
         <Formik
@@ -64,7 +67,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                 new Date().setFullYear(new Date().getFullYear() - 18)
             ),
             gender: user.me?.gender || GENDERS[0].name,
-            country: user.me?.country || COUNTRIES[216].name,
+            country: countries[225].name,
+            // country: user.me?.country || COUNTRIES[226].name,
             discord: user.me?.discord || '',
             twitter: user.me?.twitter || '',
             facebook: user.me?.facebook || '',

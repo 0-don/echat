@@ -13,7 +13,7 @@ import gray from '/public/gray.png';
 import {
   GetMeUserServiceDocument,
   UpsertUserService,
-  useGetAllServicesQuery,
+  useGetServicesQuery,
   useGetMeUserServiceQuery,
   useUpsertUserServiceMutation,
 } from 'src/generated/graphql';
@@ -32,13 +32,13 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
   const [localOpen, setLocalOpen] = useState(false);
   const [upsertUserService] = useUpsertUserServiceMutation();
   const { data: allServicesData, loading: allServicesLoading } =
-    useGetAllServicesQuery();
+  useGetServicesQuery();
   const { data: MeUserServiceData, loading: MeUserServiceLoading } =
     useGetMeUserServiceQuery();
 
   let service =
     !allServicesLoading &&
-    allServicesData?.getAllServices?.find(
+    allServicesData?.getServices?.find(
       (service) => service.id === serviceId
     );
 

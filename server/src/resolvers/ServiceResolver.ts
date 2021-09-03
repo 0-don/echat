@@ -4,7 +4,7 @@ import { Arg, Int, Query, Resolver } from 'type-graphql';
 @Resolver(Service)
 export class ServiceResolver {
   @Query(() => [Service], { nullable: true })
-  getAllServices() {
+  getServices() {
     return Service.find({
       order: { popularity: 'ASC' },
     });

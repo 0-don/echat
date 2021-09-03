@@ -1,5 +1,5 @@
-query GetAllServices {
-  getAllServices {
+query GetServices {
+  getServices {
     id
     type
     name

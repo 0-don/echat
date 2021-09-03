@@ -7,12 +7,14 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { Image } from './Image';
 import { Schedule } from './Schedule';
 import { Language } from './Language';
 import { UserService } from './UserService';
 import { TypeormLoader } from 'type-graphql-dataloader';
+import { Country } from './Country';
 
 @ObjectType()
 @Entity()
@@ -96,6 +98,12 @@ export class User extends BaseEntity {
   @OneToMany(() => Language, (language) => language.user)
   @TypeormLoader()
   languages: Language[];
+
+  // Country
+  @Field(() => Country, { nullable: true })
+  @OneToOne(() => Country, (country) => country.user)
+  @TypeormLoader()
+  countries: Country;
 
   // Image
   @Field(() => [Image], { nullable: true })

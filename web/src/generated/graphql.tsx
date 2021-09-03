@@ -27,6 +27,20 @@ export type Chat = {
   name: Scalars['String'];
 };
 
+export type Country = {
+  __typename?: 'Country';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  isoAlpha2: Scalars['String'];
+  isoAlpha3: Scalars['String'];
+  isoNumeric: Scalars['Int'];
+  currencycode?: Maybe<Scalars['String']>;
+  currencyname?: Maybe<Scalars['String']>;
+  currencysymbol?: Maybe<Scalars['String']>;
+  flag: Scalars['String'];
+  user: User;
+};
+
 
 export type Dropdown = {
   id: Scalars['Int'];
@@ -158,11 +172,12 @@ export type Query = {
   me?: Maybe<User>;
   allImages?: Maybe<Array<Image>>;
   userImages?: Maybe<Array<Image>>;
-  getAllServices?: Maybe<Array<Service>>;
+  getServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
   getMeUserService?: Maybe<Array<UserService>>;
   filterUserService: PaginatedUserService;
   getChats: Array<Chat>;
+  getCountries: Array<Country>;
 };
 
 
@@ -284,6 +299,7 @@ export type User = {
   steam?: Maybe<Scalars['String']>;
   tiktok?: Maybe<Scalars['String']>;
   languages?: Maybe<Array<Language>>;
+  countries?: Maybe<Country>;
   images?: Maybe<Array<Image>>;
   services?: Maybe<Array<UserService>>;
   schedules?: Maybe<Array<Schedule>>;
@@ -309,8 +325,8 @@ export type UserService = {
   serviceId: Scalars['Int'];
   service: Service;
   images?: Maybe<Array<ServiceImage>>;
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type RegularErrorFragment = (
@@ -502,21 +518,6 @@ export type FilterUserServiceQuery = (
   ) }
 );
 
-export type GetAllServicesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllServicesQuery = (
-  { __typename?: 'Query' }
-  & { getAllServices?: Maybe<Array<(
-    { __typename?: 'Service' }
-    & Pick<Service, 'id' | 'type' | 'name' | 'slug' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'genres' | 'platforms' | 'multiplayer_modes'>
-    & { images?: Maybe<Array<(
-      { __typename?: 'ServiceImage' }
-      & Pick<ServiceImage, 'id' | 'type' | 'url' | 'width' | 'height'>
-    )>> }
-  )>> }
-);
-
 export type GetMeUserServiceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -529,6 +530,21 @@ export type GetMeUserServiceQuery = (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
     ) }
+  )>> }
+);
+
+export type GetServicesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetServicesQuery = (
+  { __typename?: 'Query' }
+  & { getServices?: Maybe<Array<(
+    { __typename?: 'Service' }
+    & Pick<Service, 'id' | 'type' | 'name' | 'slug' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'genres' | 'platforms' | 'multiplayer_modes'>
+    & { images?: Maybe<Array<(
+      { __typename?: 'ServiceImage' }
+      & Pick<ServiceImage, 'id' | 'type' | 'url' | 'width' | 'height'>
+    )>> }
   )>> }
 );
 
@@ -1082,56 +1098,6 @@ export function useFilterUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserServiceQuery>;
 export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
 export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
-export const GetAllServicesDocument = gql`
-    query GetAllServices {
-  getAllServices {
-    id
-    type
-    name
-    slug
-    popularity
-    boxArtUrl
-    first_release_date
-    genres
-    platforms
-    multiplayer_modes
-    images {
-      id
-      type
-      url
-      width
-      height
-    }
-  }
-}
-    `;
-
-/**
- * __useGetAllServicesQuery__
- *
- * To run a query within a React component, call `useGetAllServicesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllServicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllServicesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetAllServicesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllServicesQuery, GetAllServicesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllServicesQuery, GetAllServicesQueryVariables>(GetAllServicesDocument, options);
-      }
-export function useGetAllServicesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllServicesQuery, GetAllServicesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllServicesQuery, GetAllServicesQueryVariables>(GetAllServicesDocument, options);
-        }
-export type GetAllServicesQueryHookResult = ReturnType<typeof useGetAllServicesQuery>;
-export type GetAllServicesLazyQueryHookResult = ReturnType<typeof useGetAllServicesLazyQuery>;
-export type GetAllServicesQueryResult = Apollo.QueryResult<GetAllServicesQuery, GetAllServicesQueryVariables>;
 export const GetMeUserServiceDocument = gql`
     query GetMeUserService {
   getMeUserService {
@@ -1185,6 +1151,56 @@ export function useGetMeUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServiceQuery>;
 export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
 export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
+export const GetServicesDocument = gql`
+    query GetServices {
+  getServices {
+    id
+    type
+    name
+    slug
+    popularity
+    boxArtUrl
+    first_release_date
+    genres
+    platforms
+    multiplayer_modes
+    images {
+      id
+      type
+      url
+      width
+      height
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetServicesQuery__
+ *
+ * To run a query within a React component, call `useGetServicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetServicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetServicesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetServicesQuery(baseOptions?: Apollo.QueryHookOptions<GetServicesQuery, GetServicesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetServicesQuery, GetServicesQueryVariables>(GetServicesDocument, options);
+      }
+export function useGetServicesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetServicesQuery, GetServicesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetServicesQuery, GetServicesQueryVariables>(GetServicesDocument, options);
+        }
+export type GetServicesQueryHookResult = ReturnType<typeof useGetServicesQuery>;
+export type GetServicesLazyQueryHookResult = ReturnType<typeof useGetServicesLazyQuery>;
+export type GetServicesQueryResult = Apollo.QueryResult<GetServicesQuery, GetServicesQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {
@@ -1349,8 +1365,8 @@ export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImag
 export const namedOperations = {
   Query: {
     FilterUserService: 'FilterUserService',
-    GetAllServices: 'GetAllServices',
     GetMeUserService: 'GetMeUserService',
+    GetServices: 'GetServices',
     GetUsers: 'GetUsers',
     Me: 'Me',
     UserImages: 'UserImages'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  useGetAllServicesQuery,
+  useGetServicesQuery,
   useGetMeUserServiceQuery,
 } from 'src/generated/graphql';
 import { Loading } from 'src/components/utils/Loading';
@@ -12,13 +12,13 @@ export const ServiceModal: React.FC = () => {
   const [serviceOpen, setServiceOpen] = useState(false);
   const [serviceId, setServiceId] = useState(0);
 
-  const { data } = useGetAllServicesQuery();
+  const { data } = useGetServicesQuery();
   const { data: meUserServiceData } = useGetMeUserServiceQuery();
 
   const filteredServices =
     meUserServiceData &&
     data &&
-    data.getAllServices!.filter(
+    data.getServices!.filter(
       ({ id }) =>
         !meUserServiceData.getMeUserService!.some(
           ({ serviceId }) => serviceId === id

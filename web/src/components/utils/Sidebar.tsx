@@ -1,7 +1,7 @@
 import React, { Dispatch, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, ChevronDownIcon } from '@heroicons/react/outline';
-import { GetAllServicesQuery } from 'src/generated/graphql';
+import { GetServicesQuery } from 'src/generated/graphql';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<React.SetStateAction<boolean>>;
-  data: GetAllServicesQuery;
+  data: GetServicesQuery;
 }
 
 type TabState = {
@@ -39,7 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const router = useRouter();
 
-  const groupedServices = _.groupBy(data?.getAllServices, 'type');
+  const groupedServices = _.groupBy(data?.getServices, 'type');
 
   const [tabs, setTabs] = useState<TabState[]>(
     Object.keys(groupedServices).map((key) => ({

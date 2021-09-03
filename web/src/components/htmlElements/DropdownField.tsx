@@ -10,9 +10,7 @@ function classNames(...classes: any) {
 
 type DropdownFieldProps = {
   fieldName: string;
-  fieldKey?: string;
   list: DropdownItem[];
-  dayName?: string;
   className?: string;
 } & FormikProps<UpdatedUser | UpsertUserService>;
 
@@ -26,21 +24,12 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   list,
   values,
   fieldName,
-  fieldKey,
-  dayName,
   className,
   setFieldValue,
 }) => {
   const onChange = (value: DropdownItem) => {
     if (values[fieldName].constructor === Array) {
-      fieldKey && dayName
-        ? setFieldValue(
-            fieldName,
-            (values[fieldName] as DropdownItem[]).map((i) =>
-              i.name === dayName ? { ...i, [fieldKey]: value.name } : i
-            )
-          )
-        : setFieldValue(fieldName, [...values[fieldName], value]);
+      setFieldValue(fieldName, [...values[fieldName], value]);
     } else {
       // check if only numbers
       /^\d+$/.test(value.name)
@@ -74,15 +63,13 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
         {({ open }) => (
           <>
             <Listbox.Label className='my-1 block text-sm font-medium text-gray-900 dark:text-white '>
-              {dayName
-                ? ''
-                : fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+              {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
             </Listbox.Label>
             <div className='relative'>
               <Listbox.Button className='relative border w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default  dark:bg-dark-light dark:border-dark-light  dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple '>
                 <span className='block truncate'>
                   <div className='flex flex-wrap text-gray-700 dark:text-white'>
-                    {values[fieldName].constructor === Array && !dayName ? (
+                    {values[fieldName].constructor === Array ? (
                       values[fieldName].map((item: DropdownItem) => (
                         <div key={item.name} className='flex mr-1.5'>
                           {values[fieldName].length > 1 && (
@@ -96,13 +83,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                         </div>
                       ))
                     ) : (
-                      <span>
-                        {dayName
-                          ? values[fieldName].find(
-                              (i: DropdownItem) => i.name === dayName
-                            )[fieldKey]
-                          : values[fieldName].toString()}
-                      </span>
+                      <span>{values[fieldName].toString()}</span>
                     )}
                   </div>
                 </span>

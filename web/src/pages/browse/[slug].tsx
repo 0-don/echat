@@ -4,7 +4,7 @@ import { Wrapper } from 'src/components/Wrapper';
 import { Sidebar } from 'src/components/utils/Sidebar';
 import {
   useFilterUserServiceQuery,
-  useGetAllServicesQuery,
+  useGetServicesQuery,
 } from 'src/generated/graphql';
 import gray from '/public/gray.png';
 import { NextPage } from 'next';
@@ -31,7 +31,7 @@ dayjs.extend(relativeTime);
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   // const [randomNumber, setRandomNumber] = useState<number>(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data } = useGetAllServicesQuery();
+  const { data } = useGetServicesQuery();
   const {
     data: userService,
     loading: userServiceLoading,
@@ -45,7 +45,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     return null;
   }
 
-  const service = data?.getAllServices?.find(
+  const service = data?.getServices?.find(
     (service) => service.slug === slug
   );
   const images = service?.images?.filter((image) => image.width > 1200);

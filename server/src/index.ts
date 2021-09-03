@@ -22,6 +22,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { ChatResolver } from './resolvers/ChatResolver';
 import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
+import { ExtraResolver } from './resolvers/ExtraResolver';
 
 const PgSession = connectPgSimple(session);
 
@@ -69,6 +70,7 @@ const PgSession = connectPgSimple(session);
       ImageResolver,
       ServiceResolver,
       UserServiceResolver,
+      ExtraResolver,
     ],
     validate: false,
   });

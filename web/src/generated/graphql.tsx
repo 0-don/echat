@@ -518,6 +518,17 @@ export type FilterUserServiceQuery = (
   ) }
 );
 
+export type GetCountriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCountriesQuery = (
+  { __typename?: 'Query' }
+  & { getCountries: Array<(
+    { __typename?: 'Country' }
+    & Pick<Country, 'id' | 'name'>
+  )> }
+);
+
 export type GetMeUserServiceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1098,6 +1109,41 @@ export function useFilterUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserServiceQuery>;
 export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
 export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
+export const GetCountriesDocument = gql`
+    query GetCountries {
+  getCountries {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetCountriesQuery__
+ *
+ * To run a query within a React component, call `useGetCountriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCountriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCountriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCountriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCountriesQuery, GetCountriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCountriesQuery, GetCountriesQueryVariables>(GetCountriesDocument, options);
+      }
+export function useGetCountriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCountriesQuery, GetCountriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCountriesQuery, GetCountriesQueryVariables>(GetCountriesDocument, options);
+        }
+export type GetCountriesQueryHookResult = ReturnType<typeof useGetCountriesQuery>;
+export type GetCountriesLazyQueryHookResult = ReturnType<typeof useGetCountriesLazyQuery>;
+export type GetCountriesQueryResult = Apollo.QueryResult<GetCountriesQuery, GetCountriesQueryVariables>;
 export const GetMeUserServiceDocument = gql`
     query GetMeUserService {
   getMeUserService {
@@ -1365,6 +1411,7 @@ export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImag
 export const namedOperations = {
   Query: {
     FilterUserService: 'FilterUserService',
+    GetCountries: 'GetCountries',
     GetMeUserService: 'GetMeUserService',
     GetServices: 'GetServices',
     GetUsers: 'GetUsers',

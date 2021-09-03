@@ -29,7 +29,6 @@ import Image from 'next/image';
 dayjs.extend(relativeTime);
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
-  // const [randomNumber, setRandomNumber] = useState<number>(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data } = useGetServicesQuery();
   const {
@@ -38,30 +37,19 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     fetchMore,
     variables,
   } = useFilterUserServiceQuery({
-    variables: { limit: 1, cursor: null, slug },
+    variables: { limit: 10, cursor: null, slug },
   });
 
   if (!data) {
     return null;
   }
 
-  const service = data?.getServices?.find(
-    (service) => service.slug === slug
-  );
+  const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
 
   return (
     <Wrapper navbar className=''>
       <div className='relative'>
-        {/* <img
-          className='img-fade absolute w-full object-cover opacity-40 mb-1'
-          src={
-            images?.length
-              ? images[getRandomBetween(0, images.length)].url
-              : gray.src
-          }
-          alt=''
-        /> */}
         <Image
           className='img-fade absolute w-full object-cover opacity-40 mb-1'
           width={'100%'}

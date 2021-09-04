@@ -43,7 +43,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   if (!data) {
     return null;
   }
-
+  // console.log(userService?.filterUserService)
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
 
@@ -81,7 +81,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
             <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
               {!userServiceLoading &&
                 userService?.filterUserService?.userService.map(
-                  ({ user, price }, index) => (
+                  ({ user, price, per }, index) => (
                     <div
                       key={index}
                       className='bg-white dark:bg-dark flex flex-col'
@@ -94,15 +94,22 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
                       />
 
                       <div className='p-2'>
-                        <div className='flex items-center'>
-                          <span
-                            className={`${
-                              index % 2 == 0 ? 'bg-green-500' : 'bg-gray-500'
-                            } h-4 w-4 rounded-full mr-1`}
+                        <div className='flex items-center justify-between w-full'>
+                          <div className='flex items-center'>
+                            <span
+                              className={`${
+                                index % 2 == 0 ? 'bg-green-500' : 'bg-gray-500'
+                              } h-4 w-4 rounded-full mr-1`}
+                            />
+                            <h1 className='text-base my-1 font-semibold text-center text-black dark:text-white'>
+                              {user.username}
+                            </h1>
+                          </div>
+                          <img
+                            src={`data:image/jpeg;base64,${user.country?.flag}`}
+                            alt='Landscape picture'
+                            className='h-4'
                           />
-                          <h1 className='text-base my-1 font-semibold text-center text-black dark:text-white'>
-                            {user.username}
-                          </h1>
                         </div>
                         <div className='flex items-center divide-x-2 divide-y-8 '>
                           <FontAwesomeIcon
@@ -110,7 +117,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
                             className='dark:text-yellow-500 text-black mr-1'
                             icon='star'
                           />
-                          {`${index}.99 (100)`}
+                          {`${getRandomBetween(3, 5)}.${getRandomBetween(10, 99)} (${getRandomBetween(0, 200)})`}
                         </div>
                         <hr className='border-lightGray my-1' />
                         <div className='flex items-center justify-between'>
@@ -120,7 +127,9 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
                               className='dark:text-white text-black mr-1'
                               icon='coins'
                             />
-                            <div className='font-bold'>{`${price}.99/G`}</div>
+                            <div className='font-bold'>{`${price.toFixed(
+                              2
+                            )} / ${per}`}</div>
                           </div>
                           <Button text='Order' className='p-1 m-1' />
                         </div>

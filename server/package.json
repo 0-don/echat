@@ -53,7 +53,7 @@
     "ts-node-dev": "^1.1.8"
   },
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts ",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "games-gen": "ts-node-dev src/seed/games-gen.ts",

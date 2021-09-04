@@ -7,8 +7,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  RelationId,
+  ManyToOne,
 } from 'typeorm';
 import { Image } from './Image';
 import { Schedule } from './Schedule';
@@ -90,18 +89,18 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  countryId: number;
+
   // Country
   @Field(() => Country, { nullable: true })
-  @OneToOne(() => Country, (country) => country.user, {
+  @ManyToOne(() => Country, {
     nullable: true,
     lazy: true,
   })
-  @TypeormLoader(() => Country, (country: Country) => country.id)
+  @TypeormLoader(() => Country, (user: User) => user.countryId)
   country: Promise<Country | null>;
-
-  @Field(() => Int, { nullable: true })
-  @RelationId((user: User) => user.country)
-  countryId?: number;
 
   // Language
   @Field(() => [Language], { nullable: true })

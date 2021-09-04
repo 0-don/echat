@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from 'type-graphql';
-import { TypeormLoader } from 'type-graphql-dataloader';
-import { Entity, Column, BaseEntity, PrimaryColumn, OneToOne } from 'typeorm';
-import { User } from './User';
+// import { TypeormLoader } from 'type-graphql-dataloader';
+import { Entity, Column, BaseEntity, PrimaryColumn,  } from 'typeorm';
+// import { User } from './User';
 
 @ObjectType()
 @Entity()
@@ -42,8 +42,8 @@ export class Country extends BaseEntity {
   @Column()
   flag: string;
 
-  @Field(() => User, { nullable: true })
-  @OneToOne(() => User, (user) => user.country, { lazy: true, nullable: true })
-  @TypeormLoader(() => User, (user: User) => user.id)
-  user: Promise<User| null>;
+  // @Field(() => User, { nullable: true })
+  // @OneToOne(() => User, (user) => user.country, { lazy: true, nullable: true })
+  // @TypeormLoader(() => User, (user: User) => user.id)
+  // user: Promise<User| null>;
 }

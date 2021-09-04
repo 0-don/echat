@@ -21,12 +21,12 @@ const main = async () => {
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const servicesLength = services.length;
   const countries = await Country.find({});
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 1000; i++) {
     const user = {
       type: 'user',
       fake: true,
       username: faker.internet.userName(),
-      email: faker.internet.email(), 
+      email: faker.internet.email(),
       password: faker.internet.password(),
       lastOnline: new Date(
         Date.now() + 3600 * 1000 * 24 * getRandomBetween(1, 8)
@@ -42,9 +42,7 @@ const main = async () => {
       twitch: coinFlip() ? faker.internet.userName() : undefined,
       steam: coinFlip() ? faker.internet.userName() : undefined,
       tiktok: coinFlip() ? faker.internet.userName() : undefined,
-      countryId: coinFlip()
-        ? countries[getRandomBetween(0, countries.length - 1)].id
-        : undefined,
+      countryId: countries[getRandomBetween(0, countries.length - 1)].id,
     };
 
     const dbUser = await conn
@@ -100,16 +98,20 @@ const main = async () => {
       const userService = {
         status: true,
         level: 'Newbie',
-        platforms: service.platforms ? service.platforms : undefined,
+        platforms: service.platforms ?? undefined,
         description: coinFlip() ? faker.lorem.text() : undefined,
-        price: getRandomBetween(1, 10),
+        price: parseFloat(
+          `${getRandomBetween(1, 10)}.${getRandomBetween(0, 99)}`
+        ),
         userId,
         serviceId: service.id,
         per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
           getRandomBetween(0, 4)
         ],
       };
-      await UserService.insert(userService);
+      try {
+        await UserService.insert(userService);
+      } catch (error) {}
     }
 
     log(i + 1);

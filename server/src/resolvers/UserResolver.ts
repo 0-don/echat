@@ -26,37 +26,9 @@ import {
   UserResponse,
 } from '../utils/types/UserTypes';
 import { Schedule } from '../entity/Schedule';
-// import { Country } from '../entity/Country';
-
-// import { Loader } from 'type-graphql-dataloader';
-// import DataLoader from 'dataloader';
 
 @Resolver(User)
 export class UserResolver {
-  // @FieldResolver(() => Country)
-  // @Loader<number, Country>(async (countryIds) => {
-  //   const countries = await Country.findByIds(countryIds as number[]);
-
-  //   const countryIdToCountry: Record<number, Country> = {};
-
-  //   countries.forEach((u) => {
-  //     countryIdToCountry[u.id] = u;
-  //   });
-
-  //   const sortedCountries = countryIds.map(
-  //     (countryId) => countryIdToCountry[countryId]
-  //   );
-  //   console.log(sortedCountries.length);
-  //   return sortedCountries;
-  // })
-  // country(@Root() root: User) {
-  //   // return getRepository(Country).find({
-  //   //   where: { id: root.countryId },
-  //   // });
-  //   // console.log(root.id);
-  //   return (dataloader: DataLoader<number, Country>) =>
-  //     dataloader.load(root.countryId);
-  // }
 
   @Query(() => [User], { nullable: true })
   async getUsers() {

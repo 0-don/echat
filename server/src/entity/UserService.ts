@@ -10,6 +10,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  Unique,
 } from 'typeorm';
 import { Service } from './Service';
 import { ServiceImage } from './ServiceImage';
@@ -17,6 +18,7 @@ import { User } from './User';
 
 @ObjectType()
 @Entity()
+@Unique(['userId', 'serviceId'])
 export class UserService extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
@@ -38,8 +40,8 @@ export class UserService extends BaseEntity {
   @Column({ nullable: true })
   description?: string;
 
-  @Field(() => Int)
-  @Column()
+  @Field()
+  @Column({ type: 'float', default: 0 })
   price: number;
 
   @Field()

@@ -41,7 +41,7 @@ export class UpsertUserService {
   platforms?: [Dropdown];
   @Field({ nullable: true })
   description?: string;
-  @Field(() => Int)
+  @Field()
   price: number;
   @Field()
   per: string;

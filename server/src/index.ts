@@ -23,6 +23,7 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { ChatResolver } from './resolvers/ChatResolver';
 import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
 import { ExtraResolver } from './resolvers/ExtraResolver';
+import path from 'path';
 
 const PgSession = connectPgSimple(session);
 
@@ -30,15 +31,17 @@ const PgSession = connectPgSimple(session);
   const app = express();
   const httpServer = createServer(app);
 
-  await createConnection({
-    type: 'postgres',
-    url: process.env.DATABASE_URL,
-    synchronize: true,
-    // logging: true,
-    entities: [__dirname + '/entity/*'],
-    migrations: [__dirname + '/migration/*'],
-    subscribers: [__dirname + '/subscriber/*'],
-  });
+  await (
+    await createConnection({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      synchronize: true,
+      logging: true,
+      entities: [path.resolve(__dirname, 'entity', '*.{js,ts}')],
+      migrations: [path.resolve(__dirname, 'migration', '*.{js,ts}')],
+      subscribers: [path.resolve(__dirname, 'subscriber', '*.{js,ts}')],
+    })
+  ).runMigrations();
 
   // parse application/json
   app.set('trust proxy', 1);

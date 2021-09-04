@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { SelectorIcon, XIcon } from '@heroicons/react/solid';
 import { FormikProps } from 'formik';
+// @ts-ignore
 import { UpdatedUser, UpsertUserService } from 'src/generated/graphql';
 
 function classNames(...classes: any) {
@@ -27,13 +28,18 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   className,
   setFieldValue,
 }) => {
+  const currentValue = list.find(
+    ({ id, name }) => id === values[fieldName] || name === values[fieldName]
+  );
+
   const onChange = (value: DropdownItem) => {
+    // check if array and return current + value
     if (values[fieldName].constructor === Array) {
       setFieldValue(fieldName, [...values[fieldName], value]);
     } else {
-      // check if only numbers
-      /^\d+$/.test(value.name)
-        ? setFieldValue(fieldName, parseInt(value.name))
+      // check if number or string
+      values[fieldName] > 0
+        ? setFieldValue(fieldName, value.id)
         : setFieldValue(fieldName, value.name);
     }
   };
@@ -53,9 +59,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
               ({ name }: { name: string }) => item.name === name
             )
         )
-      : list.filter(
-          (item: { name: string }) => item.name !== values[fieldName]
-        );
+      : list;
 
   return (
     <div className={className}>
@@ -63,7 +67,10 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
         {({ open }) => (
           <>
             <Listbox.Label className='my-1 block text-sm font-medium text-gray-900 dark:text-white '>
-              {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+              {(fieldName.charAt(0).toUpperCase() + fieldName.slice(1)).replace(
+                'Id',
+                ''
+              )}
             </Listbox.Label>
             <div className='relative'>
               <Listbox.Button className='relative border w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default  dark:bg-dark-light dark:border-dark-light  dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple '>
@@ -83,7 +90,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                         </div>
                       ))
                     ) : (
-                      <span>{values[fieldName].toString()}</span>
+                      <div>{currentValue && currentValue.name}</div>
                     )}
                   </div>
                 </span>

@@ -7,6 +7,7 @@ import { coinFlip, getRandomBetween } from '../utils';
 import { Service } from '../entity/Service';
 import { UserService } from '../entity/UserService';
 import { log } from 'console';
+import { Country } from '../entity/Country';
 
 const main = async () => {
   const conn = await createConnection({
@@ -19,20 +20,20 @@ const main = async () => {
 
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const servicesLength = services.length;
-
-  for (let i = 0; i < 1000; i++) {
-
+  const countries = await Country.find({});
+  for (let i = 0; i < 1; i++) {
     const user = {
       type: 'user',
       fake: true,
       username: faker.internet.userName(),
-      email: faker.internet.email(),
+      email: faker.internet.email(), 
       password: faker.internet.password(),
-      lastOnline: new Date(Date.now() + ( 3600 * 1000 * 24 * getRandomBetween(1, 8))),
+      lastOnline: new Date(
+        Date.now() + 3600 * 1000 * 24 * getRandomBetween(1, 8)
+      ),
       description: coinFlip() ? faker.lorem.text() : undefined,
       age: coinFlip() ? faker.datatype.datetime() : undefined,
       gender: coinFlip() ? faker.name.gender() : undefined,
-      country: coinFlip() ? faker.internet.userName() : undefined,
       discord: coinFlip() ? faker.internet.userName() : undefined,
       twitter: coinFlip() ? faker.internet.userName() : undefined,
       facebook: coinFlip() ? faker.internet.userName() : undefined,
@@ -41,6 +42,9 @@ const main = async () => {
       twitch: coinFlip() ? faker.internet.userName() : undefined,
       steam: coinFlip() ? faker.internet.userName() : undefined,
       tiktok: coinFlip() ? faker.internet.userName() : undefined,
+      countryId: coinFlip()
+        ? countries[getRandomBetween(0, countries.length - 1)].id
+        : undefined,
     };
 
     const dbUser = await conn

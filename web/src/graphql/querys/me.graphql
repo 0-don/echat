@@ -4,7 +4,7 @@ query Me {
     type
     username
     gender
-    country
+    countryId
     age
     lastOnline
     description
@@ -17,6 +17,12 @@ query Me {
     twitch
     steam
     tiktok
+
+    country {
+      id
+      name
+      flag
+    }
 
     languages {
       id

@@ -21,8 +21,13 @@ query FilterUserService($slug: String!, $limit: Int!, $cursor: String) {
         username
         age
         gender
-        country
+        countryId
         lastOnline
+        country {
+          id
+          name
+          flag
+        }
         images {
           id
           type

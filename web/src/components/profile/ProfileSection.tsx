@@ -3,7 +3,6 @@ import React from 'react';
 import {
   // AGES,
   GENDERS,
-  COUNTRIES,
   LANGUAGES,
   SCHEDULES,
 } from 'src/constants';
@@ -36,7 +35,12 @@ export type ProfileSectionProps = {
 export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
 }) => {
+
+
+  // @ts-ignore
   const { data: getCountries } = useGetCountriesQuery();
+
+
   const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
@@ -54,7 +58,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
       from: new Date(sched.from),
     })
   );
-  console.log(countries);
+
   if (!loading && user && countries) {
     return (
       <>
@@ -67,7 +71,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                 new Date().setFullYear(new Date().getFullYear() - 18)
             ),
             gender: user.me?.gender || GENDERS[0].name,
-            country: countries[225].name,
+            countryId: user.me?.countryId || countries[225].id,
             // country: user.me?.country || COUNTRIES[226].name,
             discord: user.me?.discord || '',
             twitter: user.me?.twitter || '',
@@ -82,6 +86,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
+            console.log(values)
             await updateMe({
               variables: { options: values },
               refetchQueries: [{ query: MeDocument }],
@@ -115,8 +120,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                       <div className='md:flex '>
                         <DropdownField
                           {...formikProps}
-                          fieldName='country'
-                          list={COUNTRIES}
+                          fieldName='countryId'
+                          list={countries}
                           className='md:w-6/12 md:mr-1'
                         />
                         <div className='flex md:w-6/12'>

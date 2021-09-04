@@ -256,7 +256,6 @@ export type UpdatedUser = {
   description: Scalars['String'];
   age: Scalars['DateTime'];
   gender: Scalars['String'];
-  country: Scalars['String'];
   discord: Scalars['String'];
   twitter: Scalars['String'];
   facebook: Scalars['String'];
@@ -265,6 +264,7 @@ export type UpdatedUser = {
   twitch: Scalars['String'];
   steam: Scalars['String'];
   tiktok: Scalars['String'];
+  countryId: Scalars['Int'];
   languages: Array<ListValues>;
   schedules: Array<ScheduleValues>;
 };
@@ -289,7 +289,6 @@ export type User = {
   description?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
   discord?: Maybe<Scalars['String']>;
   twitter?: Maybe<Scalars['String']>;
   facebook?: Maybe<Scalars['String']>;
@@ -298,8 +297,9 @@ export type User = {
   twitch?: Maybe<Scalars['String']>;
   steam?: Maybe<Scalars['String']>;
   tiktok?: Maybe<Scalars['String']>;
+  countryId?: Maybe<Scalars['Int']>;
+  country?: Maybe<Country>;
   languages?: Maybe<Array<Language>>;
-  countries?: Maybe<Country>;
   images?: Maybe<Array<Image>>;
   services?: Maybe<Array<UserService>>;
   schedules?: Maybe<Array<Schedule>>;
@@ -336,7 +336,7 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+  & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
   & { languages?: Maybe<Array<(
     { __typename?: 'Language' }
     & Pick<Language, 'id' | 'name'>
@@ -508,8 +508,11 @@ export type FilterUserServiceQuery = (
         & Pick<ServiceImage, 'id' | 'type' | 'url'>
       )>>, user: (
         { __typename?: 'User' }
-        & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'country' | 'lastOnline'>
-        & { images?: Maybe<Array<(
+        & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'countryId' | 'lastOnline'>
+        & { country?: Maybe<(
+          { __typename?: 'Country' }
+          & Pick<Country, 'id' | 'name' | 'flag'>
+        )>, images?: Maybe<Array<(
           { __typename?: 'Image' }
           & Pick<Image, 'id' | 'type' | 'url'>
         )>> }
@@ -566,7 +569,7 @@ export type GetUsersQuery = (
   { __typename?: 'Query' }
   & { getUsers?: Maybe<Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { images?: Maybe<Array<(
       { __typename?: 'Image' }
       & Pick<Image, 'id' | 'url'>
@@ -587,8 +590,11 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'country' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
-    & { languages?: Maybe<Array<(
+    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+    & { country?: Maybe<(
+      { __typename?: 'Country' }
+      & Pick<Country, 'id' | 'name' | 'flag'>
+    )>, languages?: Maybe<Array<(
       { __typename?: 'Language' }
       & Pick<Language, 'id' | 'name'>
     )>>, schedules?: Maybe<Array<(
@@ -623,7 +629,7 @@ export const RegularUserFragmentDoc = gql`
   type
   username
   gender
-  country
+  countryId
   age
   lastOnline
   description
@@ -1067,8 +1073,13 @@ export const FilterUserServiceDocument = gql`
         username
         age
         gender
-        country
+        countryId
         lastOnline
+        country {
+          id
+          name
+          flag
+        }
         images {
           id
           type
@@ -1254,7 +1265,7 @@ export const GetUsersDocument = gql`
     type
     username
     gender
-    country
+    countryId
     age
     description
     discord
@@ -1317,7 +1328,7 @@ export const MeDocument = gql`
     type
     username
     gender
-    country
+    countryId
     age
     lastOnline
     description
@@ -1329,6 +1340,11 @@ export const MeDocument = gql`
     twitch
     steam
     tiktok
+    country {
+      id
+      name
+      flag
+    }
     languages {
       id
       name

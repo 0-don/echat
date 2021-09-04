@@ -42,8 +42,8 @@ export class Country extends BaseEntity {
   @Column()
   flag: string;
 
-  @Field(() => User)
-  @OneToOne(() => User, (user) => user.countries, { onDelete: 'CASCADE' })
-  @TypeormLoader()
-  user: User;
+  @Field(() => User, { nullable: true })
+  @OneToOne(() => User, (user) => user.country, { lazy: true, nullable: true })
+  @TypeormLoader(() => User, (user: User) => user.id)
+  user: Promise<User| null>;
 }

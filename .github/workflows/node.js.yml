@@ -40,6 +40,8 @@ jobs:
           envkey_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
       - run: yarn
         working-directory: ./server
+      - run: yarn build
+        working-directory: ./server
       - run: pm2 delete server
         working-directory: ./server
         continue-on-error: true

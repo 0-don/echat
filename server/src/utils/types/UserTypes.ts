@@ -39,8 +39,6 @@ export class UpdatedUser {
   @Field()
   gender: string;
   @Field()
-  country: string;
-  @Field()
   discord: string;
   @Field()
   twitter: string;
@@ -56,6 +54,8 @@ export class UpdatedUser {
   steam: string;
   @Field()
   tiktok: string;
+  @Field(() => Int)
+  countryId: number;
   @Field(() => [ListValues])
   languages: ListValues[];
   @Field(() => [ScheduleValues])

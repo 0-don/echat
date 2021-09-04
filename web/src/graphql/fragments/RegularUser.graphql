@@ -3,7 +3,7 @@ fragment RegularUser on User {
     type
     username
     gender
-    country
+    countryId
     age
     lastOnline
     description

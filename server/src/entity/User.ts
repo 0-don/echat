@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  RelationId,
 } from 'typeorm';
 import { Image } from './Image';
 import { Schedule } from './Schedule';
@@ -59,10 +60,6 @@ export class User extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  country: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
   discord: string;
 
   @Field({ nullable: true })
@@ -93,17 +90,24 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   tiktok: string;
 
+  // Country
+  @Field(() => Country, { nullable: true })
+  @OneToOne(() => Country, (country) => country.user, {
+    nullable: true,
+    lazy: true,
+  })
+  @TypeormLoader(() => Country, (country: Country) => country.id)
+  country: Promise<Country | null>;
+
+  @Field(() => Int, { nullable: true })
+  @RelationId((user: User) => user.country)
+  countryId?: number;
+
   // Language
   @Field(() => [Language], { nullable: true })
   @OneToMany(() => Language, (language) => language.user)
   @TypeormLoader()
   languages: Language[];
-
-  // Country
-  @Field(() => Country, { nullable: true })
-  @OneToOne(() => Country, (country) => country.user)
-  @TypeormLoader()
-  countries: Country;
 
   // Image
   @Field(() => [Image], { nullable: true })

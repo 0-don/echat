@@ -4,7 +4,7 @@ query GetUsers {
     type
     username
     gender
-    country
+    countryId
     age
     description
 

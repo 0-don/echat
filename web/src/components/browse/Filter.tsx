@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  useFilterUserServiceLazyQuery,
   useFilterUserServiceQuery,
   useGetCountriesQuery,
 } from 'src/generated/graphql';
@@ -17,15 +16,14 @@ export type FilterOptions = {
 
 export const Filter: React.FC<FilterProps> = ({ slug }) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>({});
-  const filterQuery = { slug, limit: 10, cursor: null, filterOptions };
-
   const { data: getCountries } = useGetCountriesQuery();
-  // const [filterUserService, { data: userService }] =
-  //   useFilterUserServiceLazyQuery();
-  const { data, refetch } = useFilterUserServiceQuery({
+
+  const filterQuery = { slug, limit: 10, cursor: null, filterOptions };
+  const { refetch } = useFilterUserServiceQuery({
     variables: filterQuery,
     skip: true,
   });
+
   const countries = getCountries?.getCountries.map((country) => country);
   if (!countries) {
     return null;

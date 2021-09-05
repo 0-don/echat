@@ -21,6 +21,7 @@ import { Loader } from 'type-graphql-dataloader';
 import { getRepository, In } from 'typeorm';
 import DataLoader from 'dataloader';
 import { Service } from '../entity/Service';
+import { ListValues } from '../utils/types/UserTypes';
 
 @InputType()
 export class Dropdown {
@@ -55,6 +56,14 @@ class PaginatedUserService {
   hasMore: boolean;
 }
 
+@InputType()
+class FilterOptions {
+  @Field(() => [ListValues], { nullable: true })
+  languages?: ListValues[];
+  @Field(() => ListValues, { nullable: true })
+  country?: ListValues;
+}
+
 @Resolver(UserService)
 export class UserServiceResolver {
   @FieldResolver()
@@ -72,6 +81,62 @@ export class UserServiceResolver {
       dataloader.load(root.serviceId);
   }
 
+  @Query(() => PaginatedUserService)
+  async filterUserService(
+    // @Arg('serviceId', () => Int) serviceId: number,
+    @Arg('slug') slug: string,
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
+    @Arg('filterOptions', () => FilterOptions, { nullable: true })
+    filterOptions?: FilterOptions | null
+  ): Promise<PaginatedUserService> {
+    // 20 -> 21
+
+    const realLimit = Math.min(50, limit);
+    const reaLimitPlusOne = realLimit + 1;
+    const replacements: any[] = [reaLimitPlusOne];
+
+    if (cursor) {
+      replacements.push(new Date(parseInt(cursor)));
+    }
+    const { id } = (await Service.findOne({ slug })) as Service;
+
+    const qb = getRepository(UserService).createQueryBuilder('userService');
+
+    if (filterOptions?.country) {
+      qb.leftJoinAndSelect('userService.user', 'user').where(
+        'user.countryId = :country',
+        {
+          country: filterOptions.country.id,
+        }
+      );
+    }
+    qb.andWhere('userService.serviceId = :id', { id });
+
+    if (cursor) {
+      qb.andWhere('userService.createdAt < :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    const userService = await qb
+      .orderBy('userService.createdAt', 'DESC')
+      .limit(reaLimitPlusOne)
+      .getMany();
+
+    return {
+      userService: userService.slice(0, realLimit),
+      hasMore: userService.length === reaLimitPlusOne,
+    };
+  }
+
+  @Query(() => [UserService], { nullable: true })
+  @UseMiddleware(isAuth)
+  getMeUserService(@Ctx() { req }: MyContext) {
+    const { userId } = req.session;
+    return UserService.find({ order: { serviceId: 'ASC' }, where: { userId } });
+  }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async switchUserServiceStatus(
@@ -82,53 +147,6 @@ export class UserServiceResolver {
     const userGame = await UserService.findOne({ id, userId });
     await UserService.update({ id, userId }, { status: !userGame?.status });
     return true;
-  }
-
-  @Query(() => [UserService], { nullable: true })
-  @UseMiddleware(isAuth)
-  getMeUserService(@Ctx() { req }: MyContext) {
-    const { userId } = req.session;
-    return UserService.find({ order: { serviceId: 'ASC' }, where: { userId } });
-  }
-
-  @Query(() => PaginatedUserService)
-  async filterUserService(
-    // @Arg('serviceId', () => Int) serviceId: number,
-    @Arg('slug') slug: string,
-    @Arg('limit', () => Int) limit: number,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
-  ) {
-    // 20 -> 21
-    const realLimit = Math.min(50, limit);
-    const reaLimitPlusOne = realLimit + 1;
-    const replacements: any[] = [reaLimitPlusOne];
-
-    if (cursor) {
-      replacements.push(new Date(parseInt(cursor)));
-    }
-    const { id } = (await Service.findOne({ slug })) as Service;
-
-    const qb = getRepository(UserService).createQueryBuilder();
-
-    qb.andWhere('"serviceId" = :id', { id });
-
-    if (cursor) {
-      qb.andWhere('"createdAt" < :cursor', {
-        cursor: new Date(parseInt(cursor)),
-      });
-    }
-
-    const userService = await qb
-      .orderBy('"createdAt"', 'DESC')
-      .limit(reaLimitPlusOne)
-      .getMany();
-
-
-
-    return {
-      userService: userService.slice(0, realLimit),
-      hasMore: userService.length === reaLimitPlusOne,
-    };
   }
 
   @Mutation(() => Boolean)

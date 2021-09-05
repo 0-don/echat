@@ -1,5 +1,15 @@
-query FilterUserService($slug: String!, $limit: Int!, $cursor: String) {
-  filterUserService(slug: $slug, limit: $limit, cursor: $cursor) {
+query FilterUserService(
+  $slug: String!
+  $limit: Int!
+  $cursor: String
+  $filterOptions: FilterOptions
+) {
+  filterUserService(
+    slug: $slug
+    limit: $limit
+    cursor: $cursor
+    filterOptions: $filterOptions
+  ) {
     hasMore
     userService {
       id

@@ -38,7 +38,6 @@ export type Country = {
   currencyname?: Maybe<Scalars['String']>;
   currencysymbol?: Maybe<Scalars['String']>;
   flag: Scalars['String'];
-  user: User;
 };
 
 
@@ -57,6 +56,11 @@ export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
   message: Scalars['String'];
+};
+
+export type FilterOptions = {
+  languages?: Maybe<Array<ListValues>>;
+  country?: Maybe<ListValues>;
 };
 
 export type Image = {
@@ -174,8 +178,8 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
-  getMeUserService?: Maybe<Array<UserService>>;
   filterUserService: PaginatedUserService;
+  getMeUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
   getCountries: Array<Country>;
 };
@@ -192,6 +196,7 @@ export type QueryGetServiceArgs = {
 
 
 export type QueryFilterUserServiceArgs = {
+  filterOptions?: Maybe<FilterOptions>;
   cursor?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
   slug: Scalars['String'];
@@ -275,7 +280,7 @@ export type UpsertUserService = {
   level?: Maybe<Scalars['String']>;
   platforms?: Maybe<Array<Dropdown>>;
   description?: Maybe<Scalars['String']>;
-  price: Scalars['Int'];
+  price: Scalars['Float'];
   per: Scalars['String'];
 };
 
@@ -318,7 +323,7 @@ export type UserService = {
   level: Scalars['String'];
   platforms?: Maybe<Scalars['JSON']>;
   description?: Maybe<Scalars['String']>;
-  price: Scalars['Int'];
+  price: Scalars['Float'];
   per: Scalars['String'];
   userId: Scalars['Int'];
   user: User;
@@ -492,6 +497,7 @@ export type FilterUserServiceQueryVariables = Exact<{
   slug: Scalars['String'];
   limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
+  filterOptions?: Maybe<FilterOptions>;
 }>;
 
 
@@ -1050,8 +1056,13 @@ export type UpsertUserServiceMutationHookResult = ReturnType<typeof useUpsertUse
 export type UpsertUserServiceMutationResult = Apollo.MutationResult<UpsertUserServiceMutation>;
 export type UpsertUserServiceMutationOptions = Apollo.BaseMutationOptions<UpsertUserServiceMutation, UpsertUserServiceMutationVariables>;
 export const FilterUserServiceDocument = gql`
-    query FilterUserService($slug: String!, $limit: Int!, $cursor: String) {
-  filterUserService(slug: $slug, limit: $limit, cursor: $cursor) {
+    query FilterUserService($slug: String!, $limit: Int!, $cursor: String, $filterOptions: FilterOptions) {
+  filterUserService(
+    slug: $slug
+    limit: $limit
+    cursor: $cursor
+    filterOptions: $filterOptions
+  ) {
     hasMore
     userService {
       id
@@ -1106,6 +1117,7 @@ export const FilterUserServiceDocument = gql`
  *      slug: // value for 'slug'
  *      limit: // value for 'limit'
  *      cursor: // value for 'cursor'
+ *      filterOptions: // value for 'filterOptions'
  *   },
  * });
  */

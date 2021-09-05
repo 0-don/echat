@@ -15,7 +15,8 @@ import { Button } from 'src/components/htmlElements';
 
 import { getRandomBetween } from 'src/utils';
 import Image from 'next/image';
-
+import { Filter } from 'src/components/browse/Filter';
+dayjs.extend(relativeTime);
 {
   /* <span
   className={`${
@@ -25,28 +26,30 @@ import Image from 'next/image';
   } h-4 w-4 rounded-full mr-1`}
 />; */
 }
-
-dayjs.extend(relativeTime);
+export type FilterOptions = {
+  languages: { id: number; name: string }[];
+} | null;
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data } = useGetServicesQuery();
+
+  const filterQuery = { slug, limit: 10, cursor: null };
+
   const {
     data: userService,
     loading: userServiceLoading,
     fetchMore,
     variables,
-  } = useFilterUserServiceQuery({
-    variables: { limit: 10, cursor: null, slug },
-  });
+  } = useFilterUserServiceQuery({ variables: filterQuery });
 
   if (!data) {
     return null;
   }
-  // console.log(userService?.filterUserService)
+
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
-
+    console.log(userService)
   return (
     <Wrapper navbar className=''>
       <div className='relative'>
@@ -74,10 +77,14 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
             setSidebarOpen={setSidebarOpen}
             data={data}
           />
-          <div className='xl:mx-16'>
+
+          <div className='xl:mx-8'>
             <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
               {service?.name}
             </h1>
+            <div className='flex items-center'>
+              <Filter slug={slug} />
+            </div>
             <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
               {!userServiceLoading &&
                 userService?.filterUserService?.userService.map(
@@ -107,7 +114,8 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
                           </div>
                           <img
                             src={`data:image/jpeg;base64,${user.country?.flag}`}
-                            alt='Landscape picture'
+                            alt={user.country?.name}
+                            title={user.country?.name}
                             className='h-4'
                           />
                         </div>
@@ -117,7 +125,10 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
                             className='dark:text-yellow-500 text-black mr-1'
                             icon='star'
                           />
-                          {`${getRandomBetween(3, 5)}.${getRandomBetween(10, 99)} (${getRandomBetween(0, 200)})`}
+                          {`${getRandomBetween(3, 5)}.${getRandomBetween(
+                            10,
+                            99
+                          )} (${getRandomBetween(0, 200)})`}
                         </div>
                         <hr className='border-lightGray my-1' />
                         <div className='flex items-center justify-between'>

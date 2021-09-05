@@ -35,11 +35,7 @@ export type ProfileSectionProps = {
 export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
 }) => {
-
-
-  // @ts-ignore
   const { data: getCountries } = useGetCountriesQuery();
-
 
   const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();

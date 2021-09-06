@@ -1,28 +1,24 @@
 import { GRAPHQL_SERVER_URL, __prod__ } from '../../constants';
 import { withApollo } from 'next-apollo';
 import { customFetch } from './customFetch';
-
 import { ApolloClient, ApolloLink, from, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createUploadLink } from 'apollo-upload-client';
-
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { PaginatedUserService } from 'src/generated/graphql';
+import { parse, stringify } from 'flatted';
 
 const cleanTypeName = new ApolloLink((operation, forward) => {
-  if (operation.variables) {
-    const omitTypename = (key: string, value: any) =>
-      key === '__typename' ? undefined : value;
-    operation.variables = JSON.parse(
-      JSON.stringify(operation.variables),
-      omitTypename
-    );
+  const omitTypename = (key: string, value: any) =>
+    key === '__typename' ? undefined : value;
+
+  if (operation.variables && !operation.getContext().hasUpload) {
+    operation.variables = parse(stringify(operation.variables), omitTypename);
   }
-  return forward(operation).map((data) => {
-    return data;
-  });
+
+  return forward(operation);
 });
 
 const createClient = (ctx: NextPageContext) => {

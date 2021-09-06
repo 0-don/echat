@@ -10,6 +10,7 @@ import {
   MeDocument,
   UpdatedUser,
   useGetCountriesQuery,
+  useGetLanguagesQuery,
   useMeQuery,
   useUpdateMeMutation,
 } from 'src/generated/graphql';
@@ -36,12 +37,14 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
   formikRef,
 }) => {
   const { data: getCountries } = useGetCountriesQuery();
+  const { data: getLanguages } = useGetLanguagesQuery();
 
   const { setStep } = useFormStore();
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
 
   const countries = getCountries?.getCountries.map((country) => country);
+  const languages = getLanguages?.getLanguages.map((language) => language);
   const userLanguage = user?.me?.languages?.map(({ id, name }) => ({
     id,
     name,
@@ -55,7 +58,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
     })
   );
 
-  if (!loading && user && countries) {
+  if (!loading && user && countries && languages) {
     return (
       <>
         <Formik
@@ -78,7 +81,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             steam: user.me?.steam || '',
             tiktok: user.me?.tiktok || '',
 
-            languages: userLanguage?.length ? userLanguage : [LANGUAGES[23]],
+            languages: userLanguage?.length ? userLanguage : [languages[23]],
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {

@@ -19,17 +19,16 @@ import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 import { log } from 'console';
 import { isAuth } from '../middleware/isAuth';
-import { Language } from '../entity/Language';
 import {
   EmailUsernamePasswordInput,
   UpdatedUser,
   UserResponse,
 } from '../utils/types/UserTypes';
 import { Schedule } from '../entity/Schedule';
+import { UserLanguage } from '../entity/UserLanguage';
 
 @Resolver(User)
 export class UserResolver {
-
   @Query(() => [User], { nullable: true })
   async getUsers() {
     const users = await getConnection()
@@ -75,25 +74,29 @@ export class UserResolver {
     @Arg('options') options: UpdatedUser,
     @Ctx() { req }: MyContext
   ) {
-    const { userId } = req.session;
+    const userId = req.session.userId as number;
     const { languages, schedules, ...optionsUpdate } = options;
 
     await User.update({ id: userId }, { ...optionsUpdate });
 
     if (languages.length) {
-      const freshLanguages = languages.map((lang) => ({ ...lang, userId }));
-
+      const freshLanguages = languages.map((lang) => ({
+        languageId: lang.id,
+        userId,
+        name: lang.name,
+      }));
+      console.log(freshLanguages)
       await getConnection()
         .createQueryBuilder()
         .delete()
-        .from(Language)
+        .from(UserLanguage)
         .where('userId = :userId', { userId })
         .execute();
 
       await getConnection()
         .createQueryBuilder()
         .insert()
-        .into(Language)
+        .into(UserLanguage)
         .values(freshLanguages)
         .execute();
     }

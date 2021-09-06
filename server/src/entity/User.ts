@@ -15,6 +15,7 @@ import { Language } from './Language';
 import { UserService } from './UserService';
 import { TypeormLoader } from 'type-graphql-dataloader';
 import { Country } from './Country';
+import { UserLanguage } from './UserLanguage';
 
 @ObjectType()
 @Entity()
@@ -102,12 +103,6 @@ export class User extends BaseEntity {
   @TypeormLoader(() => Country, (user: User) => user.countryId)
   country: Promise<Country | null>;
 
-  // Language
-  @Field(() => [Language], { nullable: true })
-  @OneToMany(() => Language, (language) => language.user)
-  @TypeormLoader()
-  languages: Language[];
-
   // Image
   @Field(() => [Image], { nullable: true })
   @OneToMany(() => Image, (image) => image.user)
@@ -119,6 +114,12 @@ export class User extends BaseEntity {
   @OneToMany(() => UserService, (userService) => userService.user)
   @TypeormLoader()
   services: UserService[];
+
+  // UserLanguage
+  @Field(() => [UserLanguage], { nullable: true })
+  @OneToMany(() => UserLanguage, (language) => language.user)
+  @TypeormLoader()
+  languages: Language[];
 
   // Schedule
   @Field(() => [Schedule], { nullable: true })

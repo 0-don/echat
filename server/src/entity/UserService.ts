@@ -28,13 +28,13 @@ export class UserService extends BaseEntity {
   @Column({ default: true })
   status: boolean;
 
-  @Field()
-  @Column()
-  level: string;
+  @Field({nullable: true})
+  @Column({nullable: true})
+  level?: string;
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  platforms: { id: number; name: string }[];
+  platforms?: { id: number; name: string }[];
 
   @Field({ nullable: true })
   @Column({ nullable: true })

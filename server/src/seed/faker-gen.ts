@@ -4,10 +4,21 @@ import faker from 'faker';
 import { User } from '../entity/User';
 import { Image } from '../entity/Image';
 import { coinFlip, getRandomBetween } from '../utils';
-import { Service } from '../entity/Service';
+import { List, Service } from '../entity/Service';
 import { UserService } from '../entity/UserService';
 import { log } from 'console';
 import { Country } from '../entity/Country';
+
+type UserServiceType = {
+  status: boolean;
+  level: string;
+  platforms: List[] | undefined;
+  description: string | undefined;
+  price: number;
+  userId: number;
+  serviceId: number;
+  per: string;
+};
 
 const main = async () => {
   const conn = await createConnection({
@@ -19,7 +30,7 @@ const main = async () => {
   });
 
   const services = await Service.find({ order: { popularity: 'ASC' } });
-  const servicesLength = services.length;
+
   const countries = await Country.find({});
   for (let i = 0; i < 1000; i++) {
     const user = {
@@ -92,29 +103,33 @@ const main = async () => {
       .returning('*')
       .execute();
 
+    let userServices: UserServiceType[] = [];
     for (let x = 0; x < getRandomBetween(4, 8); x++) {
-      let service = services[getRandomBetween(0, servicesLength)];
+      let service = services[getRandomBetween(0, services.length)];
+      let userServiceExist = userServices.find(
+        ({ serviceId }) => serviceId === service.id
+      );
 
-      const userService = {
-        status: true,
-        level: 'Newbie',
-        platforms: service.platforms ?? undefined,
-        description: coinFlip() ? faker.lorem.text() : undefined,
-        price: parseFloat(
-          `${getRandomBetween(1, 10)}.${getRandomBetween(0, 99)}`
-        ),
-        userId,
-        serviceId: service.id,
-        per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
-          getRandomBetween(0, 4)
-        ],
-      };
-      try {
-        await UserService.insert(userService);
-      } catch (error) {}
+      if (!userServiceExist) {
+        const userService = {
+          status: true,
+          level: 'Newbie',
+          platforms: service.platforms ?? undefined,
+          description: coinFlip() ? faker.lorem.text() : undefined,
+          price: parseFloat(
+            `${getRandomBetween(1, 10)}.${getRandomBetween(0, 99)}`
+          ),
+          userId,
+          serviceId: service.id,
+          per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
+            getRandomBetween(0, 4)
+          ],
+        };
+        userServices.push(userService);
+      }
     }
-
-    log(i + 1);
+    await UserService.insert(userServices);
+    log(i + 1, user.username);
   }
 
   log('finished');

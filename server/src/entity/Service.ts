@@ -13,7 +13,7 @@ import { ServiceImage } from './ServiceImage';
 import { UserService } from './UserService';
 import { TypeormLoader } from 'type-graphql-dataloader';
 
-type List = {
+export type List = {
   id: number;
   name: string;
 };

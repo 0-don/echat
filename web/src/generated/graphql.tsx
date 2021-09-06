@@ -78,8 +78,7 @@ export type Language = {
   __typename?: 'Language';
   id: Scalars['Int'];
   name: Scalars['String'];
-  userId: Scalars['Int'];
-  user: User;
+  code: Scalars['String'];
 };
 
 export type ListValues = {
@@ -182,6 +181,7 @@ export type Query = {
   getMeUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
   getCountries: Array<Country>;
+  getLanguages: Array<Language>;
 };
 
 
@@ -304,10 +304,19 @@ export type User = {
   tiktok?: Maybe<Scalars['String']>;
   countryId?: Maybe<Scalars['Int']>;
   country?: Maybe<Country>;
-  languages?: Maybe<Array<Language>>;
   images?: Maybe<Array<Image>>;
   services?: Maybe<Array<UserService>>;
+  languages?: Maybe<Array<UserLanguage>>;
   schedules?: Maybe<Array<Schedule>>;
+};
+
+export type UserLanguage = {
+  __typename?: 'UserLanguage';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  languageId: Scalars['Int'];
+  userId: Scalars['Int'];
+  user: User;
 };
 
 export type UserResponse = {
@@ -343,8 +352,8 @@ export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
   & { languages?: Maybe<Array<(
-    { __typename?: 'Language' }
-    & Pick<Language, 'id' | 'name'>
+    { __typename?: 'UserLanguage' }
+    & Pick<UserLanguage, 'id' | 'name'>
   )>>, schedules?: Maybe<Array<(
     { __typename?: 'Schedule' }
     & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
@@ -538,6 +547,17 @@ export type GetCountriesQuery = (
   )> }
 );
 
+export type GetLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLanguagesQuery = (
+  { __typename?: 'Query' }
+  & { getLanguages: Array<(
+    { __typename?: 'Language' }
+    & Pick<Language, 'id' | 'name'>
+  )> }
+);
+
 export type GetMeUserServiceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -580,8 +600,8 @@ export type GetUsersQuery = (
       { __typename?: 'Image' }
       & Pick<Image, 'id' | 'url'>
     )>>, languages?: Maybe<Array<(
-      { __typename?: 'Language' }
-      & Pick<Language, 'id' | 'name'>
+      { __typename?: 'UserLanguage' }
+      & Pick<UserLanguage, 'id' | 'name'>
     )>>, schedules?: Maybe<Array<(
       { __typename?: 'Schedule' }
       & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
@@ -601,8 +621,8 @@ export type MeQuery = (
       { __typename?: 'Country' }
       & Pick<Country, 'id' | 'name' | 'flag'>
     )>, languages?: Maybe<Array<(
-      { __typename?: 'Language' }
-      & Pick<Language, 'id' | 'name'>
+      { __typename?: 'UserLanguage' }
+      & Pick<UserLanguage, 'id' | 'name'>
     )>>, schedules?: Maybe<Array<(
       { __typename?: 'Schedule' }
       & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
@@ -1167,6 +1187,41 @@ export function useGetCountriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetCountriesQueryHookResult = ReturnType<typeof useGetCountriesQuery>;
 export type GetCountriesLazyQueryHookResult = ReturnType<typeof useGetCountriesLazyQuery>;
 export type GetCountriesQueryResult = Apollo.QueryResult<GetCountriesQuery, GetCountriesQueryVariables>;
+export const GetLanguagesDocument = gql`
+    query GetLanguages {
+  getLanguages {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetLanguagesQuery__
+ *
+ * To run a query within a React component, call `useGetLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLanguagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<GetLanguagesQuery, GetLanguagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLanguagesQuery, GetLanguagesQueryVariables>(GetLanguagesDocument, options);
+      }
+export function useGetLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLanguagesQuery, GetLanguagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLanguagesQuery, GetLanguagesQueryVariables>(GetLanguagesDocument, options);
+        }
+export type GetLanguagesQueryHookResult = ReturnType<typeof useGetLanguagesQuery>;
+export type GetLanguagesLazyQueryHookResult = ReturnType<typeof useGetLanguagesLazyQuery>;
+export type GetLanguagesQueryResult = Apollo.QueryResult<GetLanguagesQuery, GetLanguagesQueryVariables>;
 export const GetMeUserServiceDocument = gql`
     query GetMeUserService {
   getMeUserService {
@@ -1440,6 +1495,7 @@ export const namedOperations = {
   Query: {
     FilterUserService: 'FilterUserService',
     GetCountries: 'GetCountries',
+    GetLanguages: 'GetLanguages',
     GetMeUserService: 'GetMeUserService',
     GetServices: 'GetServices',
     GetUsers: 'GetUsers',

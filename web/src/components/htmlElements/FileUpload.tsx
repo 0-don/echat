@@ -5,6 +5,7 @@ import {
   useMultipleUploadMutation,
   UserImagesDocument,
   UserImagesQuery,
+  Image,
 } from '../../generated/graphql';
 import { Loading, ProgressBar } from '../utils';
 
@@ -29,6 +30,7 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
       await multipleUpload({
         variables: { files, type },
         context: {
+          hasUpload: true,
           fetchOptions: {
             useUpload: true,
             onProgress: (ev: ProgressEvent) => {
@@ -46,36 +48,33 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
           });
           cache.modify({
             fields: {
-              userImages(existingImages, { readField }) {
+              userImages(existingImages: Image[], { readField }) {
                 const newImage = {
                   __ref: `${data!.multipleUpload![0].__typename}:${
                     data!.multipleUpload![0].id
                   }`,
                 };
 
+                const image = imageData?.userImages?.find(
+                  (i) => i.type === type
+                );
+
                 if (
-                  (imageData && type === 'profile') ||
-                  (imageData && type === 'cover')
+                  (imageData && type === 'profile' && image) ||
+                  (imageData && type === 'cover' && image)
                 ) {
-                  const image = imageData?.userImages?.find(
-                    (i) => i.type === type
-                  );
+                  cache.evict({ id: `${image.__typename}:${image.id}` });
+                  cache.gc();
 
-                  if (image) {
-                    cache.evict({ id: `${image.__typename}:${image.id}` });
-                    cache.gc();
-                    return [
-                      ...existingImages.filter((i: any) => {
-                        return image.id !== readField('id', i);
-                      }),
-                      newImage,
-                    ];
-                  }
-
-                  return [...existingImages, newImage];
-                } else {
-                  return [...existingImages, newImage];
+                  return [
+                    ...existingImages.filter(
+                      (i) => image.id !== readField('id', i)
+                    ),
+                    newImage,
+                  ];
                 }
+
+                return [...existingImages, newImage];
               },
             },
           });
@@ -102,12 +101,12 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
           <ProgressBar progress={progress} />
         ) : (
           <div className='space-y-1 text-black dark:text-white text-center cursor-pointer'>
-            <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' /> 
+            <PhotographIcon className='h-12 w-12 m-auto' aria-hidden='true' />
             <label className='relative '>
               <input {...getInputProps()} />
               <p className='rounded-full text-sm text-white bg-dark-light dark:bg-purple dark:hover:bg-purple-dark hover:bg-purple '>
                 {isDragActive
-                  ? 'Drop the files here ...' 
+                  ? 'Drop the files here ...'
                   : type.charAt(0).toUpperCase() + type.slice(1)}
               </p>
             </label>

@@ -54,6 +54,7 @@ export const UserServices: React.FC<UserServicesProps> = ({
     <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
       {data &&
         data?.filterUserService?.userService.map(
+          // Don die sau , serviceId ist falsch
           ({ user, price, per, serviceId }, index) => (
             <div key={index} className='bg-white dark:bg-dark flex flex-col' onClick={() => router.push(`/service/${serviceId}`)}>
               <img

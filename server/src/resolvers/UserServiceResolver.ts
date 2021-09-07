@@ -60,8 +60,8 @@ class PaginatedUserService {
 class FilterOptions {
   @Field(() => [ListValues], { nullable: true })
   languages?: ListValues[];
-  @Field(() => ListValues, { nullable: true })
-  country?: ListValues;
+  @Field(() => [ListValues], { nullable: true })
+  countries?: ListValues[];
 }
 
 @Resolver(UserService)
@@ -103,12 +103,11 @@ export class UserServiceResolver {
 
     const qb = getRepository(UserService).createQueryBuilder('userService');
 
-    if (filterOptions?.country) {
+    if (filterOptions?.countries) {
+      let countriesIds = filterOptions.countries.map(({ id }) => id);
       qb.leftJoinAndSelect('userService.user', 'user').where(
-        'user.countryId = :country',
-        {
-          country: filterOptions.country.id,
-        }
+        'user.countryId IN (:...countriesIds)',
+        { countriesIds: countriesIds }
       );
     }
     qb.andWhere('userService.serviceId = :id', { id });

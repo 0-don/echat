@@ -60,7 +60,7 @@ export type FieldError = {
 
 export type FilterOptions = {
   languages?: Maybe<Array<ListValues>>;
-  country?: Maybe<ListValues>;
+  countries?: Maybe<Array<ListValues>>;
 };
 
 export type Image = {

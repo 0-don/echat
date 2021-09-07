@@ -86,12 +86,12 @@ export class UserServiceResolver {
     // @Arg('serviceId', () => Int) serviceId: number,
     @Arg('slug') slug: string,
     @Arg('limit', () => Int) limit: number,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
+    @Arg('cursor', () => String, { nullable: true }) cursor?: string | null,
     @Arg('filterOptions', () => FilterOptions, { nullable: true })
     filterOptions?: FilterOptions | null
   ): Promise<PaginatedUserService> {
     // 20 -> 21
-
+    console.log(slug, limit, cursor, filterOptions);
     const realLimit = Math.min(50, limit);
     const reaLimitPlusOne = realLimit + 1;
     const replacements: any[] = [reaLimitPlusOne];
@@ -114,7 +114,7 @@ export class UserServiceResolver {
     qb.andWhere('userService.serviceId = :id', { id });
 
     if (cursor) {
-      qb.andWhere('userService.createdAt < :cursor', {
+      qb.andWhere('userService.createdAt > :cursor', {
         cursor: new Date(parseInt(cursor)),
       });
     }

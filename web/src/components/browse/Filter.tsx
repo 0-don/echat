@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  FilterOptions,
   useFilterUserServiceQuery,
   useGetCountriesQuery,
 } from 'src/generated/graphql';
@@ -9,10 +10,7 @@ import { FilterDropdown } from '../htmlElements/FilterDropdown';
 interface FilterProps {
   slug: string;
 }
-export type FilterOptions = {
-  languages?: { id: number; name: string }[];
-  country?: { id: number; name: string };
-};
+
 
 export const Filter: React.FC<FilterProps> = ({ slug }) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>({});

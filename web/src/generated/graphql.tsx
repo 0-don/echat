@@ -329,7 +329,7 @@ export type UserService = {
   __typename?: 'UserService';
   id: Scalars['Int'];
   status: Scalars['Boolean'];
-  level: Scalars['String'];
+  level?: Maybe<Scalars['String']>;
   platforms?: Maybe<Scalars['JSON']>;
   description?: Maybe<Scalars['String']>;
   price: Scalars['Float'];

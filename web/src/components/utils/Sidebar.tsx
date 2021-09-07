@@ -1,15 +1,20 @@
 import React, { Dispatch, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, ChevronDownIcon } from '@heroicons/react/outline';
-import { GetServicesQuery } from 'src/generated/graphql';
+import {
+  FilterUserServiceQueryVariables,
+  GetServicesQuery,
+} from 'src/generated/graphql';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useServiceFilterStore from 'src/store/ServiceFilterStore';
 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<React.SetStateAction<boolean>>;
-  data: GetServicesQuery;
+  data: GetServicesQuery | undefined;
+  refetch: (variables: FilterUserServiceQueryVariables) => void;
 }
 
 type TabState = {
@@ -36,9 +41,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setSidebarOpen,
   sidebarOpen,
   data,
+  refetch,
 }) => {
+  if (!data) {
+    return null;
+  }
+  
   const router = useRouter();
-
+  const { filterQuery, setSlug } = useServiceFilterStore();
   const groupedServices = _.groupBy(data?.getServices, 'type');
 
   const [tabs, setTabs] = useState<TabState[]>(
@@ -91,7 +101,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 checkUrl(slug) && 'text-purple'
               } mt-2 space-y-2 px-7 hover:text-purple`}
               key={slug}
-              onClick={() => {
+              onClick={async () => {
+                setSlug(slug);
+                refetch(filterQuery);
                 router.push(`/browse/${slug}`);
               }}
             >

@@ -55,13 +55,12 @@ export const UserServices: React.FC<UserServicesProps> = ({
       {data &&
         data?.filterUserService?.userService.map(
           // Don die sau , serviceId ist falsch
-          ({ user, price, per, serviceId }, index) => (
-            <div key={index} className='bg-white dark:bg-dark flex flex-col' onClick={() => router.push(`/service/${serviceId}`)}>
+          ({ user, price, per, id }, index) => (
+            <div key={index} className='bg-white dark:bg-dark flex flex-col' onClick={() => router.push(`/service/${id}`)}>
               <img
                 src={user.images?.length ? user.images[0].url : gray.src}
                 className='h-auto'
-              />
-
+              /> 
               <div className='p-2' >
                 <div className='flex items-center justify-between w-full'>
                   <div className='flex items-center'>

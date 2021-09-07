@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import withApollo from 'src/utils/apollo/withApollo';
 import { Wrapper } from 'src/components/Wrapper';
 import { Sidebar } from 'src/components/utils/Sidebar';
@@ -16,7 +16,6 @@ import { getRandomBetween } from 'src/utils';
 import Image from 'next/image';
 import { Filter } from 'src/components/browse/Filter';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
-import { isServer } from 'src/utils/helpers/isServer';
 import { UserServices } from 'src/components/browse/UserServices';
 dayjs.extend(relativeTime);
 {

@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 import {
   FilterUserServiceQuery,
-  FilterUserServiceQueryVariables,
 } from 'src/generated/graphql';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { getRandomBetween } from 'src/utils';

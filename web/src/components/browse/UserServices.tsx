@@ -55,13 +55,13 @@ export const UserServices: React.FC<UserServicesProps> = ({
       {data &&
         data?.filterUserService?.userService.map(
           ({ user, price, per, serviceId }, index) => (
-            <div key={index} className='bg-white dark:bg-dark flex flex-col'>
+            <div key={index} className='bg-white dark:bg-dark flex flex-col' onClick={() => router.push(`/service/${serviceId}`)}>
               <img
                 src={user.images?.length ? user.images[0].url : gray.src}
                 className='h-auto'
               />
 
-              <div className='p-2'>
+              <div className='p-2' >
                 <div className='flex items-center justify-between w-full'>
                   <div className='flex items-center'>
                     <span
@@ -106,7 +106,7 @@ export const UserServices: React.FC<UserServicesProps> = ({
                   <Button
                     text='Order'
                     className='p-1 m-1'
-                    onClick={() => router.push(`/service/${serviceId}`)}
+                    
                   />
                 </div>
               </div>

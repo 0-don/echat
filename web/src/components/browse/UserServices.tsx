@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import {
-  FilterUserServiceQuery,
-} from 'src/generated/graphql';
+import { FilterUserServiceQuery } from 'src/generated/graphql';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { getRandomBetween } from 'src/utils';
 import { isServer } from 'src/utils/helpers/isServer';
 import { Button } from '../htmlElements';
 import gray from '/public/gray.png';
+
 
 interface UserServicesProps {
   data: FilterUserServiceQuery | undefined;
@@ -18,6 +18,7 @@ export const UserServices: React.FC<UserServicesProps> = ({
   data,
   fetchMore,
 }) => {
+  const router = useRouter();
   const { filterQuery, setCursor } = useServiceFilterStore();
 
   const handleScroll = async () => {
@@ -25,7 +26,7 @@ export const UserServices: React.FC<UserServicesProps> = ({
       Math.ceil(window.innerHeight + window.scrollY) >=
       document.documentElement.scrollHeight;
 
-    console.log(data?.filterUserService.hasMore);
+    // console.log(data?.filterUserService.hasMore);
     if (bottom && data?.filterUserService.hasMore) {
       setCursor(
         data?.filterUserService.userService[
@@ -48,12 +49,12 @@ export const UserServices: React.FC<UserServicesProps> = ({
       !isServer() && window.removeEventListener('scroll', handleScroll);
     };
   }, [data]);
-  // console.log(data?.filterUserService.hasMore);
+
   return (
     <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
       {data &&
         data?.filterUserService?.userService.map(
-          ({ user, price, per }, index) => (
+          ({ user, price, per, serviceId }, index) => (
             <div key={index} className='bg-white dark:bg-dark flex flex-col'>
               <img
                 src={user.images?.length ? user.images[0].url : gray.src}
@@ -102,7 +103,11 @@ export const UserServices: React.FC<UserServicesProps> = ({
                       2
                     )} / ${per}`}</div>
                   </div>
-                  <Button text='Order' className='p-1 m-1' />
+                  <Button
+                    text='Order'
+                    className='p-1 m-1'
+                    onClick={() => router.push(`/service/${serviceId}`)}
+                  />
                 </div>
               </div>
             </div>

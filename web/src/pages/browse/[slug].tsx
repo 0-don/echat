@@ -17,7 +17,6 @@ import Image from 'next/image';
 import { Filter } from 'src/components/browse/Filter';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { UserServices } from 'src/components/browse/UserServices';
-import router from 'next/router';
 
 dayjs.extend(relativeTime);
 {

@@ -4,19 +4,15 @@ import {
   useFilterUserServiceQuery,
   useGetCountriesQuery,
 } from 'src/generated/graphql';
+import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { Button } from '../htmlElements';
 import { FilterDropdown } from '../htmlElements/FilterDropdown';
 
-interface FilterProps {
-  slug: string;
-}
-
-
-export const Filter: React.FC<FilterProps> = ({ slug }) => {
+export const Filter: React.FC = () => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>({});
+  const { filterQuery, setOptions } = useServiceFilterStore();
   const { data: getCountries } = useGetCountriesQuery();
 
-  const filterQuery = { slug, limit: 10, cursor: null, filterOptions };
   const { refetch } = useFilterUserServiceQuery({
     variables: filterQuery,
     skip: true,
@@ -32,7 +28,7 @@ export const Filter: React.FC<FilterProps> = ({ slug }) => {
       <div className='w-64'>
         <FilterDropdown
           list={countries}
-          fieldName='country'
+          fieldName='countries'
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
         />
@@ -41,6 +37,8 @@ export const Filter: React.FC<FilterProps> = ({ slug }) => {
         text='HX'
         className='ml-1 h-10 mt-5'
         onClick={async () => {
+          filterOptions && setOptions(filterOptions);
+          console.log(filterQuery)
           await refetch({ ...filterQuery });
         }}
       />

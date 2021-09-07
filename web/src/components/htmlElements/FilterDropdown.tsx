@@ -25,21 +25,32 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   filterOptions,
   setFilterOptions,
 }) => {
+  const currentValue: DropdownItem[] | [] =
+    filterOptions && filterOptions[fieldName] ? filterOptions[fieldName] : [];
+
   const onChange = (value: DropdownItem) => {
     if (filterOptions) {
-      if (filterOptions[fieldName] === Array) {
-        filterOptions[fieldName].push(value);
+      const exist = filterOptions[fieldName]?.find(
+        (item: DropdownItem) => item.name === value.name
+      );
+
+      if (exist) {
+        setFilterOptions(
+          produce((draft: Draft<FilterOptions>) => {
+            draft[fieldName] = draft[fieldName].filter(
+              (item: DropdownItem) => item.name !== value.name
+            );
+          })
+        );
       } else {
         setFilterOptions(
           produce((draft: Draft<FilterOptions>) => {
-            draft[fieldName] = value;
-  
+            draft[fieldName] = [...currentValue, value];
           })
         );
-        // (filterOptions[fieldName] = value);
       }
+      console.log(filterOptions);
     }
-   
   };
 
   return (
@@ -71,33 +82,40 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                   {list.map((item) => (
                     <Listbox.Option
                       key={item.id}
-                      className={({ active, selected }) => `
+                      className={`
                         ${
-                          selected && 'bg-purple'
+                          currentValue.length > 0 &&
+                          currentValue?.find(
+                            (value) => value.name === item.name
+                          ) &&
+                          'bg-purple'
                         } hover:bg-purple cursor-default select-none relative py-2 pl-3 pr-9'
                         `}
                       value={item}
                     >
-                      {({ selected, active }) => (
-                        <>
-                          <span
-                            className={`${
-                              selected && 'font-semibold'
-                            } dark:text-white block truncate`}
-                          >
-                            {item.name}
-                          </span>
+                      <span
+                        className={`${
+                          currentValue.length > 0 &&
+                          currentValue?.find(
+                            (value) => value.name === item.name
+                          ) &&
+                          'font-semibold'
+                        } dark:text-white block truncate`}
+                      >
+                        {item.name}
+                      </span>
 
-                          {selected && (
-                            <span className='absolute inset-y-0 right-0 flex items-center pr-4 text-white'>
-                              <CheckIcon
-                                className='h-5 w-5 '
-                                aria-hidden='true'
-                              />
-                            </span>
-                          )}
-                        </>
-                      )}
+                      {currentValue.length > 0 &&
+                        currentValue?.find(
+                          (value) => value.name === item.name
+                        ) && (
+                          <span className='absolute inset-y-0 right-0 flex items-center pr-4 text-white'>
+                            <CheckIcon
+                              className='h-5 w-5 '
+                              aria-hidden='true'
+                            />
+                          </span>
+                        )}
                     </Listbox.Option>
                   ))}
                 </Listbox.Options>

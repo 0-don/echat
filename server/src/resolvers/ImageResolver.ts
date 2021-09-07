@@ -19,7 +19,6 @@ type ImageTypes = 'profile' | 'cover' | 'secondary';
 
 @Resolver(Image)
 export class ImageResolver {
-
   @Mutation(() => Boolean)
   async deleteAllImages() {
     Image.delete({});

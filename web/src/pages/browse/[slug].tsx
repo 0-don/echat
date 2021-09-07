@@ -80,7 +80,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
               {service?.name}
             </h1>
             <div className='flex items-center'>
-              <Filter slug={slug} />
+              <Filter />
             </div>
             <UserServices data={userService} fetchMore={fetchMore} />
           </div>

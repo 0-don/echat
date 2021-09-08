@@ -11,7 +11,7 @@ type Form = {
   filterQuery: FilterUserServiceQueryVariables;
   setSlug: (slug: string) => void;
   setCursor: (cursor: string | undefined) => void;
-  setOptions: (filterOptions: FilterOptions) => Promise<void>;
+  setOptions: (filterOptions: FilterOptions) => void;
   filterInit: (filterOptions: FilterUserServiceQueryVariables) => void;
 };
 
@@ -32,15 +32,13 @@ const useServiceFilterStore = create<Form>(
           set((state) => {
             state.filterQuery.cursor = cursor;
           }),
-        setOptions: async (filterOptions) => set((state) => {
-          state.filterQuery.filterOptions = filterOptions;
-        }),
+        setOptions: (filterOptions) =>
+          set((state) => {
+            state.filterQuery.filterOptions = filterOptions;
+          }),
         filterInit: (filterOptions) =>
           set((state) => {
             state.hasHydrated = true;
-            // if (!state.filterQuery.slug) {
-            //   state.filterQuery = filterOptions;
-            // }
             state.filterQuery = filterOptions;
           }),
       })

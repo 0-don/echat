@@ -7,7 +7,7 @@ import { getRandomBetween } from 'src/utils';
 import { isServer } from 'src/utils/helpers/isServer';
 import { Button } from '../htmlElements';
 import gray from '/public/gray.png';
-
+import Image from 'next/image';
 
 interface UserServicesProps {
   data: FilterUserServiceQuery | undefined;
@@ -56,11 +56,15 @@ export const UserServices: React.FC<UserServicesProps> = ({
         data?.filterUserService?.userService.map(
           ({ user, price, per, serviceId }, index) => (
             <div key={index} className='bg-white dark:bg-dark flex flex-col'>
-              <img
-                src={user.images?.length ? user.images[0].url : gray.src}
-                className='h-auto'
-              />
-
+              <div style={{ position: 'relative', width: '100%', height: '200px' }}>
+                <Image
+                  placeholder='blur'
+                  blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
+                  layout='fill'
+                  objectFit="cover"
+                  src={user.images?.length ? user.images[0].url : gray.src}
+                />
+              </div>
               <div className='p-2'>
                 <div className='flex items-center justify-between w-full'>
                   <div className='flex items-center'>

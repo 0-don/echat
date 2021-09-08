@@ -175,10 +175,7 @@ export class UserServiceResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async deleteUserService(
-    @Arg('id', () => Int) id: number,
-    @Ctx() { req }: MyContext
-  ) {
+  async deleteUserService(@Arg('id', () => Int) id: number,@Ctx() { req }: MyContext) {
     const { userId } = req.session;
 
     await UserService.delete({ id, userId });

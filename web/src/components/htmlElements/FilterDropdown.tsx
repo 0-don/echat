@@ -1,4 +1,4 @@
-import { forwardRef, Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';

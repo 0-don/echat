@@ -84,7 +84,6 @@ export class UserResolver {
         userId,
         name: lang.name,
       }));
-      console.log(freshLanguages)
       await getConnection()
         .createQueryBuilder()
         .delete()

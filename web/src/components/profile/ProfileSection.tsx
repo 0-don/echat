@@ -43,7 +43,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
 
-  const countries = getCountries?.getCountries.map((country) => country);
+  const countries = getCountries?.getCountries?.map((country) => country);
   const languages = getLanguages?.getLanguages.map((language) => language);
   const userLanguage = user?.me?.languages?.map(({ id, name }) => ({
     id,

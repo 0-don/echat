@@ -1,5 +1,6 @@
 import { useState, FC } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import { log } from 'console';
 
 const SEND_MESSAGE = gql`
   mutation createChat($name: String!, $message: String!) {
@@ -24,7 +25,7 @@ const SendMessage: FC<SendMessageProps> = ({ name }) => {
       .then((data) => {
         setInput('');
       })
-      .catch((err) => console.log(err));
+      .catch((err) => log(err));
   };
 
   return (

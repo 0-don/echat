@@ -103,7 +103,7 @@ export class UserServiceResolver {
 
     const qb = getRepository(UserService).createQueryBuilder('userService');
 
-    if (filterOptions?.countries) {
+    if (filterOptions?.countries?.length) {
       let countriesIds = filterOptions.countries.map(({ id }) => id);
       qb.leftJoinAndSelect('userService.user', 'user').where(
         'user.countryId IN (:...countriesIds)',

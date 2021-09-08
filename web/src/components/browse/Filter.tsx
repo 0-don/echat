@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  FilterOptions,
   useFilterUserServiceQuery,
   useGetCountriesQuery,
 } from 'src/generated/graphql';
@@ -9,16 +8,17 @@ import { Button } from '../htmlElements';
 import { FilterDropdown } from '../htmlElements/FilterDropdown';
 
 export const Filter: React.FC = () => {
-  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>({});
-  const { filterQuery, setOptions } = useServiceFilterStore();
-  const { data: getCountries } = useGetCountriesQuery();
+  const { filterQuery } = useServiceFilterStore();
+  const { data: getCountries } = useGetCountriesQuery({
+    variables: { slug: filterQuery?.slug || undefined },
+  });
 
   const { refetch } = useFilterUserServiceQuery({
     variables: filterQuery,
     skip: true,
   });
 
-  const countries = getCountries?.getCountries.map((country) => country);
+  const countries = getCountries?.getCountries?.map((country) => country);
   if (!countries) {
     return null;
   }
@@ -26,20 +26,15 @@ export const Filter: React.FC = () => {
   return (
     <div className='flex mb-5 items-center'>
       <div className='w-64'>
-        <FilterDropdown
-          list={countries}
-          fieldName='countries'
-          filterOptions={filterOptions}
-          setFilterOptions={setFilterOptions}
-        />
+        <FilterDropdown list={countries} fieldName='countries' />
       </div>
       <Button
         text='HX'
         className='ml-1 h-10 mt-5'
         onClick={async () => {
-          filterOptions && setOptions(filterOptions);
-          console.log(filterQuery)
-          await refetch({ ...filterQuery });
+          // console.log(filterOptions);
+          // console.log(filterQuery);
+          await refetch(filterQuery);
         }}
       />
     </div>

@@ -180,7 +180,7 @@ export type Query = {
   filterUserService: PaginatedUserService;
   getMeUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
-  getCountries: Array<Country>;
+  getCountries?: Maybe<Array<Country>>;
   getLanguages: Array<Language>;
 };
 
@@ -200,6 +200,11 @@ export type QueryFilterUserServiceArgs = {
   cursor?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
   slug: Scalars['String'];
+};
+
+
+export type QueryGetCountriesArgs = {
+  slug?: Maybe<Scalars['String']>;
 };
 
 export type Schedule = {
@@ -536,15 +541,17 @@ export type FilterUserServiceQuery = (
   ) }
 );
 
-export type GetCountriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetCountriesQueryVariables = Exact<{
+  slug?: Maybe<Scalars['String']>;
+}>;
 
 
 export type GetCountriesQuery = (
   { __typename?: 'Query' }
-  & { getCountries: Array<(
+  & { getCountries?: Maybe<Array<(
     { __typename?: 'Country' }
     & Pick<Country, 'id' | 'name'>
-  )> }
+  )>> }
 );
 
 export type GetLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1153,8 +1160,8 @@ export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserSe
 export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
 export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
 export const GetCountriesDocument = gql`
-    query GetCountries {
-  getCountries {
+    query GetCountries($slug: String) {
+  getCountries(slug: $slug) {
     id
     name
   }
@@ -1173,6 +1180,7 @@ export const GetCountriesDocument = gql`
  * @example
  * const { data, loading, error } = useGetCountriesQuery({
  *   variables: {
+ *      slug: // value for 'slug'
  *   },
  * });
  */

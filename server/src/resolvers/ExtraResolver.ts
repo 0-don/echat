@@ -1,5 +1,5 @@
 import { Country } from '../entity/Country';
-import { Arg, Int, Query, Resolver } from 'type-graphql';
+import { Arg, Query, Resolver } from 'type-graphql';
 import { Language } from '../entity/Language';
 import { Service } from '../entity/Service';
 import { UserService } from '../entity/UserService';

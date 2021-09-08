@@ -25,17 +25,13 @@ export const Filter: React.FC = () => {
 
   return (
     <div className='flex mb-5 items-center'>
-      <div className='w-64'>
+      <div className='w-48'>
         <FilterDropdown list={countries} fieldName='countries' />
       </div>
       <Button
-        text='HX'
-        className='ml-1 h-10 mt-5'
-        onClick={async () => {
-          // console.log(filterOptions);
-          // console.log(filterQuery);
-          await refetch(filterQuery);
-        }}
+        text='filter'
+        className='ml-1 h-10 w-12 mt-1'
+        onClick={async () => await refetch(filterQuery)}
       />
     </div>
   );

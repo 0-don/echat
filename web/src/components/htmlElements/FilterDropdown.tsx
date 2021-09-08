@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
+import _ from 'lodash';
 
 interface FilterDropdownProps {
   fieldName: string;
@@ -20,8 +21,14 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   fieldName,
   className,
 }) => {
+  const sortedList = _.orderBy(
+    list,
+    [(item) => item.name.toLowerCase()],
+    ['asc']
+  );
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<any>();
+  const buttonRef = useRef<any>();
   const { filterQuery, setOptions } = useServiceFilterStore();
 
   const filterOptions = filterQuery.filterOptions;
@@ -51,12 +58,16 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
     }
   };
 
+  const handleClickOutside = (event: any) => {
+    if (buttonRef.current && buttonRef.current.contains(event.target)) {
+      return;
+    }
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      setOpen(!open);
+    }
+  };
+
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      wrapperRef.current &&
-        !wrapperRef.current.contains(event.target) &&
-        setOpen(false);
-    };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [wrapperRef]);
@@ -65,10 +76,11 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
     <div className={className}>
       <Listbox value={list[3]} onChange={onChange}>
         <div className='mt-1 relative'>
-          <div onClick={() => setOpen(!open)}>
+          <div ref={buttonRef} onClick={() => setOpen(!open)}>
             <Listbox.Button className='relative border w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default bg-white dark:bg-dark-light dark:border-dark-light dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple '>
               <span className='block truncate text-dark dark:text-white'>
-                {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+                {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} (
+                {currentValue.length})
               </span>
               <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                 <SelectorIcon
@@ -88,14 +100,14 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
           >
             <Listbox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-dark-light shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
               <div ref={wrapperRef}>
-                {list.map((item) => (
+                {sortedList.map((item) => (
                   <Listbox.Option
                     key={item.id}
                     className={`
                         ${
                           currentValue.length > 0 &&
-                          currentValue!.find(
-                            (value: any) => value!.name! === item.name
+                          currentValue.find(
+                            (value: any) => value.name === item.name
                           ) &&
                           'bg-purple'
                         } hover:bg-purple-dark cursor-default select-none relative py-2 pl-3 pr-9'
@@ -105,8 +117,8 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                     <span
                       className={`${
                         currentValue.length > 0 &&
-                        currentValue!.find(
-                          (value: any) => value!.name! === item.name
+                        currentValue.find(
+                          (value: any) => value.name === item.name
                         ) &&
                         'font-semibold'
                       } dark:text-white block truncate`}
@@ -115,8 +127,8 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                     </span>
 
                     {currentValue.length > 0 &&
-                      currentValue!.find(
-                        (value: any) => value!.name! === item.name
+                      currentValue.find(
+                        (value: any) => value.name === item.name
                       ) && (
                         <span className='absolute inset-y-0 right-0 flex items-center pr-4 text-white'>
                           <CheckIcon className='h-5 w-5 ' aria-hidden='true' />

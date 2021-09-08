@@ -46,9 +46,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   if (!data) {
     return null;
   }
-  
+
   const router = useRouter();
-  const { filterQuery, setSlug } = useServiceFilterStore();
+  const { filterQuery, setSlug, setOptions } = useServiceFilterStore();
   const groupedServices = _.groupBy(data?.getServices, 'type');
 
   const [tabs, setTabs] = useState<TabState[]>(
@@ -102,6 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               } mt-2 space-y-2 px-7 hover:text-purple`}
               key={slug}
               onClick={async () => {
+                setOptions({});
                 setSlug(slug);
                 refetch(filterQuery);
                 router.push(`/browse/${slug}`);

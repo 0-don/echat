@@ -61,6 +61,7 @@ export type FieldError = {
 export type FilterOptions = {
   languages?: Maybe<Array<ListValues>>;
   countries?: Maybe<Array<ListValues>>;
+  genders?: Maybe<Array<ListValues>>;
 };
 
 export type Image = {

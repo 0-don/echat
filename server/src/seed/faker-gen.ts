@@ -95,7 +95,7 @@ const main = async () => {
       ),
       description: coinFlip() ? faker.lorem.text() : undefined,
       age: coinFlip() ? faker.datatype.datetime() : undefined,
-      gender: coinFlip() ? faker.name.gender() : undefined,
+      gender: ['Female','Male','Other' ][getRandomBetween(0, 3)],
       discord: coinFlip() ? faker.internet.userName() : undefined,
       twitter: coinFlip() ? faker.internet.userName() : undefined,
       facebook: coinFlip() ? faker.internet.userName() : undefined,
@@ -108,6 +108,8 @@ const main = async () => {
     };
     fakeUsers.push(user);
   }
+
+  
   await User.insert(fakeUsers);
   const users = await User.find({ where: { fake: true } });
 

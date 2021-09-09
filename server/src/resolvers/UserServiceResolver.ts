@@ -22,6 +22,7 @@ import { getRepository, In } from 'typeorm';
 import DataLoader from 'dataloader';
 import { Service } from '../entity/Service';
 import { ListValues } from '../utils/types/UserTypes';
+import { UserLanguage } from '../entity/UserLanguage';
 
 @InputType()
 export class Dropdown {
@@ -105,11 +106,23 @@ export class UserServiceResolver {
 
     if (filterOptions?.countries?.length) {
       let countriesIds = filterOptions.countries.map(({ id }) => id);
-      qb.leftJoinAndSelect('userService.user', 'user').where(
+      qb.leftJoinAndSelect('userService.user', 'user').andWhere(
         'user.countryId IN (:...countriesIds)',
-        { countriesIds: countriesIds }
+        { countriesIds }
       );
     }
+
+    if (filterOptions?.languages?.length) {
+      let languagesIds = filterOptions.languages.map(({ id }) => id);
+      qb.leftJoinAndSelect(
+        UserLanguage,
+        'userLanguage',
+        'userLanguage.userId = userService.userId'
+      ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
+        languagesIds,
+      });
+    }
+
     qb.andWhere('userService.serviceId = :id', { id });
 
     if (cursor) {
@@ -175,7 +188,10 @@ export class UserServiceResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async deleteUserService(@Arg('id', () => Int) id: number,@Ctx() { req }: MyContext) {
+  async deleteUserService(
+    @Arg('id', () => Int) id: number,
+    @Ctx() { req }: MyContext
+  ) {
     const { userId } = req.session;
 
     await UserService.delete({ id, userId });

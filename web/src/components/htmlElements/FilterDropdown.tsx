@@ -57,16 +57,14 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
       });
     }
   };
-
   const handleClickOutside = (event: any) => {
     if (buttonRef.current && buttonRef.current.contains(event.target)) {
       return;
     }
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-      setOpen(!open);
+      setOpen(false);
     }
   };
-
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);

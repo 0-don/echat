@@ -63,6 +63,8 @@ class FilterOptions {
   languages?: ListValues[];
   @Field(() => [ListValues], { nullable: true })
   countries?: ListValues[];
+  @Field(() => [ListValues], { nullable: true })
+  genders?: ListValues[];
 }
 
 @Resolver(UserService)
@@ -121,6 +123,14 @@ export class UserServiceResolver {
       ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
         languagesIds,
       });
+    }
+
+    if (filterOptions?.genders?.length) {
+      let gendersNames = filterOptions.genders.map(({ name }) => name);
+      qb.leftJoinAndSelect('userService.user', 'user').andWhere(
+        'user.gender IN (:...gendersNames)',
+        { gendersNames }
+      );
     }
 
     qb.andWhere('userService.serviceId = :id', { id });

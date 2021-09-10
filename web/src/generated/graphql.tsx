@@ -59,9 +59,10 @@ export type FieldError = {
 };
 
 export type FilterOptions = {
-  languages?: Maybe<Array<ListValues>>;
   countries?: Maybe<Array<ListValues>>;
   genders?: Maybe<Array<ListValues>>;
+  ages?: Maybe<Array<ListValues>>;
+  prices?: Maybe<Array<ListValues>>;
 };
 
 export type Image = {
@@ -178,7 +179,7 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
-  filterUserService: PaginatedUserService;
+  filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
   getCountries?: Maybe<Array<Country>>;
@@ -523,16 +524,13 @@ export type FilterUserServiceQueryVariables = Exact<{
 
 export type FilterUserServiceQuery = (
   { __typename?: 'Query' }
-  & { filterUserService: (
+  & { filterUserService?: Maybe<(
     { __typename?: 'PaginatedUserService' }
     & Pick<PaginatedUserService, 'hasMore'>
     & { userService: Array<(
       { __typename?: 'UserService' }
-      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'createdAt' | 'serviceId'>
-      & { images?: Maybe<Array<(
-        { __typename?: 'ServiceImage' }
-        & Pick<ServiceImage, 'id' | 'type' | 'url'>
-      )>>, user: (
+      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'price' | 'per' | 'createdAt' | 'serviceId'>
+      & { user: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'countryId' | 'lastOnline'>
         & { country?: Maybe<(
@@ -544,7 +542,7 @@ export type FilterUserServiceQuery = (
         )>> }
       ) }
     )> }
-  ) }
+  )> }
 );
 
 export type GetCountriesQueryVariables = Exact<{
@@ -1104,15 +1102,9 @@ export const FilterUserServiceDocument = gql`
       status
       level
       platforms
-      description
       price
       per
       createdAt
-      images {
-        id
-        type
-        url
-      }
       serviceId
       user {
         id

@@ -16,15 +16,9 @@ query FilterUserService(
       status
       level
       platforms
-      description
       price
       per
       createdAt
-      images {
-        id
-        type
-        url
-      }
       serviceId
       user {
         id

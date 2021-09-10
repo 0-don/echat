@@ -2,27 +2,21 @@ import {
   Arg,
   Ctx,
   Field,
-  FieldResolver,
   InputType,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
-import { groupBy } from 'lodash';
-import { ServiceImage } from '../entity/ServiceImage';
-import { Loader } from 'type-graphql-dataloader';
-import { getRepository, In } from 'typeorm';
-import DataLoader from 'dataloader';
+import { getRepository } from 'typeorm';
 import { Service } from '../entity/Service';
 import { ListValues } from '../utils/types/UserTypes';
-import { UserLanguage } from '../entity/UserLanguage';
+// import { UserLanguage } from '../entity/UserLanguage';
 
 @InputType()
 export class Dropdown {
@@ -60,40 +54,44 @@ class PaginatedUserService {
 @InputType()
 class FilterOptions {
   @Field(() => [ListValues], { nullable: true })
-  languages?: ListValues[];
-  @Field(() => [ListValues], { nullable: true })
   countries?: ListValues[];
   @Field(() => [ListValues], { nullable: true })
   genders?: ListValues[];
+  @Field(() => [ListValues], { nullable: true })
+  ages?: ListValues[];
+  @Field(() => [ListValues], { nullable: true })
+  prices?: ListValues[];
 }
 
 @Resolver(UserService)
 export class UserServiceResolver {
-  @FieldResolver()
-  @Loader<number, ServiceImage[]>(async (serviceIds) => {
-    const serviceImages = await getRepository(ServiceImage).find({
-      where: { serviceId: In([...serviceIds]) },
-    });
-    const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
-    return serviceIds.map(
-      (serviceId) => serviceImageByserviceId[serviceId] ?? []
-    );
-  })
-  images(@Root() root: UserService) {
-    return (dataloader: DataLoader<number, ServiceImage[]>) =>
-      dataloader.load(root.serviceId);
-  }
+  // @FieldResolver()
+  // @Loader<number, ServiceImage[]>(async (serviceIds) => {
+  //   const serviceImages = await getRepository(ServiceImage).find({
+  //     where: { serviceId: In([...serviceIds]) },
+  //   });
+  //   const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
+  //   return serviceIds.map(
+  //     (serviceId) => serviceImageByserviceId[serviceId] ?? []
+  //   );
+  // })
+  // images(@Root() root: UserService) {
+  //   return (dataloader: DataLoader<number, ServiceImage[]>) =>
+  //     dataloader.load(root.serviceId);
+  // }
 
-  @Query(() => PaginatedUserService)
+  @Query(() => PaginatedUserService, { nullable: true })
   async filterUserService(
-    // @Arg('serviceId', () => Int) serviceId: number,
     @Arg('slug') slug: string,
     @Arg('limit', () => Int) limit: number,
     @Arg('cursor', () => String, { nullable: true }) cursor?: string | null,
     @Arg('filterOptions', () => FilterOptions, { nullable: true })
     filterOptions?: FilterOptions | null
-  ): Promise<PaginatedUserService> {
-    // 20 -> 21
+  ) {
+    if (!slug || !limit) {
+      return null;
+    }
+
     console.log(slug, limit, cursor, filterOptions);
     const realLimit = Math.min(50, limit);
     const reaLimitPlusOne = realLimit + 1;
@@ -114,16 +112,16 @@ export class UserServiceResolver {
       );
     }
 
-    if (filterOptions?.languages?.length) {
-      let languagesIds = filterOptions.languages.map(({ id }) => id);
-      qb.leftJoinAndSelect(
-        UserLanguage,
-        'userLanguage',
-        'userLanguage.userId = userService.userId'
-      ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
-        languagesIds,
-      });
-    }
+    // if (filterOptions?.languages?.length) {
+    //   let languagesIds = filterOptions.languages.map(({ id }) => id);
+    //   qb.leftJoinAndSelect(
+    //     UserLanguage,
+    //     'userLanguage',
+    //     'userLanguage.userId = userService.userId'
+    //   ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
+    //     languagesIds,
+    //   });
+    // }
 
     if (filterOptions?.genders?.length) {
       let gendersNames = filterOptions.genders.map(({ name }) => name);
@@ -136,7 +134,7 @@ export class UserServiceResolver {
     qb.andWhere('userService.serviceId = :id', { id });
 
     if (cursor) {
-      qb.andWhere('userService.createdAt > :cursor', {
+      qb.andWhere('userService.createdAt < :cursor', {
         cursor: new Date(parseInt(cursor)),
       });
     }

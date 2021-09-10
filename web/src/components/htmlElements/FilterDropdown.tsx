@@ -8,6 +8,7 @@ interface FilterDropdownProps {
   fieldName: string;
   list: DropdownItem[];
   className?: string;
+  sort?: boolean;
 }
 
 type DropdownItem = {
@@ -20,12 +21,11 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   list,
   fieldName,
   className,
+  sort = false,
 }) => {
-  const sortedList = _.orderBy(
-    list,
-    [(item) => item.name.toLowerCase()],
-    ['asc']
-  );
+  const sortedList = sort
+    ? _.orderBy(list, [(item) => item.name.toLowerCase()], ['asc'])
+    : list;
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<any>();
   const buttonRef = useRef<any>();

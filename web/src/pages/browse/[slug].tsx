@@ -24,9 +24,8 @@ dayjs.extend(relativeTime);
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { filterQuery, filterInit } = useServiceFilterStore();
-
   useEffect(() => {
-    filterInit({ slug, limit: 20 });
+    filterInit({ slug, limit: 20, cursor: undefined });
   }, []);
 
   const { data } = useGetServicesQuery();
@@ -39,11 +38,19 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
 
+  // console.log();
+  console.log(
+    userService?.filterUserService?.userService,
+    userService?.filterUserService?.userService[
+      userService.filterUserService?.userService.length - 1
+    ].createdAt,
+    filterQuery,
+    userService?.filterUserService?.hasMore
+  );
+
   return (
     <Wrapper navbar className='relative'>
-      <div
-        style={{ position: 'relative', width: '100%', height: '48vw' }}
-      >
+      <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
         <Image
           className='img-fade opacity-40'
           src={

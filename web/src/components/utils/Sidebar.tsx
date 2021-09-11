@@ -2,6 +2,7 @@ import React, { Dispatch, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import {
+  FilterUserServiceDocument,
   FilterUserServiceQueryVariables,
   GetServicesQuery,
 } from 'src/generated/graphql';
@@ -9,6 +10,7 @@ import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
+import { useApolloClient } from '@apollo/client';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -43,6 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   data,
   refetch,
 }) => {
+  const apolloClient = useApolloClient();
   if (!data) {
     return null;
   }
@@ -109,6 +112,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={async () => {
                   setOptions({});
                   setSlug(slug);
+                  apolloClient.cache.modify({
+                    fields: {
+                      filterUserService(existing, { readField }) {
+                        return { ...existing, userService: [] };
+                      },
+                    },
+                  });
                   refetch({
                     ...filterQuery,
                     slug,

@@ -46,7 +46,7 @@ export const Filter: React.FC = () => {
         <FilterDropdown
           list={languages}
           fieldName='languages'
-          className='w-6/12 md:w-36'
+          className='w-6/12 md:w-44'
           sort
         />
         <FilterDropdown

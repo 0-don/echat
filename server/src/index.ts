@@ -36,7 +36,7 @@ const PgSession = connectPgSimple(session);
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: true,
-      // logging: true,
+      logging: false,
       entities: [path.resolve(__dirname, 'entity', '*.{js,ts}')],
       migrations: [path.resolve(__dirname, 'migration', '*.{js,ts}')],
       subscribers: [path.resolve(__dirname, 'subscriber', '*.{js,ts}')],

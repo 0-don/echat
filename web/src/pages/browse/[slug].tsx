@@ -23,6 +23,7 @@ dayjs.extend(relativeTime);
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const myRef = useRef<HTMLDivElement>(null);
+  const [src, setSrc] = useState<string | undefined | boolean>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { filterQuery, filterInit, setCursor } = useServiceFilterStore();
   useEffect(() => {
@@ -42,7 +43,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
       parseInt(myRef.current.scrollHeight - myRef.current.scrollTop + '') ===
         myRef.current.clientHeight;
 
-    if (bottom) {
+    if (bottom && userService?.filterUserService.hasMore) {
       const cursor =
         userService?.filterUserService?.userService[
           userService.filterUserService?.userService.length - 1
@@ -59,6 +60,13 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
 
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
+  useEffect(() => {
+    setSrc(
+      images &&
+        images?.length > 0 &&
+        images[getRandomBetween(0, images.length)].url
+    );
+  }, []);
 
   return (
     <Wrapper navbar fluid className='relative'>
@@ -96,7 +104,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
               <div className='md:hidden'>
                 <Button
                   text='services'
-                  icon="bars"
+                  icon='bars'
                   onClick={() => setSidebarOpen(!sidebarOpen)}
                 />
               </div>

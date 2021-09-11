@@ -1,6 +1,5 @@
 import { immer } from '../utils/immer';
 import create from 'zustand';
-import { persist } from 'zustand/middleware';
 import {
   FilterOptions,
   FilterUserServiceQueryVariables,

@@ -59,9 +59,10 @@ export type FieldError = {
 };
 
 export type FilterOptions = {
-  languages?: Maybe<Array<ListValues>>;
   countries?: Maybe<Array<ListValues>>;
   genders?: Maybe<Array<ListValues>>;
+  ages?: Maybe<Array<ListValues>>;
+  prices?: Maybe<Array<ListValues>>;
 };
 
 export type Image = {
@@ -178,7 +179,7 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
-  filterUserService: PaginatedUserService;
+  filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
   getCountries?: Maybe<Array<Country>>;
@@ -523,7 +524,7 @@ export type FilterUserServiceQueryVariables = Exact<{
 
 export type FilterUserServiceQuery = (
   { __typename?: 'Query' }
-  & { filterUserService: (
+  & { filterUserService?: Maybe<(
     { __typename?: 'PaginatedUserService' }
     & Pick<PaginatedUserService, 'hasMore'>
     & { userService: Array<(
@@ -541,7 +542,7 @@ export type FilterUserServiceQuery = (
         )>> }
       ) }
     )> }
-  ) }
+  )> }
 );
 
 export type GetCountriesQueryVariables = Exact<{

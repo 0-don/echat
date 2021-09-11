@@ -60,7 +60,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   const items = Object.keys(groupedServices).map((key, index) => (
-    <div className='text-white' key={key}>
+    <div
+      className='text-white flex flex-col mt-5'
+      style={{ maxHeight: 'calc(100vh - 195px' }}
+      key={key}
+    >
       <div
         onClick={() => {
           setTabs(
@@ -91,27 +95,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </span>
       </div>
 
-      {tabs.map(
-        (tab) =>
-          tab.key === key &&
-          tab.state === true &&
-          groupedServices[key].map(({ id, name, slug }) => (
-            <div
-              className={`${
-                checkUrl(slug) && 'text-purple'
-              } mt-2 space-y-2 px-7 hover:text-purple`}
-              key={slug}
-              onClick={async () => {
-                setOptions({});
-                setSlug(slug);
-                refetch(filterQuery);
-                router.push(`/browse/${slug}`);
-              }}
-            >
-              {name}
-            </div>
-          ))
-      )}
+      <div className='flex flex-col overflow-x-hidden overflow-y-auto'>
+        {tabs.map(
+          (tab) =>
+            tab.key === key &&
+            tab.state === true &&
+            groupedServices[key].map(({ id, name, slug }) => (
+              <div
+                className={`${
+                  checkUrl(slug) && 'text-purple'
+                } mt-2 space-y-2 px-7 hover:text-purple`}
+                key={slug}
+                onClick={async () => {
+                  setOptions({});
+                  setSlug(slug);
+                  refetch({
+                    ...filterQuery,
+                    slug,
+                    filterOptions: undefined,
+                    cursor: undefined,
+                  });
+                  router.push(`/browse/${slug}`);
+                }}
+              >
+                {name}
+              </div>
+            ))
+        )}
+      </div>
     </div>
   ));
 
@@ -176,9 +187,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col lg:w-72 px-2 space-y-1 overflow-x-hidden overflow-y-auto'>
-          {items}
-        </nav>
+        <nav className='flex flex-col lg:w-72 px-2 space-y-1'>{items}</nav>
       </div>
     </>
   );

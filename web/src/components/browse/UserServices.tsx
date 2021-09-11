@@ -1,59 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FilterUserServiceQuery } from 'src/generated/graphql';
-import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { getRandomBetween } from 'src/utils';
-import { isServer } from 'src/utils/helpers/isServer';
 import { Button } from '../htmlElements';
 import gray from '/public/gray.png';
 import Image from 'next/image';
 
 interface UserServicesProps {
   data: FilterUserServiceQuery | undefined;
-  fetchMore: (variables: any) => Promise<any>;
 }
 
-export const UserServices: React.FC<UserServicesProps> = ({
-  data,
-  fetchMore,
-}) => {
+export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
   const router = useRouter();
-  const { filterQuery, setCursor } = useServiceFilterStore();
-
-  const handleScroll = async () => {
-    const bottom =
-      Math.ceil(window.innerHeight + window.scrollY) >=
-      document.documentElement.scrollHeight;
-
-    if (bottom && data?.filterUserService?.hasMore) {
-      const cursor =
-        data?.filterUserService.userService[
-          data.filterUserService.userService.length - 1
-        ].createdAt;
-      await fetchMore({
-        variables: {
-          ...filterQuery,
-          cursor,
-        },
-      });
-      setCursor(cursor)
-    }
-  };
-
-  useEffect(() => {
-    !isServer() &&
-      window.addEventListener('scroll', handleScroll, {
-        passive: true,
-      });
-
-    return () => {
-      !isServer() && window.removeEventListener('scroll', handleScroll);
-    };
-  }, [data]);
 
   return (
-    <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white '>
+    <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base'>
       {data?.filterUserService?.userService.map(
         ({ user, price, per, serviceId }, index) => (
           <div key={index} className='bg-white dark:bg-dark flex flex-col'>
@@ -87,7 +49,7 @@ export const UserServices: React.FC<UserServicesProps> = ({
                   className='h-4'
                 />
               </div>
-              <div className='flex items-center divide-x-2 divide-y-8 '>
+              <div className='flex  items-center divide-x-2 divide-y-8 '>
                 <FontAwesomeIcon
                   size='xs'
                   className='dark:text-yellow-500 text-black mr-1'
@@ -106,12 +68,12 @@ export const UserServices: React.FC<UserServicesProps> = ({
                     className='dark:text-white text-black mr-1'
                     icon='coins'
                   />
-                  <div className='font-bold'>{`${price.toFixed(
+                  <div className='font-bold '>{`${price.toFixed(
                     2
                   )} / ${per}`}</div>
                 </div>
                 <Button
-                  text={`order ${index}`}
+                  text={`order`}
                   className='p-1 m-1'
                   onClick={() => router.push(`/service/${serviceId}`)}
                 />
@@ -120,14 +82,6 @@ export const UserServices: React.FC<UserServicesProps> = ({
           </div>
         )
       )}
-      <Button
-        text='refetch'
-        onClick={async () => {
-          await fetchMore({
-            variables: filterQuery,
-          });
-        }}
-      />
     </div>
   );
 };

@@ -27,14 +27,21 @@ export const UserServices: React.FC<UserServicesProps> = ({
       document.documentElement.scrollHeight;
 
     if (bottom && data?.filterUserService?.hasMore) {
+      const cursor =
+        data?.filterUserService.userService[
+          data.filterUserService.userService.length - 1
+        ].createdAt;
       await fetchMore({
-        variables: filterQuery,
+        variables: {
+          ...filterQuery,
+          cursor,
+        },
       });
+      setCursor(cursor)
     }
   };
 
   useEffect(() => {
-
     !isServer() &&
       window.addEventListener('scroll', handleScroll, {
         passive: true,
@@ -46,7 +53,7 @@ export const UserServices: React.FC<UserServicesProps> = ({
   }, [data]);
 
   return (
-    <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white'>
+    <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white '>
       {data?.filterUserService?.userService.map(
         ({ user, price, per, serviceId }, index) => (
           <div key={index} className='bg-white dark:bg-dark flex flex-col'>

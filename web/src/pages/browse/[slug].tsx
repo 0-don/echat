@@ -38,19 +38,11 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
 
-  // console.log();
-  console.log(
-    userService?.filterUserService?.userService,
-    userService?.filterUserService?.userService[
-      userService.filterUserService?.userService.length - 1
-    ].createdAt,
-    filterQuery,
-    userService?.filterUserService?.hasMore
-  );
+  // console.log(userService?.filterUserService?.userService.length, filterQuery);
 
   return (
-    <Wrapper navbar className='relative'>
-      <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
+    <Wrapper navbar fluid>
+      {/* <div style={{ position: 'absolute', width: '100%', height: '48vw' }}>
         <Image
           className='img-fade opacity-40'
           src={
@@ -61,14 +53,14 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
           layout='fill'
           objectFit='cover'
         />
-      </div>
-      <div className='flex justify-end md:hidden absolute top-5 right-3 z-10'>
+      </div> */}
+      <div className='flex justify-end md:hidden right-3 z-10'>
         <Button
           text='service filter'
           onClick={() => setSidebarOpen(!sidebarOpen)}
         />
       </div>
-      <div className='flex w-full antialiased dark:text-light absolute top-5'>
+      <div className='flex h-full w-full'>
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -76,14 +68,16 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
           refetch={refetch}
         />
 
-        <div className='xl:mx-8 w-full'>
-          <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
-            {service?.name}
-          </h1>
-          <div className='flex items-center'>
-            <Filter />
+        <div className='flex flex-col w-full overflow-x-hidden overflow-y-auto mb-14"'>
+          <div className='flex flex-col w-full h-full text-gray-900 text-xl border-dashed'>
+            <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
+              {service?.name}
+            </h1>
+            <div className='flex items-center'>
+              <Filter />
+            </div>
+            <UserServices data={userService} fetchMore={fetchMore} />
           </div>
-          <UserServices data={userService} fetchMore={fetchMore} />
         </div>
       </div>
     </Wrapper>

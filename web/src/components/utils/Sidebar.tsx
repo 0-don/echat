@@ -176,7 +176,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col lg:w-72 px-2 space-y-1'>{items}</nav>
+        <nav className='flex flex-col lg:w-72 px-2 space-y-1 overflow-x-hidden overflow-y-auto'>
+          {items}
+        </nav>
       </div>
     </>
   );

@@ -22,7 +22,7 @@ const CHATS_SUBSCRIPTION = gql`
 `;
 
 const Chats = () => {
-  const { loading, error, data, subscribeToMore } = useQuery(ALL_CHATS);
+  const { loading, error, subscribeToMore } = useQuery(ALL_CHATS);
 
   useEffect(() => {
     subscribeToMore({

@@ -41,17 +41,20 @@ export const Filter: React.FC = () => {
   }
 
   return (
-    <div className='flex mb-5 items-center'>
-      {/* <div className='w-48 mr-1'>
-        <FilterDropdown list={countries} fieldName='countries' />
-      </div> */}
-      <div className='w-36 mr-1'>
-        <FilterDropdown list={languages} fieldName='languages' sort />
-      </div>
-      <div className='w-36 mr-1'>
-        <FilterDropdown list={GENDERS} fieldName='genders' sort />
-      </div>
-      <div className='w-36 mr-1'>
+    <div className='w-full'>
+      <div className='flex flex-wrap w-full justify-center md:justify-start items-center pb-3 -ml-1'>
+        <FilterDropdown
+          list={languages}
+          fieldName='languages'
+          className='w-6/12 md:w-36'
+          sort
+        />
+        <FilterDropdown
+          list={GENDERS}
+          fieldName='genders'
+          className='w-6/12 md:w-36'
+          sort
+        />
         <FilterDropdown
           list={[
             { id: 1, name: '18-25' },
@@ -59,10 +62,9 @@ export const Filter: React.FC = () => {
             { id: 3, name: '30+' },
           ]}
           fieldName='ages'
+          className='w-6/12 md:w-36'
           sort
         />
-      </div>
-      <div className='w-36'>
         <FilterDropdown
           list={[
             { id: 1, name: '0-5' },
@@ -70,17 +72,20 @@ export const Filter: React.FC = () => {
             { id: 3, name: '10-20' },
             { id: 4, name: '20+' },
           ]}
+          className='w-6/12 md:w-36'
           fieldName='prices'
         />
+        <div className='md:p-0 p-1 mt-0.5'>
+          <Button
+            text='filter'
+            className='h-10 w-full md:w-12'
+            onClick={async () => {
+              setCursor(undefined);
+              await refetch(filterQuery);
+            }}
+          />
+        </div>
       </div>
-      <Button
-        text='filter'
-        className='ml-1 h-10 w-12 mt-1'
-        onClick={async () => {
-          setCursor(undefined);
-          await refetch(filterQuery);
-        }}
-      />
     </div>
   );
 };

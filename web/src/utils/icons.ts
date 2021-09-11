@@ -25,15 +25,18 @@ import {
   faTrophy,
   faCouch,
   faStar,
-  faCoins
+  faCoins,
+  faBars,
+
 } from '@fortawesome/free-solid-svg-icons';
 
 // import {
 //  faWr
-  
+
 // } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faBars,
   faCoins,
   faStar,
   faCouch,

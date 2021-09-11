@@ -71,12 +71,12 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   }, [wrapperRef]);
 
   return (
-    <div className={className}>
+    <div className={className + ' p-1'}>
       <Listbox value={list[3]} onChange={onChange}>
-        <div className='mt-1 relative'>
+        <div className='mt-1  relative'>
           <div ref={buttonRef} onClick={() => setOpen(!open)}>
-            <Listbox.Button className='relative border w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default bg-white dark:bg-dark-light dark:border-dark-light dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple sm:text-sm focus:border-purple '>
-              <span className='block truncate text-dark dark:text-white'>
+            <Listbox.Button className='relative border w-full rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default bg-white dark:bg-dark-light dark:border-dark-light dark:hover:border-lightGray dark:focus:bg-dark-dark dark:focus:border-purple focus:border-purple '>
+              <span className='block truncate text-dark dark:text-white text-base'>
                 {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} (
                 {currentValue.length})
               </span>
@@ -96,7 +96,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Listbox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-dark-light shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+            <Listbox.Options className='absolute z-10 mt-1 w-full bg-white dark:bg-dark-light shadow-lg max-h-60 rounded-md py-1  ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none'>
               <div ref={wrapperRef}>
                 {sortedList.map((item) => (
                   <Listbox.Option
@@ -119,7 +119,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                           (value: any) => value.name === item.name
                         ) &&
                         'font-semibold'
-                      } dark:text-white block truncate`}
+                      } dark:text-white text-base block truncate`}
                     >
                       {item.name}
                     </span>
@@ -128,7 +128,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                       currentValue.find(
                         (value: any) => value.name === item.name
                       ) && (
-                        <span className='absolute inset-y-0 right-0 flex items-center pr-4 text-white'>
+                        <span className='absolute inset-y-0 right-0 flex items-center pr-4   text-white'>
                           <CheckIcon className='h-5 w-5 ' aria-hidden='true' />
                         </span>
                       )}

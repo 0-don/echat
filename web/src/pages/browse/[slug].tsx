@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import withApollo from 'src/utils/apollo/withApollo';
 import { Wrapper } from 'src/components/Wrapper';
 import { Sidebar } from 'src/components/utils/Sidebar';
@@ -22,8 +22,9 @@ dayjs.extend(relativeTime);
 // dateNow.diff(user.lastOnline, 'day') * -1 < 2
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
+  const myRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { filterQuery, filterInit } = useServiceFilterStore();
+  const { filterQuery, filterInit, setCursor } = useServiceFilterStore();
   useEffect(() => {
     filterInit({ slug, limit: 20, cursor: undefined });
   }, []);
@@ -35,14 +36,33 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     refetch,
   } = useFilterUserServiceQuery({ variables: filterQuery });
 
+  const onScroll = async () => {
+    const bottom =
+      myRef.current &&
+      parseInt(myRef.current.scrollHeight - myRef.current.scrollTop + '') ===
+        myRef.current.clientHeight;
+
+    if (bottom) {
+      const cursor =
+        userService?.filterUserService?.userService[
+          userService.filterUserService?.userService.length - 1
+        ].createdAt;
+      await fetchMore({
+        variables: {
+          ...filterQuery,
+          cursor,
+        },
+      });
+      setCursor(cursor);
+    }
+  };
+
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
 
-  // console.log(userService?.filterUserService?.userService.length, filterQuery);
-
   return (
-    <Wrapper navbar fluid>
-      {/* <div style={{ position: 'absolute', width: '100%', height: '48vw' }}>
+    <Wrapper navbar fluid className='relative'>
+      <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
         <Image
           className='img-fade opacity-40'
           src={
@@ -53,14 +73,9 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
           layout='fill'
           objectFit='cover'
         />
-      </div> */}
-      <div className='flex justify-end md:hidden right-3 z-10'>
-        <Button
-          text='service filter'
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        />
       </div>
-      <div className='flex h-full w-full'>
+
+      <div className='flex h-full w-full absolute top-0'>
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -68,15 +83,29 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
           refetch={refetch}
         />
 
-        <div className='flex flex-col w-full overflow-x-hidden overflow-y-auto mb-14"'>
-          <div className='flex flex-col w-full h-full text-gray-900 text-xl border-dashed'>
-            <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
-              {service?.name}
-            </h1>
+        <div
+          className='flex flex-col w-full overflow-x-hidden overflow-y-auto lg:px-5'
+          ref={myRef}
+          onScroll={onScroll}
+        >
+          <div className='flex flex-col w-full h-full text-gray-900 text-xl mt-5'>
+            <div className='flex justify-between w-full items-center '>
+              <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
+                {service?.name}
+              </h1>
+              <div className='md:hidden'>
+                <Button
+                  text='services'
+                  icon="bars"
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                />
+              </div>
+            </div>
+
             <div className='flex items-center'>
               <Filter />
             </div>
-            <UserServices data={userService} fetchMore={fetchMore} />
+            <UserServices data={userService} />
           </div>
         </div>
       </div>

@@ -16,9 +16,9 @@ import { isAuth } from '../middleware/isAuth';
 import { getRepository } from 'typeorm';
 import { Service } from '../entity/Service';
 import { ListValues } from '../utils/types/UserTypes';
-// import { UserLanguage } from '../entity/UserLanguage';
-import { Between } from 'typeorm';
-import {  subYears } from 'date-fns';
+import { subYears } from 'date-fns';
+import { UserLanguage } from '../entity/UserLanguage';
+
 @InputType()
 export class Dropdown {
   @Field(() => Int)
@@ -55,7 +55,7 @@ class PaginatedUserService {
 @InputType()
 class FilterOptions {
   @Field(() => [ListValues], { nullable: true })
-  countries?: ListValues[];
+  languages?: ListValues[];
   @Field(() => [ListValues], { nullable: true })
   genders?: ListValues[];
   @Field(() => [ListValues], { nullable: true })
@@ -68,7 +68,6 @@ export const betweenDates = (from: number, to: number) => [
   subYears(new Date(), to),
   subYears(new Date(), from),
 ];
-export const BeforeDate = (date: Date) => Between(subYears(date, 100), date);
 
 @Resolver(UserService)
 export class UserServiceResolver {
@@ -99,7 +98,6 @@ export class UserServiceResolver {
       return null;
     }
 
-    console.log(slug, limit, cursor, filterOptions);
     const realLimit = Math.min(50, limit);
     const reaLimitPlusOne = realLimit + 1;
     const replacements: any[] = [reaLimitPlusOne];
@@ -108,50 +106,67 @@ export class UserServiceResolver {
       replacements.push(new Date(parseInt(cursor)));
     }
     const { id } = (await Service.findOne({ slug })) as Service;
+    console.log(
+      slug,
+      id,
+      limit,
+      cursor,
+      new Date(parseInt(cursor || '')),
+      filterOptions
+    );
+    const qb = getRepository(UserService)
+      .createQueryBuilder('userService')
+      .leftJoinAndSelect('userService.user', 'user');
 
-    const qb = getRepository(UserService).createQueryBuilder('userService');
-
-    if (filterOptions?.countries?.length) {
-      let countriesIds = filterOptions.countries.map(({ id }) => id);
-      qb.leftJoinAndSelect('userService.user', 'user').andWhere(
-        'user.countryId IN (:...countriesIds)',
-        { countriesIds }
-      );
+    if (filterOptions?.languages?.length) {
+      let languagesIds = filterOptions.languages.map(({ id }) => id);
+      qb.leftJoinAndSelect(
+        UserLanguage,
+        'userLanguage',
+        'userLanguage.userId = userService.userId'
+      ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
+        languagesIds,
+      });
     }
 
     if (filterOptions?.genders?.length) {
       let gendersNames = filterOptions.genders.map(({ name }) => name);
-      qb.leftJoinAndSelect('userService.user', 'user').andWhere(
-        'user.gender IN (:...gendersNames)',
-        { gendersNames }
-      );
+      qb.andWhere('user.gender IN (:...gendersNames)', { gendersNames });
     }
 
-   
     if (filterOptions?.ages?.length) {
-      let [from, to] = betweenDates(18, 25)
-      if (filterOptions.ages.find((age) => age.name === '18-25')) {
-        qb.leftJoinAndSelect('userService.user', 'user').andWhere(
-          'user.age BETWEEN :from AND :to',
-          { from, to }
-        );
-      }
+      let dates: Date[] = [];
+      filterOptions.ages.find((age) => age.name === '18-25') &&
+        (dates = dates.concat(betweenDates(18, 25)));
 
-      [from, to] = betweenDates(26, 30)
-      if (filterOptions.ages.find((age) => age.name === '26-30')) {
-        qb.leftJoinAndSelect('userService.user', 'user').andWhere(
-          'user.age BETWEEN :from AND :to',
-          { from, to }
-        );
-      }
+      filterOptions.ages.find((age) => age.name === '26-30') &&
+        (dates = dates.concat(betweenDates(26, 30)));
 
-      [from, to] = betweenDates(30, 99)
-      if (filterOptions.ages.find((age) => age.name === '30+')) {
-        qb.leftJoinAndSelect('userService.user', 'user').andWhere(
-          'user.age BETWEEN :from AND :to',
-          { from, to }
-        );
-      }
+      filterOptions.ages.find((age) => age.name === '30+') &&
+        (dates = dates.concat(betweenDates(30, 99)));
+
+      const from = new Date(Math.min.apply(null, dates));
+      const to = new Date(Math.max.apply(null, dates));
+      qb.andWhere('user.age BETWEEN :from AND :to', { from, to });
+    }
+
+    if (filterOptions?.prices?.length) {
+      let prices: number[] = [];
+      filterOptions.prices.find((price) => price.name === '0-5') &&
+        (prices = prices.concat([0, 5]));
+
+      filterOptions.prices.find((price) => price.name === '5-10') &&
+        (prices = prices.concat([5, 10]));
+
+      filterOptions.prices.find((price) => price.name === '10-20') &&
+        (prices = prices.concat([10, 20]));
+
+      filterOptions.prices.find((price) => price.name === '20+') &&
+        (prices = prices.concat([20, 99999]));
+
+      const from = Math.min.apply(null, prices);
+      const to = Math.max.apply(null, prices);
+      qb.andWhere('userService.price BETWEEN :from AND :to', { from, to });
     }
 
     qb.andWhere('userService.serviceId = :id', { id });

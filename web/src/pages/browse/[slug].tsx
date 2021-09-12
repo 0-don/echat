@@ -23,7 +23,9 @@ dayjs.extend(relativeTime);
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const myRef = useRef<HTMLDivElement>(null);
-  const [src, setSrc] = useState<string | undefined>();
+  const [bgImage, setBgImage] = useState<
+    { src: string; slug: string } | undefined
+  >();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { filterQuery, filterInit, setCursor } = useServiceFilterStore();
   useEffect(() => {
@@ -43,7 +45,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
       parseInt(myRef.current.scrollHeight - myRef.current.scrollTop + '') ===
         myRef.current.clientHeight;
 
-    if (bottom && userService?.filterUserService.hasMore) {
+    if (bottom && userService?.filterUserService?.hasMore) {
       const cursor =
         userService?.filterUserService?.userService[
           userService.filterUserService?.userService.length - 1
@@ -61,10 +63,13 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
   useEffect(() => {
-    images &&
-      images?.length > 0 &&
-      !src &&
-      setSrc(images[getRandomBetween(0, images.length)].url);
+    images?.length! > 0 &&
+      bgImage?.slug !== slug &&
+      setBgImage({
+        src: images![getRandomBetween(0, images!.length)].url,
+        slug,
+      });
+    images?.length === 0 && bgImage?.slug !== slug && setBgImage(undefined);
   }, [images]);
 
   return (
@@ -72,7 +77,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
       <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
         <Image
           className='img-fade opacity-40'
-          src={src ?? gray.src}
+          src={bgImage?.src ?? gray.src}
           layout='fill'
           objectFit='cover'
         />

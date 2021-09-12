@@ -72,7 +72,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                     2
                   )} / ${per}`}</div>
                 </div>
-                {user.age && new Date().getFullYear() - new Date(user.age).getFullYear()}
+                {/* {user.age && new Date().getFullYear() - new Date(user.age).getFullYear()} */}
                 <Button
                   text={`order`}
                   className='p-1 m-1'

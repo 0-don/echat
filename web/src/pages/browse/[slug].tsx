@@ -23,7 +23,7 @@ dayjs.extend(relativeTime);
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const myRef = useRef<HTMLDivElement>(null);
-  const [src, setSrc] = useState<string | undefined | boolean>();
+  const [src, setSrc] = useState<string | undefined>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { filterQuery, filterInit, setCursor } = useServiceFilterStore();
   useEffect(() => {
@@ -61,23 +61,18 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
   useEffect(() => {
-    setSrc(
-      images &&
-        images?.length > 0 &&
-        images[getRandomBetween(0, images.length)].url
-    );
-  }, []);
+    images &&
+      images?.length > 0 &&
+      !src &&
+      setSrc(images[getRandomBetween(0, images.length)].url);
+  }, [images]);
 
   return (
     <Wrapper navbar fluid className='relative'>
       <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
         <Image
           className='img-fade opacity-40'
-          src={
-            images?.length
-              ? images[getRandomBetween(0, images.length)].url
-              : gray.src
-          }
+          src={src ?? gray.src}
           layout='fill'
           objectFit='cover'
         />

@@ -96,7 +96,11 @@ const main = async () => {
         Date.now() + 3600 * 1000 * 24 * getRandomBetween(1, 8)
       ),
       description: coinFlip() ? faker.lorem.text() : undefined,
-      age: coinFlip() ? faker.datatype.datetime() : undefined,
+      age: new Date(
+        new Date().setFullYear(
+          new Date().getFullYear() - getRandomBetween(18, 50)
+        )
+      ),
       gender: ['Female', 'Male', 'Other'][getRandomBetween(0, 3)],
       discord: coinFlip() ? faker.internet.userName() : undefined,
       twitter: coinFlip() ? faker.internet.userName() : undefined,

@@ -17,7 +17,8 @@ import { getRepository } from 'typeorm';
 import { Service } from '../entity/Service';
 import { ListValues } from '../utils/types/UserTypes';
 // import { UserLanguage } from '../entity/UserLanguage';
-
+import { Between } from 'typeorm';
+import { addYears, subYears } from 'date-fns';
 @InputType()
 export class Dropdown {
   @Field(() => Int)
@@ -62,6 +63,12 @@ class FilterOptions {
   @Field(() => [ListValues], { nullable: true })
   prices?: ListValues[];
 }
+
+export const betweenDates = (from: number, to: number) => [
+  subYears(new Date(), to),
+  subYears(new Date(), from),
+];
+export const BeforeDate = (date: Date) => Between(subYears(date, 100), date);
 
 @Resolver(UserService)
 export class UserServiceResolver {
@@ -112,23 +119,39 @@ export class UserServiceResolver {
       );
     }
 
-    // if (filterOptions?.languages?.length) {
-    //   let languagesIds = filterOptions.languages.map(({ id }) => id);
-    //   qb.leftJoinAndSelect(
-    //     UserLanguage,
-    //     'userLanguage',
-    //     'userLanguage.userId = userService.userId'
-    //   ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
-    //     languagesIds,
-    //   });
-    // }
-
     if (filterOptions?.genders?.length) {
       let gendersNames = filterOptions.genders.map(({ name }) => name);
       qb.leftJoinAndSelect('userService.user', 'user').andWhere(
         'user.gender IN (:...gendersNames)',
         { gendersNames }
       );
+    }
+
+   
+    if (filterOptions?.ages?.length) {
+      let [from, to] = betweenDates(18, 25)
+      if (filterOptions.ages.find((age) => age.name === '18-25')) {
+        qb.leftJoinAndSelect('userService.user', 'user').andWhere(
+          'user.age BETWEEN :from AND :to',
+          { from, to }
+        );
+      }
+
+      [from, to] = betweenDates(26, 30)
+      if (filterOptions.ages.find((age) => age.name === '26-30')) {
+        qb.leftJoinAndSelect('userService.user', 'user').andWhere(
+          'user.age BETWEEN :from AND :to',
+          { from, to }
+        );
+      }
+
+      [from, to] = betweenDates(30, 99)
+      if (filterOptions.ages.find((age) => age.name === '30+')) {
+        qb.leftJoinAndSelect('userService.user', 'user').andWhere(
+          'user.age BETWEEN :from AND :to',
+          { from, to }
+        );
+      }
     }
 
     qb.andWhere('userService.serviceId = :id', { id });

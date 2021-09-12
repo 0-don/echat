@@ -111,6 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 } mt-2 space-y-2 px-7 hover:text-purple `}
                 key={slug}
                 onClick={async () => {
+                  
                   setOptions({});
                   setSlug(slug);
                   apolloClient.cache.modify({
@@ -198,7 +199,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </Transition.Root>
 
       <div className='hidden md:flex md:flex-shrink-1'>
-        <nav className='flex flex-col px-2 space-y-1 w-64 max-w-64'>
+        <nav
+          style={{ maxWidth: '16rem', width: '16rem' }}
+          className='flex flex-col px-2 space-y-1'
+        >
           {items}
         </nav>
       </div>

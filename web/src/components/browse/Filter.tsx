@@ -20,9 +20,6 @@ import { GENDERS } from 'src/constants';
 
 export const Filter: React.FC = () => {
   const { filterQuery, setCursor } = useServiceFilterStore();
-  // const { data: getCountries } = useGetCountriesQuery({
-  //   variables: { slug: filterQuery?.slug || undefined },
-  // });
 
   const { data: getLanguages } = useGetLanguagesQuery({
     variables: { slug: filterQuery?.slug || undefined },
@@ -33,7 +30,6 @@ export const Filter: React.FC = () => {
     skip: true,
   });
 
-  // const countries = getCountries?.getCountries?.map((country) => country);
   const languages = getLanguages?.getLanguages?.map((language) => language);
 
   if (!languages) {
@@ -77,11 +73,12 @@ export const Filter: React.FC = () => {
         />
         <div className='md:p-0 p-1 mt-0.5'>
           <Button
+            icon='search'
             text='filter'
-            className='h-10 w-full md:w-12'
+            className='h-10 w-full'
             onClick={async () => {
               setCursor(undefined);
-              await refetch(filterQuery);
+              await refetch({ ...filterQuery, cursor: undefined });
             }}
           />
         </div>

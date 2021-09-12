@@ -27,7 +27,7 @@ import {
   faStar,
   faCoins,
   faBars,
-
+  faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 
 // import {
@@ -36,6 +36,7 @@ import {
 // } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faSearch,
   faBars,
   faCoins,
   faStar,

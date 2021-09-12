@@ -8,6 +8,11 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    maxWidth: {
+      '64': '16rem',
+      '1/2': '50%',
+      '3/4': '75%',
+    },
     extend: {},
     colors: {
       purple: {

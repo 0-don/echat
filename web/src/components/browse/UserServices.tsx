@@ -21,6 +21,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
           <div key={index} className='bg-white dark:bg-dark flex flex-col'>
             <div
               style={{ position: 'relative', width: '100%', height: '200px' }}
+              onClick={() => router.push(`/user/${user.id}`)}
             >
               <Image
                 placeholder='blur'
@@ -78,10 +79,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                   className='p-1 m-1'
                   onClick={() => router.push(`/service/${id}`)}
                 />
-                <Button
-                  text={`Order`}
-                  className='p-1 m-1'
-                />
+                <Button text={`Order`} className='p-1 m-1' />
               </div>
             </div>
           </div>

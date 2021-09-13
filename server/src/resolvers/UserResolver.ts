@@ -3,6 +3,7 @@ import { Session } from '../entity/Session';
 import {
   Arg,
   Ctx,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -27,6 +28,11 @@ import { UserLanguage } from '../entity/UserLanguage';
 
 @Resolver(User)
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async getUser(@Arg('id', () => Int) id: number) {
+    return User.findOne(id);
+  }
+
   @Query(() => [User], { nullable: true })
   async getUsers() {
     const users = await getConnection()

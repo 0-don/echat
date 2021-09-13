@@ -9,17 +9,17 @@ import {
   Query,
   Resolver,
   UseMiddleware,
-} from 'type-graphql';
-import { UserService } from '../entity/UserService';
-import { MyContext } from '../utils/types/MyContext';
-import { isAuth } from '../middleware/isAuth';
-import { getRepository } from 'typeorm';
-import { Service } from '../entity/Service';
-import { ListValues } from '../utils/types/UserTypes';
-import { subYears } from 'date-fns';
-import { UserLanguage } from '../entity/UserLanguage';
-import { FileUpload, GraphQLUpload } from 'graphql-upload';
-import { fileUpload } from '../utils/fileUpload';
+} from "type-graphql";
+import { UserService } from "../entity/UserService";
+import { MyContext } from "../utils/types/MyContext";
+import { isAuth } from "../middleware/isAuth";
+import { getRepository } from "typeorm";
+import { Service } from "../entity/Service";
+import { ListValues } from "../utils/types/UserTypes";
+import { subYears } from "date-fns";
+import { UserLanguage } from "../entity/UserLanguage";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
+import { fileUpload } from "../utils/fileUpload";
 
 @InputType()
 export class Dropdown {
@@ -92,7 +92,7 @@ export class UserServiceResolver {
   @Mutation(() => String)
   @UseMiddleware(isAuth)
   async changeUserserviceImage(
-    @Arg('files', () => [GraphQLUpload]) files: [FileUpload]
+    @Arg("files", () => [GraphQLUpload]) files: [FileUpload]
   ): Promise<string> {
     const imagesList: { url: string }[] = [];
     for (let file of files) {
@@ -107,10 +107,10 @@ export class UserServiceResolver {
 
   @Query(() => PaginatedUserService, { nullable: true })
   async filterUserService(
-    @Arg('slug') slug: string,
-    @Arg('limit', () => Int) limit: number,
-    @Arg('cursor', () => String, { nullable: true }) cursor?: string | null,
-    @Arg('filterOptions', () => FilterOptions, { nullable: true })
+    @Arg("slug") slug: string,
+    @Arg("limit", () => Int) limit: number,
+    @Arg("cursor", () => String, { nullable: true }) cursor?: string | null,
+    @Arg("filterOptions", () => FilterOptions, { nullable: true })
     filterOptions?: FilterOptions | null
   ) {
     if (!slug || !limit) {
@@ -130,74 +130,74 @@ export class UserServiceResolver {
       id,
       limit,
       cursor,
-      new Date(parseInt(cursor || '')),
+      new Date(parseInt(cursor || "")),
       filterOptions
     );
     const qb = getRepository(UserService)
-      .createQueryBuilder('userService')
-      .leftJoinAndSelect('userService.user', 'user');
+      .createQueryBuilder("userService")
+      .leftJoinAndSelect("userService.user", "user");
 
     if (filterOptions?.languages?.length) {
       let languagesIds = filterOptions.languages.map(({ id }) => id);
       qb.leftJoinAndSelect(
         UserLanguage,
-        'userLanguage',
-        'userLanguage.userId = userService.userId'
-      ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
+        "userLanguage",
+        "userLanguage.userId = userService.userId"
+      ).andWhere("userLanguage.languageId IN (:...languagesIds)", {
         languagesIds,
       });
     }
 
     if (filterOptions?.genders?.length) {
       let gendersNames = filterOptions.genders.map(({ name }) => name);
-      qb.andWhere('user.gender IN (:...gendersNames)', { gendersNames });
+      qb.andWhere("user.gender IN (:...gendersNames)", { gendersNames });
     }
 
     if (filterOptions?.ages?.length) {
       let dates: Date[] = [];
-      filterOptions.ages.find((age) => age.name === '18-25') &&
+      filterOptions.ages.find((age) => age.name === "18-25") &&
         (dates = dates.concat(betweenDates(18, 25)));
 
-      filterOptions.ages.find((age) => age.name === '26-30') &&
+      filterOptions.ages.find((age) => age.name === "26-30") &&
         (dates = dates.concat(betweenDates(26, 30)));
 
-      filterOptions.ages.find((age) => age.name === '30+') &&
+      filterOptions.ages.find((age) => age.name === "30+") &&
         (dates = dates.concat(betweenDates(30, 99)));
 
       const from = new Date(Math.min.apply(null, dates));
       const to = new Date(Math.max.apply(null, dates));
-      qb.andWhere('user.age BETWEEN :from AND :to', { from, to });
+      qb.andWhere("user.age BETWEEN :from AND :to", { from, to });
     }
 
     if (filterOptions?.prices?.length) {
       let prices: number[] = [];
-      filterOptions.prices.find((price) => price.name === '0-5') &&
+      filterOptions.prices.find((price) => price.name === "0-5") &&
         (prices = prices.concat([0, 5]));
 
-      filterOptions.prices.find((price) => price.name === '5-10') &&
+      filterOptions.prices.find((price) => price.name === "5-10") &&
         (prices = prices.concat([5, 10]));
 
-      filterOptions.prices.find((price) => price.name === '10-20') &&
+      filterOptions.prices.find((price) => price.name === "10-20") &&
         (prices = prices.concat([10, 20]));
 
-      filterOptions.prices.find((price) => price.name === '20+') &&
+      filterOptions.prices.find((price) => price.name === "20+") &&
         (prices = prices.concat([20, 99999]));
 
       const from = Math.min.apply(null, prices);
       const to = Math.max.apply(null, prices);
-      qb.andWhere('userService.price BETWEEN :from AND :to', { from, to });
+      qb.andWhere("userService.price BETWEEN :from AND :to", { from, to });
     }
 
-    qb.andWhere('userService.serviceId = :id', { id });
+    qb.andWhere("userService.serviceId = :id", { id });
 
     if (cursor) {
-      qb.andWhere('userService.createdAt < :cursor', {
+      qb.andWhere("userService.createdAt < :cursor", {
         cursor: new Date(parseInt(cursor)),
       });
     }
 
     const userService = await qb
-      .orderBy('userService.createdAt', 'DESC')
+      .orderBy("userService.createdAt", "DESC")
       .limit(reaLimitPlusOne)
       .getMany();
 
@@ -211,13 +211,13 @@ export class UserServiceResolver {
   @UseMiddleware(isAuth)
   getMeUserService(@Ctx() { req }: MyContext) {
     const { userId } = req.session;
-    return UserService.find({ order: { serviceId: 'ASC' }, where: { userId } });
+    return UserService.find({ order: { serviceId: "ASC" }, where: { userId } });
   }
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async switchUserServiceStatus(
-    @Arg('id', () => Int) id: number,
+    @Arg("id", () => Int) id: number,
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
@@ -229,7 +229,7 @@ export class UserServiceResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async upsertUserService(
-    @Arg('options') options: UpsertUserService,
+    @Arg("options") options: UpsertUserService,
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
@@ -254,7 +254,7 @@ export class UserServiceResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteUserService(
-    @Arg('id', () => Int) id: number,
+    @Arg("id", () => Int) id: number,
     @Ctx() { req }: MyContext
   ) {
     const { userId } = req.session;
@@ -262,5 +262,11 @@ export class UserServiceResolver {
     await UserService.delete({ id, userId });
 
     return true;
+  }
+  @Query(() => UserService)
+  async getUserServiceById(@Arg("id", () => Int) id: number) {
+    const userdata = await UserService.findOne({ id });
+    console.log(userdata);
+    return userdata;
   }
 }

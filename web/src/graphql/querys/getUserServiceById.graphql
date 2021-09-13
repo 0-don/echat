@@ -1,0 +1,64 @@
+query GetUserServiceById($id: Int!) {
+  getUserServiceById(id: $id) {
+    id
+    status
+    platforms
+    description
+    level
+    price
+    per
+    image
+    service {
+      id
+      type
+      name
+      twitchId
+      popularity
+      boxArtUrl
+      first_release_date
+      platforms
+      images {
+        id
+        url
+        width
+        type
+        height
+      }
+      genres
+    }
+    user {
+      id
+      username
+      lastOnline
+      age
+      description
+      gender
+      discord
+      twitter
+      facebook
+      instagram
+      twitch
+      tiktok
+      services {
+        id
+        status
+        level
+        platforms
+        description
+        price
+        per
+        image
+      }
+      country {
+        id
+        name
+        flag
+      }
+      images {
+        id
+        url
+        type
+      }
+    }
+  }
+}

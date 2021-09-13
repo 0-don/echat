@@ -3,11 +3,9 @@ import { Session } from '../entity/Session';
 import {
   Arg,
   Ctx,
-  // FieldResolver,
   Mutation,
   Query,
   Resolver,
-  // Root,
   UseMiddleware,
 } from 'type-graphql';
 import argon2 from 'argon2';

@@ -60,7 +60,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     }
   };
 
-  const service = data?.getServices?.find((service) => service.slug === slug);
+  const service = data?.getServices?.find((service) => service.slug === slug);0
   const images = service?.images?.filter((image) => image.width > 1200);
   useEffect(() => {
     images?.length! > 0 &&

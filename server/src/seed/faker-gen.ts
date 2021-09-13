@@ -169,12 +169,10 @@ const main = async () => {
             `${getRandomBetween(1, 10)}.${getRandomBetween(0, 99)}`
           ),
           userId,
-          image: coinFlip()
-            ? `${faker.image.imageUrl()}/${faker.datatype.uuid()}`.replace(
-                'http://',
-                'https://'
-              )
-            : undefined,
+          image: `${faker.image.imageUrl()}/${faker.datatype.uuid()}`.replace(
+            'http://',
+            'https://'
+          ),
           serviceId,
           per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
             getRandomBetween(0, 4)

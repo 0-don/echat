@@ -71,7 +71,6 @@ export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
                         },
                       }));
                   }}
-                  
                 />
               </div>
             ))}

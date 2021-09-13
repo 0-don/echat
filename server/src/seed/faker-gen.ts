@@ -48,6 +48,7 @@ type UserServiceType = {
   userId: number;
   serviceId: number;
   per: string;
+  image: string | undefined;
   createdAt: Date;
 };
 
@@ -168,6 +169,10 @@ const main = async () => {
             `${getRandomBetween(1, 10)}.${getRandomBetween(0, 99)}`
           ),
           userId,
+          image: `${faker.image.imageUrl()}/${faker.datatype.uuid()}`.replace(
+            'http://',
+            'https://'
+          ),
           serviceId,
           per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
             getRandomBetween(0, 4)

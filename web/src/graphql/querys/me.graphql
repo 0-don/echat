@@ -17,7 +17,7 @@ query Me {
     twitch
     steam
     tiktok
-    
+
     country {
       id
       name

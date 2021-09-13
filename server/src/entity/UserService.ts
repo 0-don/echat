@@ -48,6 +48,10 @@ export class UserService extends BaseEntity {
   @Column()
   per: string;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  image: string;
+
   @Field(() => Int)
   @Column()
   userId: number;

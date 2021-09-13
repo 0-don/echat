@@ -9,17 +9,17 @@ import {
 } from 'type-graphql';
 import { Image } from '../entity/Image';
 import { isAuth } from '../middleware/isAuth';
-import { FileUpload, GraphQLUpload } from 'graphql-upload';
-import { fileUpload } from '../utils/fileUpload';
+
 import { getConnection } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { log } from 'console';
 
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { fileUpload } from '../utils/fileUpload';
 type ImageTypes = 'profile' | 'cover' | 'secondary';
 
 @Resolver(Image)
 export class ImageResolver {
-
   @Mutation(() => Boolean)
   async deleteAllImages() {
     Image.delete({});
@@ -50,13 +50,13 @@ export class ImageResolver {
     return images;
   }
 
-  @Mutation(() => [Image])
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async multipleUpload(
+    @Ctx() { req }: MyContext,
     @Arg('type') type: ImageTypes,
-    @Arg('files', () => [GraphQLUpload]) files: [FileUpload],
-    @Ctx() { req }: MyContext
-  ): Promise<Image[]> {
+    @Arg('files', () => [GraphQLUpload]) files: [FileUpload]
+  ): Promise<Boolean> {
     const { userId } = req.session;
 
     const imagesList: QueryDeepPartialEntity<Image>[] = [];
@@ -70,7 +70,7 @@ export class ImageResolver {
       });
     }
 
-    if (type !== 'secondary') {
+    if (type === 'cover' || type === 'profile') {
       try {
         await Image.delete({ userId, type });
       } catch (err) {
@@ -78,15 +78,14 @@ export class ImageResolver {
       }
     }
 
-    const result = await getConnection()
+    await getConnection()
       .createQueryBuilder()
       .insert()
       .into(Image)
       .values(imagesList)
       .returning('*')
       .execute();
-
-    return result.raw;
+    return true;
   }
 
   @Mutation(() => Boolean)

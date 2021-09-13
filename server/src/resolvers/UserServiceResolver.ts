@@ -2,26 +2,24 @@ import {
   Arg,
   Ctx,
   Field,
-  FieldResolver,
   InputType,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { UserService } from '../entity/UserService';
 import { MyContext } from '../utils/types/MyContext';
 import { isAuth } from '../middleware/isAuth';
-import { groupBy } from 'lodash';
-import { ServiceImage } from '../entity/ServiceImage';
-import { Loader } from 'type-graphql-dataloader';
-import { getRepository, In } from 'typeorm';
-import DataLoader from 'dataloader';
+import { getRepository } from 'typeorm';
 import { Service } from '../entity/Service';
 import { ListValues } from '../utils/types/UserTypes';
+import { subYears } from 'date-fns';
+import { UserLanguage } from '../entity/UserLanguage';
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { fileUpload } from '../utils/fileUpload';
 
 @InputType()
 export class Dropdown {
@@ -36,6 +34,8 @@ export class Dropdown {
 export class UpsertUserService {
   @Field(() => Int)
   serviceId: number;
+  @Field({ nullable: true })
+  image?: string;
   @Field({ nullable: true })
   level?: string;
   @Field(() => [Dropdown], { nullable: true })
@@ -60,38 +60,63 @@ class PaginatedUserService {
 class FilterOptions {
   @Field(() => [ListValues], { nullable: true })
   languages?: ListValues[];
-  @Field(() => ListValues, { nullable: true })
-  country?: ListValues;
+  @Field(() => [ListValues], { nullable: true })
+  genders?: ListValues[];
+  @Field(() => [ListValues], { nullable: true })
+  ages?: ListValues[];
+  @Field(() => [ListValues], { nullable: true })
+  prices?: ListValues[];
 }
+
+export const betweenDates = (from: number, to: number) => [
+  subYears(new Date(), to),
+  subYears(new Date(), from),
+];
 
 @Resolver(UserService)
 export class UserServiceResolver {
-  @FieldResolver()
-  @Loader<number, ServiceImage[]>(async (serviceIds) => {
-    const serviceImages = await getRepository(ServiceImage).find({
-      where: { serviceId: In([...serviceIds]) },
-    });
-    const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
-    return serviceIds.map(
-      (serviceId) => serviceImageByserviceId[serviceId] ?? []
-    );
-  })
-  images(@Root() root: UserService) {
-    return (dataloader: DataLoader<number, ServiceImage[]>) =>
-      dataloader.load(root.serviceId);
+  // @FieldResolver()
+  // @Loader<number, ServiceImage[]>(async (serviceIds) => {
+  //   const serviceImages = await getRepository(ServiceImage).find({
+  //     where: { serviceId: In([...serviceIds]) },
+  //   });
+  //   const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
+  //   return serviceIds.map(
+  //     (serviceId) => serviceImageByserviceId[serviceId] ?? []
+  //   );
+  // })
+  // images(@Root() root: UserService) {
+  //   return (dataloader: DataLoader<number, ServiceImage[]>) =>
+  //     dataloader.load(root.serviceId);
+  // }
+  @Mutation(() => String)
+  @UseMiddleware(isAuth)
+  async changeUserserviceImage(
+    @Arg('files', () => [GraphQLUpload]) files: [FileUpload]
+  ): Promise<string> {
+    const imagesList: { url: string }[] = [];
+    for (let file of files) {
+      const res = await fileUpload(file);
+      imagesList.push({
+        url: res.secure_url,
+      });
+    }
+
+    return imagesList[0].url;
   }
 
-  @Query(() => PaginatedUserService)
+  @Query(() => PaginatedUserService, { nullable: true })
   async filterUserService(
-    // @Arg('serviceId', () => Int) serviceId: number,
     @Arg('slug') slug: string,
     @Arg('limit', () => Int) limit: number,
     @Arg('cursor', () => String, { nullable: true }) cursor?: string | null,
     @Arg('filterOptions', () => FilterOptions, { nullable: true })
     filterOptions?: FilterOptions | null
-  ): Promise<PaginatedUserService> {
-    // 20 -> 21
-    console.log(slug, limit, cursor, filterOptions);
+  ) {
+    if (!slug || !limit) {
+      return null;
+    }
+
     const realLimit = Math.min(50, limit);
     const reaLimitPlusOne = realLimit + 1;
     const replacements: any[] = [reaLimitPlusOne];
@@ -100,21 +125,73 @@ export class UserServiceResolver {
       replacements.push(new Date(parseInt(cursor)));
     }
     const { id } = (await Service.findOne({ slug })) as Service;
+    console.log(
+      slug,
+      id,
+      limit,
+      cursor,
+      new Date(parseInt(cursor || '')),
+      filterOptions
+    );
+    const qb = getRepository(UserService)
+      .createQueryBuilder('userService')
+      .leftJoinAndSelect('userService.user', 'user');
 
-    const qb = getRepository(UserService).createQueryBuilder('userService');
-
-    if (filterOptions?.country) {
-      qb.leftJoinAndSelect('userService.user', 'user').where(
-        'user.countryId = :country',
-        {
-          country: filterOptions.country.id,
-        }
-      );
+    if (filterOptions?.languages?.length) {
+      let languagesIds = filterOptions.languages.map(({ id }) => id);
+      qb.leftJoinAndSelect(
+        UserLanguage,
+        'userLanguage',
+        'userLanguage.userId = userService.userId'
+      ).andWhere('userLanguage.languageId IN (:...languagesIds)', {
+        languagesIds,
+      });
     }
+
+    if (filterOptions?.genders?.length) {
+      let gendersNames = filterOptions.genders.map(({ name }) => name);
+      qb.andWhere('user.gender IN (:...gendersNames)', { gendersNames });
+    }
+
+    if (filterOptions?.ages?.length) {
+      let dates: Date[] = [];
+      filterOptions.ages.find((age) => age.name === '18-25') &&
+        (dates = dates.concat(betweenDates(18, 25)));
+
+      filterOptions.ages.find((age) => age.name === '26-30') &&
+        (dates = dates.concat(betweenDates(26, 30)));
+
+      filterOptions.ages.find((age) => age.name === '30+') &&
+        (dates = dates.concat(betweenDates(30, 99)));
+
+      const from = new Date(Math.min.apply(null, dates));
+      const to = new Date(Math.max.apply(null, dates));
+      qb.andWhere('user.age BETWEEN :from AND :to', { from, to });
+    }
+
+    if (filterOptions?.prices?.length) {
+      let prices: number[] = [];
+      filterOptions.prices.find((price) => price.name === '0-5') &&
+        (prices = prices.concat([0, 5]));
+
+      filterOptions.prices.find((price) => price.name === '5-10') &&
+        (prices = prices.concat([5, 10]));
+
+      filterOptions.prices.find((price) => price.name === '10-20') &&
+        (prices = prices.concat([10, 20]));
+
+      filterOptions.prices.find((price) => price.name === '20+') &&
+        (prices = prices.concat([20, 99999]));
+
+      const from = Math.min.apply(null, prices);
+      const to = Math.max.apply(null, prices);
+      qb.andWhere('userService.price BETWEEN :from AND :to', { from, to });
+    }
+
     qb.andWhere('userService.serviceId = :id', { id });
 
     if (cursor) {
-      qb.andWhere('userService.createdAt > :cursor', {
+      qb.andWhere('userService.createdAt < :cursor', {
         cursor: new Date(parseInt(cursor)),
       });
     }

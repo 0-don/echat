@@ -45,7 +45,6 @@ export class UserResolver {
   me(@Ctx() { req }: MyContext) {
     // you are not logged in
     const id: number = req.session.userId;
-
     if (!id) {
       return null;
     }
@@ -85,7 +84,6 @@ export class UserResolver {
         userId,
         name: lang.name,
       }));
-      console.log(freshLanguages)
       await getConnection()
         .createQueryBuilder()
         .delete()

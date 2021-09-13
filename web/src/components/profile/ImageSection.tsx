@@ -1,5 +1,6 @@
 import {
   useDeleteImageMutation,
+  UserImagesDocument,
   useUserImagesQuery,
 } from 'src/generated/graphql';
 // import { isServer } from 'src/utils/helpers/isServer';
@@ -10,7 +11,7 @@ import { TrashIcon } from '@heroicons/react/outline';
 interface ImageSectionProps {}
 
 export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
-  const { data, loading } = useUserImagesQuery();
+  const { data, loading, refetch } = useUserImagesQuery();
   const [deleteImage] = useDeleteImageMutation();
 
   const cover = data?.userImages?.filter((cover) => cover.type === 'cover');
@@ -44,13 +45,13 @@ export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
 
         <div className='flex m'>
           <div className='w-6/12'>
-            <FilesUpload type='profile' />
+            <FilesUpload type='profile' query={UserImagesDocument} />
           </div>
           <div className='w-6/12'>
-            <FilesUpload type='cover' />
+            <FilesUpload type='cover' query={UserImagesDocument} />
           </div>
         </div>
-        <FilesUpload type='secondary' multiple={true} />
+        <FilesUpload type='secondary' query={UserImagesDocument} />
 
         <div className='flex justify-center flex-wrap mt-2'>
           {!loading &&

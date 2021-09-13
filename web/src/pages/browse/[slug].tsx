@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import withApollo from 'src/utils/apollo/withApollo';
 import { Wrapper } from 'src/components/Wrapper';
 import { Sidebar } from 'src/components/utils/Sidebar';
@@ -19,22 +19,18 @@ import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { UserServices } from 'src/components/browse/UserServices';
 
 dayjs.extend(relativeTime);
-{
-  /* <span
-  className={`${
-    dateNow.diff(user.lastOnline, 'day') * -1 < 2
-      ? 'bg-green-500'
-      : 'bg-gray-500'
-  } h-4 w-4 rounded-full mr-1`}
-/>; */
-}
+
+// dateNow.diff(user.lastOnline, 'day') * -1 < 2
 
 const Browse: NextPage<{ slug: string }> = ({ slug }) => {
+  const myRef = useRef<HTMLDivElement>(null);
+  const [bgImage, setBgImage] = useState<
+    { src: string; slug: string } | undefined
+  >();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { filterQuery, filterInit } = useServiceFilterStore();
-
+  const { filterQuery, filterInit, setCursor } = useServiceFilterStore();
   useEffect(() => {
-    filterInit({ slug, limit: 20 });
+    filterInit({ slug, limit: 20, cursor: undefined });
   }, []);
 
   const { data } = useGetServicesQuery();
@@ -44,46 +40,81 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     refetch,
   } = useFilterUserServiceQuery({ variables: filterQuery });
 
+  const onScroll = async () => {
+    const bottom =
+      myRef.current &&
+      parseInt(myRef.current.scrollHeight - myRef.current.scrollTop + '') ===
+        myRef.current.clientHeight;
+
+    if (bottom && userService?.filterUserService?.hasMore) {
+      const cursor =
+        userService?.filterUserService?.userService[
+          userService.filterUserService?.userService.length - 1
+        ].createdAt;
+      await fetchMore({
+        variables: {
+          ...filterQuery,
+          cursor,
+        },
+      });
+      setCursor(cursor);
+    }
+  };
+
   const service = data?.getServices?.find((service) => service.slug === slug);
   const images = service?.images?.filter((image) => image.width > 1200);
+  useEffect(() => {
+    images?.length! > 0 &&
+      bgImage?.slug !== slug &&
+      setBgImage({
+        src: images![getRandomBetween(0, images!.length)].url,
+        slug,
+      });
+    images?.length === 0 && bgImage?.slug !== slug && setBgImage(undefined);
+  }, [images]);
 
   return (
-    <Wrapper navbar className=''>
-      <div className='relative'>
+    <Wrapper navbar fluid className='relative'>
+      <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
         <Image
-          className='img-fade absolute w-full object-cover opacity-40 mb-1'
-          width={'100%'}
-          height={'100%'}
-          layout='responsive'
-          src={
-            images?.length
-              ? images[getRandomBetween(0, images.length)].url
-              : gray.src
-          }
-          alt=''
+          className='img-fade opacity-40'
+          src={bgImage?.src ?? gray.src}
+          layout='fill'
+          objectFit='cover'
         />
-        <div className='flex justify-end md:hidden absolute top-5 right-3 z-10'>
-          <Button
-            text='service filter'
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          />
-        </div>
-        <div className='flex w-full antialiased dark:text-light absolute top-5'>
-          <Sidebar
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            data={data}
-            refetch={refetch}
-          />
+      </div>
 
-          <div className='xl:mx-8'>
-            <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
-              {service?.name}
-            </h1>
-            <div className='flex items-center'>
-              <Filter slug={slug} />
+      <div className='flex h-full w-full absolute top-0'>
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          data={data}
+          refetch={refetch}
+        />
+
+        <div
+          className='flex flex-col w-full overflow-x-hidden overflow-y-auto lg:px-5'
+          ref={myRef}
+          onScroll={onScroll}
+        >
+          <div className='flex flex-col w-full h-full text-gray-900 text-xl mt-5'>
+            <div className='flex justify-between w-full items-center '>
+              <h1 className='text-white text-4xl font-bold mb-5 inline-block'>
+                {service?.name}
+              </h1>
+              <div className='md:hidden'>
+                <Button
+                  text='services'
+                  icon='bars'
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                />
+              </div>
             </div>
-            <UserServices data={userService} fetchMore={fetchMore} />
+
+            <div className='flex items-center'>
+              <Filter />
+            </div>
+            <UserServices data={userService} />
           </div>
         </div>
       </div>

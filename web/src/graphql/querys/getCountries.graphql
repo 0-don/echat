@@ -1,5 +1,5 @@
-query GetCountries {
-  getCountries {
+query GetCountries($slug: String) {
+  getCountries(slug: $slug) {
     id
     name
   }

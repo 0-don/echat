@@ -11,7 +11,7 @@ import { TrashIcon } from '@heroicons/react/outline';
 interface ImageSectionProps {}
 
 export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
-  const { data, loading, refetch } = useUserImagesQuery();
+  const { data, loading } = useUserImagesQuery();
   const [deleteImage] = useDeleteImageMutation();
 
   const cover = data?.userImages?.filter((cover) => cover.type === 'cover');
@@ -61,14 +61,15 @@ export const ImageSection: React.FC<ImageSectionProps> = ({}) => {
                 <TrashIcon
                   className='absolute top-0 right-0 mr-2 text-indigo-700 h-5 w-5 hover:text-white'
                   onClick={async () => {
-                    await deleteImage({
-                      variables: { publicId },
-                      update(c) {
-                        const normalizedId = c.identify({ id, __typename });
-                        c.evict({ id: normalizedId });
-                        c.gc();
-                      },
-                    });
+                    publicId &&
+                      (await deleteImage({
+                        variables: { publicId },
+                        update(c) {
+                          const normalizedId = c.identify({ id, __typename });
+                          c.evict({ id: normalizedId });
+                          c.gc();
+                        },
+                      }));
                   }}
                 />
               </div>

@@ -61,7 +61,8 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
     }
   };
 
-  const service = data?.getServices?.find((service) => service.slug === slug);0
+  const service = data?.getServices?.find((service) => service.slug === slug);
+  0;
   const images = service?.images?.filter((image) => image.width > 1200);
   useEffect(() => {
     images?.length! > 0 &&
@@ -74,7 +75,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   }, [images]);
 
   return (
-    <Wrapper navbar fluid className='relative'>
+    <Wrapper navbar fluid scrollbar className='relative'>
       <div style={{ position: 'relative', width: '100%', height: '48vw' }}>
         <Image
           className='img-fade opacity-40'

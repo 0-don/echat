@@ -24,9 +24,13 @@ export class Image extends BaseEntity {
   @Column()
   url: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ unique: true, nullable: true })
   publicId: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  serviceId: string;
 
   @Field(() => Int)
   @Column()

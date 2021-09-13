@@ -5,6 +5,7 @@ query GetMeUserService {
     serviceId
     level
     platforms
+    image
     description
     price
     per

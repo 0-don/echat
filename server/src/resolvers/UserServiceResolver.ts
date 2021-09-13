@@ -18,6 +18,8 @@ import { Service } from '../entity/Service';
 import { ListValues } from '../utils/types/UserTypes';
 import { subYears } from 'date-fns';
 import { UserLanguage } from '../entity/UserLanguage';
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { fileUpload } from '../utils/fileUpload';
 
 @InputType()
 export class Dropdown {
@@ -32,6 +34,8 @@ export class Dropdown {
 export class UpsertUserService {
   @Field(() => Int)
   serviceId: number;
+  @Field({ nullable: true })
+  image?: string;
   @Field({ nullable: true })
   level?: string;
   @Field(() => [Dropdown], { nullable: true })
@@ -85,6 +89,21 @@ export class UserServiceResolver {
   //   return (dataloader: DataLoader<number, ServiceImage[]>) =>
   //     dataloader.load(root.serviceId);
   // }
+  @Mutation(() => String)
+  @UseMiddleware(isAuth)
+  async changeUserserviceImage(
+    @Arg('files', () => [GraphQLUpload]) files: [FileUpload]
+  ): Promise<string> {
+    const imagesList: { url: string }[] = [];
+    for (let file of files) {
+      const res = await fileUpload(file);
+      imagesList.push({
+        url: res.secure_url,
+      });
+    }
+
+    return imagesList[0].url;
+  }
 
   @Query(() => PaginatedUserService, { nullable: true })
   async filterUserService(

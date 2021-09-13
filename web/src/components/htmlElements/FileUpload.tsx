@@ -2,84 +2,107 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon } from '@heroicons/react/outline';
 import {
+  UpsertUserService,
+  useChangeUserserviceImageMutation,
   useMultipleUploadMutation,
-  UserImagesDocument,
-  UserImagesQuery,
-  Image,
 } from '../../generated/graphql';
 import { Loading, ProgressBar } from '../utils';
+import { DocumentNode } from '@apollo/client';
+import { useFormikContext } from 'formik';
 
 type FilesUploadProps = {
   type: string;
   multiple?: boolean;
+  query?: DocumentNode;
 };
 
 export const FilesUpload: React.FC<FilesUploadProps> = ({
   type,
   multiple = false,
+  query,
 }) => {
+  const { setFieldValue } = useFormikContext<UpsertUserService>();
   const [progress, setProgress] = useState<number>(0);
 
   const [multipleUpload, { loading }] = useMultipleUploadMutation();
-
+  const [changeUserserviceImage] = useChangeUserserviceImageMutation();
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     multiple,
     noClick: true,
     accept: 'image/*',
     onDrop: async (files) => {
-      await multipleUpload({
-        variables: { files, type },
-        context: {
-          hasUpload: true,
-          fetchOptions: {
-            useUpload: true,
-            onProgress: (ev: ProgressEvent) => {
-              const load = Math.floor((100 * ev.loaded) / ev.total);
-
-              setProgress(load);
-              if (load === 100) setProgress(0);
-            },
-            onAbortPossible: (_: any) => {},
-          },
-        },
-        update(cache, { data }) {
-          let imageData = cache.readQuery<UserImagesQuery>({
-            query: UserImagesDocument,
-          });
-          cache.modify({
-            fields: {
-              userImages(existingImages: Image[], { readField }) {
-                const newImage = {
-                  __ref: `${data!.multipleUpload![0].__typename}:${
-                    data!.multipleUpload![0].id
-                  }`,
-                };
-
-                const image = imageData?.userImages?.find(
-                  (i) => i.type === type
-                );
-
-                if (
-                  (imageData && type === 'profile' && image) ||
-                  (imageData && type === 'cover' && image)
-                ) {
-                  cache.evict({ id: `${image.__typename}:${image.id}` });
-                  cache.gc();
-
-                  return [
-                    ...existingImages.filter(
-                      (i) => image.id !== readField('id', i)
-                    ),
-                    newImage,
-                  ];
-                }
-
-                return [...existingImages, newImage];
+      console.log(files);
+      if (query) {
+        await multipleUpload({
+          variables: { files, type },
+          refetchQueries: query ? [{ query }] : undefined,
+          context: {
+            hasUpload: true,
+            fetchOptions: {
+              useUpload: true,
+              onProgress: (ev: ProgressEvent) => {
+                const load = Math.floor((100 * ev.loaded) / ev.total);
+                load === 100 ? setProgress(0) : setProgress(load);
               },
+              onAbortPossible: (_: any) => {},
             },
-          });
-        },
-      });
+          },
+          // update(cache, { data }) {
+          //   let imageData = cache.readQuery<UserImagesQuery>({
+          //     query: UserImagesDocument,
+          //   });
+          //   cache.modify({
+          //     fields: {
+          //       userImages(existingImages: Image[], { readField }) {
+          //         const newImage = {
+          //           __ref: `${data!.multipleUpload![0].__typename}:${
+          //             data!.multipleUpload![0].id
+          //           }`,
+          //         };
+
+          //         const image = imageData?.userImages?.find(
+          //           (i) => i.type === type
+          //         );
+
+          //         if (
+          //           (imageData && type === 'profile' && image) ||
+          //           (imageData && type === 'cover' && image)
+          //         ) {
+          //           cache.evict({ id: `${image.__typename}:${image.id}` });
+          //           cache.gc();
+
+          //           return [
+          //             ...existingImages.filter(
+          //               (i) => image.id !== readField('id', i)
+          //             ),
+          //             newImage,
+          //           ];
+          //         }
+
+          //         return [...existingImages, newImage];
+          //       },
+          //     },
+          //   });
+          // },
+        });
+      } else {
+        const url = await changeUserserviceImage({
+          variables: { files },
+          context: {
+            hasUpload: true,
+            fetchOptions: {
+              useUpload: true,
+              onProgress: (ev: ProgressEvent) => {
+                const load = Math.floor((100 * ev.loaded) / ev.total);
+                load === 100 ? setProgress(0) : setProgress(load);
+              },
+              onAbortPossible: (_: any) => {},
+            },
+          },
+        });
+        console.log(url.data)
+        setFieldValue('image', url.data?.changeUserserviceImage);
+      }
     },
   });
 

@@ -6,9 +6,11 @@ import {
   GetServicesQuery,
 } from 'src/generated/graphql';
 import _ from 'lodash';
-import { useRouter } from 'next/router';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
+import { useApolloClient } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -46,9 +48,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   if (!data) {
     return null;
   }
-  
+
   const router = useRouter();
-  const { filterQuery, setSlug } = useServiceFilterStore();
+  const { filterQuery, setSlug, setOptions } = useServiceFilterStore();
   const groupedServices = _.groupBy(data?.getServices, 'type');
 
   const [tabs, setTabs] = useState<TabState[]>(
@@ -59,8 +61,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }))
   );
 
+  const apolloClient = useApolloClient();
+
   const items = Object.keys(groupedServices).map((key, index) => (
-    <div className='text-white' key={key}>
+    <div
+      className='text-white flex flex-col mt-5'
+      style={{ maxHeight: 'calc(100vh - 195px' }}
+      key={key}
+    >
       <div
         onClick={() => {
           setTabs(
@@ -91,26 +99,42 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </span>
       </div>
 
-      {tabs.map(
-        (tab) =>
-          tab.key === key &&
-          tab.state === true &&
-          groupedServices[key].map(({ id, name, slug }) => (
-            <div
-              className={`${
-                checkUrl(slug) && 'text-purple'
-              } mt-2 space-y-2 px-7 hover:text-purple`}
-              key={slug}
-              onClick={async () => {
-                setSlug(slug);
-                refetch(filterQuery);
-                router.push(`/browse/${slug}`);
-              }}
-            >
-              {name}
-            </div>
-          ))
-      )}
+      <div className='flex flex-col overflow-x-hidden overflow-y-auto min-w-0 overflow-clip'>
+        {tabs.map(
+          (tab) =>
+            tab.key === key &&
+            tab.state === true &&
+            groupedServices[key].map(({ id, name, slug }) => (
+              <div
+                className={`${
+                  checkUrl(slug) && 'text-purple'
+                } mt-2 space-y-2 px-7 hover:text-purple `}
+                key={slug}
+                onClick={async () => {
+                  
+                  setOptions({});
+                  setSlug(slug);
+                  apolloClient.cache.modify({
+                    fields: {
+                      filterUserService(existing, { readField }) {
+                        return { ...existing, userService: [] };
+                      },
+                    },
+                  });
+                  refetch({
+                    ...filterQuery,
+                    slug,
+                    filterOptions: undefined,
+                    cursor: undefined,
+                  });
+                  router.push(`/browse/${slug}`);
+                }}
+              >
+                {name}
+              </div>
+            ))
+        )}
+      </div>
     </div>
   ));
 
@@ -142,7 +166,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             leaveFrom='translate-x-0'
             leaveTo='-translate-x-full'
           >
-            <div className='relative flex-1 flex flex-col max-w-xs w-full bg-gray-800'>
+            <div className='relative flex-1 flex flex-col w-64 max-w-64 bg-dark-dark'>
               <Transition.Child
                 as={Fragment}
                 enter='ease-in-out duration-300'
@@ -174,8 +198,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </Dialog>
       </Transition.Root>
 
-      <div className='hidden md:flex md:flex-shrink-0'>
-        <nav className='flex flex-col lg:w-72 px-2 space-y-1'>{items}</nav>
+      <div className='hidden md:flex md:flex-shrink-1'>
+        <nav
+          style={{ maxWidth: '16rem', width: '16rem' }}
+          className='flex flex-col px-2 space-y-1'
+        >
+          {items}
+        </nav>
       </div>
     </>
   );

@@ -1,8 +1,9 @@
 import { Formik, Form, FormikProps } from 'formik';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Button,
   DropdownField,
+  FilesUpload,
   InputField,
   Modal,
   TextAreaField,
@@ -29,25 +30,42 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
   open,
   setOpen,
 }) => {
+  const [bgImage, setBgImage] = useState<
+    { src: string; serviceId: number } | undefined
+  >();
   const [localOpen, setLocalOpen] = useState(false);
   const [upsertUserService] = useUpsertUserServiceMutation();
-  const { data: allServicesData, loading: allServicesLoading } =
-  useGetServicesQuery();
-  const { data: MeUserServiceData, loading: MeUserServiceLoading } =
-    useGetMeUserServiceQuery();
+  const { data: allServicesData } = useGetServicesQuery();
+  const { data: MeUserServiceData } = useGetMeUserServiceQuery();
 
-  let service =
-    !allServicesLoading &&
-    allServicesData?.getServices?.find(
-      (service) => service.id === serviceId
-    );
+  let service = allServicesData?.getServices?.find(
+    (service) => service.id === serviceId
+  );
 
-  let userGame =
-    !MeUserServiceLoading &&
-    MeUserServiceData?.getMeUserService?.find(
-      (service) => service.serviceId === serviceId
-    );
+  let userService = MeUserServiceData?.getMeUserService?.find(
+    (service) => service.serviceId === serviceId
+  );
 
+  useEffect(() => {
+    // bgImage?.serviceId !== serviceId &&
+    //   userService?.image &&
+    //   setBgImage({ src: userService?.image, serviceId });
+
+    bgImage?.serviceId !== serviceId &&
+      service?.images &&
+      service?.images?.length > 0 &&
+      setBgImage({
+        src: service.images[Math.floor(Math.random() * service.images.length)]
+          .url,
+        serviceId,
+      });
+
+    bgImage?.serviceId !== serviceId &&
+      service?.images?.length === 0 &&
+      !userService?.image &&
+      setBgImage(undefined);
+  }, [serviceId, userService?.image]);
+  // console.log(userService?.image);
   if (service && LEVELS?.length && PERS?.length) {
     return (
       <>
@@ -56,44 +74,32 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
           setOpen={setOpen === undefined ? setLocalOpen : setOpen}
         >
           <div className='inline-block bg-white dark:bg-dark transform sm:align-middle sm:max-w-5xl w-full sm:w-full'>
-            <img
-              className='h-32 w-full object-cover lg:h-48'
-              src={
-                service?.images?.length
-                  ? service.images[
-                      Math.floor(Math.random() * service.images.length)
-                    ].url
-                  : gray.src
-              }
-              alt=''
-            />
-            <div className='flex justify-center -mt-16 sm:-mt-16'>
-              <img
-                className='h-24 shadow-xl sm:h-32'
-                src={service.boxArtUrl}
-                alt=''
-              />
-            </div>
-            <h1 className='text-3xl bg-white dark:bg-dark dark:text-white'>
-              {service.name}
-            </h1>
             <Formik
               initialValues={{
                 serviceId,
+                image: userService?.image || undefined,
                 level:
-                  userGame && userGame.level ? userGame.level : LEVELS[0].name,
+                  userService && userService.level
+                    ? userService.level
+                    : LEVELS[0].name,
                 platforms:
-                  userGame && userGame.platforms
-                    ? userGame.platforms
+                  userService && userService.platforms
+                    ? userService.platforms
                     : service.platforms
                     ? [service.platforms[0]]
                     : undefined,
                 description:
-                  userGame && userGame.description ? userGame.description : '',
-                price: userGame && userGame.price ? userGame.price : 0,
-                per: userGame && userGame.price ? userGame.per : PERS[0].name,
+                  userService && userService.description
+                    ? userService.description
+                    : '',
+                price: userService && userService.price ? userService.price : 0,
+                per:
+                  userService && userService.price
+                    ? userService.per
+                    : PERS[0].name,
               }}
               onSubmit={async (values) => {
+                console.log(values);
                 await upsertUserService({
                   variables: { options: values },
                   refetchQueries: [{ query: GetMeUserServiceDocument }],
@@ -103,6 +109,22 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
             >
               {(formikProps: FormikProps<UpsertUserService>) => (
                 <Form className='p-5'>
+                  <img
+                    className='h-32 w-full object-cover lg:h-48'
+                    src={formikProps.values.image ?? bgImage?.src ?? gray.src}
+                    alt=''
+                  />
+                  <div className='flex justify-center -mt-16 sm:-mt-16'>
+                    <img
+                      className='h-24 shadow-xl sm:h-32'
+                      src={service?.boxArtUrl}
+                      alt=''
+                    />
+                  </div>
+                  <h1 className='text-3xl bg-white dark:bg-dark dark:text-white'>
+                    {service?.name}
+                  </h1>
+                  <FilesUpload type='service' />
                   <div className='sm:flex'>
                     <div className='sm:w-6/12 sm:mr-2.5'>
                       <DropdownField

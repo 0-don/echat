@@ -27,10 +27,12 @@ const Profile: React.FC = () => {
 
   return (
     <Wrapper navbar>
-      <FormSteps />
-      {hasHydrated && currentStep === 'Profile' && <ProfileSection />}
-      {hasHydrated && currentStep === 'Service' && <ServiceSection />}
-      {hasHydrated && currentStep === 'Submit' && <SubmitSection />}
+      <div>
+        <FormSteps />
+        {hasHydrated && currentStep === 'Profile' && <ProfileSection />}
+        {hasHydrated && currentStep === 'Service' && <ServiceSection />}
+        {hasHydrated && currentStep === 'Submit' && <SubmitSection />}
+      </div>
     </Wrapper>
   );
 };

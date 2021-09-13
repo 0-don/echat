@@ -24,10 +24,9 @@ import {
   DatePickerField,
 } from '../htmlElements';
 import { TimePickerField } from '../htmlElements/TimePickerField';
-
-import { Loading } from '../utils';
 import { FormikAutoSubmit } from '../utils/FormikAutoSubmit';
 import { ImageSection } from './ImageSection';
+import { Loading } from '../utils';
 
 export type ProfileSectionProps = {
   formikRef?: React.RefObject<FormikProps<UpdatedUser>>;
@@ -43,8 +42,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
   const [updateMe] = useUpdateMeMutation();
   const { data: user, loading } = useMeQuery();
 
-  const countries = getCountries?.getCountries.map((country) => country);
-  const languages = getLanguages?.getLanguages.map((language) => language);
+  const countries = getCountries?.getCountries?.map((country) => country);
+  const languages = getLanguages?.getLanguages?.map((language) => language);
   const userLanguage = user?.me?.languages?.map(({ id, name }) => ({
     id,
     name,
@@ -85,7 +84,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
-            console.log(values)
+         
             await updateMe({
               variables: { options: values },
               refetchQueries: [{ query: MeDocument }],

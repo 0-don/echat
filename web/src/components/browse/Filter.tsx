@@ -1,49 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  FilterOptions,
   useFilterUserServiceQuery,
-  useGetCountriesQuery,
+  // useGetCountriesQuery,
+  useGetLanguagesQuery,
 } from 'src/generated/graphql';
+import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { Button } from '../htmlElements';
 import { FilterDropdown } from '../htmlElements/FilterDropdown';
+import { GENDERS } from 'src/constants';
+// {
+//   "slug": "call-of-duty-warzone",
+//   "limit": 10,
+//   "filterOptions": {
+//     "languages": [
+//       {"id": 2, "name": "Abkhazian"}
+//     ]
+//   }
+// }
 
-interface FilterProps {
-  slug: string;
-}
+export const Filter: React.FC = () => {
+  const { filterQuery, setCursor } = useServiceFilterStore();
 
+  const { data: getLanguages } = useGetLanguagesQuery({
+    variables: { slug: filterQuery?.slug || undefined },
+  });
 
-export const Filter: React.FC<FilterProps> = ({ slug }) => {
-  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>({});
-  const { data: getCountries } = useGetCountriesQuery();
-
-  const filterQuery = { slug, limit: 10, cursor: null, filterOptions };
   const { refetch } = useFilterUserServiceQuery({
     variables: filterQuery,
     skip: true,
   });
 
-  const countries = getCountries?.getCountries.map((country) => country);
-  if (!countries) {
+  const languages = getLanguages?.getLanguages?.map((language) => language);
+
+  if (!languages) {
     return null;
   }
 
   return (
-    <div className='flex mb-5 items-center'>
-      <div className='w-64'>
+    <div className='w-full'>
+      <div className='flex flex-wrap w-full justify-center md:justify-start items-center pb-3 -ml-1'>
         <FilterDropdown
-          list={countries}
-          fieldName='country'
-          filterOptions={filterOptions}
-          setFilterOptions={setFilterOptions}
+          list={languages}
+          fieldName='languages'
+          className='w-6/12 md:w-44'
+          sort
         />
+        <FilterDropdown
+          list={GENDERS}
+          fieldName='genders'
+          className='w-6/12 md:w-36'
+          sort
+        />
+        <FilterDropdown
+          list={[
+            { id: 1, name: '18-25' },
+            { id: 2, name: '26-30' },
+            { id: 3, name: '30+' },
+          ]}
+          fieldName='ages'
+          className='w-6/12 md:w-36'
+          sort
+        />
+        <FilterDropdown
+          list={[
+            { id: 1, name: '0-5' },
+            { id: 2, name: '5-10' },
+            { id: 3, name: '10-20' },
+            { id: 4, name: '20+' },
+          ]}
+          className='w-6/12 md:w-36'
+          fieldName='prices'
+        />
+        <div className='md:p-0 p-1 mt-0.5'>
+          <Button
+            icon='search'
+            text='filter'
+            className='h-10 w-full'
+            onClick={async () => {
+              setCursor(undefined);
+              await refetch({ ...filterQuery, cursor: undefined });
+            }}
+          />
+        </div>
       </div>
-      <Button
-        text='HX'
-        className='ml-1 h-10 mt-5'
-        onClick={async () => {
-          await refetch({ ...filterQuery });
-        }}
-      />
     </div>
   );
 };

@@ -40,5 +40,5 @@
     "**/*.ts",
     "**/*.tsx",
     "src/utils/useDarkMode.js"
-  ]
+, "src/pages/test.js"  ]
 }

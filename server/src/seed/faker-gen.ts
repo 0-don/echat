@@ -48,6 +48,7 @@ type UserServiceType = {
   userId: number;
   serviceId: number;
   per: string;
+  createdAt: Date;
 };
 
 type UserLanguageType = {
@@ -77,6 +78,7 @@ const main = async () => {
     // logging: true,
     entities: [__dirname + '/../entity/*'],
   });
+  await User.delete({ fake: true });
 
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const countries = await Country.find({});
@@ -94,8 +96,12 @@ const main = async () => {
         Date.now() + 3600 * 1000 * 24 * getRandomBetween(1, 8)
       ),
       description: coinFlip() ? faker.lorem.text() : undefined,
-      age: coinFlip() ? faker.datatype.datetime() : undefined,
-      gender: coinFlip() ? faker.name.gender() : undefined,
+      age: new Date(
+        new Date().setFullYear(
+          new Date().getFullYear() - getRandomBetween(18, 50)
+        )
+      ),
+      gender: ['Female', 'Male', 'Other'][getRandomBetween(0, 3)],
       discord: coinFlip() ? faker.internet.userName() : undefined,
       twitter: coinFlip() ? faker.internet.userName() : undefined,
       facebook: coinFlip() ? faker.internet.userName() : undefined,
@@ -108,6 +114,7 @@ const main = async () => {
     };
     fakeUsers.push(user);
   }
+
   await User.insert(fakeUsers);
   const users = await User.find({ where: { fake: true } });
 
@@ -165,6 +172,7 @@ const main = async () => {
           per: ['Game', '15 Min', '30 Min', '45 Min', '60 Min'][
             getRandomBetween(0, 4)
           ],
+          createdAt: faker.date.recent(),
         });
     }
     // USERLANGUAGES

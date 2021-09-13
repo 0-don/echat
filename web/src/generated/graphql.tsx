@@ -60,7 +60,9 @@ export type FieldError = {
 
 export type FilterOptions = {
   languages?: Maybe<Array<ListValues>>;
-  country?: Maybe<ListValues>;
+  genders?: Maybe<Array<ListValues>>;
+  ages?: Maybe<Array<ListValues>>;
+  prices?: Maybe<Array<ListValues>>;
 };
 
 export type Image = {
@@ -68,7 +70,8 @@ export type Image = {
   id: Scalars['Int'];
   type: Scalars['String'];
   url: Scalars['String'];
-  publicId: Scalars['String'];
+  publicId?: Maybe<Scalars['String']>;
+  serviceId?: Maybe<Scalars['String']>;
   userId: Scalars['Int'];
   user: User;
 };
@@ -96,8 +99,9 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   deleteAllImages: Scalars['Boolean'];
-  multipleUpload: Array<Image>;
+  multipleUpload: Scalars['Boolean'];
   deleteImage: Scalars['Boolean'];
+  changeUserserviceImage: Scalars['String'];
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
@@ -143,6 +147,11 @@ export type MutationDeleteImageArgs = {
 };
 
 
+export type MutationChangeUserserviceImageArgs = {
+  files: Array<Scalars['Upload']>;
+};
+
+
 export type MutationSwitchUserServiceStatusArgs = {
   id: Scalars['Int'];
 };
@@ -177,11 +186,11 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
-  filterUserService: PaginatedUserService;
+  filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
   getChats: Array<Chat>;
-  getCountries: Array<Country>;
-  getLanguages: Array<Language>;
+  getCountries?: Maybe<Array<Country>>;
+  getLanguages?: Maybe<Array<Language>>;
 };
 
 
@@ -200,6 +209,16 @@ export type QueryFilterUserServiceArgs = {
   cursor?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
   slug: Scalars['String'];
+};
+
+
+export type QueryGetCountriesArgs = {
+  slug?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetLanguagesArgs = {
+  slug?: Maybe<Scalars['String']>;
 };
 
 export type Schedule = {
@@ -277,6 +296,7 @@ export type UpdatedUser = {
 
 export type UpsertUserService = {
   serviceId: Scalars['Int'];
+  image?: Maybe<Scalars['String']>;
   level?: Maybe<Scalars['String']>;
   platforms?: Maybe<Array<Dropdown>>;
   description?: Maybe<Scalars['String']>;
@@ -334,6 +354,7 @@ export type UserService = {
   description?: Maybe<Scalars['String']>;
   price: Scalars['Float'];
   per: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
   userId: Scalars['Int'];
   user: User;
   serviceId: Scalars['Int'];
@@ -391,6 +412,16 @@ export type ChangeUserTypeMutationVariables = Exact<{ [key: string]: never; }>;
 export type ChangeUserTypeMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'changeUserType'>
+);
+
+export type ChangeUserserviceImageMutationVariables = Exact<{
+  files: Array<Scalars['Upload']> | Scalars['Upload'];
+}>;
+
+
+export type ChangeUserserviceImageMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'changeUserserviceImage'>
 );
 
 export type DeleteImageMutationVariables = Exact<{
@@ -453,10 +484,7 @@ export type MultipleUploadMutationVariables = Exact<{
 
 export type MultipleUploadMutation = (
   { __typename?: 'Mutation' }
-  & { multipleUpload: Array<(
-    { __typename?: 'Image' }
-    & Pick<Image, 'id' | 'type' | 'url' | 'publicId'>
-  )> }
+  & Pick<Mutation, 'multipleUpload'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -512,16 +540,13 @@ export type FilterUserServiceQueryVariables = Exact<{
 
 export type FilterUserServiceQuery = (
   { __typename?: 'Query' }
-  & { filterUserService: (
+  & { filterUserService?: Maybe<(
     { __typename?: 'PaginatedUserService' }
     & Pick<PaginatedUserService, 'hasMore'>
     & { userService: Array<(
       { __typename?: 'UserService' }
-      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'createdAt' | 'serviceId'>
-      & { images?: Maybe<Array<(
-        { __typename?: 'ServiceImage' }
-        & Pick<ServiceImage, 'id' | 'type' | 'url'>
-      )>>, user: (
+      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'price' | 'per' | 'createdAt' | 'serviceId'>
+      & { user: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username' | 'age' | 'gender' | 'countryId' | 'lastOnline'>
         & { country?: Maybe<(
@@ -533,29 +558,33 @@ export type FilterUserServiceQuery = (
         )>> }
       ) }
     )> }
-  ) }
+  )> }
 );
 
-export type GetCountriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetCountriesQueryVariables = Exact<{
+  slug?: Maybe<Scalars['String']>;
+}>;
 
 
 export type GetCountriesQuery = (
   { __typename?: 'Query' }
-  & { getCountries: Array<(
+  & { getCountries?: Maybe<Array<(
     { __typename?: 'Country' }
     & Pick<Country, 'id' | 'name'>
-  )> }
+  )>> }
 );
 
-export type GetLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetLanguagesQueryVariables = Exact<{
+  slug?: Maybe<Scalars['String']>;
+}>;
 
 
 export type GetLanguagesQuery = (
   { __typename?: 'Query' }
-  & { getLanguages: Array<(
+  & { getLanguages?: Maybe<Array<(
     { __typename?: 'Language' }
     & Pick<Language, 'id' | 'name'>
-  )> }
+  )>> }
 );
 
 export type GetMeUserServiceQueryVariables = Exact<{ [key: string]: never; }>;
@@ -565,7 +594,7 @@ export type GetMeUserServiceQuery = (
   { __typename?: 'Query' }
   & { getMeUserService?: Maybe<Array<(
     { __typename?: 'UserService' }
-    & Pick<UserService, 'id' | 'status' | 'serviceId' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
+    & Pick<UserService, 'id' | 'status' | 'serviceId' | 'level' | 'platforms' | 'image' | 'description' | 'price' | 'per'>
     & { service: (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
@@ -755,6 +784,37 @@ export function useChangeUserTypeMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangeUserTypeMutationHookResult = ReturnType<typeof useChangeUserTypeMutation>;
 export type ChangeUserTypeMutationResult = Apollo.MutationResult<ChangeUserTypeMutation>;
 export type ChangeUserTypeMutationOptions = Apollo.BaseMutationOptions<ChangeUserTypeMutation, ChangeUserTypeMutationVariables>;
+export const ChangeUserserviceImageDocument = gql`
+    mutation ChangeUserserviceImage($files: [Upload!]!) {
+  changeUserserviceImage(files: $files)
+}
+    `;
+export type ChangeUserserviceImageMutationFn = Apollo.MutationFunction<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>;
+
+/**
+ * __useChangeUserserviceImageMutation__
+ *
+ * To run a mutation, you first call `useChangeUserserviceImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeUserserviceImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeUserserviceImageMutation, { data, loading, error }] = useChangeUserserviceImageMutation({
+ *   variables: {
+ *      files: // value for 'files'
+ *   },
+ * });
+ */
+export function useChangeUserserviceImageMutation(baseOptions?: Apollo.MutationHookOptions<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>(ChangeUserserviceImageDocument, options);
+      }
+export type ChangeUserserviceImageMutationHookResult = ReturnType<typeof useChangeUserserviceImageMutation>;
+export type ChangeUserserviceImageMutationResult = Apollo.MutationResult<ChangeUserserviceImageMutation>;
+export type ChangeUserserviceImageMutationOptions = Apollo.BaseMutationOptions<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>;
 export const DeleteImageDocument = gql`
     mutation DeleteImage($publicId: String!) {
   deleteImage(publicId: $publicId)
@@ -914,12 +974,7 @@ export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const MultipleUploadDocument = gql`
     mutation MultipleUpload($files: [Upload!]!, $type: String!) {
-  multipleUpload(files: $files, type: $type) {
-    id
-    type
-    url
-    publicId
-  }
+  multipleUpload(files: $files, type: $type)
 }
     `;
 export type MultipleUploadMutationFn = Apollo.MutationFunction<MultipleUploadMutation, MultipleUploadMutationVariables>;
@@ -1089,15 +1144,9 @@ export const FilterUserServiceDocument = gql`
       status
       level
       platforms
-      description
       price
       per
       createdAt
-      images {
-        id
-        type
-        url
-      }
       serviceId
       user {
         id
@@ -1153,8 +1202,8 @@ export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserSe
 export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
 export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
 export const GetCountriesDocument = gql`
-    query GetCountries {
-  getCountries {
+    query GetCountries($slug: String) {
+  getCountries(slug: $slug) {
     id
     name
   }
@@ -1173,6 +1222,7 @@ export const GetCountriesDocument = gql`
  * @example
  * const { data, loading, error } = useGetCountriesQuery({
  *   variables: {
+ *      slug: // value for 'slug'
  *   },
  * });
  */
@@ -1188,8 +1238,8 @@ export type GetCountriesQueryHookResult = ReturnType<typeof useGetCountriesQuery
 export type GetCountriesLazyQueryHookResult = ReturnType<typeof useGetCountriesLazyQuery>;
 export type GetCountriesQueryResult = Apollo.QueryResult<GetCountriesQuery, GetCountriesQueryVariables>;
 export const GetLanguagesDocument = gql`
-    query GetLanguages {
-  getLanguages {
+    query GetLanguages($slug: String) {
+  getLanguages(slug: $slug) {
     id
     name
   }
@@ -1208,6 +1258,7 @@ export const GetLanguagesDocument = gql`
  * @example
  * const { data, loading, error } = useGetLanguagesQuery({
  *   variables: {
+ *      slug: // value for 'slug'
  *   },
  * });
  */
@@ -1230,6 +1281,7 @@ export const GetMeUserServiceDocument = gql`
     serviceId
     level
     platforms
+    image
     description
     price
     per
@@ -1505,6 +1557,7 @@ export const namedOperations = {
   Mutation: {
     ChangePassword: 'ChangePassword',
     ChangeUserType: 'ChangeUserType',
+    ChangeUserserviceImage: 'ChangeUserserviceImage',
     DeleteImage: 'DeleteImage',
     DeleteUserService: 'DeleteUserService',
     ForgotPassword: 'ForgotPassword',

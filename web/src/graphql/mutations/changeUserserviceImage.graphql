@@ -1,0 +1,3 @@
+mutation ChangeUserserviceImage($files: [Upload!]!) {
+  changeUserserviceImage(files: $files)
+}

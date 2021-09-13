@@ -74,9 +74,13 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                 </div>
                 {/* {user.age && new Date().getFullYear() - new Date(user.age).getFullYear()} */}
                 <Button
-                  text={`order`}
+                  text={`View`}
                   className='p-1 m-1'
                   onClick={() => router.push(`/service/${serviceId}`)}
+                />
+                <Button
+                  text={`Order`}
+                  className='p-1 m-1'
                 />
               </div>
             </div>

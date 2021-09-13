@@ -17,7 +17,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
   return (
     <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base'>
       {data?.filterUserService?.userService.map(
-        ({ user, price, per, serviceId }, index) => (
+        ({ user, price, per, id }, index) => (
           <div key={index} className='bg-white dark:bg-dark flex flex-col'>
             <div
               style={{ position: 'relative', width: '100%', height: '200px' }}
@@ -76,7 +76,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                 <Button
                   text={`View`}
                   className='p-1 m-1'
-                  onClick={() => router.push(`/service/${serviceId}`)}
+                  onClick={() => router.push(`/service/${id}`)}
                 />
                 <Button
                   text={`Order`}

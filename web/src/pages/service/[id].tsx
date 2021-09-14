@@ -97,10 +97,20 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                       ?.url ?? transparent.src
                   }
                 />
-              </div>{" "}
-              <div className=" ">test</div>
+              </div>
+              <div className="flex flex-wrap space-x-32 text-center">
+                <div className="text-3xl">{user?.username}</div>
+                {user?.lastOnline == new Date() ? (
+                  <div className="bg-green-500 h-8 w-8 rounded-full mr-1"></div>
+                ) : (
+                  <div className="bg-red h-8 w-8 rounded-full mr-1"></div>
+                )}
+              </div>
+              <div className="flex flex-0">
+                <div></div>
+              </div>
             </div>
-          </div>{" "}
+          </div>
         </div>
       </div>
     </Wrapper>

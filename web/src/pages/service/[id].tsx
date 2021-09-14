@@ -38,7 +38,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
           objectFit="cover"
         />
       </div>
-      <div className="container max-auto max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
+      <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
         <div className="dark:text-white text-black text-4xl ">
           <div>
             <h1 className="mt-8">{service?.name}</h1>
@@ -47,8 +47,8 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             </h1>
           </div>{" "}
           <div className=" flex flex-0">
-            <div className="border border-purple-dark">
-              <div className="flex space-x-72 rounded-lg  text-center mt-8">
+            <div className=" ">
+              <div className="flex space-x-72 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5 text-center mt-8">
                 <div>
                   <h1>Review Score</h1>
                   <h2>5.0/5.0</h2>

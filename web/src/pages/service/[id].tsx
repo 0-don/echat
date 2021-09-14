@@ -16,11 +16,13 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   });
   const userService = data?.getUserServiceById;
   const user = data?.getUserServiceById.user;
-  const services = data?.getUserServiceById.user.services;
+  const services = data?.getUserServiceById?.user?.services;
   const service = data?.getUserServiceById.service;
   const images = service?.images?.filter((image) => image.width > 1200);
   const languages = data?.getUserServiceById?.user?.languages;
 
+  services;
+  gray;
   useEffect(() => {
     images?.length &&
       setBgImage(images[getRandomBetween(0, images.length)].url);

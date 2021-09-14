@@ -50,7 +50,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
           </div>{" "}
           <div className=" flex flex-0 space-x-4 ">
             <div className=" ">
-              <div className="flex space-x-72 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5 text-center mt-8">
+              <div className="flex space-x-40 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5 text-center mt-8">
                 <div>
                   <h1>Review Score</h1>
                   <h2>5.0/5.0</h2>
@@ -67,7 +67,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
 
               <div
                 className=""
-                style={{ position: "relative", width: "100%", height: "200px" }}
+                style={{ position: "relative", width: "100%", height: "350px" }}
               >
                 <Image
                   placeholder="blur"
@@ -83,13 +83,13 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 width: "400px",
                 height: "550px",
               }}
-              className=" flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5"
+              className=" items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5"
             >
               <div
                 className=""
                 style={{
                   position: "relative",
-                  width: "400px",
+                  width: "300px",
                   height: "300px",
                   maxWidth: "400px",
                   maxHeight: "300px",

@@ -94,7 +94,7 @@ const main = async () => {
       email: faker.internet.email(),
       password: faker.internet.password(),
       lastOnline: faker.date.recent(),
-      description: coinFlip() ? faker.lorem.text() : undefined,
+      description: faker.lorem.sentence(),
       age: new Date(
         new Date().setFullYear(
           new Date().getFullYear() - getRandomBetween(18, 50)

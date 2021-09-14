@@ -74,7 +74,9 @@ export class Service extends BaseEntity {
   @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.service, {
     cascade: true,
   })
-  @TypeormLoader()
+  @TypeormLoader((serviceImage: ServiceImage) => serviceImage.serviceId, {
+    selfKey: true,
+  })
   images: ServiceImage[];
 
   // UserService

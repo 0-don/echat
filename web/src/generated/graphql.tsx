@@ -322,7 +322,7 @@ export type User = {
   type?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
-  lastOnline: Scalars['String'];
+  lastOnline: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;
@@ -682,15 +682,19 @@ export type GetUserServiceByIdQuery = (
     ), user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'lastOnline' | 'age' | 'description' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'instagram' | 'twitch' | 'tiktok'>
-      & { services?: Maybe<Array<(
-        { __typename?: 'UserService' }
-        & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
-      )>>, country?: Maybe<(
+      & { country?: Maybe<(
         { __typename?: 'Country' }
         & Pick<Country, 'id' | 'name' | 'flag'>
       )>, images?: Maybe<Array<(
         { __typename?: 'Image' }
         & Pick<Image, 'id' | 'url' | 'type'>
+      )>>, services?: Maybe<Array<(
+        { __typename?: 'UserService' }
+        & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
+        & { service: (
+          { __typename?: 'Service' }
+          & Pick<Service, 'id' | 'type' | 'name' | 'twitchId' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres'>
+        ) }
       )>> }
     ) }
   ) }
@@ -1561,6 +1565,7 @@ export const GetUserServiceByIdDocument = gql`
       boxArtUrl
       first_release_date
       platforms
+      genres
       images {
         id
         url
@@ -1568,7 +1573,6 @@ export const GetUserServiceByIdDocument = gql`
         type
         height
       }
-      genres
     }
     user {
       id
@@ -1583,16 +1587,6 @@ export const GetUserServiceByIdDocument = gql`
       instagram
       twitch
       tiktok
-      services {
-        id
-        status
-        level
-        platforms
-        description
-        price
-        per
-        image
-      }
       country {
         id
         name
@@ -1602,6 +1596,27 @@ export const GetUserServiceByIdDocument = gql`
         id
         url
         type
+      }
+      services {
+        id
+        status
+        level
+        platforms
+        description
+        price
+        per
+        image
+        service {
+          id
+          type
+          name
+          twitchId
+          popularity
+          boxArtUrl
+          first_release_date
+          platforms
+          genres
+        }
       }
     }
   }

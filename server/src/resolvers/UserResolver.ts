@@ -147,6 +147,7 @@ export class UserResolver {
           username: username,
           email: email,
           password: hashedPassword,
+          lastOnline: new Date(),
         })
         .returning('*')
         .execute();

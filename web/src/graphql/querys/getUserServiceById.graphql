@@ -17,6 +17,7 @@ query GetUserServiceById($id: Int!) {
       boxArtUrl
       first_release_date
       platforms
+      genres
       images {
         id
         url
@@ -24,7 +25,6 @@ query GetUserServiceById($id: Int!) {
         type
         height
       }
-      genres
     }
     user {
       id
@@ -39,16 +39,6 @@ query GetUserServiceById($id: Int!) {
       instagram
       twitch
       tiktok
-      services {
-        id
-        status
-        level
-        platforms
-        description
-        price
-        per
-        image
-      }
       country {
         id
         name
@@ -58,6 +48,27 @@ query GetUserServiceById($id: Int!) {
         id
         url
         type
+      }
+      services {
+        id
+        status
+        level
+        platforms
+        description
+        price
+        per
+        image
+        service {
+          id
+          type
+          name
+          twitchId
+          popularity
+          boxArtUrl
+          first_release_date
+          platforms
+          genres
+        }
       }
     }
   }

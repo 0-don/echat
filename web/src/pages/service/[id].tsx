@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getRandomBetween } from "src/utils";
 import dayjs from "dayjs";
 import gray from "/public/gray.png";
+import { Button } from "src/components/htmlElements";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -38,6 +39,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
           objectFit="cover"
         />
       </div>
+
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
         <div className="dark:text-white text-black text-4xl ">
           <div>
@@ -151,6 +153,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                         </div>
                       );
                     })}
+                  </div>
+                  <div className=" flex flex-0 space-x-4">
+                    <Button text={"Chat"}></Button>
+                    <Button text={"Order"}></Button>
                   </div>
                 </div>
               </div>

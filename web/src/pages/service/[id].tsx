@@ -114,50 +114,48 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   <div className="bg-red-500 h-8 w-8 rounded-full mr-1"></div>
                 )}
               </div>
-              <div className="flex-col ">
-                <div className=" ">
-                  <div className="text-sm">services</div>
-                  <div className="flex flex-0    ">
-                    {services?.map((service) => {
-                      return (
-                        <div
-                          style={{
-                            position: "relative",
-                            width: "90px",
-                            height: "70px",
-                            maxWidth: "90px",
-                            maxHeight: "70px",
-                          }}
-                        >
-                          <Image
-                            placeholder="blur"
-                            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                            layout="fill"
-                            objectFit="cover"
-                            src={
-                              service
-                                ? "" + service?.service?.boxArtUrl
-                                : gray.src
-                            }
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="text-sm">languages</div>
-                  <div className="flex flex-0 space-x-2  ">
-                    {languages?.map((language) => {
-                      return (
-                        <div className="dark:text-white text-black text-lg">
-                          {language.name}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className=" flex flex-0 space-x-4">
-                    <Button text={"Chat"}></Button>
-                    <Button text={"Order"}></Button>
-                  </div>
+              <div className="flex-col container ">
+                <div className="text-sm">services</div>
+                <div className="flex flex-0    ">
+                  {services?.map((service) => {
+                    return (
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "90px",
+                          height: "70px",
+                          maxWidth: "90px",
+                          maxHeight: "70px",
+                        }}
+                      >
+                        <Image
+                          placeholder="blur"
+                          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                          layout="fill"
+                          objectFit="cover"
+                          src={
+                            service
+                              ? "" + service?.service?.boxArtUrl
+                              : gray.src
+                          }
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="text-sm">languages</div>
+                <div className="flex flex-0 space-x-2  ">
+                  {languages?.map((language) => {
+                    return (
+                      <div className="dark:text-white text-black text-lg">
+                        {language.name}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className=" flex flex-0 space-x-4">
+                  <Button text={"Chat"}></Button>
+                  <Button text={"Order"}></Button>
                 </div>
               </div>
             </div>

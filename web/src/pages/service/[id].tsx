@@ -34,7 +34,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
           objectFit="cover"
         />
       </div>
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
+      <div className="container max-auto max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
         <div className="dark:text-white text-black text-4xl ">
           <div>
             <h1 className="mt-8">{service?.name}</h1>
@@ -42,63 +42,65 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               {userService?.price} {userService?.per}
             </h1>
           </div>{" "}
-          <div
-            style={{
-              width: "400px",
-            }}
-            className="flex flex-col border  border-purple-dark"
-          >
-            <div
-              className=" "
-              style={{
-                position: "relative",
-                width: "400px",
-                height: "300px",
-                maxWidth: "400px",
-                maxHeight: "300px",
-              }}
-            >
-              <Image
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                layout="fill"
-                objectFit="cover"
-                src={
-                  user?.images?.find((image) => image.type == "profile")?.url ??
-                  transparent.src
-                }
-              />
-            </div>{" "}
-            <div className=" ">test</div>
-          </div>
-          <div className="border border-purple-dark">
-            <div className="flex flex-wrap space-x-72 rounded-lg  text-center mt-8">
-              <div>
-                <h1>Review Score</h1>
-                <h2>5.0/5.0</h2>
+          <div className=" flex flex-0">
+            <div className="border border-purple-dark">
+              <div className="flex space-x-72 rounded-lg  text-center mt-8">
+                <div>
+                  <h1>Review Score</h1>
+                  <h2>5.0/5.0</h2>
+                </div>
+                <div>
+                  <h1>Served</h1>
+                  <h2>52</h2>
+                </div>
+                <div>
+                  <h1>Recommended</h1>
+                  <h2>51</h2>
+                </div>
               </div>
-              <div>
-                <h1>Served</h1>
-                <h2>52</h2>
-              </div>
-              <div>
-                <h1>Recommended</h1>
-                <h2>51</h2>
-              </div>
-            </div>
 
-            <div
-              style={{ position: "relative", width: "100%", height: "200px" }}
-            >
-              <Image
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                layout="fill"
-                objectFit="cover"
-                src={userService?.image ?? transparent.src}
-              />
+              <div
+                style={{ position: "relative", width: "100%", height: "200px" }}
+              >
+                <Image
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                  layout="fill"
+                  objectFit="cover"
+                  src={userService?.image ?? transparent.src}
+                />
+              </div>
             </div>
-          </div>
+            <div
+              style={{
+                width: "400px",
+              }}
+              className=" flex flex-col border  border-purple-dark"
+            >
+              <div
+                className=""
+                style={{
+                  position: "relative",
+                  width: "400px",
+                  height: "300px",
+                  maxWidth: "400px",
+                  maxHeight: "300px",
+                }}
+              >
+                <Image
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                  layout="fill"
+                  objectFit="cover"
+                  src={
+                    user?.images?.find((image) => image.type == "profile")
+                      ?.url ?? transparent.src
+                  }
+                />
+              </div>{" "}
+              <div className=" ">test</div>
+            </div>
+          </div>{" "}
         </div>
       </div>
     </Wrapper>

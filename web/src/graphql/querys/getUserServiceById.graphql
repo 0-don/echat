@@ -39,6 +39,10 @@ query GetUserServiceById($id: Int!) {
       instagram
       twitch
       tiktok
+      languages {
+        id
+        name
+      }
       services {
         id
         status
@@ -47,7 +51,11 @@ query GetUserServiceById($id: Int!) {
         description
         price
         per
-        image
+        images {
+          id
+          type
+          url
+        }
       }
       country {
         id

@@ -322,7 +322,7 @@ export type User = {
   type?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
-  lastOnline: Scalars['String'];
+  lastOnline: Scalars['DateTime'];
   description?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;
@@ -682,9 +682,16 @@ export type GetUserServiceByIdQuery = (
     ), user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'lastOnline' | 'age' | 'description' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'instagram' | 'twitch' | 'tiktok'>
-      & { services?: Maybe<Array<(
+      & { languages?: Maybe<Array<(
+        { __typename?: 'UserLanguage' }
+        & Pick<UserLanguage, 'id' | 'name'>
+      )>>, services?: Maybe<Array<(
         { __typename?: 'UserService' }
-        & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
+        & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'ServiceImage' }
+          & Pick<ServiceImage, 'id' | 'type' | 'url'>
+        )>> }
       )>>, country?: Maybe<(
         { __typename?: 'Country' }
         & Pick<Country, 'id' | 'name' | 'flag'>
@@ -1583,6 +1590,10 @@ export const GetUserServiceByIdDocument = gql`
       instagram
       twitch
       tiktok
+      languages {
+        id
+        name
+      }
       services {
         id
         status
@@ -1591,7 +1602,11 @@ export const GetUserServiceByIdDocument = gql`
         description
         price
         per
-        image
+        images {
+          id
+          type
+          url
+        }
       }
       country {
         id

@@ -6,6 +6,8 @@ import Image from "next/image";
 import transparent from "/public/transparent.png";
 import { useEffect, useState } from "react";
 import { getRandomBetween } from "src/utils";
+import dayjs from "dayjs";
+import gray from "/public/gray.png";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -14,15 +16,14 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   });
   const userService = data?.getUserServiceById;
   const user = data?.getUserServiceById.user;
+  const services = data?.getUserServiceById.user.services;
   const service = data?.getUserServiceById.service;
   const images = service?.images?.filter((image) => image.width > 1200);
-
+  const languages = data?.getUserServiceById.user.languages;
   useEffect(() => {
     images?.length &&
       setBgImage(images[getRandomBetween(0, images.length)].url);
   }, [images]);
-
-  console.log(user);
 
   return (
     <Wrapper navbar fluid className="relative">
@@ -74,8 +75,9 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             <div
               style={{
                 width: "400px",
+                height: "550px",
               }}
-              className=" flex flex-col border  border-purple-dark"
+              className=" flex flex-col"
             >
               <div
                 className=""
@@ -100,14 +102,61 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               </div>
               <div className="flex flex-wrap space-x-32 text-center">
                 <div className="text-3xl">{user?.username}</div>
-                {user?.lastOnline == new Date() ? (
+                {dayjs(new Date()).diff(user?.lastOnline, "day") * -1 < 2 ? (
                   <div className="bg-green-500 h-8 w-8 rounded-full mr-1"></div>
                 ) : (
-                  <div className="bg-red h-8 w-8 rounded-full mr-1"></div>
+                  <div className="bg-red-500 h-8 w-8 rounded-full mr-1"></div>
                 )}
               </div>
-              <div className="flex flex-0">
-                <div></div>
+              <div className="flex-col">
+                <div className=" border border-purple-dark">
+                  <div className="text-sm">services</div>
+                  <div className="flex flex-0 space-x-2  ">
+                    {services?.map((service) => {
+                      console.log(
+                        service?.images?.find((image) => image.type == "cover")
+                          ?.url
+                      );
+                      return (
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "90px",
+                            height: "70px",
+                            maxWidth: "90px",
+                            maxHeight: "70px",
+                          }}
+                        >
+                          <Image
+                            placeholder="blur"
+                            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                            layout="fill"
+                            objectFit="cover"
+                            src={
+                              // service
+                              //   ? "" +
+                              //     service?.images?.find(
+                              //       (image) => image.type == "covers"
+                              //     )?.url
+                              //:
+                              gray.src
+                            }
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="text-sm">languages</div>
+                  <div className="flex flex-0 space-x-2  ">
+                    {languages?.map((language) => {
+                      return (
+                        <div className="dark:text-white text-black text-xs">
+                          {language.name}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

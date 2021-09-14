@@ -64,6 +64,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               </div>
 
               <div
+                className=""
                 style={{ position: "relative", width: "100%", height: "200px" }}
               >
                 <Image
@@ -80,7 +81,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 width: "400px",
                 height: "550px",
               }}
-              className=" flex flex-col"
+              className=" flex flex-col   bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5"
             >
               <div
                 className=""
@@ -112,7 +113,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 )}
               </div>
               <div className="flex-col">
-                <div className=" border border-purple-dark">
+                <div className=" ">
                   <div className="text-sm">services</div>
                   <div className="flex flex-0 space-x-2  ">
                     {services?.map((service) => {

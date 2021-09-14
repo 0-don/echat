@@ -9,6 +9,6 @@
     "web": "cd web && yarn && yarn dev",
     "webbuild": "cd web && yarn && yarn build",
     "server": "cd server && yarn && yarn dev",
-    "webserver": "cd server && yarn && yarn build"
+    "serverbuild": "cd server && yarn && yarn build"
   }
 }

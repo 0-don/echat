@@ -106,7 +106,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   }
                 />
               </div>
-              <div className="flex flex-wrap space-x-32 text-center">
+              <div className="flex flex-0 space-x-28 text-center">
                 <div className="text-3xl">{user?.username}</div>
                 {dayjs(new Date()).diff(user?.lastOnline, "day") * -1 < 2 ? (
                   <div className="bg-green-500 h-8 w-8 rounded-full mr-1"></div>

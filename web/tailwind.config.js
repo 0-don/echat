@@ -10,6 +10,7 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
+      red: colors.red,
       purple: {
         // unkwnonw
         light: "#85d7ff",

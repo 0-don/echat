@@ -28,14 +28,15 @@ import {
   faCoins,
   faBars,
   faSearch,
+  faMars,
+  faVenus,
+  faTransgender,
 } from '@fortawesome/free-solid-svg-icons';
 
-// import {
-//  faWr
-
-// } from '@fortawesome/free-regular-svg-icons';
-
 library.add(
+  faMars,
+  faVenus,
+  faTransgender,
   faSearch,
   faBars,
   faCoins,

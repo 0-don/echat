@@ -1,0 +1,55 @@
+query GetUser($id: Int!) {
+  getUser(id: $id) {
+    id
+    type
+    username
+    email
+    lastOnline
+    description
+    age
+    gender
+    discord
+    twitter
+    facebook
+    snapchat
+    instagram
+    twitch
+    steam
+    tiktok
+    country {
+      id
+      name
+      flag
+    }
+    images {
+      id
+      type
+      url
+    }
+    languages {
+      id
+      name
+    }
+    schedules {
+      id
+      name
+      from
+      to
+      available
+    }
+    services {
+      id
+      status
+      level
+      platforms
+      description
+      price
+      per
+      images {
+        id
+        type
+        url
+      }
+    }
+  }
+}

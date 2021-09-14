@@ -39,6 +39,10 @@ query GetUserServiceById($id: Int!) {
       instagram
       twitch
       tiktok
+      languages {
+        id
+        name
+      }
       country {
         id
         name

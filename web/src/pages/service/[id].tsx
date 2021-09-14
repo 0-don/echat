@@ -48,7 +48,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               {userService?.price} {userService?.per}
             </h1>
           </div>{" "}
-          <div className=" flex flex-0">
+          <div className=" flex flex-0 space-x-4 ">
             <div className=" ">
               <div className="flex space-x-72 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5 text-center mt-8">
                 <div>
@@ -83,7 +83,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 width: "400px",
                 height: "550px",
               }}
-              className=" flex flex-col   bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5"
+              className=" flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5"
             >
               <div
                 className=""
@@ -114,10 +114,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   <div className="bg-red-500 h-8 w-8 rounded-full mr-1"></div>
                 )}
               </div>
-              <div className="flex-col">
+              <div className="flex-col ">
                 <div className=" ">
                   <div className="text-sm">services</div>
-                  <div className="flex flex-0 space-x-2  ">
+                  <div className="flex flex-0    ">
                     {services?.map((service) => {
                       return (
                         <div

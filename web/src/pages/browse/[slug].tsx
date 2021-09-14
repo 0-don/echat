@@ -5,8 +5,7 @@ import { Sidebar } from 'src/components/utils/Sidebar';
 import {
   useFilterUserServiceQuery,
   useGetServicesQuery,
-} from 'src/generated/graphql';
-
+} from 'src/generated/graphql'; 
 import { NextPage } from 'next';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';

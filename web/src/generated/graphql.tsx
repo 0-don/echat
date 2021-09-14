@@ -682,21 +682,7 @@ export type GetUserServiceByIdQuery = (
     ), user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'lastOnline' | 'age' | 'description' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'instagram' | 'twitch' | 'tiktok'>
-<<<<<<< HEAD
       & { country?: Maybe<(
-=======
-      & { languages?: Maybe<Array<(
-        { __typename?: 'UserLanguage' }
-        & Pick<UserLanguage, 'id' | 'name'>
-      )>>, services?: Maybe<Array<(
-        { __typename?: 'UserService' }
-        & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-        & { images?: Maybe<Array<(
-          { __typename?: 'ServiceImage' }
-          & Pick<ServiceImage, 'id' | 'type' | 'url'>
-        )>> }
-      )>>, country?: Maybe<(
->>>>>>> profiledetail
         { __typename?: 'Country' }
         & Pick<Country, 'id' | 'name' | 'flag'>
       )>, images?: Maybe<Array<(
@@ -1601,27 +1587,6 @@ export const GetUserServiceByIdDocument = gql`
       instagram
       twitch
       tiktok
-<<<<<<< HEAD
-=======
-      languages {
-        id
-        name
-      }
-      services {
-        id
-        status
-        level
-        platforms
-        description
-        price
-        per
-        images {
-          id
-          type
-          url
-        }
-      }
->>>>>>> profiledetail
       country {
         id
         name

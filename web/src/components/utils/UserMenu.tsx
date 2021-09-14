@@ -65,7 +65,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
       <>
         <Menu.Item>
           <NextLink href="/register">
-            <div className="flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
+            <div className="cursor-pointer flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
               <FontAwesomeIcon
                 size="xs"
                 className="dark:text-white text-black mx-2"
@@ -77,7 +77,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
         </Menu.Item>
         <Menu.Item>
           <NextLink href="/login">
-            <div className="flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
+            <div className="cursor-pointer flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
               <FontAwesomeIcon
                 size="xs"
                 className="dark:text-white text-black mx-2"
@@ -94,7 +94,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
       <>
         <Menu.Item>
           <NextLink href="/setting/profile">
-            <div className="flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
+            <div className="cursor-pointer flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
               <FontAwesomeIcon
                 size="xs"
                 className="dark:text-white text-black mx-2"
@@ -105,7 +105,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
           </NextLink>
         </Menu.Item>
         <Menu.Item>
-          <div className="flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
+          <div className="cursor-pointer flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white">
             <FontAwesomeIcon
               size="xs"
               className="dark:text-white text-black mx-2"
@@ -132,7 +132,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
         {({ open }) => (
           <>
             <div>
-              <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple">
+              <Menu.Button className="cursor-pointer bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple">
                 <span className="sr-only">Open user menu</span>
                 <img
                   className="h-8 w-8 rounded-full"

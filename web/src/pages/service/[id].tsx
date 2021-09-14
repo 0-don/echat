@@ -41,9 +41,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             <h1 className="mt-8">
               {userService?.price} {userService?.per}
             </h1>
-            <div className="">
+
+            <div className="flex flex-wrap ">
               <div
-                className="left-3/4"
+                className="left-3/4 "
                 style={{
                   position: "relative",
                   width: "400px",
@@ -63,30 +64,36 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   }
                 />
               </div>
+              <div className="">test</div>
             </div>
-            <div className="flex flex-wrap space-x-72 rounded-lg border border-purple-dark text-center mt-8">
-              <div>
-                <h1>Review Score</h1>
-                <h2>5.0/5.0</h2>
+            <div className="border border-purple-dark">
+              <div className="flex flex-wrap space-x-72 rounded-lg  text-center mt-8">
+                <div>
+                  <h1>Review Score</h1>
+                  <h2>5.0/5.0</h2>
+                </div>
+                <div>
+                  <h1>Served</h1>
+                  <h2>52</h2>
+                </div>
+                <div>
+                  <h1>Recommended</h1>
+                  <h2>51</h2>
+                </div>
               </div>
-              <div>
-                <h1>Served</h1>
-                <h2>52</h2>
-              </div>
-              <div>
-                <h1>Recommended</h1>
-                <h2>51</h2>
+
+              <div
+                style={{ position: "relative", width: "100%", height: "200px" }}
+              >
+                <Image
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                  layout="fill"
+                  objectFit="cover"
+                  src={userService?.image ?? transparent.src}
+                />
               </div>
             </div>
-          </div>
-          <div style={{ position: "relative", width: "100%", height: "200px" }}>
-            <Image
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-              layout="fill"
-              objectFit="cover"
-              src={userService?.image ?? transparent.src}
-            />
           </div>
         </div>
       </div>

@@ -322,7 +322,7 @@ export type User = {
   type?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
-  lastOnline: Scalars['DateTime'];
+  lastOnline?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;

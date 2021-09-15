@@ -22,7 +22,7 @@ const CHATS_SUBSCRIPTION = gql`
 `;
 
 const Chats = () => {
-  const { loading, error, subscribeToMore } = useQuery(ALL_CHATS);
+  const { data, loading, error, subscribeToMore } = useQuery(ALL_CHATS);
 
   useEffect(() => {
     subscribeToMore({
@@ -41,18 +41,17 @@ const Chats = () => {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  return <h1>LOL</h1>;
-  // return (
-  //   <div>
-  //     {data.getChats.map((chat: any) => (
-  //       <div key={chat.id}>
-  //         <p>
-  //           {chat.name}: {chat.message}
-  //         </p>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
+  return (
+    <div>
+      {data?.getChats.map((chat: any) => (
+        <div key={chat.id}>
+          <p>
+            {chat.name}: {chat.message}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Chats;

@@ -30,11 +30,11 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
 
   return (
     <div>
-      <div className='bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 my-5'>
-        <div className='flex flex-col md:flex-row space-y-5 md:space-x-0.5 items-center'>
+      <div className='bg-white dark:bg-dark dark:text-white shadow sm:rounded-lg p-3 px-5 my-5'>
+        <div className='flex flex-col md:flex-row  items-center'>
           <div className='flex flex-col space-x-1'>
             <h3 className='font-medium'>Average Score</h3>
-            <div className='flex items-end space-x-2'>
+            <div className='flex items-end space-x-2.5'>
               <p>
                 <span className='text-5xl'>{rating.toFixed(1)}</span>
                 <span className='text-4xl'>/</span>
@@ -50,7 +50,7 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
             </div>
           </div>
 
-          <div className='flex'>
+          <div className='flex mt-3 md:mt-0'>
             <div className='md:border-r border-gray-500 md:ml-10 md:mr-3'></div>
 
             <div>

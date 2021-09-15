@@ -98,6 +98,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
+  deleteAllImages: Scalars['Boolean'];
   multipleUpload: Scalars['Boolean'];
   deleteImage: Scalars['Boolean'];
   changeUserserviceImage: Scalars['String'];

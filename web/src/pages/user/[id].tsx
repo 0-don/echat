@@ -12,6 +12,7 @@ import { Services } from 'src/components/user/Services';
 import { SRLWrapper } from 'simple-react-lightbox';
 import { Album } from 'src/components/user/Album';
 import { getRandomBetween } from 'src/utils';
+import { Reviews } from 'src/components/user/Reviews';
 
 const genderIcon = (gender: string | undefined) => {
   switch (gender) {
@@ -28,9 +29,9 @@ const genderIcon = (gender: string | undefined) => {
 
 const UserDetail: NextPage<{ id: number }> = ({ id }) => {
   const [tabs, setTabs] = useState([
-    { name: 'Services', icon: 'gamepad', current: true },
+    { name: 'Services', icon: 'gamepad', current: false },
     { name: 'Album', icon: 'images', current: false },
-    { name: 'Reviews', icon: 'star', current: false },
+    { name: 'Reviews', icon: 'star', current: true },
   ]);
   const [rating, _] = useState(
     parseFloat(`${getRandomBetween(0, 5)}.${getRandomBetween(0, 9)}`)
@@ -145,6 +146,9 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
         )}
         {tabs.find(({ name, current }) => name === 'Album' && current) && (
           <Album data={data} />
+        )}
+        {tabs.find(({ name, current }) => name === 'Reviews' && current) && (
+          <Reviews data={data} rating={rating} />
         )}
       </div>
     </Wrapper>

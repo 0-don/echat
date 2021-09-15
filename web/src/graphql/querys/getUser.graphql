@@ -45,6 +45,11 @@ query GetUser($id: Int!) {
       description
       price
       per
+      service {
+        id
+        name
+        boxArtUrl
+      }
       images {
         id
         type

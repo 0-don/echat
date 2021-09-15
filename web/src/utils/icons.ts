@@ -31,9 +31,11 @@ import {
   faMars,
   faVenus,
   faTransgender,
+  faImages,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+  faImages,
   faMars,
   faVenus,
   faTransgender,

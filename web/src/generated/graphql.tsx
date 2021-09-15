@@ -654,7 +654,10 @@ export type GetUserQuery = (
     )>>, services?: Maybe<Array<(
       { __typename?: 'UserService' }
       & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-      & { images?: Maybe<Array<(
+      & { service: (
+        { __typename?: 'Service' }
+        & Pick<Service, 'id' | 'name' | 'boxArtUrl'>
+      ), images?: Maybe<Array<(
         { __typename?: 'ServiceImage' }
         & Pick<ServiceImage, 'id' | 'type' | 'url'>
       )>> }
@@ -1511,6 +1514,11 @@ export const GetUserDocument = gql`
       description
       price
       per
+      service {
+        id
+        name
+        boxArtUrl
+      }
       images {
         id
         type

@@ -4,10 +4,11 @@ import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
 import Image from 'next/image';
 import transparent from '/public/transparent.png';
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dayjs from 'dayjs';
-import { Button } from 'src/components/htmlElements';
+import { Tabs } from 'src/components/user/Tabs';
+import { Services } from 'src/components/user/Services';
 
 const genderIcon = (gender: string | undefined) => {
   switch (gender) {
@@ -23,13 +24,18 @@ const genderIcon = (gender: string | undefined) => {
 };
 
 const UserDetail: NextPage<{ id: number }> = ({ id }) => {
+  const [tabs, setTabs] = useState([
+    { name: 'Services', icon: 'gamepad', current: true },
+    { name: 'Album', icon: 'images', current: false },
+    { name: 'Reviews', icon: 'star', current: false },
+  ]);
+
   const { data } = useGetUserQuery({
     variables: { id },
   });
   const user = data?.getUser;
   const images = data?.getUser?.images;
   const profileImage = images?.find((image) => image.type === 'profile')?.url;
-  console.log(profileImage);
 
   const socials = (icon: string, username: string) => (
     <div className='flex items-center'>
@@ -37,6 +43,10 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
       {username}
     </div>
   );
+  
+  if (!data) {
+    return null;
+  }
 
   return (
     <Wrapper navbar fluid className='dark:text-white text-black relative'>
@@ -54,7 +64,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
               />
             </div>
 
-            <div className='flex flex-col space-y-2 max-w-xs'>
+            <div className='flex flex-col space-y-2'>
               <div className='flex items-center space-x-2'>
                 <h1 className='text-2xl font-bold'>{user?.username}</h1>
                 <FontAwesomeIcon
@@ -83,9 +93,23 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
                   {user?.languages &&
                     user.languages.map((lang) => lang.name).join(' / ')}
                 </p>
+                <p className='flex items-center space-x-1'>
+                  <span>Country:</span>
+                  {user?.country && (
+                    <>
+                      <span>{user.country.name}</span>
+                      <img
+                        src={`data:image/jpeg;base64,${user.country?.flag}`}
+                        alt={user.country?.name}
+                        title={user.country?.name}
+                        className='h-2.5'
+                      />
+                    </>
+                  )}
+                </p>
               </div>
 
-              <div className='grid grid-cols-2 text-sm'>
+              <div className='grid grid-cols-2 gap-x-5 text-sm'>
                 {user?.discord && socials('discord', user.discord)}
                 {user?.facebook && socials('facebook', user.facebook)}
                 {user?.instagram && socials('instagram', user.instagram)}
@@ -101,10 +125,14 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
           </div>
 
           <div className='flex space-x-5 md:order-none justify-between md:justify-start mb-5'>
-            <Button text='follow' className='h-13 w-28 rounded-3xl text-xl' />
-            <Button text='chat' className='h-13 w-28 rounded-3xl text-xl' />
+            <button className='big-button'>follow</button>
+            <button className='big-button'>chat</button>
           </div>
         </div>
+        <Tabs tabs={tabs} setTabs={setTabs} />
+        {tabs.find(({ name, current }) => name === 'Services' && current) && (
+          <Services data={data} />
+        )}
       </div>
     </Wrapper>
   );

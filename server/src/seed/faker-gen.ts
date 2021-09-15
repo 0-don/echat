@@ -125,7 +125,9 @@ const main = async () => {
     // IMAGES
     images.push(imageTemplate(userId, 'profile'));
     images.push(imageTemplate(userId, 'cover'));
-    images.push(imageTemplate(userId, 'secondary'));
+    for (let x = 0; x < getRandomBetween(4, 8); x++) {
+      images.push(imageTemplate(userId, 'secondary'));
+    }
 
     // USERSERVICES
     for (let x = 0; x < getRandomBetween(4, 8); x++) {

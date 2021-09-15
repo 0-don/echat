@@ -43,6 +43,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                     {user.username}
                   </h1>
                 </div>
+
                 <img
                   src={`data:image/jpeg;base64,${user.country?.flag}`}
                   alt={user.country?.name}

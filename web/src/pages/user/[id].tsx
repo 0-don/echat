@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dayjs from 'dayjs';
 import { Tabs } from 'src/components/user/Tabs';
 import { Services } from 'src/components/user/Services';
+import { SRLWrapper } from 'simple-react-lightbox';
+import { Album } from 'src/components/user/Album';
+import { getRandomBetween } from 'src/utils';
 
 const genderIcon = (gender: string | undefined) => {
   switch (gender) {
@@ -29,7 +32,9 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
     { name: 'Album', icon: 'images', current: false },
     { name: 'Reviews', icon: 'star', current: false },
   ]);
-
+  const [rating, _] = useState(
+    parseFloat(`${getRandomBetween(0, 5)}.${getRandomBetween(0, 9)}`)
+  );
   const { data } = useGetUserQuery({
     variables: { id },
   });
@@ -43,7 +48,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
       {username}
     </div>
   );
-  
+
   if (!data) {
     return null;
   }
@@ -53,17 +58,22 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
       <div className='container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0 mt-5 '>
         <div className='flex flex-col-reverse md:flex-row md:items-end md:justify-between'>
           <div className='flex items-start space-x-4'>
-            <div
-              style={{ position: 'relative', width: '250px', height: '250px' }}
-            >
-              <Image
-                layout='fill'
-                objectFit='cover'
-                className='rounded-xl'
-                src={profileImage ?? transparent.src}
-              />
-            </div>
-
+            <SRLWrapper>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '250px',
+                  height: '250px',
+                }}
+              >
+                <Image
+                  layout='fill'
+                  objectFit='cover'
+                  className='rounded-xl'
+                  src={profileImage ?? transparent.src}
+                />
+              </div>
+            </SRLWrapper>
             <div className='flex flex-col space-y-2'>
               <div className='flex items-center space-x-2'>
                 <h1 className='text-2xl font-bold'>{user?.username}</h1>
@@ -109,7 +119,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
                 </p>
               </div>
 
-              <div className='grid grid-cols-2 gap-x-5 text-sm'>
+              <div className='md:grid md:grid-cols-2 md:gap-x-5 text-sm'>
                 {user?.discord && socials('discord', user.discord)}
                 {user?.facebook && socials('facebook', user.facebook)}
                 {user?.instagram && socials('instagram', user.instagram)}
@@ -120,7 +130,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
                 {user?.tiktok && socials('tiktok', user.tiktok)}
               </div>
 
-              <div className=''>{user?.description}</div>
+              <p>{user?.description}</p>
             </div>
           </div>
 
@@ -131,7 +141,10 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
         </div>
         <Tabs tabs={tabs} setTabs={setTabs} />
         {tabs.find(({ name, current }) => name === 'Services' && current) && (
-          <Services data={data} />
+          <Services data={data} rating={rating} />
+        )}
+        {tabs.find(({ name, current }) => name === 'Album' && current) && (
+          <Album data={data} />
         )}
       </div>
     </Wrapper>

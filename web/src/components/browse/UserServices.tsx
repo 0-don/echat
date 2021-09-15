@@ -75,12 +75,16 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                   )} / ${per}`}</div>
                 </div>
                 {/* {user.age && new Date().getFullYear() - new Date(user.age).getFullYear()} */}
-                <Button
+                {/* <Button
                   text={`View`}
                   className='p-1 m-1'
                   onClick={() => router.push(`/service/${id}`)}
+                /> */}
+                <Button
+                  text={`Order`}
+                  className='p-1 m-1'
+                  onClick={() => router.push(`/service/${id}`)}
                 />
-                <Button text={`Order`} className='p-1 m-1' />
               </div>
             </div>
           </div>

@@ -3,19 +3,70 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { GetUserQuery } from 'src/generated/graphql';
 import { getRandomBetween } from 'src/utils';
-
 import gray from '/public/gray.png';
 import Image from 'next/image';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface ServicesProps {
   data: GetUserQuery | undefined;
+  rating: number;
 }
 
-export const Services: React.FC<ServicesProps> = ({ data }) => {
+export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
   const router = useRouter();
   const services = data?.getUser?.services;
+
+  const ratingStar = (star: number) => (
+    <FontAwesomeIcon
+      size='2x'
+      className={`${rating > star ? 'text-yellow-500' : 'text-dark-light'}`}
+      icon={
+        `${
+          rating > star && rating < star + 1 ? 'star-half-alt' : 'star'
+        }` as IconProp
+      }
+    />
+  );
+
   return (
     <div>
+      <div className='bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 my-5'>
+        <div className='flex flex-col md:flex-row space-y-5 md:space-x-0.5 items-center'>
+          <div className='flex flex-col space-x-1'>
+            <h3 className='font-medium'>Average Score</h3>
+            <div className='flex items-end space-x-2'>
+              <p>
+                <span className='text-5xl'>{rating.toFixed(1)}</span>
+                <span className='text-4xl'>/</span>
+                <span className='text-3xl'>5.0</span>
+              </p>
+              <div className='flex space-x-1 mb-0.5'>
+                {ratingStar(0)}
+                {ratingStar(1)}
+                {ratingStar(2)}
+                {ratingStar(3)}
+                {ratingStar(4)}
+              </div>
+            </div>
+          </div>
+
+          <div className='flex'>
+            <div className='md:border-r border-gray-500 md:ml-10 md:mr-3'></div>
+
+            <div>
+              <h3 className='font-medium'>Served</h3>
+              <p className='text-5xl'>{getRandomBetween(0, 200)}</p>
+            </div>
+
+            <div className='border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
+
+            <div>
+              <h3 className='font-medium'>Recomended</h3>
+              <p className='text-5xl'>{getRandomBetween(0, 200)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base mt-5'>
         {services?.map(({ price, per, id, service }) => (
           <div

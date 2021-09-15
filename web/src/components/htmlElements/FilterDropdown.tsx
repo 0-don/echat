@@ -71,7 +71,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   }, [wrapperRef]);
 
   return (
-    <div className={className + ' p-1'}>
+    <div className={className}>
       <Listbox value={list[3]} onChange={onChange}>
         <div className='mt-1  relative'>
           <div ref={buttonRef} onClick={() => setOpen(!open)}>
@@ -114,24 +114,21 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                   >
                     <span
                       className={`${
-                        currentValue.length > 0 &&
                         currentValue.find(
-                          (value: any) => value.name === item.name
-                        ) &&
-                        'font-semibold'
+                          (value: DropdownItem) => value.name === item.name
+                        ) && 'font-semibold'
                       } dark:text-white text-base block truncate`}
                     >
                       {item.name}
                     </span>
 
-                    {currentValue.length > 0 &&
-                      currentValue.find(
-                        (value: any) => value.name === item.name
-                      ) && (
-                        <span className='absolute inset-y-0 right-0 flex items-center pr-4   text-white'>
-                          <CheckIcon className='h-5 w-5 ' aria-hidden='true' />
-                        </span>
-                      )}
+                    {currentValue.find(
+                      (value: DropdownItem) => value.name === item.name
+                    ) && (
+                      <span className='absolute inset-y-0 right-0 flex items-center text-white'>
+                        <CheckIcon className='h-5 w-5 ' aria-hidden='true' />
+                      </span>
+                    )}
                   </Listbox.Option>
                 ))}
               </div>

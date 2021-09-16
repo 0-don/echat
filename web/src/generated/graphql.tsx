@@ -98,7 +98,6 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
-  deleteAllImages: Scalars['Boolean'];
   multipleUpload: Scalars['Boolean'];
   deleteImage: Scalars['Boolean'];
   changeUserserviceImage: Scalars['String'];
@@ -322,7 +321,7 @@ export type User = {
   type?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
-  lastOnline: Scalars['DateTime'];
+  lastOnline?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['DateTime']>;
   gender?: Maybe<Scalars['String']>;
@@ -654,7 +653,10 @@ export type GetUserQuery = (
     )>>, services?: Maybe<Array<(
       { __typename?: 'UserService' }
       & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per'>
-      & { images?: Maybe<Array<(
+      & { service: (
+        { __typename?: 'Service' }
+        & Pick<Service, 'id' | 'name' | 'boxArtUrl'>
+      ), images?: Maybe<Array<(
         { __typename?: 'ServiceImage' }
         & Pick<ServiceImage, 'id' | 'type' | 'url'>
       )>> }
@@ -1511,6 +1513,11 @@ export const GetUserDocument = gql`
       description
       price
       per
+      service {
+        id
+        name
+        boxArtUrl
+      }
       images {
         id
         type

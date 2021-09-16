@@ -42,13 +42,13 @@ export const Filter: React.FC = () => {
         <FilterDropdown
           list={languages}
           fieldName='languages'
-          className='w-6/12 md:w-44'
+          className='w-6/12 md:w-44 p-1'
           sort
         />
         <FilterDropdown
           list={GENDERS}
           fieldName='genders'
-          className='w-6/12 md:w-36'
+          className='w-6/12 md:w-36 p-1'
           sort
         />
         <FilterDropdown
@@ -58,7 +58,7 @@ export const Filter: React.FC = () => {
             { id: 3, name: '30+' },
           ]}
           fieldName='ages'
-          className='w-6/12 md:w-36'
+          className='w-6/12 md:w-36 p-1'
           sort
         />
         <FilterDropdown
@@ -68,14 +68,14 @@ export const Filter: React.FC = () => {
             { id: 3, name: '10-20' },
             { id: 4, name: '20+' },
           ]}
-          className='w-6/12 md:w-36'
+          className='w-6/12 md:w-36 p-1'
           fieldName='prices'
         />
-        <div className='md:p-0 p-1 mt-0.5'>
+        <div className='p-1'>
           <Button
             icon='search'
             text='filter'
-            className='h-10 w-full'
+            className='py-5 border-2 border-purple hover:border-purple-dark mt-0.5'
             onClick={async () => {
               setCursor(undefined);
               await refetch({ ...filterQuery, cursor: undefined });

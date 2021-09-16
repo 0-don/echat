@@ -20,12 +20,6 @@ type ImageTypes = 'profile' | 'cover' | 'secondary';
 
 @Resolver(Image)
 export class ImageResolver {
-  @Mutation(() => Boolean)
-  async deleteAllImages() {
-    Image.delete({});
-    return true;
-  }
-
   @Query(() => [Image], { nullable: true })
   async allImages() {
     const images = await Image.find({});

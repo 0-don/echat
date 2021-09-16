@@ -9,6 +9,7 @@ import { getRandomBetween } from "src/utils";
 import dayjs from "dayjs";
 import gray from "/public/gray.png";
 import { Button } from "src/components/htmlElements";
+import { OrderModal } from "src/components/order/OrderModal";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -155,7 +156,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 </div>
                 <div className=" flex flex-0 space-x-4">
                   <Button text={"Chat"}></Button>
-                  <Button text={"Order"}></Button>
+                  <OrderModal />
                 </div>
               </div>
             </div>

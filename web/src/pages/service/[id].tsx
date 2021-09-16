@@ -4,12 +4,13 @@ import { Wrapper } from "../../components/Wrapper";
 import withApollo from "../../utils/apollo/withApollo";
 import Image from "next/image";
 import transparent from "/public/transparent.png";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getRandomBetween } from "src/utils";
 import dayjs from "dayjs";
 import gray from "/public/gray.png";
 import { Button } from "src/components/htmlElements";
 import { OrderModal } from "src/components/order/OrderModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -131,6 +132,16 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                     );
                   })}
                 </div>
+                <FontAwesomeIcon
+                  size="lg"
+                  className="text-purple opacity-25"
+                  icon="angle-double-left"
+                />
+                <FontAwesomeIcon
+                  size="lg"
+                  className=""
+                  icon="angle-double-right"
+                />
                 <div className="text-sm">services</div>
                 <div className="flex flex-0  space-x-2  ">
                   {services?.map((service, maxItems) => {

@@ -44,14 +44,18 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
         <div className="dark:text-white text-black text-4xl ">
           <div>
-            <h1 className="mt-8">{service?.name}</h1>
-            <h1 className="mt-8">
+            <h1 className="mt-4 ">{service?.name}</h1>
+            <div className="mt-4 mb-4 flex   w-full justify-between">
               {userService?.price} {userService?.per}
-            </h1>
+              <div className="flex space-x-4">
+                <Button text={"Chat"}></Button>
+                <OrderModal />
+              </div>
+            </div>
           </div>
           <div className=" flex flex-0 space-x-4 ">
             <div className=" ">
-              <div className="flex space-x-40 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5 text-center mt-8">
+              <div className="inset-x-0 top-0 flex space-x-40 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-3 text-center ">
                 <div>
                   <h1>Review Score</h1>
                   <h2>5.0/5.0</h2>
@@ -83,10 +87,9 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 width: "400px",
                 height: "550px",
               }}
-              className=" items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5"
+              className=" items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4 sm:rounded-lg sm:p-6 mb-5"
             >
               <div
-                className=""
                 style={{
                   position: "relative",
                   width: "300px",
@@ -119,7 +122,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   <div className="text-lg">Language:</div>
                   {languages?.map((language) => {
                     return (
-                      <div className="dark:text-white text-black text-lg ">
+                      <div
+                        key={language.id}
+                        className="dark:text-white text-black text-lg "
+                      >
                         {language.name}
                       </div>
                     );
@@ -128,10 +134,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 <div className="text-sm">services</div>
                 <div className="flex flex-0  space-x-2  ">
                   {services?.map((service, maxItems) => {
-                    if (maxItems <= 4) {
-                      maxItems++;
+                    if (maxItems++ <= 4) {
                       return (
                         <div
+                          key={service.id}
                           style={{
                             position: "relative",
                             width: "100px",
@@ -151,12 +157,8 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                           />
                         </div>
                       );
-                    }
+                    } else return <div key={service.id}></div>;
                   })}
-                </div>
-                <div className=" flex flex-0 space-x-4 ">
-                  <Button text={"Chat"}></Button>
-                  <OrderModal />
                 </div>
               </div>
             </div>

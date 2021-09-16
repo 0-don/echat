@@ -116,7 +116,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               </div>
               <div className="flex-col container ">
                 <div className="text-sm">services</div>
-                <div className="flex flex-0    ">
+                <div className="flex flex-0  space-x-2  ">
                   {services?.map((service) => {
                     return (
                       <div
@@ -147,7 +147,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 <div className="flex flex-0 space-x-2  ">
                   {languages?.map((language) => {
                     return (
-                      <div className="dark:text-white text-black text-lg">
+                      <div className="dark:text-white text-black text-lg ">
                         {language.name}
                       </div>
                     );

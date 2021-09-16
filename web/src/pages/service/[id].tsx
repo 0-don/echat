@@ -50,7 +50,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               {userService?.price} {userService?.per}
               <div className="flex space-x-4">
                 <Button text={"Chat"}></Button>
-                <OrderModal />
+                <OrderModal data={data}/>
               </div>
             </div>
           </div>

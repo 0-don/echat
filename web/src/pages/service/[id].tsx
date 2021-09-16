@@ -156,7 +156,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 </div>
                 <div className=" flex flex-0 space-x-4">
                   <Button text={"Chat"}></Button>
-                  <OrderModal />
+                  <OrderModal data={data}/>
                 </div>
               </div>
             </div>

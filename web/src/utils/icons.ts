@@ -1,5 +1,5 @@
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faDiscord,
   faTwitter,
@@ -9,7 +9,7 @@ import {
   faTwitch,
   faSteam,
   faTiktok,
-} from "@fortawesome/free-brands-svg-icons";
+} from '@fortawesome/free-brands-svg-icons';
 import {
   faDollarSign,
   faTrash,
@@ -36,9 +36,13 @@ import {
   faStarHalfAlt,
   faAngleDoubleRight,
   faAngleDoubleLeft,
-} from "@fortawesome/free-solid-svg-icons";
+  faPlus,
+  faMinus,
+} from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+  faPlus,
+  faMinus,
   faStarHalfAlt,
   faStarHalf,
   faImages,

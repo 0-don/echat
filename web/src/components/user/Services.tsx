@@ -65,6 +65,32 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
               <p className='text-5xl'>{getRandomBetween(0, 200)}</p>
             </div>
           </div>
+
+          <div className='md:h-16 border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
+
+          <div className='flex flex-wrap justify-center md:justify-start mt-2 md:mt-0'>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Fast Response (12)
+            </p>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Interactive (8)
+            </p>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Humorous (13)
+            </p>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Carry in Game (2)
+            </p>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Turn the Tide (3)
+            </p>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Cooperative (75)
+            </p>
+            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
+              Creative (12)
+            </p>
+          </div>
         </div>
       </div>
       <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base mt-5'>

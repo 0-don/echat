@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import gray from "/public/gray.png";
 import { OrderModal } from "src/components/order/OrderModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { useRouter } from "next/router";
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
   const { data } = useGetUserServiceByIdQuery({
@@ -22,6 +22,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const service = data?.getUserServiceById.service;
   const images = service?.images?.filter((image) => image.width > 1200);
   const languages = data?.getUserServiceById?.user?.languages;
+  const router = useRouter();
 
   services;
   gray;
@@ -112,7 +113,12 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 />
               </div>
               <div className="flex flex-0 space-x-28 text-center">
-                <div className="text-3xl">{user?.username}</div>
+                <div
+                  onClick={() => router.push(`/user/${user?.id}`)}
+                  className="text-3xl cursor-pointer text-purple-dark "
+                >
+                  {user?.username}
+                </div>
                 {dayjs(new Date()).diff(user?.lastOnline, "day") * -1 < 2 ? (
                   <div className="bg-green-500 h-8 w-8 rounded-full mr-1"></div>
                 ) : (

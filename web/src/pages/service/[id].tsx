@@ -11,6 +11,7 @@ import gray from "/public/gray.png";
 import { OrderModal } from "src/components/order/OrderModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
+import { SRLWrapper } from "simple-react-lightbox";
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
   const { data } = useGetUserServiceByIdQuery({
@@ -72,19 +73,25 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   <h2>51</h2>
                 </div>
               </div>
-
-              <div
-                style={{ position: "relative", width: "100%", height: "350px" }}
-              >
-                <Image
-                  placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                  layout="fill"
-                  objectFit="cover"
-                  src={userService?.image ?? transparent.src}
-                />
-              </div>
+              <SRLWrapper>
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "350px",
+                  }}
+                >
+                  <Image
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                    layout="fill"
+                    objectFit="cover"
+                    src={userService?.image ?? transparent.src}
+                  />
+                </div>
+              </SRLWrapper>
             </div>
+
             <div
               style={{
                 width: "400px",
@@ -101,17 +108,21 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   maxHeight: "300px",
                 }}
               >
-                <Image
-                  placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                  layout="fill"
-                  objectFit="cover"
-                  src={
-                    user?.images?.find((image) => image.type == "profile")
-                      ?.url ?? transparent.src
-                  }
-                />
+                {" "}
+                <SRLWrapper>
+                  <Image
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                    layout="fill"
+                    objectFit="cover"
+                    src={
+                      user?.images?.find((image) => image.type == "profile")
+                        ?.url ?? transparent.src
+                    }
+                  />
+                </SRLWrapper>
               </div>
+
               <div className="flex flex-0 space-x-28 text-center">
                 <div
                   onClick={() => router.push(`/user/${user?.id}`)}

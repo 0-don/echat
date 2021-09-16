@@ -48,7 +48,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             <h1 className="mt-8">
               {userService?.price} {userService?.per}
             </h1>
-          </div>{" "}
+          </div>
           <div className=" flex flex-0 space-x-4 ">
             <div className=" ">
               <div className="flex space-x-40 rounded-lg border  bg-white dark:bg-dark dark:text-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-5 text-center mt-8">
@@ -67,7 +67,6 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               </div>
 
               <div
-                className=""
                 style={{ position: "relative", width: "100%", height: "350px" }}
               >
                 <Image
@@ -116,36 +115,8 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 )}
               </div>
               <div className="flex-col container ">
-                <div className="text-sm">services</div>
-                <div className="flex flex-0  space-x-2  ">
-                  {services?.map((service) => {
-                    return (
-                      <div
-                        style={{
-                          position: "relative",
-                          width: "90px",
-                          height: "70px",
-                          maxWidth: "90px",
-                          maxHeight: "70px",
-                        }}
-                      >
-                        <Image
-                          placeholder="blur"
-                          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                          layout="fill"
-                          objectFit="cover"
-                          src={
-                            service
-                              ? "" + service?.service?.boxArtUrl
-                              : gray.src
-                          }
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="text-sm">languages</div>
                 <div className="flex flex-0 space-x-2  ">
+                  <div className="text-lg">Language:</div>
                   {languages?.map((language) => {
                     return (
                       <div className="dark:text-white text-black text-lg ">
@@ -154,7 +125,36 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                     );
                   })}
                 </div>
-                <div className=" flex flex-0 space-x-4">
+                <div className="text-sm">services</div>
+                <div className="flex flex-0  space-x-2  ">
+                  {services?.map((service, maxItems) => {
+                    if (maxItems <= 4) {
+                      maxItems++;
+                      return (
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "100px",
+                            height: "100px",
+                          }}
+                        >
+                          <Image
+                            placeholder="blur"
+                            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                            layout="fill"
+                            objectFit="cover"
+                            src={
+                              service
+                                ? "" + service?.service?.boxArtUrl
+                                : gray.src
+                            }
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+                <div className=" flex flex-0 space-x-4 ">
                   <Button text={"Chat"}></Button>
                   <OrderModal />
                 </div>

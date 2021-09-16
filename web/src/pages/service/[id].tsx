@@ -49,8 +49,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             <div className="mt-4 mb-4 flex   w-full justify-between">
               {userService?.price} {userService?.per}
               <div className="flex space-x-4">
-                <Button text={"Chat"}></Button>
-                <OrderModal data={data}/>
+                <button className=" flex justify-center  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark ">
+                  Chat
+                </button>
+                <OrderModal data={data} />
               </div>
             </div>
           </div>
@@ -134,12 +136,12 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 </div>
                 <FontAwesomeIcon
                   size="lg"
-                  className="text-purple opacity-25"
+                  className="text-purple opacity-40"
                   icon="angle-double-left"
                 />
                 <FontAwesomeIcon
                   size="lg"
-                  className=""
+                  className="text-purple opacity-40"
                   icon="angle-double-right"
                 />
                 <div className="text-sm">services</div>

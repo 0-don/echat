@@ -34,9 +34,13 @@ import {
   faImages,
   faStarHalf,
   faStarHalfAlt,
+  faPlus,
+  faMinus,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+  faPlus,
+  faMinus,
   faStarHalfAlt,
   faStarHalf,
   faImages,

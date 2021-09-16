@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   ) : (
     <button
       {...props}
-      className={`${className} flex justify-center  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark `}
+      className={`${className} flex justify-center  items-center py-2 px-4  rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark `}
     >
       {icon && <FontAwesomeIcon className="mr-1" icon={icon as any} />}
       {text}

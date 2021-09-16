@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import { getRandomBetween } from "src/utils";
 import dayjs from "dayjs";
 import gray from "/public/gray.png";
-import { Button } from "src/components/htmlElements";
 import { OrderModal } from "src/components/order/OrderModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

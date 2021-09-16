@@ -29,9 +29,9 @@ const genderIcon = (gender: string | undefined) => {
 
 const UserDetail: NextPage<{ id: number }> = ({ id }) => {
   const [tabs, setTabs] = useState([
-    { name: 'Services', icon: 'gamepad', current: false },
+    { name: 'Services', icon: 'gamepad', current: true },
     { name: 'Album', icon: 'images', current: false },
-    { name: 'Reviews', icon: 'star', current: true },
+    { name: 'Reviews', icon: 'star', current: false },
   ]);
   const [rating, _] = useState(
     parseFloat(`${getRandomBetween(0, 5)}.${getRandomBetween(0, 9)}`)

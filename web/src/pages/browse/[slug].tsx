@@ -61,13 +61,13 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   };
 
   const service = data?.getServices?.find((service) => service.slug === slug);
-  0;
+
   const images = service?.images?.filter((image) => image.width > 1200);
   useEffect(() => {
-    images?.length! > 0 &&
+    images?.length &&
       bgImage?.slug !== slug &&
       setBgImage({
-        src: images![getRandomBetween(0, images!.length)].url,
+        src: images[getRandomBetween(0, images.length)].url,
         slug,
       });
     images?.length === 0 && bgImage?.slug !== slug && setBgImage(undefined);

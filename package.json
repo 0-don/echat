@@ -7,8 +7,9 @@
   "license": "MIT",
   "scripts": {
     "web": "cd web && yarn && yarn dev",
-    "webbuild": "cd web && yarn && yarn build",
+    "wbuild": "cd web && yarn && yarn build",
     "server": "cd server && yarn && yarn dev",
-    "serverbuild": "cd server && yarn && yarn build"
+    "sbuild": "cd server && yarn && yarn build",
+    "faker-gen": "cd server && yarn && ts-node-dev src/seed/faker-gen.ts"
   }
 }

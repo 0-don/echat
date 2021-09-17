@@ -10,7 +10,6 @@ import { getRandomBetween } from "src/utils";
 import gray from "/public/gray.png";
 import { OrderModal } from "src/components/order/OrderModal";
 
-
 import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
 import Score from "src/components/servicedetail/Score";
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {

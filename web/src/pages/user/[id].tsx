@@ -2,17 +2,16 @@ import { NextPage } from 'next';
 import { useGetUserQuery } from 'src/generated/graphql';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
-import Image from 'next/image';
 import transparent from '/public/transparent.png';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dayjs from 'dayjs';
 import { Tabs } from 'src/components/user/Tabs';
 import { Services } from 'src/components/user/Services';
-import { SRLWrapper } from 'simple-react-lightbox';
 import { Album } from 'src/components/user/Album';
 import { getRandomBetween } from 'src/utils';
 import { Reviews } from 'src/components/user/Reviews';
+import { ImagePopup } from 'src/components/utils/ImagePopup';
 
 const genderIcon = (gender: string | undefined) => {
   switch (gender) {
@@ -58,22 +57,14 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
     <Wrapper navbar className='dark:text-white text-black'>
       <div className='flex flex-col-reverse md:flex-row md:items-end md:justify-between mt-5'>
         <div className='flex items-start space-x-4'>
-          <SRLWrapper>
-            <div
-              style={{
-                position: 'relative',
-                width: '250px',
-                height: '250px',
-              }}
-            >
-              <Image
-                layout='fill'
-                objectFit='cover'
-                className='rounded-xl'
-                src={profileImage ?? transparent.src}
-              />
-            </div>
-          </SRLWrapper>
+          <ImagePopup
+            layout='fixed'
+            objectFit='cover'
+            width='250px'
+            height='250px'
+            className='rounded-xl'
+            src={profileImage ?? transparent.src}
+          />
           <div className='flex flex-col space-y-2'>
             <div className='flex items-center space-x-2'>
               <h1 className='text-2xl font-bold'>{user?.username}</h1>

@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import transparent from "/public/transparent.png";
 import { useGetUserServiceByIdQuery } from "src/generated/graphql";
 import { NextPage } from "next";
-
+import Carousel from "react-elastic-carousel";
 const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const { data } = useGetUserServiceByIdQuery({
     variables: { id },
@@ -88,33 +88,31 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
             className="text-purple opacity-40"
             icon="angle-double-right"
           />
+
           <div className="text-sm">services</div>
-          <div className="flex flex-0  space-x-2  ">
-            {services?.map((service, maxItems) => {
-              if (maxItems++ <= 4) {
-                return (
-                  <div
-                    key={service.id}
-                    style={{
-                      position: "relative",
-                      width: "100px",
-                      height: "100px",
-                    }}
-                  >
-                    <Image
-                      placeholder="blur"
-                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                      layout="fill"
-                      objectFit="cover"
-                      src={
-                        service ? "" + service?.service?.boxArtUrl : gray.src
-                      }
-                    />
-                  </div>
-                );
-              } else return <div key={service.id}></div>;
+          {/* <div className="flex flex-0  space-x-2  "> */}
+          <Carousel isRTL itemsToScroll={1} itemsToShow={4}>
+            {services?.map((service) => {
+              return (
+                <div
+                  key={service.id}
+                  style={{
+                    position: "relative",
+                    width: "100px",
+                    height: "100px",
+                  }}
+                >
+                  <Image
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                    layout="fill"
+                    objectFit="cover"
+                    src={service ? "" + service?.service?.boxArtUrl : gray.src}
+                  />
+                </div>
+              );
             })}
-          </div>
+          </Carousel>
         </div>
       </div>
     </div>

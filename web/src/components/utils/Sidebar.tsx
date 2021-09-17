@@ -66,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const items = Object.keys(groupedServices).map((key, index) => (
     <div
       className='text-white flex flex-col mt-5'
-      style={{ maxHeight: 'calc(100vh - 195px' }}
+      style={{ maxHeight: 'calc(100vh - 195px)' }}
       key={key}
     >
       <div

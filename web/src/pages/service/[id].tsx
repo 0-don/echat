@@ -11,7 +11,8 @@ import gray from "/public/gray.png";
 import { OrderModal } from "src/components/order/OrderModal";
 
 import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
-import Score from "src/components/servicedetail/Score";
+import { Score } from "src/components/servicedetail/Score";
+
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
   const { data } = useGetUserServiceByIdQuery({
@@ -42,6 +43,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
       </div>
 
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
+        <Score data={data} rating={Math.random()} />
         <div className="dark:text-white text-black text-4xl ">
           <div>
             <h1 className="mt-4 ">{service?.name}</h1>
@@ -54,19 +56,19 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 <OrderModal data={data} />
               </div>
             </div>
-          </div>
-          <div className=" flex flex-0 space-x-4 ">
-            <Score id={id} />
+
+            {/* <Score id={id} /> */}
+
             <div
               style={{
                 width: "400px",
                 height: "550px",
               }}
-              className=" items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4 sm:rounded-lg sm:p-6 mb-5"
+              className=" items-center sm:items-start flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:rounded-lg sm:p-6 mb-5"
             >
               <Servicedetailcard id={id} />
             </div>
-          </div>
+          </div>{" "}
         </div>
       </div>
     </Wrapper>

@@ -64,7 +64,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 width: "400px",
                 height: "550px",
               }}
-              className=" items-center sm:items-start flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:rounded-lg sm:p-6 mb-5"
+              className=" items-center  flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:rounded-lg sm:p-6 mb-5"
             >
               <Servicedetailcard id={id} />
             </div>

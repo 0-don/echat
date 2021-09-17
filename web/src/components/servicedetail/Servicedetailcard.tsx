@@ -1,6 +1,6 @@
 import { SRLWrapper } from "simple-react-lightbox";
 import { useRouter } from "next/router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import gray from "/public/gray.png";
 import React from "react";
 import Image from "next/image";
@@ -78,16 +78,6 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
               );
             })}
           </div>
-          <FontAwesomeIcon
-            size="lg"
-            className="text-purple opacity-40"
-            icon="angle-double-left"
-          />
-          <FontAwesomeIcon
-            size="lg"
-            className="text-purple opacity-40"
-            icon="angle-double-right"
-          />
 
           <div className="text-sm">services</div>
           {/* <div className="flex flex-0  space-x-2  "> */}

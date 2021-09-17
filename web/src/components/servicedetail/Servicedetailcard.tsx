@@ -91,6 +91,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
               return (
                 <div
                   key={service.id}
+                  onClick={() => router.push(`/service/${service.id}`)}
                   style={{
                     position: "relative",
                     width: "100px",

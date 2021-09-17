@@ -79,9 +79,9 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
             })}
           </div>
 
-          <div className="text-sm">services</div>
+          <div className="text-lg text-center">Services</div>
           {/* <div className="flex flex-0  space-x-2  "> */}
-          <Carousel isRTL itemsToScroll={1} itemsToShow={4}>
+          <Carousel isRTL itemsToScroll={2} itemsToShow={4}>
             {services?.map((service) => {
               return (
                 <div

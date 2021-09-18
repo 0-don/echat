@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import transparent from "/public/transparent.png";
 import { useGetUserServiceByIdQuery } from "src/generated/graphql";
 import { NextPage } from "next";
-import Carousel from "react-elastic-carousel";
+
 const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const { data } = useGetUserServiceByIdQuery({
     variables: { id },
@@ -81,12 +81,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
 
           <div className="text-lg text-center">Services</div>
           {/* <div className="flex flex-0  space-x-2  "> */}
-          <Carousel
-            itemPadding={[1, 4]}
-            isRTL
-            itemsToScroll={2}
-            itemsToShow={4}
-          >
+          <div className="flex flex-0  space-x-2  ">
             {services?.map((service) => {
               return (
                 <div
@@ -94,8 +89,8 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
                   onClick={() => router.push(`/service/${service.id}`)}
                   style={{
                     position: "relative",
-                    width: "100px",
-                    height: "100px",
+                    width: "50px",
+                    height: "50px",
                   }}
                 >
                   <Image
@@ -108,7 +103,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
                 </div>
               );
             })}
-          </Carousel>
+          </div>
         </div>
       </div>
     </div>

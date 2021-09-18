@@ -4,7 +4,6 @@ import '../utils/icons';
 import { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import useDarkModeStore from 'src/store/DarkModeStore';
-import SimpleReactLightbox from 'simple-react-lightbox';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const { startTheme } = useDarkModeStore();
@@ -14,11 +13,8 @@ const App = ({ Component, pageProps }: AppProps) => {
     startTheme();
   }, []);
 
-  return (
-    <SimpleReactLightbox>
-      <Component {...pageProps} />
-    </SimpleReactLightbox>
-  );
+  return <Component {...pageProps} />;
 };
 
 export default App;
+

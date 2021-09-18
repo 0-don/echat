@@ -105,6 +105,7 @@ export type Mutation = {
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
   createChat: Chat;
+  createOrder: CreateOrderResponse;
 };
 
 
@@ -169,6 +170,13 @@ export type MutationDeleteUserServiceArgs = {
 export type MutationCreateChatArgs = {
   message: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type MutationCreateOrderArgs = {
+  startTime: Scalars['DateTime'];
+  rounds: Scalars['Int'];
+  userServiceId: Scalars['Int'];
 };
 
 export type PaginatedUserService = {
@@ -319,6 +327,7 @@ export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
   type?: Maybe<Scalars['String']>;
+  coins: Scalars['Int'];
   username: Scalars['String'];
   email: Scalars['String'];
   lastOnline?: Maybe<Scalars['DateTime']>;
@@ -373,6 +382,12 @@ export type UserService = {
   images?: Maybe<Array<ServiceImage>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type CreateOrderResponse = {
+  __typename?: 'createOrderResponse';
+  errors?: Maybe<Array<FieldError>>;
+  success: Scalars['Boolean'];
 };
 
 export type RegularErrorFragment = (
@@ -433,6 +448,25 @@ export type ChangeUserserviceImageMutationVariables = Exact<{
 export type ChangeUserserviceImageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'changeUserserviceImage'>
+);
+
+export type CreateOrderMutationVariables = Exact<{
+  userServiceId: Scalars['Int'];
+  rounds: Scalars['Int'];
+  startTime: Scalars['DateTime'];
+}>;
+
+
+export type CreateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { createOrder: (
+    { __typename?: 'createOrderResponse' }
+    & Pick<CreateOrderResponse, 'success'>
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
 );
 
 export type DeleteImageMutationVariables = Exact<{
@@ -903,6 +937,49 @@ export function useChangeUserserviceImageMutation(baseOptions?: Apollo.MutationH
 export type ChangeUserserviceImageMutationHookResult = ReturnType<typeof useChangeUserserviceImageMutation>;
 export type ChangeUserserviceImageMutationResult = Apollo.MutationResult<ChangeUserserviceImageMutation>;
 export type ChangeUserserviceImageMutationOptions = Apollo.BaseMutationOptions<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>;
+export const CreateOrderDocument = gql`
+    mutation CreateOrder($userServiceId: Int!, $rounds: Int!, $startTime: DateTime!) {
+  createOrder(
+    userServiceId: $userServiceId
+    rounds: $rounds
+    startTime: $startTime
+  ) {
+    success
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type CreateOrderMutationFn = Apollo.MutationFunction<CreateOrderMutation, CreateOrderMutationVariables>;
+
+/**
+ * __useCreateOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrderMutation, { data, loading, error }] = useCreateOrderMutation({
+ *   variables: {
+ *      userServiceId: // value for 'userServiceId'
+ *      rounds: // value for 'rounds'
+ *      startTime: // value for 'startTime'
+ *   },
+ * });
+ */
+export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrderMutation, CreateOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument, options);
+      }
+export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
+export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
 export const DeleteImageDocument = gql`
     mutation DeleteImage($publicId: String!) {
   deleteImage(publicId: $publicId)
@@ -1847,6 +1924,7 @@ export const namedOperations = {
     ChangePassword: 'ChangePassword',
     ChangeUserType: 'ChangeUserType',
     ChangeUserserviceImage: 'ChangeUserserviceImage',
+    CreateOrder: 'CreateOrder',
     DeleteImage: 'DeleteImage',
     DeleteUserService: 'DeleteUserService',
     ForgotPassword: 'ForgotPassword',

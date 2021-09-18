@@ -36,7 +36,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
       <Modal open={open} setOpen={setOpen}>
         <div className='dark:text-white text-black inline-block max-w-xl bg-white dark:bg-dark rounded-lg text-left transform'>
           <div className='py-8 px-8'>
-            <h1 className='text-2xl'>Confirm Order</h1>
+            <div className='flex justify-between'>
+              <h1 className='text-2xl'>Confirm Order</h1>
+              <FontAwesomeIcon size='lg' icon='coins' />
+            </div>
 
             <div className='flex justify-between items-end'>
               <div className='flex space-x-5 mt-5'>
@@ -131,6 +134,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
               <button
                 style={{ backgroundColor: 'transparent' }}
                 className='bg-tran big-button mr-5'
+                onClick={() => setOpen(false)}
               >
                 cancel
               </button>

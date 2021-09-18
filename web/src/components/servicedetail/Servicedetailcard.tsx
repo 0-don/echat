@@ -51,7 +51,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
           </SRLWrapper>
         </div>
 
-        <div className="flex flex-0 space-x-28 text-center">
+        <div className="flex  space-x-10 text-center">
           <div
             onClick={() => router.push(`/user/${user?.id}`)}
             className="text-3xl cursor-pointer text-purple-dark "

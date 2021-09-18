@@ -1,0 +1,17 @@
+mutation CreateOrder(
+  $userServiceId: Int!
+  $rounds: Int!
+  $startTime: DateTime!
+) {
+  createOrder(
+    userServiceId: $userServiceId
+    rounds: $rounds
+    startTime: $startTime
+  ) {
+    success
+    errors {
+      field
+      message
+    }
+  }
+}

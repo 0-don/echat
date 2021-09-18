@@ -1,4 +1,3 @@
-import { SRLWrapper } from "simple-react-lightbox";
 import { useRouter } from "next/router";
 
 import gray from "/public/gray.png";
@@ -19,36 +18,27 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const router = useRouter();
   return (
     <div>
-      {" "}
-      <div
-        style={{
-          width: "400px",
-          height: "550px",
-        }}
-        className=" items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4 sm:rounded-lg sm:p-6 mb-5"
-      >
+      <div className="container items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow  sm:rounded-lg sm:p-6 mb-5">
         <div
-          style={{
-            position: "relative",
-            width: "300px",
-            height: "300px",
-            maxWidth: "400px",
-            maxHeight: "300px",
-          }}
+          className=""
+          // style={{
+          //   position: "relative",
+          //   width: "300px",
+          //   height: "300px",
+          //   maxWidth: "400px",
+          //   maxHeight: "300px",
+          // }}
         >
-          {" "}
-          <SRLWrapper>
-            <Image
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-              layout="fill"
-              objectFit="cover"
-              src={
-                user?.images?.find((image) => image.type == "profile")?.url ??
-                transparent.src
-              }
-            />
-          </SRLWrapper>
+          <Image
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+            layout="fill"
+            objectFit="cover"
+            src={
+              user?.images?.find((image) => image.type == "profile")?.url ??
+              transparent.src
+            }
+          />
         </div>
 
         <div className="flex  space-x-10 text-center">

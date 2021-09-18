@@ -19,15 +19,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   return (
     <div>
       <div className=" w-[350px] h-[500px] sm:w-[400px] sm:h-[550px] items-center flex flex-col bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5">
-        <div
-          style={{
-            position: "relative",
-            width: "300px",
-            height: "300px",
-            maxWidth: "400px",
-            maxHeight: "300px",
-          }}
-        >
+        <div className="relative w-[300px] h-[300px]  max-w-[300px] max-h-[300px] ">
           <Image
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="

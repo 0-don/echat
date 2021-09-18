@@ -58,9 +58,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             </div>
 
             {/* <Score id={id} /> */}
-
-            <Servicedetailcard id={id} />
-          </div>{" "}
+            <div className="inset-y-0 right-0">
+              <Servicedetailcard id={id} />
+            </div>
+          </div>
         </div>
       </div>
     </Wrapper>

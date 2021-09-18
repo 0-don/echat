@@ -26,10 +26,14 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true, default: false })
   fake: boolean;
-
+  
   @Field(() => String, { nullable: true })
   @Column({ default: 'guest', nullable: true })
   type: 'guest' | 'user' | string;
+
+  @Field(() => Int)
+  @Column({ default: 100 })
+  coins: number;
 
   @Field()
   @Column()

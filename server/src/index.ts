@@ -24,6 +24,7 @@ import { ChatResolver } from './resolvers/ChatResolver';
 import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
 import { ExtraResolver } from './resolvers/ExtraResolver';
 import path from 'path';
+import { OrderResolver } from './resolvers/OrderResolver';
 
 const PgSession = connectPgSimple(session);
 
@@ -74,6 +75,7 @@ const PgSession = connectPgSimple(session);
       ServiceResolver,
       UserServiceResolver,
       ExtraResolver,
+      OrderResolver,
     ],
     validate: false,
   });

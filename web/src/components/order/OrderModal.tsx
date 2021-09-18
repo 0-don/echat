@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'src/components/htmlElements';
-import { GetUserServiceByIdQuery } from 'src/generated/graphql';
+import {
+  GetUserServiceByIdQuery,
+  useCreateOrderMutation,
+} from 'src/generated/graphql';
 import gray from '/public/gray.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +14,7 @@ interface OrderModalProps {
 }
 
 export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
+  const [createOrder] = useCreateOrderMutation();
   const [open, setOpen] = useState(false);
 
   const [rounds, setRounds] = useState(1);
@@ -28,17 +32,19 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
   return (
     <>
       <Button
-        className='flex justify-center  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark'
+        className='flex justify-center cursor-auto  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark'
         text='order'
         icon='star'
         onClick={() => setOpen(!open)}
       />
-      <Modal open={open} setOpen={setOpen}>
+      <Modal open={open} setOpen={() => open}>
         <div className='dark:text-white text-black inline-block max-w-xl bg-white dark:bg-dark rounded-lg text-left transform'>
           <div className='py-8 px-8'>
-            <div className='flex justify-between'>
+            <div className='flex justify-between items-center'>
               <h1 className='text-2xl'>Confirm Order</h1>
-              <FontAwesomeIcon size='lg' icon='coins' />
+              <div className='cursor-pointer' onClick={() => setOpen(false)}>
+                ×︁
+              </div>
             </div>
 
             <div className='flex justify-between items-end'>
@@ -67,7 +73,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
               </div>
             </div>
 
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between mt-5 items-center'>
               <p className='text-xl'>Rounds</p>
 
               <div className='flex justify-between space-x-3'>
@@ -100,7 +106,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
                 </div>
               </div>
             </div>
-            <div className='flex justify-between mt-5'>
+            <div className='flex justify-between mt-5 items-center'>
               <p className='text-xl'>Start Time</p>
 
               <div className='w-56 text-right'>
@@ -117,10 +123,10 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
               </div>
             </div>
             <hr className='border-lightGray my-5' />
-            <div className='flex justify-between '>
+            <div className='flex justify-between items-center '>
               <p className='text-xl'>Final Price</p>
 
-              <div className='flex space-x-2 items-center'>
+              <div className='flex space-x-2'>
                 <p>{rounds} Round(s) total</p>
                 <FontAwesomeIcon size='lg' icon='coins' />
                 <p className='text-lg'>
@@ -138,7 +144,21 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
               >
                 cancel
               </button>
-              <button className='big-button'>order</button>
+              <button
+                onClick={async () => {
+                  const data = await createOrder({
+                    variables: {
+                      userServiceId: userService!.id,
+                      rounds,
+                      startTime,
+                    },
+                  });
+                  console.log(data);
+                }}
+                className='big-button'
+              >
+                order
+              </button>
             </div>
           </div>
         </div>

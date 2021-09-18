@@ -45,21 +45,19 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
         <Score data={data} rating={Math.random()} />
         <div className="dark:text-white text-black text-4xl ">
-          <div>
-            <h1 className="mt-4 ">{service?.name}</h1>
-            <div className="mt-4 mb-4 flex   w-full justify-between">
-              {userService?.price} {userService?.per}
-              <div className="flex space-x-4">
-                <button className=" flex justify-center  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark ">
+          <h1 className="mt-4 ">{service?.name}</h1>
+          <div className="mt-4 mb-4 flex flex-wrap   w-full justify-between">
+            {userService?.price} {userService?.per}
+            <div className="">
+              <div className="flex items-center space-x-4">
+                <button className=" flex justify-center  items-center py-2 px-14 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark ">
                   Chat
                 </button>
                 <OrderModal data={data} />
               </div>
-            </div>
-
-            {/* <Score id={id} /> */}
-            <div className="inset-y-0 right-0">
-              <Servicedetailcard id={id} />
+              <div className="flex justify-end">
+                <Servicedetailcard id={id} />
+              </div>
             </div>
           </div>
         </div>

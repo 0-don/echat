@@ -21,7 +21,6 @@ const useDarkModeStore = create<DarkMode>(
             if (!state.theme) {
               state.theme = true;
               document.querySelector('html')?.classList?.add?.('dark');
-              
             } else {
               state.theme = false;
               document.querySelector('html')?.classList?.remove?.('dark');
@@ -30,8 +29,7 @@ const useDarkModeStore = create<DarkMode>(
         startTheme: () =>
           set((state) => {
             state.hasHydrated = true;
-            // document.querySelector('body')?.classList?.add?.('dark:bg-gray-700');
-            // document.querySelector('body')?.classList?.add?.('bg-gray-50');
+
             if (state.theme) {
               document.querySelector('html')?.classList?.add?.('dark');
             } else {

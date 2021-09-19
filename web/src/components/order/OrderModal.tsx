@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'src/components/htmlElements';
 import {
+  FieldError,
   GetUserServiceByIdQuery,
   useCreateOrderMutation,
 } from 'src/generated/graphql';
@@ -8,6 +9,7 @@ import gray from '/public/gray.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DatePicker from 'react-datepicker';
+import { Alert } from '../utils/Alert';
 
 interface OrderModalProps {
   data: GetUserServiceByIdQuery | undefined;
@@ -15,6 +17,7 @@ interface OrderModalProps {
 
 export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
   const [createOrder] = useCreateOrderMutation();
+  const [errors, setErrors] = useState<FieldError[]>();
   const [open, setOpen] = useState(false);
 
   const [rounds, setRounds] = useState(1);
@@ -38,8 +41,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
         onClick={() => setOpen(!open)}
       />
       <Modal open={open} setOpen={() => open}>
-        <div className='dark:text-white text-black inline-block max-w-xl bg-white dark:bg-dark rounded-lg text-left transform'>
+        <div className='dark:text-white text-black inline-block max-w-lg bg-white dark:bg-dark rounded-lg text-left transform'>
           <div className='py-8 px-8'>
+            {errors?.length! > 0 && <Alert errors={errors!} setErrors={setErrors}/>}
             <div className='flex justify-between items-center'>
               <h1 className='text-2xl'>Confirm Order</h1>
               <div className='cursor-pointer' onClick={() => setOpen(false)}>
@@ -146,14 +150,16 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
               </button>
               <button
                 onClick={async () => {
-                  const data = await createOrder({
+                  const { data } = await createOrder({
                     variables: {
                       userServiceId: userService!.id,
                       rounds,
                       startTime,
                     },
                   });
-                  console.log(data);
+                  data?.createOrder.errors?.length &&
+                    setErrors(data?.createOrder.errors);
+                  console.log(data?.createOrder);
                 }}
                 className='big-button'
               >

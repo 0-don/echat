@@ -327,7 +327,7 @@ export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
   type?: Maybe<Scalars['String']>;
-  coins: Scalars['Int'];
+  coins: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
   lastOnline?: Maybe<Scalars['DateTime']>;

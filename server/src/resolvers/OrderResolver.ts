@@ -19,7 +19,7 @@ export class createOrderResponse {
   errors?: FieldError[];
 
   @Field(() => Boolean)
-  success?: boolean;
+  success: boolean;
 }
 
 @Resolver()
@@ -62,6 +62,8 @@ export class OrderResolver {
       per: userService.per,
       startTime,
     });
+
+    await User.update({ id: buyerId }, { coins: buyer.coins - finalPrice });
 
     return { success: true, errors };
   }

@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Float, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -26,13 +26,13 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true, default: false })
   fake: boolean;
-  
+
   @Field(() => String, { nullable: true })
   @Column({ default: 'guest', nullable: true })
   type: 'guest' | 'user' | string;
 
-  @Field(() => Int)
-  @Column({ default: 100 })
+  @Field(() => Float)
+  @Column({ type: 'float', default: 100 })
   coins: number;
 
   @Field()

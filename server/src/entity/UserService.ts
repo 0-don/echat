@@ -12,6 +12,7 @@ import {
   OneToMany,
   Unique,
 } from 'typeorm';
+import { Order } from './Order';
 import { Service } from './Service';
 import { ServiceImage } from './ServiceImage';
 import { User } from './User';
@@ -76,6 +77,12 @@ export class UserService extends BaseEntity {
   @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.userService)
   @TypeormLoader()
   images: ServiceImage[];
+
+  // Orders
+  @Field(() => [Order], { nullable: true })
+  @OneToMany(() => Order, (order) => order.userService)
+  @TypeormLoader()
+  orders: Order[];
 
   @Field(() => String)
   @CreateDateColumn()

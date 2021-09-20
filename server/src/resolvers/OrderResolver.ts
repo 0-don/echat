@@ -7,6 +7,7 @@ import {
   Int,
   Mutation,
   ObjectType,
+  Query,
   Resolver,
 } from 'type-graphql';
 import { User } from '../entity/User';
@@ -24,6 +25,12 @@ export class createOrderResponse {
 
 @Resolver()
 export class OrderResolver {
+  @Query(() => [Order])
+  async getbuyerOrders(@Ctx() { req }: MyContext) {
+    const buyerId: number = req.session.userId;
+    return Order.find({ where: { buyerId } });
+  }
+
   @Mutation(() => createOrderResponse)
   async createOrder(
     @Arg('userServiceId', () => Int) userServiceId: number,

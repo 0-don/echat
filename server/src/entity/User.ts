@@ -16,6 +16,7 @@ import { UserService } from './UserService';
 import { TypeormLoader } from 'type-graphql-dataloader';
 import { Country } from './Country';
 import { UserLanguage } from './UserLanguage';
+import { Order } from './Order';
 
 @ObjectType()
 @Entity()
@@ -130,6 +131,18 @@ export class User extends BaseEntity {
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   @TypeormLoader()
   schedules: Schedule[];
+
+  // BuyerOrder
+  @Field(() => Order, { nullable: true })
+  @OneToMany(() => Order, (order) => order.buyer, { nullable: true })
+  @TypeormLoader()
+  buyerOrder: Order;
+
+  // SellerOrder
+  @Field(() => Order, { nullable: true })
+  @OneToMany(() => Order, (order) => order.seller, { nullable: true })
+  @TypeormLoader()
+  sellerOrder: Order;
 
   @CreateDateColumn()
   created_at: Date;

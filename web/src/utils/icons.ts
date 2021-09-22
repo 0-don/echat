@@ -38,9 +38,11 @@ import {
   faAngleDoubleLeft,
   faPlus,
   faMinus,
+  faMoneyCheck
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+  faMoneyCheck,
   faPlus,
   faMinus,
   faStarHalfAlt,

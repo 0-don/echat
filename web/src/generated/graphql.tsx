@@ -186,7 +186,7 @@ export type Order = {
   price: Scalars['Float'];
   rounds: Scalars['Int'];
   per: Scalars['String'];
-  startTime: Scalars['String'];
+  startTime: Scalars['DateTime'];
   finalPrice: Scalars['Float'];
   buyer?: Maybe<User>;
   buyerId: Scalars['Int'];

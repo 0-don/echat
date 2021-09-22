@@ -38,10 +38,12 @@ import {
   faAngleDoubleLeft,
   faPlus,
   faMinus,
-  faMoneyCheck
+  faMoneyCheck,
+  faCommentDots,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
+  faCommentDots,
   faMoneyCheck,
   faPlus,
   faMinus,

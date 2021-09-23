@@ -3,7 +3,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import _ from 'lodash';
 import { OrderStatus } from 'src/pages/order';
-// import { useRouter } from 'next/router';
 
 interface OrderSidebarProps {
   sidebarOpen: boolean;

@@ -1,11 +1,6 @@
 import { Form, Formik, FormikProps } from 'formik';
 import React from 'react';
-import {
-  // AGES,
-  GENDERS,
-  LANGUAGES,
-  SCHEDULES,
-} from 'src/constants';
+import { GENDERS, SCHEDULES } from 'src/constants';
 import {
   MeDocument,
   UpdatedUser,
@@ -84,7 +79,6 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             schedules: userSchedules?.length ? userSchedules : SCHEDULES,
           }}
           onSubmit={async (values) => {
-         
             await updateMe({
               variables: { options: values },
               refetchQueries: [{ query: MeDocument }],
@@ -140,7 +134,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                       <DropdownField
                         {...formikProps}
                         fieldName='languages'
-                        list={LANGUAGES}
+                        list={languages}
                       />
                     </div>
                   </div>

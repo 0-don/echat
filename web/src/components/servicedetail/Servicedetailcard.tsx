@@ -85,6 +85,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
             );
           })}
         </div>
+        <div>Age: {user?.age}</div>
       </div>
     </div>
   );

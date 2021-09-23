@@ -179,6 +179,23 @@ export type MutationCreateOrderArgs = {
   userServiceId: Scalars['Int'];
 };
 
+export type Order = {
+  __typename?: 'Order';
+  id: Scalars['Int'];
+  status: Scalars['String'];
+  price: Scalars['Float'];
+  rounds: Scalars['Int'];
+  per: Scalars['String'];
+  startTime: Scalars['String'];
+  finalPrice: Scalars['Float'];
+  buyer?: Maybe<User>;
+  buyerId: Scalars['Int'];
+  seller?: Maybe<User>;
+  sellerId: Scalars['Int'];
+  userService?: Maybe<UserService>;
+  userServiceId: Scalars['Int'];
+};
+
 export type PaginatedUserService = {
   __typename?: 'PaginatedUserService';
   userService: Array<UserService>;
@@ -200,6 +217,7 @@ export type Query = {
   getChats: Array<Chat>;
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
+  getbuyerOrders: Array<Order>;
 };
 
 
@@ -327,7 +345,7 @@ export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
   type?: Maybe<Scalars['String']>;
-  coins: Scalars['Int'];
+  coins: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
   lastOnline?: Maybe<Scalars['DateTime']>;
@@ -348,6 +366,8 @@ export type User = {
   services?: Maybe<Array<UserService>>;
   languages?: Maybe<Array<UserLanguage>>;
   schedules?: Maybe<Array<Schedule>>;
+  buyerOrder?: Maybe<Order>;
+  sellerOrder?: Maybe<Order>;
 };
 
 export type UserLanguage = {
@@ -380,6 +400,7 @@ export type UserService = {
   serviceId: Scalars['Int'];
   service: Service;
   images?: Maybe<Array<ServiceImage>>;
+  orders?: Maybe<Array<Order>>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -758,6 +779,36 @@ export type GetUsersQuery = (
       & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
     )>> }
   )>> }
+);
+
+export type GetbuyerOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetbuyerOrdersQuery = (
+  { __typename?: 'Query' }
+  & { getbuyerOrders: Array<(
+    { __typename?: 'Order' }
+    & Pick<Order, 'id' | 'status' | 'price' | 'rounds' | 'per' | 'startTime' | 'finalPrice'>
+    & { seller?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'description' | 'age' | 'gender'>
+      & { images?: Maybe<Array<(
+        { __typename?: 'Image' }
+        & Pick<Image, 'id' | 'url' | 'type'>
+      )>> }
+    )>, userService?: Maybe<(
+      { __typename?: 'UserService' }
+      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
+      & { service: (
+        { __typename?: 'Service' }
+        & Pick<Service, 'id' | 'name' | 'slug' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'ServiceImage' }
+          & Pick<ServiceImage, 'id' | 'type' | 'url' | 'height' | 'width'>
+        )>> }
+      ) }
+    )> }
+  )> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1804,6 +1855,86 @@ export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetbuyerOrdersDocument = gql`
+    query GetbuyerOrders {
+  getbuyerOrders {
+    id
+    status
+    price
+    rounds
+    per
+    startTime
+    finalPrice
+    seller {
+      id
+      username
+      description
+      age
+      gender
+      images {
+        id
+        url
+        type
+      }
+    }
+    userService {
+      id
+      status
+      level
+      platforms
+      description
+      price
+      per
+      image
+      service {
+        id
+        name
+        slug
+        popularity
+        boxArtUrl
+        first_release_date
+        platforms
+        genres
+        multiplayer_modes
+        images {
+          id
+          type
+          url
+          height
+          width
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetbuyerOrdersQuery__
+ *
+ * To run a query within a React component, call `useGetbuyerOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetbuyerOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetbuyerOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetbuyerOrdersQuery(baseOptions?: Apollo.QueryHookOptions<GetbuyerOrdersQuery, GetbuyerOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetbuyerOrdersQuery, GetbuyerOrdersQueryVariables>(GetbuyerOrdersDocument, options);
+      }
+export function useGetbuyerOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetbuyerOrdersQuery, GetbuyerOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetbuyerOrdersQuery, GetbuyerOrdersQueryVariables>(GetbuyerOrdersDocument, options);
+        }
+export type GetbuyerOrdersQueryHookResult = ReturnType<typeof useGetbuyerOrdersQuery>;
+export type GetbuyerOrdersLazyQueryHookResult = ReturnType<typeof useGetbuyerOrdersLazyQuery>;
+export type GetbuyerOrdersQueryResult = Apollo.QueryResult<GetbuyerOrdersQuery, GetbuyerOrdersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -1917,6 +2048,7 @@ export const namedOperations = {
     GetUser: 'GetUser',
     GetUserServiceById: 'GetUserServiceById',
     GetUsers: 'GetUsers',
+    GetbuyerOrders: 'GetbuyerOrders',
     Me: 'Me',
     UserImages: 'UserImages'
   },

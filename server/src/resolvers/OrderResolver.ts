@@ -7,6 +7,7 @@ import {
   Int,
   Mutation,
   ObjectType,
+  Query,
   Resolver,
 } from 'type-graphql';
 import { User } from '../entity/User';
@@ -19,11 +20,17 @@ export class createOrderResponse {
   errors?: FieldError[];
 
   @Field(() => Boolean)
-  success?: boolean;
+  success: boolean;
 }
 
 @Resolver()
 export class OrderResolver {
+  @Query(() => [Order])
+  async getbuyerOrders(@Ctx() { req }: MyContext) {
+    const buyerId: number = req.session.userId;
+    return Order.find({ where: { buyerId } });
+  }
+
   @Mutation(() => createOrderResponse)
   async createOrder(
     @Arg('userServiceId', () => Int) userServiceId: number,
@@ -62,6 +69,8 @@ export class OrderResolver {
       per: userService.per,
       startTime,
     });
+
+    await User.update({ id: buyerId }, { coins: buyer.coins - finalPrice });
 
     return { success: true, errors };
   }

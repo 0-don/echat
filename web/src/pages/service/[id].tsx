@@ -50,7 +50,9 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
         <Score data={data} rating={generateNumber(0, 5)} />
         <div className="dark:text-white text-black  ">
           <div>
-            <h1 className="mt-4 ">{service?.name}</h1>
+            <h1 className="mt-4 text-lg lg:text-3xl md:text-3xl">
+              {service?.name}
+            </h1>
             <div className="mt-4 mb-4 flex flex-row  w-full justify-between">
               {userService?.price} {userService?.per}
               <div className="flex  space-x-11 lg:space-x-28 md:space-x-28">

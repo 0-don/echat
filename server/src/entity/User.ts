@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql';
+import { Field, Float, Int, ObjectType } from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,6 +16,7 @@ import { UserService } from './UserService';
 import { TypeormLoader } from 'type-graphql-dataloader';
 import { Country } from './Country';
 import { UserLanguage } from './UserLanguage';
+import { Order } from './Order';
 
 @ObjectType()
 @Entity()
@@ -26,13 +27,13 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true, default: false })
   fake: boolean;
-  
+
   @Field(() => String, { nullable: true })
   @Column({ default: 'guest', nullable: true })
   type: 'guest' | 'user' | string;
 
-  @Field(() => Int)
-  @Column({ default: 100 })
+  @Field(() => Float)
+  @Column({ type: 'float', default: 100 })
   coins: number;
 
   @Field()
@@ -130,6 +131,18 @@ export class User extends BaseEntity {
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   @TypeormLoader()
   schedules: Schedule[];
+
+  // BuyerOrder
+  @Field(() => Order, { nullable: true })
+  @OneToMany(() => Order, (order) => order.buyer, { nullable: true })
+  @TypeormLoader()
+  buyerOrder: Order;
+
+  // SellerOrder
+  @Field(() => Order, { nullable: true })
+  @OneToMany(() => Order, (order) => order.seller, { nullable: true })
+  @TypeormLoader()
+  sellerOrder: Order;
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { Button, Modal } from "src/components/htmlElements";
 import {
+  FieldError,
   GetUserServiceByIdQuery,
   useCreateOrderMutation,
-} from "src/generated/graphql";
-import gray from "/public/gray.png";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DatePicker from "react-datepicker";
+} from 'src/generated/graphql';
+import gray from '/public/gray.png';
+import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DatePicker from 'react-datepicker';
+import { Alert } from '../utils/Alert';
 
 interface OrderModalProps {
   data: GetUserServiceByIdQuery | undefined;
 }
 
 export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
-  const [createOrder] = useCreateOrderMutation();
   const [open, setOpen] = useState(false);
+
+  const [createOrder] = useCreateOrderMutation();
+  const [errors, setErrors] = useState<FieldError[]>();
 
   const [rounds, setRounds] = useState(1);
   const [startTime, setStartTime] = useState(new Date());
@@ -38,11 +42,14 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
         onClick={() => setOpen(!open)}
       />
       <Modal open={open} setOpen={() => open}>
-        <div className="dark:text-white text-black inline-block max-w-xl bg-white dark:bg-dark rounded-lg text-left transform">
-          <div className="py-8 px-8">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl">Confirm Order</h1>
-              <div className="cursor-pointer" onClick={() => setOpen(false)}>
+        <div className='dark:text-white text-black inline-block max-w-lg bg-white dark:bg-dark rounded-lg text-left transform'>
+          <div className='py-8 px-8'>
+            {errors?.length! > 0 && (
+              <Alert errors={errors!} setErrors={setErrors} />
+            )}
+            <div className='flex justify-between items-center'>
+              <h1 className='text-2xl'>Confirm Order</h1>
+              <div className='cursor-pointer' onClick={() => setOpen(false)}>
                 ×︁
               </div>
             </div>
@@ -116,9 +123,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
                   showTimeSelect
                   onChange={(date) => setStartTime(date as any)}
                   minDate={new Date()}
-                  minTime={new Date(new Date().setHours(0, 0, 0, 0))}
-                  maxTime={new Date()}
-                  dateFormat="MMMM d, yyyy h:mm aa"
+                  minTime={new Date()}
+                  maxTime={new Date(new Date().setHours(23, 59, 59, 999))}
+                  dateFormat='MMMM d, yyyy h:mm aa'
                 />
               </div>
             </div>
@@ -146,14 +153,16 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
               </button>
               <button
                 onClick={async () => {
-                  const data = await createOrder({
+                  const { data } = await createOrder({
                     variables: {
                       userServiceId: userService!.id,
                       rounds,
                       startTime,
                     },
                   });
-                  console.log(data);
+                  data?.createOrder.errors?.length &&
+                    setErrors(data?.createOrder.errors);
+                  console.log(data?.createOrder);
                 }}
                 className="big-button"
               >

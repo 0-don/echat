@@ -7,9 +7,8 @@ import useDarkModeStore from 'src/store/DarkModeStore';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const { startTheme } = useDarkModeStore();
+
   useEffect(() => {
-    document.querySelector('body')?.classList?.add?.('dark:bg-dark-dark');
-    document.querySelector('body')?.classList?.add?.('bg-gray-50');
     startTheme();
   }, []);
 
@@ -17,4 +16,3 @@ const App = ({ Component, pageProps }: AppProps) => {
 };
 
 export default App;
-

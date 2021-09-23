@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import withApollo from 'src/utils/apollo/withApollo';
 import { Wrapper } from 'src/components/Wrapper';
-import { Sidebar } from 'src/components/utils/Sidebar';
+import { Sidebar } from 'src/components/browse/Sidebar';
 import {
   useFilterUserServiceQuery,
   useGetServicesQuery,

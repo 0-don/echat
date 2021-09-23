@@ -50,6 +50,7 @@ export class Order extends BaseEntity {
   @OneToOne(() => User, (user) => user.buyerOrder, {
     lazy: true,
     nullable: true,
+    onDelete: 'CASCADE',
   })
   @TypeormLoader(() => User, (order: Order) => order.buyerId)
   buyer: Promise<User>;
@@ -63,6 +64,7 @@ export class Order extends BaseEntity {
   @OneToOne(() => User, (user) => user.sellerOrder, {
     lazy: true,
     nullable: true,
+    onDelete: 'CASCADE',
   })
   @TypeormLoader(() => User, (order: Order) => order.sellerId)
   seller: Promise<User>;

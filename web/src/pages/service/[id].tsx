@@ -11,6 +11,7 @@ import gray from "/public/gray.png";
 import { OrderModal } from "src/components/order/OrderModal";
 
 import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
+import { Reviews } from "src/components/user/Reviews";
 // import { Score } from 'src/components/servicedetail/Score';
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
@@ -77,7 +78,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 <Servicedetailcard id={id} />
               </div>
             </div>
-            <div className="flex flex-row space-x-36">
+            <div className="flex flex-row space-x-20">
               <div className="bg-white text-sm dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5 items-center">
                 Details
                 <div className="md:flex  md:space-x-10 lg:flex  lg:space-x-10">
@@ -107,6 +108,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 asdasdasd
               </div>
             </div>
+            <Reviews data={data} rating={Math.random()} />
           </div>
         </div>
       </div>

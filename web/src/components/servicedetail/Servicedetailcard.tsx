@@ -8,8 +8,8 @@ import { useGetUserServiceByIdQuery } from "src/generated/graphql";
 import { NextPage } from "next";
 import { ImagePopup } from "../utils/ImagePopup";
 import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-dayjs.extend(localizedFormat);
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const { data } = useGetUserServiceByIdQuery({
     variables: { id },
@@ -19,7 +19,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const languages = data?.getUserServiceById?.user?.languages;
   const router = useRouter();
   return (
-    <div className=" w-full h-[550px] items-center flex flex-col  bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5">
+    <div className=" w-full lg:w-[450px] h-[550px] items-center flex flex-col  bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5">
       <div className="relative w-[300px] h-[300px]  max-w-[300px] max-h-[300px] ">
         <ImagePopup
           placeholder="blur"

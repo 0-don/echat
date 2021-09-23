@@ -1,5 +1,5 @@
-query GetbuyerOrders {
-  getbuyerOrders {
+query GetBuyerOrders {
+  getBuyerOrders {
     id
     status
     price

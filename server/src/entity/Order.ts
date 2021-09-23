@@ -23,8 +23,8 @@ export class Order extends BaseEntity {
   id: number;
 
   @Field()
-  @Column({ default: 'open' })
-  status: 'open' | 'closed' | string;
+  @Column({ default: 'pending' })
+  status: 'cancelled' | 'pending' | 'started' | 'completed' | string;
 
   @Field(() => Float)
   @Column({ type: 'float' })
@@ -38,7 +38,7 @@ export class Order extends BaseEntity {
   @Column()
   per: string;
 
-  @Field(() => String)
+  @Field()
   @Column({ type: 'timestamptz' })
   startTime: Date;
 

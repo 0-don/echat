@@ -23,6 +23,14 @@ export const OrderSidebar: React.FC<OrderSidebarProps> = ({
       <h5 className='text-xl font-medium'>Purchased Orders</h5>
       <p
         className={`${
+          orderStatus === 'Cancelled' && 'bg-purple-dark font-medium'
+        } hover:bg-purple rounded-md py-2 pl-1`}
+        onClick={() => setOrderStatus('Cancelled')}
+      >
+        Cancelled
+      </p>
+      <p
+        className={`${
           orderStatus === 'Pending' && 'bg-purple-dark font-medium'
         } hover:bg-purple rounded-md py-2 pl-1`}
         onClick={() => setOrderStatus('Pending')}

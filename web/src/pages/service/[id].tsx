@@ -15,6 +15,7 @@ import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
 import { Score } from "src/components/servicedetail/Score";
 import { ImagePopup } from "src/components/utils/ImagePopup";
 import { Reviews } from "src/components/user/Reviews";
+import { Button } from "src/components/htmlElements";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -53,9 +54,11 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
             <div className="mt-4 mb-4 flex flex-row  w-full justify-between">
               {userService?.price} {userService?.per}
               <div className="flex  space-x-4">
-                <button className=" flex justify-center  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark ">
-                  Chat
-                </button>
+                <Button
+                  icon="star"
+                  text="Chat"
+                  className=" flex justify-center  items-center py-2 px-14 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark "
+                />
                 <OrderModal data={data} />
               </div>
             </div>

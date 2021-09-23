@@ -34,20 +34,22 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
         />
       </div>
 
-      <div className="flex  space-x-10 text-center">
+      <div className="flex w-full text-center justify-around py-4">
         <div
           onClick={() => router.push(`/user/${user?.id}`)}
-          className="text-3xl cursor-pointer text-purple-dark "
+          className="text-3xl cursor-pointer text-purple-dark  "
         >
           {user?.username}
         </div>
-        {dayjs(new Date()).diff(user?.lastOnline, "day") * -1 < 2 ? (
-          <div className="bg-green-500 h-8 w-8 rounded-full mr-1"></div>
-        ) : (
-          <div className="bg-red-500 h-8 w-8 rounded-full mr-1"></div>
-        )}
+        <div className="">
+          {dayjs(new Date()).diff(user?.lastOnline, "day") * -1 < 2 ? (
+            <div className="bg-green-500 h-8 w-8 rounded-full mr-1 "></div>
+          ) : (
+            <div className="bg-red-500 h-8 w-8 rounded-full mr-1 "></div>
+          )}
+        </div>
       </div>
-      <div className="flex-col container ">
+      <div className="flex-col container space-y-4">
         <div className="flex flex-0 space-x-2  ">
           <div className="text-lg">Language:</div>
           {languages?.map((language) => {

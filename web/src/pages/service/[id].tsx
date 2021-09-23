@@ -12,6 +12,7 @@ import { OrderModal } from "src/components/order/OrderModal";
 
 import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
 import { Score } from "src/components/servicedetail/Score";
+import { Button } from "src/components/htmlElements";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -48,11 +49,14 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
           <h1 className="mt-4 ">{service?.name}</h1>
           <div className="mt-4 mb-4 flex flex-wrap   w-full justify-between">
             {userService?.price} {userService?.per}
-            <div className="">
-              <div className="flex items-center space-x-4">
-                <button className=" flex justify-center  items-center py-2 px-14 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark ">
-                  Chat
-                </button>
+            <div>
+              <div className="flex justify-between items-center">
+                <Button
+                  icon="star"
+                  text={"Chat"}
+                  className=" flex justify-center  items-center py-2 px-14 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark "
+                />
+
                 <OrderModal data={data} />
               </div>
               <div className="flex justify-end">

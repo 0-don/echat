@@ -56,7 +56,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 <OrderModal data={data} />
               </div>
             </div>
-            <div className="flex flex-wrap lg:flex-nowrap lg:space-x-4 ">
+            <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap lg:space-x-4 ">
               <div
                 style={{
                   position: "relative",

@@ -56,14 +56,13 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 <OrderModal data={data} />
               </div>
             </div>
-            <div className="flex flex-wrap md:flex-nowrap lg:flex-nowrap lg:space-x-4 ">
+            <div className="flex flex-col md:flex-row md:space-x-4 lg:flex-row lg:space-x-4 ">
               <div
                 style={{
                   position: "relative",
                   width: "100%",
                   height: "350px",
                 }}
-                className="flex justify-items-start "
               >
                 <Image
                   placeholder="blur"
@@ -74,7 +73,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 />
               </div>
               {/* <Score id={id} /> */}
-              <div className="flex justify-end">
+              <div>
                 <Servicedetailcard id={id} />
               </div>
             </div>

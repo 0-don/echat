@@ -3,12 +3,13 @@ import { useRouter } from "next/router";
 import gray from "/public/gray.png";
 import React from "react";
 import Image from "next/image";
-import dayjs from "dayjs";
 import transparent from "/public/transparent.png";
 import { useGetUserServiceByIdQuery } from "src/generated/graphql";
 import { NextPage } from "next";
 import { ImagePopup } from "../utils/ImagePopup";
-
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
 const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const { data } = useGetUserServiceByIdQuery({
     variables: { id },
@@ -85,7 +86,7 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
             );
           })}
         </div>
-        <div>Age: {user?.age}</div>
+        <div>Age: {dayjs(user?.age).toNow(true)}</div>
       </div>
     </div>
   );

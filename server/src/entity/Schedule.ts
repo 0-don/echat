@@ -1,13 +1,19 @@
 import { Field, Int, ObjectType } from 'type-graphql';
 import { TypeormLoader } from 'type-graphql-dataloader';
-import { Entity, Column, BaseEntity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from './User';
 
 @ObjectType()
 @Entity()
 export class Schedule extends BaseEntity {
   @Field(() => Int)
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Field()

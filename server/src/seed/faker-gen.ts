@@ -10,6 +10,7 @@ import { log } from 'console';
 import { Country } from '../entity/Country';
 import { Language } from '../entity/Language';
 import { UserLanguage } from '../entity/UserLanguage';
+import { Schedule } from '../entity/Schedule';
 
 type UserType = {
   type: string;
@@ -58,6 +59,14 @@ type UserLanguageType = {
   userId: number;
 };
 
+type SchedulesType = {
+  name: string;
+  from: Date;
+  to: Date;
+  available: boolean;
+  userId: number;
+};
+
 const imageTemplate = (
   userId: number,
   type: 'profile' | 'secondary' | 'cover'
@@ -68,6 +77,20 @@ const imageTemplate = (
     'https://'
   ),
   publicId: `${faker.datatype.uuid()}`,
+  userId,
+});
+
+function randomDate(start: Date, end: Date) {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+}
+
+const scheduleTemplate = (userId: number, name: string): SchedulesType => ({
+  name,
+  from: randomDate(new Date(2012, 0, 1), new Date()),
+  to: randomDate(new Date(2012, 0, 1), new Date()),
+  available: coinFlip(),
   userId,
 });
 
@@ -120,6 +143,7 @@ const main = async () => {
   let images: ImageType[] = [];
   let userServices: UserServiceType[] = [];
   let userLanguages: UserLanguageType[] = [];
+  let schedules: SchedulesType[] = [];
 
   users.forEach(({ id: userId, username }, index) => {
     // IMAGES
@@ -199,6 +223,15 @@ const main = async () => {
         });
     }
 
+    // SCHEDULES
+    schedules.push(scheduleTemplate(userId, 'Monday'));
+    schedules.push(scheduleTemplate(userId, 'Tuesday'));
+    schedules.push(scheduleTemplate(userId, 'Wednesday'));
+    schedules.push(scheduleTemplate(userId, 'Thursday'));
+    schedules.push(scheduleTemplate(userId, 'Friday'));
+    schedules.push(scheduleTemplate(userId, 'Saturday'));
+    schedules.push(scheduleTemplate(userId, 'Sunday'));
+
     log(index + 1, username);
   });
   log('\nData Generated\n');
@@ -209,6 +242,8 @@ const main = async () => {
   await UserService.insert(userServices);
   log('Create User Languages');
   await UserLanguage.insert(userLanguages);
+  log('Create Schedules');
+  await Schedule.insert(schedules);
 
   log('Cleaning up');
 };

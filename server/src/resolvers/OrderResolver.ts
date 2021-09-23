@@ -26,7 +26,7 @@ export class createOrderResponse {
 @Resolver()
 export class OrderResolver {
   @Query(() => [Order])
-  async getbuyerOrders(@Ctx() { req }: MyContext) {
+  async getBuyerOrders(@Ctx() { req }: MyContext) {
     const buyerId: number = req.session.userId;
     return Order.find({ where: { buyerId } });
   }
@@ -73,6 +73,21 @@ export class OrderResolver {
     await User.update({ id: buyerId }, { coins: buyer.coins - finalPrice });
 
     return { success: true, errors };
+  }
+
+  @Mutation(() => Boolean)
+  async cancelOrder(
+    @Arg('id', () => Int) id: number,
+    @Ctx() { req }: MyContext
+  ) {
+    const buyerId: number = req.session.userId;
+
+    try {
+      await Order.update({ id, buyerId }, { status: 'cancelled' });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   // @Query(() => [Language], { nullable: true })

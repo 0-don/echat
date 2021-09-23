@@ -11,6 +11,7 @@ import user from '/public/user.png';
 import { useApolloClient } from '@apollo/client';
 import { DarkMode } from './DarkMode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import gray from '/public/gray.png';
 import Image from 'next/image';
 interface UserMenuProps {}
 
@@ -34,7 +35,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
           layout='fixed'
           objectFit='contain'
           className='rounded-full bg-white'
-          src={profileUrl ? profileUrl : user.src}
+          src={profileUrl ? profileUrl : user.src ?? gray.src}
         />
         <div className='flex'>
           <div className='block px-4 py-2 text-sm text-gray-700 dark:text-white'>
@@ -106,6 +107,18 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
                 icon='toolbox'
               />
               <a className='block py-2 text-sm'>Settings</a>
+            </div>
+          </NextLink>
+        </Menu.Item>
+        <Menu.Item>
+          <NextLink href='/order'>
+            <div className='cursor-pointer flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white'>
+              <FontAwesomeIcon
+                size='xs'
+                className='dark:text-white text-black mx-2'
+                icon='money-check'
+              />
+              <a className='block py-2 text-sm'>Order</a>
             </div>
           </NextLink>
         </Menu.Item>

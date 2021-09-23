@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useGetUserServiceByIdQuery } from "src/generated/graphql";
 import { Wrapper } from "../../components/Wrapper";
 import withApollo from "../../utils/apollo/withApollo";
-import Image from "next/image";
+
 import transparent from "/public/transparent.png";
 import React, { useEffect, useState } from "react";
 import { getRandomBetween } from "src/utils";
@@ -13,6 +13,8 @@ import { OrderModal } from "src/components/order/OrderModal";
 import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
 
 import { Score } from "src/components/servicedetail/Score";
+import { ImagePopup } from "src/components/utils/ImagePopup";
+import { Reviews } from "src/components/user/Reviews";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -35,7 +37,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   return (
     <Wrapper navbar fluid className="relative">
       <div style={{ position: "relative", width: "100%", height: "40vw" }}>
-        <Image
+        <ImagePopup
           className="img-fade opacity-40"
           src={bgImage ?? transparent.src}
           layout="fill"
@@ -45,10 +47,10 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
 
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
         <Score data={data} rating={generateNumber(0, 5)} />
-        <div className="dark:text-white text-black text-4xl ">
+        <div className="dark:text-white text-black  ">
           <div>
             <h1 className="mt-4 ">{service?.name}</h1>
-            <div className="mt-4 mb-4 flex flex-wrap  w-full justify-between">
+            <div className="mt-4 mb-4 flex flex-row  w-full justify-between">
               {userService?.price} {userService?.per}
               <div className="flex  space-x-4">
                 <button className=" flex justify-center  items-center py-2 px-20 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark ">
@@ -65,7 +67,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                   height: "350px",
                 }}
               >
-                <Image
+                <ImagePopup
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
                   layout="fill"
@@ -74,7 +76,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 />
               </div>
               {/* <Score id={id} /> */}
-              <div className="">
+              <div className=" ">
                 <Servicedetailcard id={id} />
               </div>
             </div>
@@ -108,9 +110,9 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 asdasdasd
               </div>
             </div>
-            {/* <Reviews data={data} rating={generateNumber(0, 5)} /> */}
-          </div>
-        </div>
+          </div>{" "}
+          <Reviews data={data} rating={generateNumber(0, 5)} />
+        </div>{" "}
       </div>
     </Wrapper>
   );

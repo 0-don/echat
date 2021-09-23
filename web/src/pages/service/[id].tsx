@@ -6,13 +6,13 @@ import Image from "next/image";
 import transparent from "/public/transparent.png";
 import React, { useEffect, useState } from "react";
 import { getRandomBetween } from "src/utils";
-
+import { generateNumber } from "../../utils/index";
 import gray from "/public/gray.png";
 import { OrderModal } from "src/components/order/OrderModal";
 
 import Servicedetailcard from "src/components/servicedetail/Servicedetailcard";
-import { Reviews } from "src/components/user/Reviews";
-// import { Score } from 'src/components/servicedetail/Score';
+
+import { Score } from "src/components/servicedetail/Score";
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -44,7 +44,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
       </div>
 
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
-        {/* <Score data={data} rating={4.5} /> */}
+        <Score data={data} rating={generateNumber(0, 5)} />
         <div className="dark:text-white text-black text-4xl ">
           <div>
             <h1 className="mt-4 ">{service?.name}</h1>
@@ -91,7 +91,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                       <h1>Platform</h1>
                     </div>
                     {userService?.platforms.map((platform: any) => {
-                      return <div> {platform.name}</div>;
+                      return <div key={platform.id}> {platform.name}</div>;
                     })}
                   </div>
                 </div>
@@ -108,7 +108,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 asdasdasd
               </div>
             </div>
-            <Reviews data={data} rating={Math.random()} />
+            {/* <Reviews data={data} rating={generateNumber(0, 5)} /> */}
           </div>
         </div>
       </div>

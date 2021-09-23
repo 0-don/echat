@@ -73,21 +73,35 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
                 />
               </div>
               {/* <Score id={id} /> */}
-              <div>
+              <div className="">
                 <Servicedetailcard id={id} />
               </div>
             </div>
-            {/* <div
-              style={{
-                width: "400px",
-                height: "550px",
-              }}
-              className=" items-center justify-items-end flex flex-col  bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:rounded-lg sm:p-6 mb-5"
-            >
-              <Servicedetailcard id={id} />
-            </div> */}
-          </div>{" "}
-        </div>
+            <div className="bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5 items-center">
+              Details
+              <div className="md:flex  md:space-x-10 lg:flex  lg:space-x-10">
+                <div className="flex flex-row space-x-4 ">
+                  <div>Level</div>
+                  <div>{userService?.level}</div>{" "}
+                </div>
+                <div className="flex flex-row space-x-4 ">
+                  <div>
+                    <h1>Platform</h1>
+                  </div>
+                  {userService?.platforms.map((platform: any) => {
+                    return <div> {platform.name}</div>;
+                  })}
+                </div>
+              </div>
+              <div className="">
+                <div>
+                  <h1>Introduction</h1>
+                </div>
+                <div className="text-center">{userService?.description}</div>
+              </div>
+            </div>
+          </div>
+        </div>{" "}
       </div>
     </Wrapper>
   );

@@ -47,7 +47,6 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
       </div>
 
       <div className="container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0">
-        <Score data={data} rating={generateNumber(0, 5)} />
         <div className="dark:text-white text-black  ">
           <div>
             <h1 className="mt-4 text-lg lg:text-3xl md:text-3xl">
@@ -65,26 +64,30 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:space-x-4 lg:flex-row lg:space-x-4 ">
-              <div
-                style={{
-                  position: "relative",
-                  width: "100%",
-                  height: "350px",
-                }}
-              >
-                <ImagePopup
-                  placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
-                  layout="fill"
-                  objectFit="cover"
-                  src={userService?.image ?? transparent.src}
-                />
+              <div className="flex flex-col">
+                <Score data={data} rating={generateNumber(0, 5)} />
+
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "350px",
+                  }}
+                >
+                  <ImagePopup
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
+                    layout="fill"
+                    objectFit="cover"
+                    src={userService?.image ?? transparent.src}
+                  />
+                </div>
               </div>
               {/* <Score id={id} /> */}
               <div className=" ">
                 <Servicedetailcard id={id} />
               </div>
-            </div>
+            </div>{" "}
             <div className="flex flex-row space-x-20">
               <div className="bg-white text-sm dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5 items-center">
                 Details

@@ -30,7 +30,7 @@ export const Score: React.FC<ScoreProps> = ({ data, rating }) => {
 
   return (
     <div>
-      <div className=" bg-white dark:bg-dark dark:text-white shadow sm:rounded-lg p-3 px-5 my-5">
+      <div className=" bg-white dark:bg-dark h-full dark:text-white shadow sm:rounded-lg p-3 px-5 my-5">
         <div className="flex flex-col md:flex-row  items-center">
           <div className="flex flex-col space-x-1">
             <h3 className="font-medium">Average Score</h3>

@@ -19,10 +19,10 @@ const Servicedetailcard: NextPage<{ id: number }> = ({ id }) => {
   const languages = data?.getUserServiceById?.user?.languages;
   const router = useRouter();
   return (
-    <div className="   h-[550px] items-center flex flex-col  bg-white dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5">
-      <div className="relative w-full h-full ">
+    <div className="   h-[550px] items-center flex flex-col  bg-white dark:bg-dark dark:text-white rounded-xl shadow px-4 py-4  sm:p-6 mb-5">
+      <div className="relative w-full h-full  ">
         <ImagePopup
-          className="w-full"
+          className=""
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII="
           layout="fill"

@@ -64,7 +64,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:space-x-4 lg:flex-row lg:space-x-4 ">
-              <div className="flex flex-col w-full space-y-8 ">
+              <div className="flex flex-col w-full  space-y-8 ">
                 <Score data={data} rating={generateNumber(0, 5)} />
 
                 <div

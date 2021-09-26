@@ -6,6 +6,7 @@ import {
   GetBuyerOrdersDocument,
   useCancelOrderMutation,
   useGetBuyerOrdersQuery,
+  useGetSellerOrdersQuery,
 } from 'src/generated/graphql';
 import { Button } from 'src/components/htmlElements';
 import gray from '/public/gray.png';
@@ -15,15 +16,30 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 dayjs.extend(localizedFormat);
-export type OrderStatus = 'Cancelled' | 'Pending' | 'Started' | 'Completed';
+export type OrderStatus =
+  | 'Cancelled'
+  | 'Pending'
+  | 'Started'
+  | 'Completed'
+  | undefined;
 
 const Order: React.FC = ({}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [orderStatus, setOrderStatus] = useState<OrderStatus>('Pending');
-  const { data } = useGetBuyerOrdersQuery();
+  const [buyerOrderStatus, setBuyerOrderStatus] =
+    useState<OrderStatus>('Pending');
+  const [sellerOrderStatus, setSellerOrderStatus] = useState<OrderStatus>();
+
+  const { data: buyerData } = useGetBuyerOrdersQuery();
+  const { data: sellerData } = useGetSellerOrdersQuery();
+
   const [cancelOrder] = useCancelOrderMutation();
-  const orders = data?.getBuyerOrders.filter(
-    (order) => order.status === orderStatus.toLocaleLowerCase()
+
+  const buyerOrders = buyerData?.getBuyerOrders.filter(
+    (order) => order.status === buyerOrderStatus?.toLocaleLowerCase()
+  );
+
+  const sellerOrders = sellerData?.getSellerOrders.filter(
+    (order) => order.status === sellerOrderStatus?.toLocaleLowerCase()
   );
 
   return (
@@ -37,12 +53,14 @@ const Order: React.FC = ({}) => {
         <OrderSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          orderStatus={orderStatus}
-          setOrderStatus={setOrderStatus}
+          buyerOrderStatus={buyerOrderStatus}
+          setBuyerOrderStatus={setBuyerOrderStatus}
+          sellerOrderStatus={sellerOrderStatus}
+          setSellerOrderStatus={setSellerOrderStatus}
         />
         <div className='flex flex-col w-full overflow-x-hidden overflow-y-auto lg:px-5 mx-2 md:mx-0'>
           <div className='flex justify-between mt-5'>
-            <h1 className='text-3xl font-medium'>{orderStatus}</h1>
+            <h1 className='text-3xl font-medium'>{buyerOrderStatus}</h1>
             <div className='md:hidden'>
               <Button
                 text='services'
@@ -51,7 +69,107 @@ const Order: React.FC = ({}) => {
               />
             </div>
           </div>
-          {orders?.map(
+          {sellerOrders?.map(
+            ({
+              id,
+              rounds,
+              finalPrice,
+              per,
+              startTime,
+              userService,
+              buyer,
+              status,
+            }) => (
+              <div
+                key={id}
+                className='flex flex-col w-full mt-5 bg-dark rounded-b-md'
+              >
+                <div className='bg-dark-light w-full rounded-t-md pl-5 text-sm text-gray-300'>
+                  Order ID: {id}
+                </div>
+
+                <div className='flex flex-col md:flex-row md:items-center md:justify-between md:px-5 p-5 md:p-0 space-y-3 md:space-y-0 w-full'>
+                  <div className='flex items-center bg-dark-light rounded-full md:my-3 space-x-3 w-full md:w-72'>
+                    <Image
+                      width={45}
+                      height={45}
+                      layout='fixed'
+                      objectFit='cover'
+                      className='rounded-full'
+                      src={
+                        buyer?.images?.find(({ type }) => type == 'profile')
+                          ?.url ?? gray.src
+                      }
+                    />
+                    <div className='flex flex-col'>
+                      <p className='font-medium'>{buyer?.username}</p>
+                      <p>{userService?.service.name}</p>
+                    </div>
+                  </div>
+
+                  <div className='flex justify-between md:flex-col'>
+                    <p className='font-medium'>Order Time</p>
+                    <p>{dayjs(startTime).format('lll')}</p>
+                  </div>
+
+                  <div className='flex justify-between md:flex-col'>
+                    <p className='font-medium'>Quantity</p>
+                    <p className='text-center'>{rounds}</p>
+                  </div>
+
+                  <div className='flex justify-between items-center md:flex-col'>
+                    <p className='font-medium md:hidden'>Price</p>
+                    <div className='flex items-center text-xl'>
+                      <FontAwesomeIcon
+                        size='lg'
+                        className='dark:text-white text-black mr-1'
+                        icon='coins'
+                      />
+                      <div className='font-bold'>{`${finalPrice.toFixed(
+                        2
+                      )} / ${per}`}</div>
+                    </div>
+                  </div>
+
+                  <div className='flex justify-between md:flex-col'>
+                    <p className='font-medium'>Order Status</p>
+                    <p className='text-center'>{status}</p>
+                  </div>
+
+                  <div className='flex justify-between md:flex-col md:items-center'>
+                    <p className='font-medium mb-2'>Options</p>
+                    <div className='flex space-x-5 '>
+                      {buyerOrderStatus === 'Pending' && (
+                        <FontAwesomeIcon
+                          id='trash'
+                          size='sm'
+                          title='cancel order'
+                          className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
+                          icon='trash-alt'
+                          onClick={async () =>
+                            await cancelOrder({
+                              variables: { id },
+                              refetchQueries: [
+                                { query: GetBuyerOrdersDocument },
+                              ],
+                            })
+                          }
+                        />
+                      )}
+                      <FontAwesomeIcon
+                        size='sm'
+                        title='chat'
+                        className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
+                        icon='comment-dots'
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          )}
+
+          {buyerOrders?.map(
             ({
               id,
               rounds,
@@ -121,7 +239,7 @@ const Order: React.FC = ({}) => {
                   <div className='flex justify-between md:flex-col md:items-center'>
                     <p className='font-medium mb-2'>Options</p>
                     <div className='flex space-x-5 '>
-                      {orderStatus === 'Pending' && (
+                      {buyerOrderStatus === 'Pending' && (
                         <FontAwesomeIcon
                           id='trash'
                           size='sm'

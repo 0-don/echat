@@ -224,6 +224,7 @@ export type Query = {
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
   getBuyerOrders: Array<Order>;
+  getSellerOrders: Array<Order>;
 };
 
 
@@ -682,6 +683,36 @@ export type GetMeUserServiceQuery = (
       & Pick<Service, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
     ) }
   )>> }
+);
+
+export type GetSellerOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSellerOrdersQuery = (
+  { __typename?: 'Query' }
+  & { getSellerOrders: Array<(
+    { __typename?: 'Order' }
+    & Pick<Order, 'id' | 'status' | 'price' | 'rounds' | 'per' | 'startTime' | 'finalPrice'>
+    & { buyer?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'description' | 'age' | 'gender'>
+      & { images?: Maybe<Array<(
+        { __typename?: 'Image' }
+        & Pick<Image, 'id' | 'url' | 'type'>
+      )>> }
+    )>, userService?: Maybe<(
+      { __typename?: 'UserService' }
+      & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
+      & { service: (
+        { __typename?: 'Service' }
+        & Pick<Service, 'id' | 'name' | 'slug' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'ServiceImage' }
+          & Pick<ServiceImage, 'id' | 'type' | 'url' | 'height' | 'width'>
+        )>> }
+      ) }
+    )> }
+  )> }
 );
 
 export type GetServicesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1590,6 +1621,86 @@ export function useGetMeUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServiceQuery>;
 export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
 export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
+export const GetSellerOrdersDocument = gql`
+    query GetSellerOrders {
+  getSellerOrders {
+    id
+    status
+    price
+    rounds
+    per
+    startTime
+    finalPrice
+    buyer {
+      id
+      username
+      description
+      age
+      gender
+      images {
+        id
+        url
+        type
+      }
+    }
+    userService {
+      id
+      status
+      level
+      platforms
+      description
+      price
+      per
+      image
+      service {
+        id
+        name
+        slug
+        popularity
+        boxArtUrl
+        first_release_date
+        platforms
+        genres
+        multiplayer_modes
+        images {
+          id
+          type
+          url
+          height
+          width
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSellerOrdersQuery__
+ *
+ * To run a query within a React component, call `useGetSellerOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSellerOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSellerOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSellerOrdersQuery(baseOptions?: Apollo.QueryHookOptions<GetSellerOrdersQuery, GetSellerOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSellerOrdersQuery, GetSellerOrdersQueryVariables>(GetSellerOrdersDocument, options);
+      }
+export function useGetSellerOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSellerOrdersQuery, GetSellerOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSellerOrdersQuery, GetSellerOrdersQueryVariables>(GetSellerOrdersDocument, options);
+        }
+export type GetSellerOrdersQueryHookResult = ReturnType<typeof useGetSellerOrdersQuery>;
+export type GetSellerOrdersLazyQueryHookResult = ReturnType<typeof useGetSellerOrdersLazyQuery>;
+export type GetSellerOrdersQueryResult = Apollo.QueryResult<GetSellerOrdersQuery, GetSellerOrdersQueryVariables>;
 export const GetServicesDocument = gql`
     query GetServices {
   getServices {
@@ -2091,6 +2202,7 @@ export const namedOperations = {
     GetCountries: 'GetCountries',
     GetLanguages: 'GetLanguages',
     GetMeUserService: 'GetMeUserService',
+    GetSellerOrders: 'GetSellerOrders',
     GetServices: 'GetServices',
     GetUser: 'GetUser',
     GetUserServiceById: 'GetUserServiceById',

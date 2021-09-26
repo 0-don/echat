@@ -7,48 +7,114 @@ import { OrderStatus } from 'src/pages/order';
 interface OrderSidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<SetStateAction<boolean>>;
-  orderStatus: OrderStatus;
-  setOrderStatus: Dispatch<SetStateAction<OrderStatus>>;
+  buyerOrderStatus: OrderStatus;
+  setBuyerOrderStatus: Dispatch<SetStateAction<OrderStatus>>;
+  setSellerOrderStatus: Dispatch<SetStateAction<OrderStatus>>;
+  sellerOrderStatus: OrderStatus;
 }
 
 export const OrderSidebar: React.FC<OrderSidebarProps> = ({
   setSidebarOpen,
   sidebarOpen,
-  orderStatus,
-  setOrderStatus,
+  setBuyerOrderStatus,
+  buyerOrderStatus,
+  setSellerOrderStatus,
+  sellerOrderStatus,
 }) => {
-  const items = (
+  const sellerOrders = (
     <div className='p-5 flex flex-col space-y-2 dark:text-white text-black'>
-      <h5 className='text-xl font-medium'>Purchased Orders</h5>
+      <h5 className='text-xl font-medium'>Paid Orders</h5>
       <p
         className={`${
-          orderStatus === 'Cancelled' && 'bg-purple-dark font-medium'
+          sellerOrderStatus === 'Cancelled' && 'bg-purple-dark font-medium'
         } hover:bg-purple rounded-md py-2 pl-1`}
-        onClick={() => setOrderStatus('Cancelled')}
+        onClick={() => {
+          setSellerOrderStatus('Cancelled');
+          setBuyerOrderStatus(undefined);
+        }}
       >
         Cancelled
       </p>
       <p
         className={`${
-          orderStatus === 'Pending' && 'bg-purple-dark font-medium'
+          sellerOrderStatus === 'Pending' && 'bg-purple-dark font-medium'
         } hover:bg-purple rounded-md py-2 pl-1`}
-        onClick={() => setOrderStatus('Pending')}
+        onClick={() => {
+          setSellerOrderStatus('Pending');
+          setBuyerOrderStatus(undefined);
+        }}
       >
         Pending
       </p>
       <p
         className={`${
-          orderStatus === 'Started' && 'bg-purple-dark font-medium'
+          sellerOrderStatus === 'Started' && 'bg-purple-dark font-medium'
         } hover:bg-purple rounded-md py-2 pl-1`}
-        onClick={() => setOrderStatus('Started')}
+        onClick={() => {
+          setSellerOrderStatus('Started');
+          setBuyerOrderStatus(undefined);
+        }}
       >
         Started
       </p>
       <p
         className={`${
-          orderStatus === 'Completed' && 'bg-purple-dark font-medium'
+          sellerOrderStatus === 'Completed' && 'bg-purple-dark font-medium'
         } hover:bg-purple rounded-md py-2 pl-1`}
-        onClick={() => setOrderStatus('Completed')}
+        onClick={() => {
+          setSellerOrderStatus('Completed');
+          setBuyerOrderStatus(undefined);
+        }}
+      >
+        Completed
+      </p>
+    </div>
+  );
+
+  const buyerOrders = (
+    <div className='p-5 flex flex-col space-y-2 dark:text-white text-black'>
+      <h5 className='text-xl font-medium'>Purchased Orders</h5>
+      <p
+        className={`${
+          buyerOrderStatus === 'Cancelled' && 'bg-purple-dark font-medium'
+        } hover:bg-purple rounded-md py-2 pl-1`}
+        onClick={() => {
+          setBuyerOrderStatus('Cancelled');
+          setSellerOrderStatus(undefined);
+        }}
+      >
+        Cancelled
+      </p>
+      <p
+        className={`${
+          buyerOrderStatus === 'Pending' && 'bg-purple-dark font-medium'
+        } hover:bg-purple rounded-md py-2 pl-1`}
+        onClick={() => {
+          setBuyerOrderStatus('Pending');
+          setSellerOrderStatus(undefined);
+        }}
+      >
+        Pending
+      </p>
+      <p
+        className={`${
+          buyerOrderStatus === 'Started' && 'bg-purple-dark font-medium'
+        } hover:bg-purple rounded-md py-2 pl-1`}
+        onClick={() => {
+          setBuyerOrderStatus('Started');
+          setSellerOrderStatus(undefined);
+        }}
+      >
+        Started
+      </p>
+      <p
+        className={`${
+          buyerOrderStatus === 'Completed' && 'bg-purple-dark font-medium'
+        } hover:bg-purple rounded-md py-2 pl-1`}
+        onClick={() => {
+          setBuyerOrderStatus('Started');
+          setSellerOrderStatus(undefined);
+        }}
       >
         Completed
       </p>
@@ -105,7 +171,10 @@ export const OrderSidebar: React.FC<OrderSidebarProps> = ({
                 </div>
               </Transition.Child>
               <div className='flex-1 h-0 pt-5 pb-4 overflow-y-auto bg-dark'>
-                <nav className='px-2 space-y-1'>{items}</nav>
+                <nav className='px-2 space-y-1'>
+                  {buyerOrders}
+                  {sellerOrders}
+                </nav>
               </div>
             </div>
           </Transition.Child>
@@ -120,7 +189,8 @@ export const OrderSidebar: React.FC<OrderSidebarProps> = ({
           style={{ maxWidth: '16rem', width: '16rem' }}
           className='flex flex-col px-2 space-y-1 bg-dark'
         >
-          {items}
+          {buyerOrders}
+          {sellerOrders}
         </nav>
       </div>
     </>

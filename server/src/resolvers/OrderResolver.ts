@@ -31,6 +31,12 @@ export class OrderResolver {
     return Order.find({ where: { buyerId } });
   }
 
+  @Query(() => [Order])
+  async getSellerOrders(@Ctx() { req }: MyContext) {
+    const sellerId: number = req.session.userId;
+    return Order.find({ where: { sellerId } });
+  }
+
   @Mutation(() => createOrderResponse)
   async createOrder(
     @Arg('userServiceId', () => Int) userServiceId: number,

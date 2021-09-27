@@ -13,6 +13,7 @@ import {
 import { User } from '../entity/User';
 import { UserService } from '../entity/UserService';
 import { FieldError } from '../utils/types/UserTypes';
+import { getConnection } from 'typeorm';
 
 @ObjectType()
 export class createOrderResponse {
@@ -54,8 +55,10 @@ export class OrderResolver {
     !userService &&
       errors.push({ field: 'userService', message: 'User service missing' });
     !buyer && errors.push({ field: 'buyer', message: 'Buyer is missing' });
+    sellerId === buyerId &&
+      errors.push({ field: 'seller', message: 'Cant buy your own service' });
 
-    if (!userService || !buyer) {
+    if (!userService || !buyer || errors.length) {
       return { success: false, errors };
     }
 
@@ -82,14 +85,87 @@ export class OrderResolver {
   }
 
   @Mutation(() => Boolean)
-  async cancelOrder(
+  async completeOrder(
     @Arg('id', () => Int) id: number,
     @Ctx() { req }: MyContext
   ) {
-    const buyerId: number = req.session.userId;
+    const sellerId: number = req.session.userId;
 
     try {
-      await Order.update({ id, buyerId }, { status: 'cancelled' });
+      const { raw } = await getConnection()
+        .createQueryBuilder()
+        .update(Order)
+        .set({ status: 'completed' })
+        .where('id = :id AND sellerId = :sellerId AND status = :status', {
+          id,
+          sellerId,
+          status: 'started',
+        })
+        .returning('*')
+        .execute();
+
+      const order: Order = raw[0];
+
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ coins: () => `coins + ${order.finalPrice}` })
+        .where('id = :id', { id: sellerId })
+        .execute();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async acceptOrder(
+    @Arg('id', () => Int) id: number,
+    @Ctx() { req }: MyContext
+  ) {
+    const sellerId: number = req.session.userId;
+
+    try {
+      await Order.update(
+        { id, sellerId, status: 'pending' },
+        { status: 'started' }
+      );
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async cancelOrder(
+    @Ctx() { req }: MyContext,
+    @Arg('id', () => Int) id: number,
+    @Arg('buyerId', () => Int, { nullable: true }) buyerId?: number,
+    @Arg('sellerId', () => Int, { nullable: true }) sellerId?: number
+  ) {
+    try {
+      const { raw } = await getConnection()
+        .createQueryBuilder()
+        .update(Order)
+        .set({ status: 'cancelled' })
+        .where('id = :id AND buyerId = :buyerId AND sellerId = :sellerId', {
+          id,
+          buyerId: buyerId ?? (req.session.userId as number),
+          sellerId: sellerId ?? (req.session.userId as number),
+        })
+        .returning('*')
+        .execute();
+
+      const order: Order = raw[0];
+
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ coins: () => `coins + ${order.finalPrice}` })
+        .where('id = :id', { id: buyerId ?? (req.session.userId as number) })
+        .execute();
+
       return true;
     } catch (error) {
       return false;

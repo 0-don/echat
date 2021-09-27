@@ -53,6 +53,7 @@ export class UserResolver {
       return null;
     }
 
+    
     return getConnection()
       .createQueryBuilder()
       .update(User)

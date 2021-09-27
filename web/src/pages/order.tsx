@@ -4,7 +4,9 @@ import withApollo from '../utils/apollo/withApollo';
 import React, { useState } from 'react';
 import {
   GetBuyerOrdersDocument,
+  GetSellerOrdersDocument,
   useCancelOrderMutation,
+  useCompleteOrderMutation,
   useGetBuyerOrdersQuery,
   useGetSellerOrdersQuery,
 } from 'src/generated/graphql';
@@ -33,6 +35,7 @@ const Order: React.FC = ({}) => {
   const { data: sellerData } = useGetSellerOrdersQuery();
 
   const [cancelOrder] = useCancelOrderMutation();
+  const [completeOrder] = useCompleteOrderMutation();
 
   const buyerOrders = buyerData?.getBuyerOrders.filter(
     (order) => order.status === buyerOrderStatus?.toLocaleLowerCase()
@@ -60,7 +63,9 @@ const Order: React.FC = ({}) => {
         />
         <div className='flex flex-col w-full overflow-x-hidden overflow-y-auto lg:px-5 mx-2 md:mx-0'>
           <div className='flex justify-between mt-5'>
-            <h1 className='text-3xl font-medium'>{buyerOrderStatus}</h1>
+            <h1 className='text-3xl font-medium'>
+              {sellerOrderStatus ?? buyerOrderStatus}
+            </h1>
             <div className='md:hidden'>
               <Button
                 text='services'
@@ -138,24 +143,40 @@ const Order: React.FC = ({}) => {
 
                   <div className='flex justify-between md:flex-col md:items-center'>
                     <p className='font-medium mb-2'>Options</p>
-                    <div className='flex space-x-5 '>
-                      {buyerOrderStatus === 'Pending' && (
-                        <FontAwesomeIcon
-                          id='trash'
-                          size='sm'
-                          title='cancel order'
-                          className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
-                          icon='trash-alt'
+                    <div className='flex space-x-5 items-center '>
+                      {sellerOrderStatus === 'Started' && (
+                        <button
                           onClick={async () =>
-                            await cancelOrder({
+                            await completeOrder({
                               variables: { id },
                               refetchQueries: [
-                                { query: GetBuyerOrdersDocument },
+                                { query: GetSellerOrdersDocument },
                               ],
                             })
                           }
-                        />
+                          className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
+                        >
+                          complete
+                        </button>
                       )}
+                      {sellerOrderStatus === 'Pending' ||
+                        (sellerOrderStatus === 'Started' && (
+                          <FontAwesomeIcon
+                            id='trash'
+                            size='sm'
+                            title='cancel order'
+                            className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
+                            icon='trash-alt'
+                            onClick={async () =>
+                              await cancelOrder({
+                                variables: { id, buyerId: buyer?.id },
+                                refetchQueries: [
+                                  { query: GetSellerOrdersDocument },
+                                ],
+                              })
+                            }
+                          />
+                        ))}
                       <FontAwesomeIcon
                         size='sm'
                         title='chat'
@@ -248,7 +269,7 @@ const Order: React.FC = ({}) => {
                           icon='trash-alt'
                           onClick={async () =>
                             await cancelOrder({
-                              variables: { id },
+                              variables: { id, sellerId: seller?.id },
                               refetchQueries: [
                                 { query: GetBuyerOrdersDocument },
                               ],

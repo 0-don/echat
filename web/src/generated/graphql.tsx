@@ -106,6 +106,8 @@ export type Mutation = {
   deleteUserService: Scalars['Boolean'];
   createChat: Chat;
   createOrder: CreateOrderResponse;
+  completeOrder: Scalars['Boolean'];
+  acceptOrder: Scalars['Boolean'];
   cancelOrder: Scalars['Boolean'];
 };
 
@@ -181,7 +183,19 @@ export type MutationCreateOrderArgs = {
 };
 
 
+export type MutationCompleteOrderArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationAcceptOrderArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationCancelOrderArgs = {
+  sellerId?: Maybe<Scalars['Int']>;
+  buyerId?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
 };
 
@@ -448,6 +462,8 @@ export type RegularUserResponseFragment = (
 
 export type CancelOrderMutationVariables = Exact<{
   id: Scalars['Int'];
+  sellerId?: Maybe<Scalars['Int']>;
+  buyerId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -486,6 +502,16 @@ export type ChangeUserserviceImageMutationVariables = Exact<{
 export type ChangeUserserviceImageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'changeUserserviceImage'>
+);
+
+export type CompleteOrderMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type CompleteOrderMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'completeOrder'>
 );
 
 export type CreateOrderMutationVariables = Exact<{
@@ -941,8 +967,8 @@ export const RegularUserResponseFragmentDoc = gql`
     ${RegularErrorFragmentDoc}
 ${RegularUserFragmentDoc}`;
 export const CancelOrderDocument = gql`
-    mutation cancelOrder($id: Int!) {
-  cancelOrder(id: $id)
+    mutation cancelOrder($id: Int!, $sellerId: Int, $buyerId: Int) {
+  cancelOrder(id: $id, buyerId: $buyerId, sellerId: $sellerId)
 }
     `;
 export type CancelOrderMutationFn = Apollo.MutationFunction<CancelOrderMutation, CancelOrderMutationVariables>;
@@ -961,6 +987,8 @@ export type CancelOrderMutationFn = Apollo.MutationFunction<CancelOrderMutation,
  * const [cancelOrderMutation, { data, loading, error }] = useCancelOrderMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      sellerId: // value for 'sellerId'
+ *      buyerId: // value for 'buyerId'
  *   },
  * });
  */
@@ -1066,6 +1094,37 @@ export function useChangeUserserviceImageMutation(baseOptions?: Apollo.MutationH
 export type ChangeUserserviceImageMutationHookResult = ReturnType<typeof useChangeUserserviceImageMutation>;
 export type ChangeUserserviceImageMutationResult = Apollo.MutationResult<ChangeUserserviceImageMutation>;
 export type ChangeUserserviceImageMutationOptions = Apollo.BaseMutationOptions<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>;
+export const CompleteOrderDocument = gql`
+    mutation CompleteOrder($id: Int!) {
+  completeOrder(id: $id)
+}
+    `;
+export type CompleteOrderMutationFn = Apollo.MutationFunction<CompleteOrderMutation, CompleteOrderMutationVariables>;
+
+/**
+ * __useCompleteOrderMutation__
+ *
+ * To run a mutation, you first call `useCompleteOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCompleteOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [completeOrderMutation, { data, loading, error }] = useCompleteOrderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCompleteOrderMutation(baseOptions?: Apollo.MutationHookOptions<CompleteOrderMutation, CompleteOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CompleteOrderMutation, CompleteOrderMutationVariables>(CompleteOrderDocument, options);
+      }
+export type CompleteOrderMutationHookResult = ReturnType<typeof useCompleteOrderMutation>;
+export type CompleteOrderMutationResult = Apollo.MutationResult<CompleteOrderMutation>;
+export type CompleteOrderMutationOptions = Apollo.BaseMutationOptions<CompleteOrderMutation, CompleteOrderMutationVariables>;
 export const CreateOrderDocument = gql`
     mutation CreateOrder($userServiceId: Int!, $rounds: Int!, $startTime: DateTime!) {
   createOrder(
@@ -2216,6 +2275,7 @@ export const namedOperations = {
     ChangePassword: 'ChangePassword',
     ChangeUserType: 'ChangeUserType',
     ChangeUserserviceImage: 'ChangeUserserviceImage',
+    CompleteOrder: 'CompleteOrder',
     CreateOrder: 'CreateOrder',
     DeleteImage: 'DeleteImage',
     DeleteUserService: 'DeleteUserService',

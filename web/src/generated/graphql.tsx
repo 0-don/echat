@@ -105,8 +105,8 @@ export type Mutation = {
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
   createChat: Chat;
-  createOrder: CreateOrderResponse;
-  completeOrder: Scalars['Boolean'];
+  createOrder: OrderResponse;
+  completeOrder: OrderResponse;
   acceptOrder: Scalars['Boolean'];
   cancelOrder: Scalars['Boolean'];
 };
@@ -184,6 +184,8 @@ export type MutationCreateOrderArgs = {
 
 
 export type MutationCompleteOrderArgs = {
+  sellerId?: Maybe<Scalars['Int']>;
+  buyerId?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
 };
 
@@ -207,6 +209,7 @@ export type Order = {
   rounds: Scalars['Int'];
   per: Scalars['String'];
   startTime: Scalars['DateTime'];
+  startedTime?: Maybe<Scalars['DateTime']>;
   finalPrice: Scalars['Float'];
   buyer?: Maybe<User>;
   buyerId: Scalars['Int'];
@@ -214,6 +217,12 @@ export type Order = {
   sellerId: Scalars['Int'];
   userService?: Maybe<UserService>;
   userServiceId: Scalars['Int'];
+};
+
+export type OrderResponse = {
+  __typename?: 'OrderResponse';
+  errors?: Maybe<Array<FieldError>>;
+  success: Scalars['Boolean'];
 };
 
 export type PaginatedUserService = {
@@ -426,12 +435,6 @@ export type UserService = {
   updatedAt: Scalars['String'];
 };
 
-export type CreateOrderResponse = {
-  __typename?: 'createOrderResponse';
-  errors?: Maybe<Array<FieldError>>;
-  success: Scalars['Boolean'];
-};
-
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
   & Pick<FieldError, 'field' | 'message'>
@@ -506,12 +509,21 @@ export type ChangeUserserviceImageMutation = (
 
 export type CompleteOrderMutationVariables = Exact<{
   id: Scalars['Int'];
+  sellerId?: Maybe<Scalars['Int']>;
+  buyerId?: Maybe<Scalars['Int']>;
 }>;
 
 
 export type CompleteOrderMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'completeOrder'>
+  & { completeOrder: (
+    { __typename?: 'OrderResponse' }
+    & Pick<OrderResponse, 'success'>
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
 );
 
 export type CreateOrderMutationVariables = Exact<{
@@ -524,8 +536,8 @@ export type CreateOrderMutationVariables = Exact<{
 export type CreateOrderMutation = (
   { __typename?: 'Mutation' }
   & { createOrder: (
-    { __typename?: 'createOrderResponse' }
-    & Pick<CreateOrderResponse, 'success'>
+    { __typename?: 'OrderResponse' }
+    & Pick<OrderResponse, 'success'>
     & { errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -1095,8 +1107,14 @@ export type ChangeUserserviceImageMutationHookResult = ReturnType<typeof useChan
 export type ChangeUserserviceImageMutationResult = Apollo.MutationResult<ChangeUserserviceImageMutation>;
 export type ChangeUserserviceImageMutationOptions = Apollo.BaseMutationOptions<ChangeUserserviceImageMutation, ChangeUserserviceImageMutationVariables>;
 export const CompleteOrderDocument = gql`
-    mutation CompleteOrder($id: Int!) {
-  completeOrder(id: $id)
+    mutation CompleteOrder($id: Int!, $sellerId: Int, $buyerId: Int) {
+  completeOrder(id: $id, buyerId: $buyerId, sellerId: $sellerId) {
+    success
+    errors {
+      field
+      message
+    }
+  }
 }
     `;
 export type CompleteOrderMutationFn = Apollo.MutationFunction<CompleteOrderMutation, CompleteOrderMutationVariables>;
@@ -1115,6 +1133,8 @@ export type CompleteOrderMutationFn = Apollo.MutationFunction<CompleteOrderMutat
  * const [completeOrderMutation, { data, loading, error }] = useCompleteOrderMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      sellerId: // value for 'sellerId'
+ *      buyerId: // value for 'buyerId'
  *   },
  * });
  */

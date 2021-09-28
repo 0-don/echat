@@ -42,6 +42,10 @@ export class Order extends BaseEntity {
   @Column({ type: 'timestamptz' })
   startTime: Date;
 
+  @Field({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
+  startedTime: Date;
+
   @Field(() => Float)
   @Column({ type: 'float' })
   finalPrice: number;

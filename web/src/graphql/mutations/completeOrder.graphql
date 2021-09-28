@@ -1,3 +1,9 @@
-mutation CompleteOrder($id: Int!,) {
-  completeOrder(id: $id)
+mutation CompleteOrder($id: Int!, $sellerId: Int, $buyerId: Int) {
+  completeOrder(id: $id, buyerId: $buyerId, sellerId: $sellerId) {
+    success
+    errors {
+      field
+      message
+    }
+  }
 }

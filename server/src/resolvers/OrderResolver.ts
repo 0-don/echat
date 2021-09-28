@@ -16,7 +16,7 @@ import { FieldError } from '../utils/types/UserTypes';
 import { getConnection } from 'typeorm';
 
 @ObjectType()
-export class createOrderResponse {
+export class OrderResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
@@ -38,13 +38,13 @@ export class OrderResolver {
     return Order.find({ where: { sellerId } });
   }
 
-  @Mutation(() => createOrderResponse)
+  @Mutation(() => OrderResponse)
   async createOrder(
     @Arg('userServiceId', () => Int) userServiceId: number,
     @Arg('rounds', () => Int) rounds: number,
     @Arg('startTime') startTime: Date,
     @Ctx() { req }: MyContext
-  ): Promise<createOrderResponse> {
+  ): Promise<OrderResponse> {
     const buyerId = req.session.userId;
 
     const userService = await UserService.findOne({ id: userServiceId });
@@ -84,38 +84,42 @@ export class OrderResolver {
     return { success: true, errors };
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => OrderResponse)
   async completeOrder(
+    @Ctx() { req }: MyContext,
     @Arg('id', () => Int) id: number,
-    @Ctx() { req }: MyContext
+    @Arg('buyerId', () => Int, { nullable: true }) buyerId?: number,
+    @Arg('sellerId', () => Int, { nullable: true }) sellerId?: number
   ) {
-    const sellerId: number = req.session.userId;
+    const order = await Order.findOne({
+      id,
+      buyerId: buyerId ?? (req.session.userId as number),
+      sellerId: sellerId ?? (req.session.userId as number),
+    });
+
+    const errors: FieldError[] = [];
+    !order && errors.push({ field: 'order', message: 'Order is missing' });
+    order?.status === 'completed' &&
+      errors.push({ field: 'order', message: 'Order already completed' });
+
+    if (!order || errors.length) {
+      return { success: false, errors };
+    }
+
+    await Order.update({ id: order.id }, { status: 'completed' });
 
     try {
-      const { raw } = await getConnection()
-        .createQueryBuilder()
-        .update(Order)
-        .set({ status: 'completed' })
-        .where('id = :id AND sellerId = :sellerId AND status = :status', {
-          id,
-          sellerId,
-          status: 'started',
-        })
-        .returning('*')
-        .execute();
-
-      const order: Order = raw[0];
-
       await getConnection()
         .createQueryBuilder()
         .update(User)
-        .set({ coins: () => `coins + ${order.finalPrice}` })
+        .set({ coins: () => `coins + ${order?.finalPrice}` })
         .where('id = :id', { id: sellerId })
         .execute();
 
-      return true;
+      return { success: true, errors };
     } catch (error) {
-      return false;
+      errors.push({ field: 'user', message: 'User not Found' });
+      return { success: false, errors };
     }
   }
 
@@ -129,7 +133,7 @@ export class OrderResolver {
     try {
       await Order.update(
         { id, sellerId, status: 'pending' },
-        { status: 'started' }
+        { status: 'started', startedTime: new Date() }
       );
       return true;
     } catch (error) {
@@ -149,11 +153,15 @@ export class OrderResolver {
         .createQueryBuilder()
         .update(Order)
         .set({ status: 'cancelled' })
-        .where('id = :id AND buyerId = :buyerId AND sellerId = :sellerId', {
-          id,
-          buyerId: buyerId ?? (req.session.userId as number),
-          sellerId: sellerId ?? (req.session.userId as number),
-        })
+        .where(
+          'id = :id AND buyerId = :buyerId AND sellerId = :sellerId AND status <> :status',
+          {
+            id,
+            buyerId: buyerId ?? (req.session.userId as number),
+            sellerId: sellerId ?? (req.session.userId as number),
+            status: 'cancelled',
+          }
+        )
         .returning('*')
         .execute();
 

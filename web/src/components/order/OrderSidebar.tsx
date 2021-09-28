@@ -112,7 +112,7 @@ export const OrderSidebar: React.FC<OrderSidebarProps> = ({
           buyerOrderStatus === 'Completed' && 'bg-purple-dark font-medium'
         } hover:bg-purple rounded-md py-2 pl-1`}
         onClick={() => {
-          setBuyerOrderStatus('Started');
+          setBuyerOrderStatus('Completed');
           setSellerOrderStatus(undefined);
         }}
       >
@@ -172,8 +172,8 @@ export const OrderSidebar: React.FC<OrderSidebarProps> = ({
               </Transition.Child>
               <div className='flex-1 h-0 pt-5 pb-4 overflow-y-auto bg-dark'>
                 <nav className='px-2 space-y-1'>
-                  {buyerOrders}
                   {sellerOrders}
+                  {buyerOrders}
                 </nav>
               </div>
             </div>
@@ -189,8 +189,8 @@ export const OrderSidebar: React.FC<OrderSidebarProps> = ({
           style={{ maxWidth: '16rem', width: '16rem' }}
           className='flex flex-col px-2 space-y-1 bg-dark'
         >
-          {buyerOrders}
           {sellerOrders}
+          {buyerOrders}
         </nav>
       </div>
     </>

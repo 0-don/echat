@@ -463,6 +463,16 @@ export type RegularUserResponseFragment = (
   )> }
 );
 
+export type AcceptOrderMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type AcceptOrderMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'acceptOrder'>
+);
+
 export type CancelOrderMutationVariables = Exact<{
   id: Scalars['Int'];
   sellerId?: Maybe<Scalars['Int']>;
@@ -978,6 +988,37 @@ export const RegularUserResponseFragmentDoc = gql`
 }
     ${RegularErrorFragmentDoc}
 ${RegularUserFragmentDoc}`;
+export const AcceptOrderDocument = gql`
+    mutation AcceptOrder($id: Int!) {
+  acceptOrder(id: $id)
+}
+    `;
+export type AcceptOrderMutationFn = Apollo.MutationFunction<AcceptOrderMutation, AcceptOrderMutationVariables>;
+
+/**
+ * __useAcceptOrderMutation__
+ *
+ * To run a mutation, you first call `useAcceptOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptOrderMutation, { data, loading, error }] = useAcceptOrderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAcceptOrderMutation(baseOptions?: Apollo.MutationHookOptions<AcceptOrderMutation, AcceptOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptOrderMutation, AcceptOrderMutationVariables>(AcceptOrderDocument, options);
+      }
+export type AcceptOrderMutationHookResult = ReturnType<typeof useAcceptOrderMutation>;
+export type AcceptOrderMutationResult = Apollo.MutationResult<AcceptOrderMutation>;
+export type AcceptOrderMutationOptions = Apollo.BaseMutationOptions<AcceptOrderMutation, AcceptOrderMutationVariables>;
 export const CancelOrderDocument = gql`
     mutation cancelOrder($id: Int!, $sellerId: Int, $buyerId: Int) {
   cancelOrder(id: $id, buyerId: $buyerId, sellerId: $sellerId)
@@ -2291,6 +2332,7 @@ export const namedOperations = {
     UserImages: 'UserImages'
   },
   Mutation: {
+    AcceptOrder: 'AcceptOrder',
     cancelOrder: 'cancelOrder',
     ChangePassword: 'ChangePassword',
     ChangeUserType: 'ChangeUserType',

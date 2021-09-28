@@ -3,6 +3,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import { FieldError } from 'src/generated/graphql';
 
 interface AlertProps {
+  className?: string;
   timeout?: number;
   errors: FieldError[];
   setErrors: Dispatch<SetStateAction<FieldError[] | undefined>>;
@@ -12,6 +13,7 @@ export const Alert: React.FC<AlertProps> = ({
   timeout = 5000,
   errors,
   setErrors,
+  className,
 }) => {
   let timeoutId: NodeJS.Timeout | null = null;
   const [isShown, setIsShown] = useState(true);
@@ -30,7 +32,7 @@ export const Alert: React.FC<AlertProps> = ({
   return (
     <>
       {isShown && (
-        <div className='rounded-md bg-red-50 p-4 mb-5'>
+        <div className={`${className} rounded-md bg-red-50 p-4 mb-5`}>
           <div className='flex'>
             <div className='flex-shrink-0'>
               <XCircleIcon

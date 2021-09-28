@@ -3,8 +3,10 @@ import { OrderSidebar } from 'src/components/order/OrderSidebar';
 import withApollo from '../utils/apollo/withApollo';
 import React, { useState } from 'react';
 import {
+  FieldError,
   GetBuyerOrdersDocument,
   GetSellerOrdersDocument,
+  useAcceptOrderMutation,
   useCancelOrderMutation,
   useCompleteOrderMutation,
   useGetBuyerOrdersQuery,
@@ -16,6 +18,7 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'src/components/utils/Alert';
 
 dayjs.extend(localizedFormat);
 export type OrderStatus =
@@ -27,6 +30,7 @@ export type OrderStatus =
 
 const Order: React.FC = ({}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [errors, setErrors] = useState<FieldError[]>();
   const [buyerOrderStatus, setBuyerOrderStatus] =
     useState<OrderStatus>('Pending');
   const [sellerOrderStatus, setSellerOrderStatus] = useState<OrderStatus>();
@@ -35,6 +39,7 @@ const Order: React.FC = ({}) => {
   const { data: sellerData } = useGetSellerOrdersQuery();
 
   const [cancelOrder] = useCancelOrderMutation();
+  const [acceptOrder] = useAcceptOrderMutation();
   const [completeOrder] = useCompleteOrderMutation();
 
   const buyerOrders = buyerData?.getBuyerOrders.filter(
@@ -61,8 +66,11 @@ const Order: React.FC = ({}) => {
           sellerOrderStatus={sellerOrderStatus}
           setSellerOrderStatus={setSellerOrderStatus}
         />
-        <div className='flex flex-col w-full overflow-x-hidden overflow-y-auto lg:px-5 mx-2 md:mx-0'>
-          <div className='flex justify-between mt-5'>
+        <div className='flex flex-col w-full overflow-x-hidden overflow-y-auto lg:px-5 mx-2 md:mx-0 py-5'>
+          {errors?.length! > 0 && (
+            <Alert errors={errors!} setErrors={setErrors} timeout={10000} />
+          )}
+          <div className='flex justify-between '>
             <h1 className='text-3xl font-medium'>
               {sellerOrderStatus ?? buyerOrderStatus}
             </h1>
@@ -74,6 +82,7 @@ const Order: React.FC = ({}) => {
               />
             </div>
           </div>
+          {/* Paird Orders */}
           {sellerOrders?.map(
             ({
               id,
@@ -144,16 +153,34 @@ const Order: React.FC = ({}) => {
                   <div className='flex justify-between md:flex-col md:items-center'>
                     <p className='font-medium mb-2'>Options</p>
                     <div className='flex space-x-5 items-center '>
-                      {sellerOrderStatus === 'Started' && (
+                      {sellerOrderStatus === 'Pending' && (
                         <button
                           onClick={async () =>
-                            await completeOrder({
+                            await acceptOrder({
                               variables: { id },
                               refetchQueries: [
                                 { query: GetSellerOrdersDocument },
                               ],
                             })
                           }
+                          className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
+                        >
+                          accept
+                        </button>
+                      )}
+                      {sellerOrderStatus === 'Started' && (
+                        <button
+                          onClick={async () => {
+                            const { data } = await completeOrder({
+                              variables: { id, buyerId: buyer?.id },
+                              refetchQueries: [
+                                { query: GetSellerOrdersDocument },
+                              ],
+                            });
+
+                            data?.completeOrder.errors?.length &&
+                              setErrors(data?.completeOrder.errors);
+                          }}
                           className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
                         >
                           complete
@@ -190,6 +217,7 @@ const Order: React.FC = ({}) => {
             )
           )}
 
+          {/* Purchased Orders */}
           {buyerOrders?.map(
             ({
               id,
@@ -276,6 +304,24 @@ const Order: React.FC = ({}) => {
                             })
                           }
                         />
+                      )}
+                      {buyerOrderStatus === 'Started' && (
+                        <button
+                          onClick={async () => {
+                            const { data } = await completeOrder({
+                              variables: { id, sellerId: seller?.id },
+                              refetchQueries: [
+                                { query: GetBuyerOrdersDocument },
+                              ],
+                            });
+
+                            data?.completeOrder.errors?.length &&
+                              setErrors(data?.completeOrder.errors);
+                          }}
+                          className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
+                        >
+                          complete
+                        </button>
                       )}
                       <FontAwesomeIcon
                         size='sm'

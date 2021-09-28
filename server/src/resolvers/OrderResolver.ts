@@ -14,6 +14,9 @@ import { User } from '../entity/User';
 import { UserService } from '../entity/UserService';
 import { FieldError } from '../utils/types/UserTypes';
 import { getConnection } from 'typeorm';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 @ObjectType()
 export class OrderResponse {
@@ -97,10 +100,26 @@ export class OrderResolver {
       sellerId: sellerId ?? (req.session.userId as number),
     });
 
+    console.log(dayjs(new Date()).diff(order?.startedTime, 'hours'));
     const errors: FieldError[] = [];
+
     !order && errors.push({ field: 'order', message: 'Order is missing' });
+
     order?.status === 'completed' &&
       errors.push({ field: 'order', message: 'Order already completed' });
+
+    dayjs(new Date()).diff(order?.startedTime, 'minutes') < 15 &&
+      errors.push({
+        field: 'order',
+        message: 'Wait 15 minutes before completing the Order',
+      });
+
+    dayjs(new Date()).diff(order?.startedTime, 'hours') < 24 &&
+      order?.sellerId === (req.session.userId as number) &&
+      errors.push({
+        field: 'order',
+        message: 'Wait 24 Hours or ask the Client to finish the Order',
+      });
 
     if (!order || errors.length) {
       return { success: false, errors };

@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'src/components/utils/Alert';
+import { ReviewModal } from 'src/components/review/ReviewModal';
 
 dayjs.extend(localizedFormat);
 export type OrderStatus =
@@ -287,7 +288,7 @@ const Order: React.FC = ({}) => {
 
                   <div className='flex justify-between md:flex-col md:items-center'>
                     <p className='font-medium mb-2'>Options</p>
-                    <div className='flex space-x-5 '>
+                    <div className='flex space-x-5 items-center '>
                       {buyerOrderStatus === 'Pending' && (
                         <FontAwesomeIcon
                           id='trash'
@@ -323,6 +324,8 @@ const Order: React.FC = ({}) => {
                           complete
                         </button>
                       )}
+
+                      {buyerOrderStatus === 'Completed' && <ReviewModal />}
                       <FontAwesomeIcon
                         size='sm'
                         title='chat'

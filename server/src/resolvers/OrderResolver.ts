@@ -4,6 +4,8 @@ import {
   Arg,
   Ctx,
   Field,
+  Float,
+  InputType,
   Int,
   Mutation,
   ObjectType,
@@ -16,6 +18,7 @@ import { FieldError } from '../utils/types/UserTypes';
 import { getConnection } from 'typeorm';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Review } from '../entity/Review';
 dayjs.extend(relativeTime);
 
 @ObjectType()
@@ -25,6 +28,18 @@ export class OrderResponse {
 
   @Field(() => Boolean)
   success: boolean;
+}
+
+@InputType()
+export class ReviewOptions {
+  @Field(() => Int)
+  orderId: number;
+  @Field(() => Float)
+  score: number;
+  @Field()
+  recommend: boolean;
+  @Field()
+  review: string;
 }
 
 @Resolver()
@@ -39,6 +54,20 @@ export class OrderResolver {
   async getSellerOrders(@Ctx() { req }: MyContext) {
     const sellerId: number = req.session.userId;
     return Order.find({ where: { sellerId } });
+  }
+
+  @Mutation(() => Boolean)
+  async createReview(
+    @Arg('options', () => ReviewOptions) options: ReviewOptions
+  ) {
+    const review = await Review.findOne({ orderId: options.orderId });
+
+    if (!review) {
+      await Review.insert(options);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Mutation(() => OrderResponse)

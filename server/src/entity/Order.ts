@@ -11,7 +11,9 @@ import {
   OneToOne,
   RelationId,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
+import { Review } from './Review';
 import { User } from './User';
 import { UserService } from './UserService';
 
@@ -90,6 +92,12 @@ export class Order extends BaseEntity {
   @Column()
   @RelationId((order: Order) => order.userService)
   userServiceId: number;
+
+  // Review
+  @Field(() => Review, { nullable: true })
+  @OneToMany(() => Review, (review) => review.order, { nullable: true })
+  @TypeormLoader()
+  review: Review;
 
   @CreateDateColumn()
   created_at: Date;

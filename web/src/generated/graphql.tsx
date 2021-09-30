@@ -105,6 +105,7 @@ export type Mutation = {
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
   createChat: Chat;
+  createReview: Scalars['Boolean'];
   createOrder: OrderResponse;
   completeOrder: OrderResponse;
   acceptOrder: Scalars['Boolean'];
@@ -176,6 +177,11 @@ export type MutationCreateChatArgs = {
 };
 
 
+export type MutationCreateReviewArgs = {
+  options: ReviewOptions;
+};
+
+
 export type MutationCreateOrderArgs = {
   startTime: Scalars['DateTime'];
   rounds: Scalars['Int'];
@@ -217,6 +223,7 @@ export type Order = {
   sellerId: Scalars['Int'];
   userService?: Maybe<UserService>;
   userServiceId: Scalars['Int'];
+  review?: Maybe<Review>;
 };
 
 export type OrderResponse = {
@@ -286,6 +293,23 @@ export type QueryGetCountriesArgs = {
 
 export type QueryGetLanguagesArgs = {
   slug?: Maybe<Scalars['String']>;
+};
+
+export type Review = {
+  __typename?: 'Review';
+  id: Scalars['Int'];
+  score: Scalars['Float'];
+  recommend: Scalars['Boolean'];
+  review: Scalars['String'];
+  order: Order;
+  orderId: Scalars['Int'];
+};
+
+export type ReviewOptions = {
+  orderId: Scalars['Int'];
+  score: Scalars['Float'];
+  recommend: Scalars['Boolean'];
+  review: Scalars['String'];
 };
 
 export type Schedule = {
@@ -553,6 +577,16 @@ export type CreateOrderMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
+);
+
+export type CreateReviewMutationVariables = Exact<{
+  options: ReviewOptions;
+}>;
+
+
+export type CreateReviewMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createReview'>
 );
 
 export type DeleteImageMutationVariables = Exact<{
@@ -1229,6 +1263,37 @@ export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const CreateReviewDocument = gql`
+    mutation CreateReview($options: ReviewOptions!) {
+  createReview(options: $options)
+}
+    `;
+export type CreateReviewMutationFn = Apollo.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
+
+/**
+ * __useCreateReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createReviewMutation, { data, loading, error }] = useCreateReviewMutation({
+ *   variables: {
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useCreateReviewMutation(baseOptions?: Apollo.MutationHookOptions<CreateReviewMutation, CreateReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateReviewMutation, CreateReviewMutationVariables>(CreateReviewDocument, options);
+      }
+export type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
+export type CreateReviewMutationResult = Apollo.MutationResult<CreateReviewMutation>;
+export type CreateReviewMutationOptions = Apollo.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export const DeleteImageDocument = gql`
     mutation DeleteImage($publicId: String!) {
   deleteImage(publicId: $publicId)
@@ -2339,6 +2404,7 @@ export const namedOperations = {
     ChangeUserserviceImage: 'ChangeUserserviceImage',
     CompleteOrder: 'CompleteOrder',
     CreateOrder: 'CreateOrder',
+    CreateReview: 'CreateReview',
     DeleteImage: 'DeleteImage',
     DeleteUserService: 'DeleteUserService',
     ForgotPassword: 'ForgotPassword',

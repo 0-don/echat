@@ -32,7 +32,7 @@ import {
   faVenus,
   faTransgender,
   faImages,
-  faStarHalf,
+  faStarHalf as faSolidStarHalf,
   faStarHalfAlt,
   faAngleDoubleRight,
   faAngleDoubleLeft,
@@ -40,15 +40,27 @@ import {
   faMinus,
   faMoneyCheck,
   faCommentDots,
+  faThumbsDown as faSolidThumbsDown,
+  faThumbsUp as faSolidThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
+import {
+  faStarHalf as faRegularStarHalf,
+  faThumbsDown as faRegularThumbsDown,
+  faThumbsUp as faRegularThumbsUp,
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faSolidThumbsDown,
+  faRegularThumbsDown,
+  faRegularThumbsUp,
+  faSolidThumbsUp,
+  faSolidStarHalf,
+  faRegularStarHalf,
   faCommentDots,
   faMoneyCheck,
   faPlus,
   faMinus,
   faStarHalfAlt,
-  faStarHalf,
   faImages,
   faMars,
   faVenus,

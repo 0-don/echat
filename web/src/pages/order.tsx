@@ -33,7 +33,7 @@ const Order: React.FC = ({}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [errors, setErrors] = useState<FieldError[]>();
   const [buyerOrderStatus, setBuyerOrderStatus] =
-    useState<OrderStatus>('Pending');
+    useState<OrderStatus>('Completed');
   const [sellerOrderStatus, setSellerOrderStatus] = useState<OrderStatus>();
 
   const { data: buyerData } = useGetBuyerOrdersQuery();
@@ -325,7 +325,9 @@ const Order: React.FC = ({}) => {
                         </button>
                       )}
 
-                      {buyerOrderStatus === 'Completed' && <ReviewModal />}
+                      {buyerOrderStatus === 'Completed' && (
+                        <ReviewModal orderId={id} />
+                      )}
                       <FontAwesomeIcon
                         size='sm'
                         title='chat'

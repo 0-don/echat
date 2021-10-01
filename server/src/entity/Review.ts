@@ -31,14 +31,46 @@ export class Review extends BaseEntity {
   @Column()
   review: string;
 
+  // TARGET
+  @Field(() => User)
+  @OneToOne(() => User, (user) => user.target, {
+    lazy: true,
+    onDelete: 'CASCADE',
+  })
+  @TypeormLoader(() => User, (review: Review) => review.targetId)
+  target: Promise<User>;
+
+  // TARGETID
+  @Field(() => Int)
+  @Column()
+  @RelationId((review: Review) => review.target)
+  targetId: number;
+
+  // SOURCE
+  @Field(() => User)
+  @OneToOne(() => User, (user) => user.source, {
+    lazy: true,
+    onDelete: 'CASCADE',
+  })
+  @TypeormLoader(() => User, (review: Review) => review.sourceId)
+  source: Promise<User>;
+
+  // SOURCEID
+  @Field(() => Int)
+  @Column()
+  @RelationId((review: Review) => review.source)
+  sourceId: number;
+
+  // ORDER
   @Field(() => Order)
   @OneToOne(() => Order, (order) => order.review, {
     lazy: true,
     onDelete: 'CASCADE',
   })
   @TypeormLoader(() => Order, (review: Review) => review.orderId)
-  order: Promise<User>;
+  order: Promise<Order>;
 
+  // ORDERID
   @Field(() => Int)
   @Column()
   @RelationId((review: Review) => review.order)

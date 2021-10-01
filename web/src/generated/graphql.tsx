@@ -301,12 +301,18 @@ export type Review = {
   score: Scalars['Float'];
   recommend: Scalars['Boolean'];
   review: Scalars['String'];
+  target: User;
+  targetId: Scalars['Int'];
+  source: User;
+  sourceId: Scalars['Int'];
   order: Order;
   orderId: Scalars['Int'];
 };
 
 export type ReviewOptions = {
   orderId: Scalars['Int'];
+  targetId: Scalars['Int'];
+  sourceId: Scalars['Int'];
   score: Scalars['Float'];
   recommend: Scalars['Boolean'];
   review: Scalars['String'];
@@ -422,6 +428,8 @@ export type User = {
   schedules?: Maybe<Array<Schedule>>;
   buyerOrder?: Maybe<Order>;
   sellerOrder?: Maybe<Order>;
+  source?: Maybe<Review>;
+  target?: Maybe<Review>;
 };
 
 export type UserLanguage = {

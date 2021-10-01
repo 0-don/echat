@@ -17,6 +17,7 @@ import { TypeormLoader } from 'type-graphql-dataloader';
 import { Country } from './Country';
 import { UserLanguage } from './UserLanguage';
 import { Order } from './Order';
+import { Review } from './Review';
 
 @ObjectType()
 @Entity()
@@ -143,6 +144,18 @@ export class User extends BaseEntity {
   @OneToMany(() => Order, (order) => order.seller, { nullable: true })
   @TypeormLoader()
   sellerOrder: Order;
+
+  // Source
+  @Field(() => Review, { nullable: true })
+  @OneToMany(() => Review, (review) => review.source, { nullable: true })
+  @TypeormLoader()
+  source: Review;
+
+  // Target
+  @Field(() => Review, { nullable: true })
+  @OneToMany(() => Review, (review) => review.target, { nullable: true })
+  @TypeormLoader()
+  target: Review;
 
   @CreateDateColumn()
   created_at: Date;

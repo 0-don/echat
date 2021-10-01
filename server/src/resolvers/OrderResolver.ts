@@ -34,6 +34,10 @@ export class OrderResponse {
 export class ReviewOptions {
   @Field(() => Int)
   orderId: number;
+  @Field(() => Int)
+  targetId: number;
+  @Field(() => Int)
+  sourceId: number;
   @Field(() => Float)
   score: number;
   @Field()

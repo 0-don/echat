@@ -19,6 +19,7 @@ query GetSellerOrders {
         type
       }
     }
+
     userService {
       id
       status

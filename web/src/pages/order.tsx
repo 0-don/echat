@@ -50,7 +50,7 @@ const Order: React.FC = ({}) => {
   const sellerOrders = sellerData?.getSellerOrders.filter(
     (order) => order.status === sellerOrderStatus?.toLocaleLowerCase()
   );
-
+  console.log(buyerData);
   return (
     <Wrapper
       navbar
@@ -228,6 +228,7 @@ const Order: React.FC = ({}) => {
               startTime,
               userService,
               seller,
+              // review,
               status,
             }) => (
               <div
@@ -326,7 +327,7 @@ const Order: React.FC = ({}) => {
                       )}
 
                       {buyerOrderStatus === 'Completed' && (
-                        <ReviewModal orderId={id} />
+                        <ReviewModal orderId={id} targetId={seller!.id} />
                       )}
                       <FontAwesomeIcon
                         size='sm'

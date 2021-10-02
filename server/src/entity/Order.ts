@@ -1,3 +1,4 @@
+import { Lazy } from '../utils';
 import { Field, Float, Int, ObjectType } from 'type-graphql';
 import { TypeormLoader } from 'type-graphql-dataloader';
 
@@ -11,7 +12,6 @@ import {
   OneToOne,
   RelationId,
   ManyToOne,
-  OneToMany,
 } from 'typeorm';
 import { Review } from './Review';
 import { User } from './User';
@@ -53,7 +53,7 @@ export class Order extends BaseEntity {
   finalPrice: number;
 
   @Field(() => User, { nullable: true })
-  @OneToOne(() => User, (user) => user.buyerOrder, {
+  @OneToOne(() => User, (user) => user.buyerOrders, {
     lazy: true,
     nullable: true,
     onDelete: 'CASCADE',
@@ -67,7 +67,7 @@ export class Order extends BaseEntity {
   buyerId: number;
 
   @Field(() => User, { nullable: true })
-  @OneToOne(() => User, (user) => user.sellerOrder, {
+  @OneToOne(() => User, (user) => user.sellerOrders, {
     lazy: true,
     nullable: true,
     onDelete: 'CASCADE',
@@ -86,7 +86,7 @@ export class Order extends BaseEntity {
     nullable: true,
   })
   @TypeormLoader(() => User, (order: Order) => order.userServiceId)
-  userService: Promise<UserService>;
+  userService?: Promise<UserService>;
 
   @Field(() => Int)
   @Column()
@@ -95,9 +95,14 @@ export class Order extends BaseEntity {
 
   // Review
   @Field(() => Review, { nullable: true })
-  @OneToMany(() => Review, (review) => review.order, { nullable: true })
-  @TypeormLoader()
-  review: Review;
+  @OneToOne(() => Review, (review) => review.order, {
+    nullable: true,
+    lazy: true,
+  })
+  @TypeormLoader(() => Review, (review: Review) => review.orderId, {
+    selfKey: true,
+  })
+  review: Lazy<Review | null>;
 
   @CreateDateColumn()
   created_at: Date;

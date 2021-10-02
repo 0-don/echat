@@ -9,16 +9,19 @@ const maxRating = 5;
 
 interface ReviewModalProps {
   orderId: number;
+  targetId: number;
 }
 
-export const ReviewModal: React.FC<ReviewModalProps> = ({ orderId }) => {
+export const ReviewModal: React.FC<ReviewModalProps> = ({
+  orderId,
+  targetId,
+}) => {
   const [open, setOpen] = useState(false);
   const [createReview] = useCreateReviewMutation();
   const [score, setScore] = useState(maxRating);
   const [recommend, setRecommend] = useState(true);
   const [review, setReview] = useState('');
 
-  console.log(review);
   return (
     <>
       <button
@@ -100,7 +103,13 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ orderId }) => {
                 onClick={async () => {
                   await createReview({
                     variables: {
-                      options: { orderId, score, recommend, review },
+                      options: {
+                        orderId,
+                        targetId,
+                        score,
+                        recommend,
+                        review,
+                      },
                     },
                   });
                 }}

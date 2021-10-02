@@ -748,6 +748,9 @@ export type GetBuyerOrdersQuery = (
         { __typename?: 'Image' }
         & Pick<Image, 'id' | 'url' | 'type'>
       )>> }
+    )>, review?: Maybe<(
+      { __typename?: 'Review' }
+      & Pick<Review, 'id' | 'score' | 'recommend' | 'review'>
     )>, userService?: Maybe<(
       { __typename?: 'UserService' }
       & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
@@ -819,6 +822,9 @@ export type GetSellerOrdersQuery = (
         { __typename?: 'Image' }
         & Pick<Image, 'id' | 'url' | 'type'>
       )>> }
+    )>, review?: Maybe<(
+      { __typename?: 'Review' }
+      & Pick<Review, 'id' | 'score' | 'recommend' | 'review'>
     )>, userService?: Maybe<(
       { __typename?: 'UserService' }
       & Pick<UserService, 'id' | 'status' | 'level' | 'platforms' | 'description' | 'price' | 'per' | 'image'>
@@ -1709,6 +1715,12 @@ export const GetBuyerOrdersDocument = gql`
         type
       }
     }
+    review {
+      id
+      score
+      recommend
+      review
+    }
     userService {
       id
       status
@@ -1914,6 +1926,12 @@ export const GetSellerOrdersDocument = gql`
         url
         type
       }
+    }
+    review {
+      id
+      score
+      recommend
+      review
     }
     userService {
       id

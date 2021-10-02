@@ -2,7 +2,10 @@
 import ReactStars from 'react-rating-stars-component';
 import React, { useState } from 'react';
 import { Modal } from 'src/components/htmlElements';
-import { useCreateReviewMutation } from 'src/generated/graphql';
+import {
+  GetBuyerOrdersDocument,
+  useCreateReviewMutation,
+} from 'src/generated/graphql';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const maxRating = 5;
@@ -111,7 +114,9 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                         review,
                       },
                     },
+                    refetchQueries: [{ query: GetBuyerOrdersDocument }],
                   });
+                  setOpen(false);
                 }}
                 className='big-button'
               >

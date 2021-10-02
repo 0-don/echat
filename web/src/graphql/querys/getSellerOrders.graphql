@@ -19,7 +19,12 @@ query GetSellerOrders {
         type
       }
     }
-
+    review {
+      id
+      score
+      recommend
+      review
+    }
     userService {
       id
       status

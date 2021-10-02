@@ -11,61 +11,19 @@ import { Country } from '../entity/Country';
 import { Language } from '../entity/Language';
 import { UserLanguage } from '../entity/UserLanguage';
 import { Schedule } from '../entity/Schedule';
-
-type UserType = {
-  type: string;
-  fake: boolean;
-  username: string;
-  email: string;
-  password: string;
-  lastOnline: Date;
-  description: string | undefined;
-  age: Date | undefined;
-  gender: string | undefined;
-  discord: string | undefined;
-  twitter: string | undefined;
-  facebook: string | undefined;
-  snapchat: string | undefined;
-  instagram: string | undefined;
-  twitch: string | undefined;
-  steam: string | undefined;
-  tiktok: string | undefined;
-  countryId: number;
-};
-
-type ImageType = {
-  type: string;
-  url: string;
-  publicId: string;
-  userId: number;
-};
-
-type UserServiceType = {
-  status: boolean;
-  level: string | undefined;
-  platforms: List[] | undefined;
-  description: string | undefined;
-  price: number;
-  userId: number;
-  serviceId: number;
-  per: string;
-  image: string | undefined;
-  createdAt: Date;
-};
-
-type UserLanguageType = {
-  name: string;
-  languageId: number;
-  userId: number;
-};
-
-type SchedulesType = {
-  name: string;
-  from: Date;
-  to: Date;
-  available: boolean;
-  userId: number;
-};
+import { Order } from '../entity/Order';
+import {
+  SchedulesType,
+  UserType,
+  ImageType,
+  UserServiceType,
+  UserLanguageType,
+  OrderType,
+  perType,
+  statusType,
+  ReviewType,
+} from './types';
+import { Review } from '../entity/Review';
 
 const imageTemplate = (
   userId: number,
@@ -244,6 +202,64 @@ const main = async () => {
   await UserLanguage.insert(userLanguages);
   log('Create Schedules');
   await Schedule.insert(schedules);
+
+  const dbUserServices = await UserService.find({});
+
+  let orders: OrderType = [];
+
+  // ORDERS
+  users.forEach((user) => {
+    for (let x = 0; x < getRandomBetween(1, 4); x++) {
+      const userService =
+        dbUserServices[getRandomBetween(0, dbUserServices!.length! - 1)];
+      const rounds = getRandomBetween(1, 4);
+
+      const status = ['cancelled', 'pending', 'started', 'completed'][
+        getRandomBetween(0, 3)
+      ] as statusType;
+
+      orders.push({
+        buyerId: user.id,
+        sellerId: userService.userId,
+        userServiceId: userService.id,
+        status,
+        price: userService.price,
+        per: userService.per as perType,
+        rounds,
+        finalPrice: userService.price * rounds,
+        startTime: new Date(),
+        startedTime:
+          status === 'started' || status === 'completed'
+            ? new Date()
+            : undefined,
+      });
+    }
+  });
+
+  log('Create Orders');
+  await Order.insert(orders);
+
+  const dbOrders = await Order.find({ where: { status: 'completed' } });
+
+  const reviews: ReviewType = [];
+
+  // REVIEWS
+  dbOrders.forEach(({ id, sellerId, buyerId }) => {
+    const highestScore = getRandomBetween(0, 5);
+    reviews.push({
+      orderId: id,
+      sourceId: buyerId,
+      targetId: sellerId,
+      recommend: coinFlip(),
+      review: coinFlip() ? faker.lorem.sentence() : '',
+      score: Number(
+        `${highestScore}.${highestScore === 5 ? 0 : getRandomBetween(0, 99)}`
+      ),
+    });
+  });
+
+  log('Create Reviews');
+  await Review.insert(reviews);
 
   log('Cleaning up');
 };

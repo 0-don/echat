@@ -5,29 +5,7 @@ import { Service } from '../entity/Service';
 import { ServiceImage } from '../entity/ServiceImage';
 import { getGames } from './getGames';
 import { log } from 'console';
-
-export interface Image {
-  serviceId: number;
-  type: string;
-  url: string;
-  width: number;
-  height: number;
-}
-
-export interface Services {
-  type: string;
-  twitchId: number;
-  boxArtUrl: string;
-  igdbId: number;
-  name: string;
-  popularity: number;
-  first_release_date?: string;
-  platforms: { id: number; name: string }[];
-  genres: { id: number; name: string }[];
-  multiplayer_modes: string[];
-  images: Image[] | undefined;
-  slug: string;
-}
+import { Services } from './types';
 
 const main = async () => {
   if (process.env.TWITCH_CLIENT_ID && !fs.existsSync('games.json')) {

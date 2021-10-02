@@ -113,49 +113,49 @@ export class User extends BaseEntity {
   @Field(() => [Image], { nullable: true })
   @OneToMany(() => Image, (image) => image.user)
   @TypeormLoader()
-  images: Image[];
+  images?: Image[];
 
   // UserGame
   @Field(() => [UserService], { nullable: true })
   @OneToMany(() => UserService, (userService) => userService.user)
   @TypeormLoader()
-  services: UserService[];
+  services?: UserService[];
 
   // UserLanguage
   @Field(() => [UserLanguage], { nullable: true })
   @OneToMany(() => UserLanguage, (language) => language.user)
   @TypeormLoader()
-  languages: Language[];
+  languages?: Language[];
 
   // Schedule
   @Field(() => [Schedule], { nullable: true })
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   @TypeormLoader()
-  schedules: Schedule[];
+  schedules?: Schedule[];
 
   // BuyerOrder
-  @Field(() => Order, { nullable: true })
+  @Field(() => [Order], { nullable: true })
   @OneToMany(() => Order, (order) => order.buyer, { nullable: true })
   @TypeormLoader()
-  buyerOrder: Order;
+  buyerOrders?: Order[];
 
   // SellerOrder
-  @Field(() => Order, { nullable: true })
+  @Field(() => [Order], { nullable: true })
   @OneToMany(() => Order, (order) => order.seller, { nullable: true })
   @TypeormLoader()
-  sellerOrder: Order;
+  sellerOrders?: Order[];
 
   // Source
-  @Field(() => Review, { nullable: true })
+  @Field(() => [Review], { nullable: true })
   @OneToMany(() => Review, (review) => review.source, { nullable: true })
   @TypeormLoader()
-  source: Review;
+  source?: Review[];
 
   // Target
-  @Field(() => Review, { nullable: true })
+  @Field(() => [Review], { nullable: true })
   @OneToMany(() => Review, (review) => review.target, { nullable: true })
   @TypeormLoader()
-  target: Review;
+  target?: Review[];
 
   @CreateDateColumn()
   created_at: Date;

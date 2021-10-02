@@ -1,3 +1,4 @@
+import { Lazy } from '../utils';
 import { Field, Float, Int, ObjectType } from 'type-graphql';
 import { TypeormLoader } from 'type-graphql-dataloader';
 import {
@@ -8,6 +9,7 @@ import {
   CreateDateColumn,
   OneToOne,
   RelationId,
+  JoinColumn,
 } from 'typeorm';
 import { Order } from './Order';
 import { User } from './User';
@@ -67,8 +69,8 @@ export class Review extends BaseEntity {
     lazy: true,
     onDelete: 'CASCADE',
   })
-  @TypeormLoader(() => Order, (review: Review) => review.orderId)
-  order: Promise<Order>;
+  @JoinColumn()
+  order: Lazy<Order | null>;
 
   // ORDERID
   @Field(() => Int)

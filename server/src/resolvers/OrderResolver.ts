@@ -36,8 +36,6 @@ export class ReviewOptions {
   orderId: number;
   @Field(() => Int)
   targetId: number;
-  @Field(() => Int)
-  sourceId: number;
   @Field(() => Float)
   score: number;
   @Field()
@@ -62,12 +60,14 @@ export class OrderResolver {
 
   @Mutation(() => Boolean)
   async createReview(
-    @Arg('options', () => ReviewOptions) options: ReviewOptions
+    @Arg('options', () => ReviewOptions) options: ReviewOptions,
+    @Ctx() { req }: MyContext
   ) {
+    const sourceId = req.session.userId as number;
     const review = await Review.findOne({ orderId: options.orderId });
 
     if (!review) {
-      await Review.insert(options);
+      await Review.insert({ ...options, sourceId });
       return true;
     } else {
       return false;

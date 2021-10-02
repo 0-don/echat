@@ -94,6 +94,7 @@ const Order: React.FC = ({}) => {
               userService,
               buyer,
               status,
+              review
             }) => (
               <div
                 key={id}
@@ -228,7 +229,7 @@ const Order: React.FC = ({}) => {
               startTime,
               userService,
               seller,
-              // review,
+              review,
               status,
             }) => (
               <div
@@ -326,7 +327,7 @@ const Order: React.FC = ({}) => {
                         </button>
                       )}
 
-                      {buyerOrderStatus === 'Completed' && (
+                      {buyerOrderStatus === 'Completed' && !review && (
                         <ReviewModal orderId={id} targetId={seller!.id} />
                       )}
                       <FontAwesomeIcon

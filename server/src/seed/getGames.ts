@@ -10,37 +10,9 @@ import { ClientCredentialsAuthProvider } from 'twitch-auth';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 import { log } from 'console';
+import { TopGamesType, GameType, ImageSize, GameResultType } from './types';
 
-export type GameResultType = number[] | number | undefined;
-export type TopGamesType = {
-  data: { id: string; boxArtUrl: string; name: string }[];
-};
-export type GameType = {
-  data: {
-    id: number;
-    name: string;
-    first_release_date: number;
-    summary: string;
-    screenshots: GameResultType;
-    artworks: GameResultType;
-    cover: GameResultType;
-    genres: GameResultType;
-    multiplayer_modes: GameResultType;
-    platforms: GameResultType;
-    slug: string;
-  }[];
-};
-export type ImageSize =
-  | '1080p'
-  | '720p'
-  | 'screenshot_huge'
-  | 'screenshot_big'
-  | 'screenshot_med'
-  | 'cover_big'
-  | 'logo_med'
-  | 'cover_small'
-  | 'thumb'
-  | 'micro';
+
 
 axios.defaults.baseURL = 'https://api.igdb.com/v4';
 axios.defaults.headers.common['Client-ID'] = process.env.TWITCH_CLIENT_ID!;

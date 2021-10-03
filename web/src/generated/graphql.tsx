@@ -307,6 +307,7 @@ export type Review = {
   sourceId: Scalars['Int'];
   order: Order;
   orderId: Scalars['Int'];
+  created_at: Scalars['DateTime'];
 };
 
 export type ReviewOptions = {
@@ -867,7 +868,15 @@ export type GetUserQuery = (
     & Pick<User, 'id' | 'type' | 'username' | 'email' | 'lastOnline' | 'description' | 'age' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { target?: Maybe<Array<(
       { __typename?: 'Review' }
-      & Pick<Review, 'id' | 'score' | 'recommend' | 'review'>
+      & Pick<Review, 'id' | 'score' | 'recommend' | 'review' | 'targetId' | 'created_at'>
+      & { source?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'id' | 'type' | 'url'>
+        )>> }
+      )> }
     )>>, country?: Maybe<(
       { __typename?: 'Country' }
       & Pick<Country, 'id' | 'name' | 'flag'>
@@ -2071,6 +2080,17 @@ export const GetUserDocument = gql`
       score
       recommend
       review
+      targetId
+      created_at
+      source {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
     }
     country {
       id

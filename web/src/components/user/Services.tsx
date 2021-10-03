@@ -7,22 +7,43 @@ import { GetUserQuery } from 'src/generated/graphql';
 import { getRandomBetween } from 'src/utils';
 import gray from '/public/gray.png';
 import Image from 'next/image';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface ServicesProps {
   data: GetUserQuery | undefined;
-  rating: number;
 }
 
-export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
+//          /"\
+//         |\./|
+//         |   |
+//         |   |
+//         |>~<|
+//         |   |
+//      /'\|   |/'\..
+//  /~\|   |   |   | \
+// |   =[@]=   |   |  \
+// |   |   |   |   |   \
+// | ~   ~   ~   ~ |`   )
+// |                   /
+//  \                 /
+//   \               /
+//    \    _____    /
+//     |--//''`\--|
+//     | (( +==)) |
+//     |--\_|_//--|
+
+export const Services: React.FC<ServicesProps> = ({ data }) => {
   const router = useRouter();
 
   const services = data?.getUser?.services;
   const reviews = data?.getUser?.target;
 
-  const averageScore =
-    reviews!.reduce((total, next) => total + next.score, 0) / reviews!.length;
-  const served = reviews?.length;
+  const averageScore = reviews?.length
+    ? (
+        reviews.reduce((total, next) => total + next.score, 0) / reviews.length
+      ).toFixed(1)
+    : '0.0';
+  const served = reviews?.length ?? 0;
+  const recommend = reviews?.filter((review) => review.recommend).length ?? 0;
 
   return (
     <div>
@@ -32,18 +53,14 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
             <h3 className='font-medium'>Average Score</h3>
             <div className='flex items-center space-x-2.5 w-full'>
               <p>
-                <span className='text-5xl'>
-                  {isNaN(averageScore) ? '0.0' : averageScore.toFixed(1)}
-                </span>
+                <span className='text-5xl'>{averageScore}</span>
                 <span className='text-4xl'>/</span>
                 <span className='text-3xl'>5.0</span>
               </p>
               <div className='flex space-x-1 mb-0.5 w-full'>
                 <ReactStars
                   count={5}
-                  value={
-                    isNaN(averageScore) ? 0 : Number(averageScore.toFixed(1))
-                  }
+                  value={Number(averageScore)}
                   size={36}
                   isHalf={true}
                   readonly={true}
@@ -62,14 +79,14 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
 
             <div>
               <h3 className='font-medium'>Served</h3>
-              <p className='text-5xl'>{getRandomBetween(0, 200)}</p>
+              <p className='text-5xl'>{served}</p>
             </div>
 
             <div className='border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
 
             <div>
               <h3 className='font-medium'>Recomended</h3>
-              <p className='text-5xl'>{getRandomBetween(0, 200)}</p>
+              <p className='text-5xl'>{recommend}</p>
             </div>
           </div>
 

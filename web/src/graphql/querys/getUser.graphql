@@ -21,6 +21,17 @@ query GetUser($id: Int!) {
       score
       recommend
       review
+      targetId
+      created_at
+      source {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
     }
 
     country {

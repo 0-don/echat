@@ -79,6 +79,7 @@ export class Review extends BaseEntity {
   @RelationId((review: Review) => review.order)
   orderId: number;
 
+  @Field()
   @CreateDateColumn()
   created_at: Date;
 }

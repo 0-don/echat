@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { Tabs } from 'src/components/user/Tabs';
 import { Services } from 'src/components/user/Services';
 import { Album } from 'src/components/user/Album';
-import { getRandomBetween } from 'src/utils';
+
 import { Reviews } from 'src/components/user/Reviews';
 import { ImagePopup } from 'src/components/utils/ImagePopup';
 
@@ -32,9 +32,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
     { name: 'Album', icon: 'images', current: false },
     { name: 'Reviews', icon: 'star', current: false },
   ]);
-  const [rating, _] = useState(
-    parseFloat(`${getRandomBetween(0, 5)}.${getRandomBetween(0, 9)}`)
-  );
+
   const { data } = useGetUserQuery({
     variables: { id },
   });
@@ -131,13 +129,13 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
       </div>
       <Tabs tabs={tabs} setTabs={setTabs} />
       {tabs.find(({ name, current }) => name === 'Services' && current) && (
-        <Services data={data} rating={rating} />
+        <Services data={data} />
       )}
       {tabs.find(({ name, current }) => name === 'Album' && current) && (
         <Album data={data} />
       )}
       {tabs.find(({ name, current }) => name === 'Reviews' && current) && (
-        <Reviews data={data} rating={rating} />
+        <Reviews data={data} />
       )}
     </Wrapper>
   );

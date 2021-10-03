@@ -303,7 +303,7 @@ export type Review = {
   review: Scalars['String'];
   target: User;
   targetId: Scalars['Int'];
-  source: User;
+  source?: Maybe<User>;
   sourceId: Scalars['Int'];
   order: Order;
   orderId: Scalars['Int'];
@@ -865,7 +865,10 @@ export type GetUserQuery = (
   & { getUser?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'type' | 'username' | 'email' | 'lastOnline' | 'description' | 'age' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
-    & { country?: Maybe<(
+    & { target?: Maybe<Array<(
+      { __typename?: 'Review' }
+      & Pick<Review, 'id' | 'score' | 'recommend' | 'review'>
+    )>>, country?: Maybe<(
       { __typename?: 'Country' }
       & Pick<Country, 'id' | 'name' | 'flag'>
     )>, images?: Maybe<Array<(
@@ -961,7 +964,10 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
-    & { country?: Maybe<(
+    & { target?: Maybe<Array<(
+      { __typename?: 'Review' }
+      & Pick<Review, 'id' | 'score' | 'recommend'>
+    )>>, country?: Maybe<(
       { __typename?: 'Country' }
       & Pick<Country, 'id' | 'name' | 'flag'>
     )>, languages?: Maybe<Array<(
@@ -2060,6 +2066,12 @@ export const GetUserDocument = gql`
     twitch
     steam
     tiktok
+    target {
+      id
+      score
+      recommend
+      review
+    }
     country {
       id
       name
@@ -2314,6 +2326,11 @@ export const MeDocument = gql`
     age
     lastOnline
     description
+    target {
+      id
+      score
+      recommend
+    }
     discord
     twitter
     facebook

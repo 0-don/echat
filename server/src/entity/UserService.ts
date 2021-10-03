@@ -68,7 +68,7 @@ export class UserService extends BaseEntity {
 
   // Service
   @Field(() => Service)
-  @ManyToOne(() => Service, (user) => user.userService, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Service, (user) => user.userService)
   @TypeormLoader()
   service: Service;
 

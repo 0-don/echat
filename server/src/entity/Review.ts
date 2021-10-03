@@ -10,6 +10,7 @@ import {
   OneToOne,
   RelationId,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Order } from './Order';
 import { User } from './User';
@@ -35,7 +36,7 @@ export class Review extends BaseEntity {
 
   // TARGET
   @Field(() => User)
-  @OneToOne(() => User, (user) => user.target, {
+  @ManyToOne(() => User, (user) => user.target, {
     lazy: true,
     onDelete: 'CASCADE',
   })
@@ -49,8 +50,8 @@ export class Review extends BaseEntity {
   targetId: number;
 
   // SOURCE
-  @Field(() => User)
-  @OneToOne(() => User, (user) => user.source, {
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.source, {
     lazy: true,
     onDelete: 'CASCADE',
   })

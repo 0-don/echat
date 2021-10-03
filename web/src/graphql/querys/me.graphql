@@ -9,6 +9,12 @@ query Me {
     lastOnline
     description
 
+    target {
+      id
+      score
+      recommend
+    }
+
     discord
     twitter
     facebook

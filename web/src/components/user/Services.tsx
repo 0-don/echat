@@ -1,3 +1,5 @@
+// @ts-ignore
+import ReactStars from 'react-rating-stars-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -14,19 +16,13 @@ interface ServicesProps {
 
 export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
   const router = useRouter();
-  const services = data?.getUser?.services;
 
-  const ratingStar = (star: number) => (
-    <FontAwesomeIcon
-      size='2x'
-      className={`${rating > star ? 'text-yellow-500' : 'text-dark-light'}`}
-      icon={
-        `${
-          rating > star && rating < star + 1 ? 'star-half-alt' : 'star'
-        }` as IconProp
-      }
-    />
-  );
+  const services = data?.getUser?.services;
+  const reviews = data?.getUser?.target;
+
+  const averageScore =
+    reviews!.reduce((total, next) => total + next.score, 0) / reviews!.length;
+  const served = reviews?.length;
 
   return (
     <div>
@@ -34,18 +30,29 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
         <div className='flex flex-col md:flex-row  items-center'>
           <div className='flex flex-col space-x-1'>
             <h3 className='font-medium'>Average Score</h3>
-            <div className='flex items-end space-x-2.5'>
+            <div className='flex items-center space-x-2.5 w-full'>
               <p>
-                <span className='text-5xl'>{rating.toFixed(1)}</span>
+                <span className='text-5xl'>
+                  {isNaN(averageScore) ? '0.0' : averageScore.toFixed(1)}
+                </span>
                 <span className='text-4xl'>/</span>
                 <span className='text-3xl'>5.0</span>
               </p>
-              <div className='flex space-x-1 mb-0.5'>
-                {ratingStar(0)}
-                {ratingStar(1)}
-                {ratingStar(2)}
-                {ratingStar(3)}
-                {ratingStar(4)}
+              <div className='flex space-x-1 mb-0.5 w-full'>
+                <ReactStars
+                  count={5}
+                  value={
+                    isNaN(averageScore) ? 0 : Number(averageScore.toFixed(1))
+                  }
+                  size={36}
+                  isHalf={true}
+                  readonly={true}
+                  edit={false}
+                  emptyIcon={<i className='far fa-star'></i>}
+                  halfIcon={<i className='fa fa-star-half-alt'></i>}
+                  fullIcon={<i className='fa fa-star'></i>}
+                  activeColor='#eab308'
+                />
               </div>
             </div>
           </div>
@@ -67,30 +74,6 @@ export const Services: React.FC<ServicesProps> = ({ data, rating }) => {
           </div>
 
           <div className='md:h-16 border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
-
-          <div className='flex flex-wrap justify-center md:justify-start mt-2 md:mt-0'>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Fast Response (12)
-            </p>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Interactive (8)
-            </p>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Humorous (13)
-            </p>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Carry in Game (2)
-            </p>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Turn the Tide (3)
-            </p>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Cooperative (75)
-            </p>
-            <p className='rounded-full bg-dark-light px-2 py-0.5 text-xs mt-2 mr-4'>
-              Creative (12)
-            </p>
-          </div>
         </div>
       </div>
       <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base mt-5'>

@@ -20,7 +20,6 @@ import {
   UserLanguageType,
   OrderType,
   perType,
-  statusType,
   ReviewType,
 } from './types';
 import { Review } from '../entity/Review';
@@ -209,14 +208,12 @@ const main = async () => {
 
   // ORDERS
   users.forEach((user) => {
-    for (let x = 0; x < getRandomBetween(1, 4); x++) {
+    for (let x = 0; x < getRandomBetween(6, 8); x++) {
       const userService =
         dbUserServices[getRandomBetween(0, dbUserServices!.length! - 1)];
       const rounds = getRandomBetween(1, 4);
 
-      const status = ['cancelled', 'pending', 'started', 'completed'][
-        getRandomBetween(0, 3)
-      ] as statusType;
+      const status = 'completed';
 
       orders.push({
         buyerId: user.id,
@@ -228,10 +225,7 @@ const main = async () => {
         rounds,
         finalPrice: userService.price * rounds,
         startTime: new Date(),
-        startedTime:
-          status === 'started' || status === 'completed'
-            ? new Date()
-            : undefined,
+        startedTime: new Date(),
       });
     }
   });

@@ -16,6 +16,13 @@ query GetUser($id: Int!) {
     twitch
     steam
     tiktok
+    target {
+      id
+      score
+      recommend
+      review
+    }
+
     country {
       id
       name

@@ -18,6 +18,7 @@ import { Country } from './Country';
 import { UserLanguage } from './UserLanguage';
 import { Order } from './Order';
 import { Review } from './Review';
+import { Lazy } from '../utils';
 
 @ObjectType()
 @Entity()
@@ -148,14 +149,14 @@ export class User extends BaseEntity {
   // Source
   @Field(() => [Review], { nullable: true })
   @OneToMany(() => Review, (review) => review.source, { nullable: true })
-  @TypeormLoader()
-  source?: Review[];
+  @TypeormLoader((review: Review) => review.sourceId, { selfKey: true })
+  source?: Lazy<Review[]>;
 
   // Target
   @Field(() => [Review], { nullable: true })
   @OneToMany(() => Review, (review) => review.target, { nullable: true })
-  @TypeormLoader()
-  target?: Review[];
+  @TypeormLoader((review: Review) => review.targetId, { selfKey: true })
+  target?: Lazy<Review[]>;
 
   @CreateDateColumn()
   created_at: Date;

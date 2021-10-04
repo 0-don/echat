@@ -86,6 +86,7 @@ export class UserServiceResolver {
     const serviceImages = await getRepository(ServiceImage).find({
       where: { serviceId: In([...serviceIds]) },
     });
+
     const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
     return serviceIds.map(
       (serviceId) => serviceImageByserviceId[serviceId] ?? []
@@ -94,6 +95,11 @@ export class UserServiceResolver {
   images(@Root() root: UserService) {
     return (dataloader: DataLoader<number, ServiceImage[]>) =>
       dataloader.load(root.serviceId);
+  }
+
+  @Query(() => [UserService])
+  async getUserService() {
+    return UserService.find({});
   }
 
   @Mutation(() => String)
@@ -120,6 +126,7 @@ export class UserServiceResolver {
     @Arg('filterOptions', () => FilterOptions, { nullable: true })
     filterOptions?: FilterOptions | null
   ) {
+    
     if (!slug || !limit) {
       return null;
     }

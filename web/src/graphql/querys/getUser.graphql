@@ -63,6 +63,12 @@ query GetUser($id: Int!) {
       description
       price
       per
+      reviews {
+        id
+        score
+        recommend
+        review
+      }
       service {
         id
         name

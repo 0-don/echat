@@ -20,6 +20,12 @@ query FilterUserService(
       per
       createdAt
       serviceId
+      reviews {
+        id
+        score
+        recommend
+        review
+      }
       user {
         id
         username

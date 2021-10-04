@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { GetUserQuery } from 'src/generated/graphql';
-import { getRandomBetween } from 'src/utils';
+
 import gray from '/public/gray.png';
 import Image from 'next/image';
 
@@ -94,7 +94,7 @@ export const Services: React.FC<ServicesProps> = ({ data }) => {
         </div>
       </div>
       <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base mt-5'>
-        {services?.map(({ price, per, id, service }) => (
+        {services?.map(({ price, per, id, service, reviews }) => (
           <div
             key={id}
             className='bg-white dark:bg-dark flex flex-col'
@@ -123,10 +123,14 @@ export const Services: React.FC<ServicesProps> = ({ data }) => {
                   className='dark:text-yellow-500 text-black mr-1'
                   icon='star'
                 />
-                {`${getRandomBetween(3, 5)}.${getRandomBetween(
-                  10,
-                  99
-                )} (${getRandomBetween(0, 200)})`}
+                {`${
+                  reviews && reviews?.length
+                    ? (
+                        reviews.reduce((total, next) => total + next.score, 0) /
+                        reviews.length
+                      ).toFixed(1)
+                    : '0.0'
+                } (${reviews ? reviews?.length : 0})`}
               </div>
               <hr className='border-lightGray my-1' />
               <div className='flex items-center justify-between'>

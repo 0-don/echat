@@ -62,6 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   const apolloClient = useApolloClient();
+  
 
   const items = Object.keys(groupedServices).map((key, index) => (
     <div

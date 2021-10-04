@@ -10,6 +10,7 @@ export type ReviewType = {
   targetId: number;
   sourceId: number;
   orderId: number;
+  userServiceId: number;
 }[];
 
 export type OrderType = {

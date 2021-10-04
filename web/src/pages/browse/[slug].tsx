@@ -33,6 +33,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   }, []);
 
   const { data } = useGetServicesQuery();
+  data?.getServices?.map(service => service.name)
   const {
     data: userService,
     fetchMore,

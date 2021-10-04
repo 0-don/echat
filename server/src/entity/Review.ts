@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { Order } from './Order';
 import { User } from './User';
+import { UserService } from './UserService';
 
 @ObjectType()
 @Entity()
@@ -78,6 +79,18 @@ export class Review extends BaseEntity {
   @Column()
   @RelationId((review: Review) => review.order)
   orderId: number;
+
+  // UserService
+  @Field(() => UserService, { nullable: true })
+  @ManyToOne(() => UserService, (userService) => userService.reviews)
+  @TypeormLoader()
+  userService: UserService;
+
+  // UserService
+  @Field(() => Int)
+  @Column()
+  @RelationId((review: Review) => review.userService)
+  userServiceId: number;
 
   @Field()
   @CreateDateColumn()

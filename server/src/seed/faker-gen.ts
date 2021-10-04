@@ -238,12 +238,13 @@ const main = async () => {
   const reviews: ReviewType = [];
 
   // REVIEWS
-  dbOrders.forEach(({ id, sellerId, buyerId }) => {
+  dbOrders.forEach(({ id, sellerId, buyerId, userServiceId }) => {
     const highestScore = getRandomBetween(0, 5);
     reviews.push({
       orderId: id,
       sourceId: buyerId,
       targetId: sellerId,
+      userServiceId,
       recommend: coinFlip(),
       review: coinFlip() ? faker.lorem.sentence() : '',
       score: Number(

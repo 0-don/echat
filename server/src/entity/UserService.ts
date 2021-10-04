@@ -13,6 +13,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Order } from './Order';
+import { Review } from './Review';
 import { Service } from './Service';
 import { ServiceImage } from './ServiceImage';
 import { User } from './User';
@@ -83,6 +84,12 @@ export class UserService extends BaseEntity {
   @OneToMany(() => Order, (order) => order.userService)
   @TypeormLoader()
   orders: Order[];
+
+  // Reviews
+  @Field(() => [Review], { nullable: true })
+  @OneToMany(() => Review, (review) => review.userService)
+  @TypeormLoader()
+  reviews: Review[];
 
   @Field(() => String)
   @CreateDateColumn()

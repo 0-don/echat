@@ -1,5 +1,3 @@
-// @ts-ignore
-import ReactStars from 'react-rating-stars-component';
 import { NextPage } from 'next';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
@@ -13,6 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import gray from '/public/gray.png';
 import dayjs from 'dayjs';
 import router from 'next/router';
+import { ImagePopup } from 'src/components/utils/ImagePopup';
+import { AverageScore } from 'src/components/service/AverageScore';
+import { UserColumn } from 'src/components/service/UserColumn';
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -28,16 +29,6 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const profileImage = user?.images?.find(
     (image) => image.type === 'profile'
   )?.url;
-
-  const reviews = data?.getUserService?.user.target;
-
-  const averageScore = reviews?.length
-    ? (
-        reviews.reduce((total, next) => total + next.score, 0) / reviews.length
-      ).toFixed(1)
-    : '0.0';
-  const served = reviews?.length ?? 0;
-  const recommend = reviews?.filter((review) => review.recommend).length ?? 0;
 
   useEffect(() => {
     images?.length &&
@@ -73,85 +64,8 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
         </div>
 
         <div className='flex w-full mt-5 space-x-3 items-start'>
-          <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 w-full'>
-            <div className='flex flex-col md:flex-row  items-center'>
-              <div className='flex flex-col space-x-1'>
-                <h3 className='font-medium'>Average Score</h3>
-                <div className='flex items-center space-x-2.5 w-full'>
-                  <p>
-                    <span className='text-5xl'>{averageScore}</span>
-                    <span className='text-4xl'>/</span>
-                    <span className='text-3xl'>5.0</span>
-                  </p>
-                  <div className='flex space-x-1 mb-0.5 w-full'>
-                    <ReactStars
-                      count={5}
-                      value={Number(averageScore)}
-                      size={36}
-                      isHalf={true}
-                      readonly={true}
-                      edit={false}
-                      emptyIcon={<i className='far fa-star'></i>}
-                      halfIcon={<i className='fa fa-star-half-alt'></i>}
-                      fullIcon={<i className='fa fa-star'></i>}
-                      activeColor='#eab308'
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className='flex mt-3 md:mt-0'>
-                <div className='md:border-r border-gray-500 md:ml-10 md:mr-3'></div>
-
-                <div>
-                  <h3 className='font-medium'>Served</h3>
-                  <p className='text-5xl'>{served}</p>
-                </div>
-
-                <div className='border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
-
-                <div>
-                  <h3 className='font-medium'>Recomended</h3>
-                  <p className='text-5xl'>{recommend}</p>
-                </div>
-              </div>
-
-              <div className='md:h-16 border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
-            </div>
-          </div>
-
-          <div className='flex flex-col bg-white dark:bg-dark w-96 rounded-lg'>
-            <div
-              style={{ position: 'relative', width: '100%', height: '200px' }}
-            >
-              <Image
-                placeholder='blur'
-                blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
-                layout='fill'
-                objectFit='cover'
-                className='rounded-t-lg'
-                src={profileImage ?? gray.src}
-              />
-            </div>
-            <div className='p-2'>
-              <div className='flex items-center justify-between w-full'>
-                <h1
-                  className='text-xl font-semibold hover:text-purple cursor-pointer'
-                  onClick={() => router.push(`/user/${user?.id}`)}
-                >
-                  {user?.username}
-                </h1>
-              </div>
-              <div className='flex flex-col text-sm text-gray-300'>
-                <p>
-                  Languages:{' '}
-                  {user?.languages?.map((lang) => lang.name).join(' / ')}
-                </p>
-                <p>Age: {dayjs(new Date()).diff(dayjs(user?.age), 'years')}</p>
-              </div>
-              <hr className='border-lightGray my-1' />
-            </div>
-          </div>
+          <AverageScore data={data} />
+          <UserColumn data={data} />
         </div>
       </div>
     </Wrapper>

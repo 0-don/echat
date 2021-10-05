@@ -90,6 +90,7 @@ const PgSession = connectPgSimple(session);
     context: ({ req, res }) => ({ req, res }),
     uploads: false,
     introspection: true,
+    playground: true,
     plugins: [
       ApolloServerLoaderPlugin({ typeormGetConnection: getConnection }),
     ],

@@ -40,16 +40,21 @@ import {
   faMinus,
   faMoneyCheck,
   faCommentDots,
+  // faCaretSquareRight,
+  faAngleRight,
   faThumbsDown as faSolidThumbsDown,
   faThumbsUp as faSolidThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import {
+  faCaretSquareRight,
   faStarHalf as faRegularStarHalf,
   faThumbsDown as faRegularThumbsDown,
   faThumbsUp as faRegularThumbsUp,
 } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faAngleRight,
+  faCaretSquareRight,
   faSolidThumbsDown,
   faRegularThumbsDown,
   faRegularThumbsUp,

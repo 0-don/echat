@@ -68,7 +68,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
               <h1 className='text-2xl font-bold'>{user?.username}</h1>
               <FontAwesomeIcon
                 size='2x'
-                className='text-dark dark:text-white '
+                className='text-dark dark:text-white'
                 icon={genderIcon(user?.gender as string)}
               />
               <span

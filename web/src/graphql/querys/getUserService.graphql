@@ -1,5 +1,5 @@
-query GetUserServiceById($id: Int!) {
-  getUserServiceById(id: $id) {
+query GetUserService($id: Int!) {
+  getUserService(id: $id) {
     id
     status
     platforms
@@ -8,6 +8,22 @@ query GetUserServiceById($id: Int!) {
     price
     per
     image
+    reviews {
+      id
+      score
+      recommend
+      review
+      created_at
+      source {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
     service {
       id
       type
@@ -39,6 +55,11 @@ query GetUserServiceById($id: Int!) {
       instagram
       twitch
       tiktok
+      target {
+        id
+        score
+        recommend
+      }
       languages {
         id
         name

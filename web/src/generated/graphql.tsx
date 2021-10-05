@@ -247,10 +247,10 @@ export type Query = {
   userImages?: Maybe<Array<Image>>;
   getServices?: Maybe<Array<Service>>;
   getService?: Maybe<Service>;
-  getUserService: Array<UserService>;
+  getUserServices: Array<UserService>;
   filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
-  getUserServiceById: UserService;
+  getUserService: UserService;
   getChats: Array<Chat>;
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
@@ -282,7 +282,7 @@ export type QueryFilterUserServiceArgs = {
 };
 
 
-export type QueryGetUserServiceByIdArgs = {
+export type QueryGetUserServiceArgs = {
   id: Scalars['Int'];
 };
 
@@ -880,17 +880,28 @@ export type GetUserQuery = (
   )> }
 );
 
-export type GetUserServiceByIdQueryVariables = Exact<{
+export type GetUserServiceQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetUserServiceByIdQuery = (
+export type GetUserServiceQuery = (
   { __typename?: 'Query' }
-  & { getUserServiceById: (
+  & { getUserService: (
     { __typename?: 'UserService' }
     & Pick<UserService, 'id' | 'status' | 'platforms' | 'description' | 'level' | 'price' | 'per' | 'image'>
-    & { service: (
+    & { reviews?: Maybe<Array<(
+      { __typename?: 'Review' }
+      & Pick<Review, 'id' | 'score' | 'recommend' | 'review' | 'created_at'>
+      & { source?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'id' | 'type' | 'url'>
+        )>> }
+      )> }
+    )>>, service: (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'type' | 'name' | 'twitchId' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres'>
       & { images?: Maybe<Array<(
@@ -900,7 +911,10 @@ export type GetUserServiceByIdQuery = (
     ), user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'lastOnline' | 'age' | 'description' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'instagram' | 'twitch' | 'tiktok'>
-      & { languages?: Maybe<Array<(
+      & { target?: Maybe<Array<(
+        { __typename?: 'Review' }
+        & Pick<Review, 'id' | 'score' | 'recommend'>
+      )>>, languages?: Maybe<Array<(
         { __typename?: 'UserLanguage' }
         & Pick<UserLanguage, 'id' | 'name'>
       )>>, country?: Maybe<(
@@ -2099,9 +2113,9 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
-export const GetUserServiceByIdDocument = gql`
-    query GetUserServiceById($id: Int!) {
-  getUserServiceById(id: $id) {
+export const GetUserServiceDocument = gql`
+    query GetUserService($id: Int!) {
+  getUserService(id: $id) {
     id
     status
     platforms
@@ -2110,6 +2124,22 @@ export const GetUserServiceByIdDocument = gql`
     price
     per
     image
+    reviews {
+      id
+      score
+      recommend
+      review
+      created_at
+      source {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
     service {
       id
       type
@@ -2141,6 +2171,11 @@ export const GetUserServiceByIdDocument = gql`
       instagram
       twitch
       tiktok
+      target {
+        id
+        score
+        recommend
+      }
       languages {
         id
         name
@@ -2182,32 +2217,32 @@ export const GetUserServiceByIdDocument = gql`
     `;
 
 /**
- * __useGetUserServiceByIdQuery__
+ * __useGetUserServiceQuery__
  *
- * To run a query within a React component, call `useGetUserServiceByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserServiceByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserServiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserServiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserServiceByIdQuery({
+ * const { data, loading, error } = useGetUserServiceQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetUserServiceByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserServiceByIdQuery, GetUserServiceByIdQueryVariables>) {
+export function useGetUserServiceQuery(baseOptions: Apollo.QueryHookOptions<GetUserServiceQuery, GetUserServiceQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserServiceByIdQuery, GetUserServiceByIdQueryVariables>(GetUserServiceByIdDocument, options);
+        return Apollo.useQuery<GetUserServiceQuery, GetUserServiceQueryVariables>(GetUserServiceDocument, options);
       }
-export function useGetUserServiceByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserServiceByIdQuery, GetUserServiceByIdQueryVariables>) {
+export function useGetUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserServiceQuery, GetUserServiceQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserServiceByIdQuery, GetUserServiceByIdQueryVariables>(GetUserServiceByIdDocument, options);
+          return Apollo.useLazyQuery<GetUserServiceQuery, GetUserServiceQueryVariables>(GetUserServiceDocument, options);
         }
-export type GetUserServiceByIdQueryHookResult = ReturnType<typeof useGetUserServiceByIdQuery>;
-export type GetUserServiceByIdLazyQueryHookResult = ReturnType<typeof useGetUserServiceByIdLazyQuery>;
-export type GetUserServiceByIdQueryResult = Apollo.QueryResult<GetUserServiceByIdQuery, GetUserServiceByIdQueryVariables>;
+export type GetUserServiceQueryHookResult = ReturnType<typeof useGetUserServiceQuery>;
+export type GetUserServiceLazyQueryHookResult = ReturnType<typeof useGetUserServiceLazyQuery>;
+export type GetUserServiceQueryResult = Apollo.QueryResult<GetUserServiceQuery, GetUserServiceQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {
@@ -2474,7 +2509,7 @@ export const namedOperations = {
     GetSellerOrders: 'GetSellerOrders',
     GetServices: 'GetServices',
     GetUser: 'GetUser',
-    GetUserServiceById: 'GetUserServiceById',
+    GetUserService: 'GetUserService',
     GetUsers: 'GetUsers',
     GetBuyerOrders: 'GetBuyerOrders',
     Me: 'Me',

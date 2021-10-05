@@ -98,7 +98,7 @@ export class UserServiceResolver {
   }
 
   @Query(() => [UserService])
-  async getUserService() {
+  async getUserServices() {
     return UserService.find({});
   }
 
@@ -126,7 +126,6 @@ export class UserServiceResolver {
     @Arg('filterOptions', () => FilterOptions, { nullable: true })
     filterOptions?: FilterOptions | null
   ) {
-    
     if (!slug || !limit) {
       return null;
     }
@@ -278,9 +277,7 @@ export class UserServiceResolver {
     return true;
   }
   @Query(() => UserService)
-  async getUserServiceById(@Arg('id', () => Int) id: number) {
-    const userdata = await UserService.findOne({ id });
-    console.log(userdata);
-    return userdata;
+  async getUserService(@Arg('id', () => Int) id: number) {
+    return UserService.findOne({ id });
   }
 }

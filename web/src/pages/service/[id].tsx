@@ -1,35 +1,44 @@
+// @ts-ignore
+import ReactStars from 'react-rating-stars-component';
 import { NextPage } from 'next';
-import { useGetUserServiceByIdQuery } from 'src/generated/graphql';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
-
+import Image from 'next/image';
 import transparent from '/public/transparent.png';
 import React, { useEffect, useState } from 'react';
 import { getRandomBetween } from 'src/utils';
-import { generateNumber } from '../../utils/index';
-import gray from '/public/gray.png';
 import { OrderModal } from 'src/components/order/OrderModal';
-
-import Servicedetailcard from 'src/components/servicedetail/Servicedetailcard';
-
-import { Score } from 'src/components/servicedetail/Score';
-import { ImagePopup } from 'src/components/utils/ImagePopup';
-import { Reviews } from 'src/components/user/Reviews';
-import { Button } from 'src/components/htmlElements';
+import { useGetUserServiceQuery } from 'src/generated/graphql';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import gray from '/public/gray.png';
+import dayjs from 'dayjs';
+import router from 'next/router';
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
-  const { data } = useGetUserServiceByIdQuery({
+  const { data } = useGetUserServiceQuery({
     variables: { id },
   });
-  const userService = data?.getUserServiceById;
+  const user = data?.getUserService?.user;
+  const service = data?.getUserService?.service;
+  const userService = data?.getUserService;
+  const userServices = data?.getUserService?.user?.services;
 
-  const services = data?.getUserServiceById?.user?.services;
-  const service = data?.getUserServiceById.service;
   const images = service?.images?.filter((image) => image.width > 1200);
+  const profileImage = user?.images?.find(
+    (image) => image.type === 'profile'
+  )?.url;
 
-  services;
-  gray;
+  const reviews = data?.getUserService?.user.target;
+
+  const averageScore = reviews?.length
+    ? (
+        reviews.reduce((total, next) => total + next.score, 0) / reviews.length
+      ).toFixed(1)
+    : '0.0';
+  const served = reviews?.length ?? 0;
+  const recommend = reviews?.filter((review) => review.recommend).length ?? 0;
+
   useEffect(() => {
     images?.length &&
       setBgImage(images[getRandomBetween(0, images.length)].url);
@@ -38,7 +47,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   return (
     <Wrapper navbar fluid className='relative'>
       <div style={{ position: 'relative', width: '100%', height: '40vw' }}>
-        <ImagePopup
+        <Image
           className='img-fade opacity-40'
           src={bgImage ?? transparent.src}
           layout='fill'
@@ -46,80 +55,103 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
         />
       </div>
 
-      <div className='container max-auto  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 absolute top-0 left-0 right-0'>
-        <div className='dark:text-white text-black  '>
-          <div>
-            <h1 className='mt-4 text-lg lg:text-3xl md:text-3xl'>
-              {service?.name}
-            </h1>
-            <div className='mt-4 mb-4 flex flex-row  w-full justify-between'>
-              {userService?.price} {userService?.per}
-              <div className='flex space-x-1   '>
-                <Button
-                  icon='star'
-                  text='Chat'
-                  className=' flex justify-center  items-center py-2 px-14 border border-opacity-25 rounded-lg shadow-sm text-sm font-medium text-white bg-purple hover:bg-purple-dark '
-                />
-                <OrderModal data={data} />
-              </div>
-            </div>
-            <div className='flex flex-col md:flex-row justify-between md:space-x-4 lg:flex-row lg:space-x-4 '>
-              <div className='flex flex-col w-full  space-y-8 '>
-                <Score data={data} rating={generateNumber(0, 5)} />
+      <div className='container max-auto max-w-7xl mx-auto absolute top-0 left-0 right-0 dark:text-white text-black'>
+        <h1 className='mt-5 text-4xl font-medium'>{service?.name}</h1>
 
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '100%',
-                  }}
-                >
-                  <ImagePopup
-                    placeholder='blur'
-                    blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
-                    layout='fill'
-                    objectFit='cover'
-                    src={userService?.image ?? transparent.src}
-                  />
-                </div>
-              </div>
-              {/* <Score id={id} /> */}
-              <div>
-                <Servicedetailcard id={id} />
-              </div>
-            </div>
-            <div className='flex flex-row space-x-20'>
-              <div className='bg-white text-sm dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5 items-center'>
-                Details
-                <div className='md:flex  md:space-x-10 lg:flex  lg:space-x-10'>
-                  <div className='flex flex-row space-x-4 '>
-                    <div>Level</div>
-                    <div>{userService?.level}</div>{' '}
-                  </div>
-                  <div className='flex flex-row space-x-4 '>
-                    <div>
-                      <h1>Platform</h1>
-                    </div>
-                    {userService?.platforms.map((platform: any) => {
-                      return <div key={platform.id}> {platform.name}</div>;
-                    })}
-                  </div>
-                </div>
-                <div className=''>
-                  <div>
-                    <h1>Introduction</h1>
-                  </div>
-                  <div className='text-center text-xs'>
-                    {userService?.description}
+        <div className='flex justify-between w-full items-center mt-3'>
+          <div className='flex space-x-1 items-center'>
+            <FontAwesomeIcon size='lg' icon='coins' />
+            <p>
+              <span className='text-2xl'>{userService?.price}</span>/
+              {userService?.per}
+            </p>
+          </div>
+          <div className='flex space-x-5'>
+            <OrderModal data={data} />
+            <button className='big-button'>chat</button>
+          </div>
+        </div>
+
+        <div className='flex w-full mt-5 space-x-3 items-start'>
+          <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 w-full'>
+            <div className='flex flex-col md:flex-row  items-center'>
+              <div className='flex flex-col space-x-1'>
+                <h3 className='font-medium'>Average Score</h3>
+                <div className='flex items-center space-x-2.5 w-full'>
+                  <p>
+                    <span className='text-5xl'>{averageScore}</span>
+                    <span className='text-4xl'>/</span>
+                    <span className='text-3xl'>5.0</span>
+                  </p>
+                  <div className='flex space-x-1 mb-0.5 w-full'>
+                    <ReactStars
+                      count={5}
+                      value={Number(averageScore)}
+                      size={36}
+                      isHalf={true}
+                      readonly={true}
+                      edit={false}
+                      emptyIcon={<i className='far fa-star'></i>}
+                      halfIcon={<i className='fa fa-star-half-alt'></i>}
+                      fullIcon={<i className='fa fa-star'></i>}
+                      activeColor='#eab308'
+                    />
                   </div>
                 </div>
               </div>
-              <div className='bg-white text-sm dark:bg-dark dark:text-white shadow px-4 py-4  sm:p-6 mb-5 items-center'>
-                asdasdasd
+
+              <div className='flex mt-3 md:mt-0'>
+                <div className='md:border-r border-gray-500 md:ml-10 md:mr-3'></div>
+
+                <div>
+                  <h3 className='font-medium'>Served</h3>
+                  <p className='text-5xl'>{served}</p>
+                </div>
+
+                <div className='border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
+
+                <div>
+                  <h3 className='font-medium'>Recomended</h3>
+                  <p className='text-5xl'>{recommend}</p>
+                </div>
               </div>
+
+              <div className='md:h-16 border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
             </div>
           </div>
-          <Reviews data={data} />
+
+          <div className='flex flex-col bg-white dark:bg-dark w-96 rounded-lg'>
+            <div
+              style={{ position: 'relative', width: '100%', height: '200px' }}
+            >
+              <Image
+                placeholder='blur'
+                blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
+                layout='fill'
+                objectFit='cover'
+                className='rounded-t-lg'
+                src={profileImage ?? gray.src}
+              />
+            </div>
+            <div className='p-2'>
+              <div className='flex items-center justify-between w-full'>
+                <h1
+                  className='text-xl font-semibold hover:text-purple cursor-pointer'
+                  onClick={() => router.push(`/user/${user?.id}`)}
+                >
+                  {user?.username}
+                </h1>
+              </div>
+              <div className='flex flex-col text-sm text-gray-300'>
+                <p>
+                  Languages:{' '}
+                  {user?.languages?.map((lang) => lang.name).join(' / ')}
+                </p>
+                <p>Age: {dayjs(new Date()).diff(dayjs(user?.age), 'years')}</p>
+              </div>
+              <hr className='border-lightGray my-1' />
+            </div>
+          </div>
         </div>
       </div>
     </Wrapper>

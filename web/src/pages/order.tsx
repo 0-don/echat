@@ -52,6 +52,25 @@ const Order: React.FC = ({}) => {
     (order) => order.status === sellerOrderStatus?.toLocaleLowerCase()
   );
 
+  const noOrders = (
+    <div className='flex flex-col justify-center items-center h-full w-full space-y-3'>
+      <div style={{ position: 'relative', width: '33%', height: '33%' }}>
+        <Image
+          blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
+          layout='fill'
+          objectFit='contain'
+          className='opacity-10'
+          src={noOrder.src}
+        />
+      </div>
+
+      <h2 className='text-3xl font-medium opacity-50'>No Orders Here</h2>
+      <p className='text-sm  opacity-50'>
+        You don't have any orders. Start getting orders now
+      </p>
+    </div>
+  );
+
   console.log(sellerOrders);
   return (
     <Wrapper
@@ -87,134 +106,219 @@ const Order: React.FC = ({}) => {
           </div>
 
           {/* Paird Orders */}
-          {sellerOrders && sellerOrders.length === 0 ? (
-            <div className='flex flex-col justify-center items-center h-full w-full space-y-3'>
-              <div
-                style={{ position: 'relative', width: '33%', height: '33%' }}
-              >
-                <Image
-                  blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
-                  layout='fill'
-                  objectFit='contain'
-                  className='opacity-10'
-                  src={noOrder.src}
-                />
-              </div>
-
-              <h2 className='text-3xl font-medium opacity-50'>
-                No Orders Here
-              </h2>
-              <p className='text-sm  opacity-50'>
-                You don't have any orders. Start getting orders now
-              </p>
-            </div>
-          ) : (
-            sellerOrders?.map(
-              ({
-                id,
-                rounds,
-                finalPrice,
-                per,
-                startTime,
-                userService,
-                buyer,
-                status,
-                review,
-              }) => (
-                <div
-                  key={id}
-                  className='flex flex-col w-full mt-5 bg-dark rounded-b-md'
-                >
-                  <div className='bg-dark-light w-full rounded-t-md pl-5 text-sm text-gray-300'>
-                    Order ID: {id}
-                  </div>
-
-                  <div className='flex flex-col md:flex-row md:items-center md:justify-between md:px-5 p-5 md:p-0 space-y-3 md:space-y-0 w-full'>
-                    <div className='flex items-center bg-dark-light rounded-full md:my-3 space-x-3 w-full md:w-72'>
-                      <Image
-                        width={45}
-                        height={45}
-                        layout='fixed'
-                        objectFit='cover'
-                        className='rounded-full'
-                        src={
-                          buyer?.images?.find(({ type }) => type == 'profile')
-                            ?.url ?? gray.src
-                        }
-                      />
-                      <div className='flex flex-col'>
-                        <p className='font-medium'>{buyer?.username}</p>
-                        <p>{userService?.service.name}</p>
-                      </div>
+          {sellerOrders && sellerOrders.length === 0 && sellerOrderStatus
+            ? noOrders
+            : sellerOrders?.map(
+                ({
+                  id,
+                  rounds,
+                  finalPrice,
+                  per,
+                  startTime,
+                  userService,
+                  buyer,
+                  status,
+                  review,
+                }) => (
+                  <div
+                    key={id}
+                    className='flex flex-col w-full mt-5 bg-dark rounded-b-md'
+                  >
+                    <div className='bg-dark-light w-full rounded-t-md pl-5 text-sm text-gray-300'>
+                      Order ID: {id}
                     </div>
 
-                    <div className='flex justify-between md:flex-col'>
-                      <p className='font-medium'>Order Time</p>
-                      <p>{dayjs(startTime).format('lll')}</p>
-                    </div>
-
-                    <div className='flex justify-between md:flex-col'>
-                      <p className='font-medium'>Quantity</p>
-                      <p className='text-center'>{rounds}</p>
-                    </div>
-
-                    <div className='flex justify-between items-center md:flex-col'>
-                      <p className='font-medium md:hidden'>Price</p>
-                      <div className='flex items-center text-xl'>
-                        <FontAwesomeIcon
-                          size='lg'
-                          className='dark:text-white text-black mr-1'
-                          icon='coins'
+                    <div className='flex flex-col md:flex-row md:items-center md:justify-between md:px-5 p-5 md:p-0 space-y-3 md:space-y-0 w-full'>
+                      <div className='flex items-center bg-dark-light rounded-full md:my-3 space-x-3 w-full md:w-72'>
+                        <Image
+                          width={45}
+                          height={45}
+                          layout='fixed'
+                          objectFit='cover'
+                          className='rounded-full'
+                          src={
+                            buyer?.images?.find(({ type }) => type == 'profile')
+                              ?.url ?? gray.src
+                          }
                         />
-                        <div className='font-bold'>{`${finalPrice.toFixed(
-                          2
-                        )} / ${per}`}</div>
+                        <div className='flex flex-col'>
+                          <p className='font-medium'>{buyer?.username}</p>
+                          <p>{userService?.service.name}</p>
+                        </div>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col'>
+                        <p className='font-medium'>Order Time</p>
+                        <p>{dayjs(startTime).format('lll')}</p>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col'>
+                        <p className='font-medium'>Quantity</p>
+                        <p className='text-center'>{rounds}</p>
+                      </div>
+
+                      <div className='flex justify-between items-center md:flex-col'>
+                        <p className='font-medium md:hidden'>Price</p>
+                        <div className='flex items-center text-xl'>
+                          <FontAwesomeIcon
+                            size='lg'
+                            className='dark:text-white text-black mr-1'
+                            icon='coins'
+                          />
+                          <div className='font-bold'>{`${finalPrice.toFixed(
+                            2
+                          )} / ${per}`}</div>
+                        </div>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col'>
+                        <p className='font-medium'>Order Status</p>
+                        <p className='text-center'>{status}</p>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col md:items-center'>
+                        <p className='font-medium mb-2'>Options</p>
+                        <div className='flex space-x-5 items-center '>
+                          {sellerOrderStatus === 'Pending' && (
+                            <button
+                              onClick={async () =>
+                                await acceptOrder({
+                                  variables: { id },
+                                  refetchQueries: [
+                                    { query: GetSellerOrdersDocument },
+                                  ],
+                                })
+                              }
+                              className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
+                            >
+                              accept
+                            </button>
+                          )}
+                          {sellerOrderStatus === 'Started' && (
+                            <button
+                              onClick={async () => {
+                                const { data } = await completeOrder({
+                                  variables: { id, buyerId: buyer?.id },
+                                  refetchQueries: [
+                                    { query: GetSellerOrdersDocument },
+                                  ],
+                                });
+
+                                data?.completeOrder.errors?.length &&
+                                  setErrors(data?.completeOrder.errors);
+                              }}
+                              className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
+                            >
+                              complete
+                            </button>
+                          )}
+                          {sellerOrderStatus === 'Pending' ||
+                            (sellerOrderStatus === 'Started' && (
+                              <FontAwesomeIcon
+                                id='trash'
+                                size='sm'
+                                title='cancel order'
+                                className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
+                                icon='trash-alt'
+                                onClick={async () =>
+                                  await cancelOrder({
+                                    variables: { id, buyerId: buyer?.id },
+                                    refetchQueries: [
+                                      { query: GetSellerOrdersDocument },
+                                    ],
+                                  })
+                                }
+                              />
+                            ))}
+                          <FontAwesomeIcon
+                            size='sm'
+                            title='chat'
+                            className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
+                            icon='comment-dots'
+                          />
+                        </div>
                       </div>
                     </div>
+                  </div>
+                )
+              )}
 
-                    <div className='flex justify-between md:flex-col'>
-                      <p className='font-medium'>Order Status</p>
-                      <p className='text-center'>{status}</p>
+          {/* Purchased Orders */}
+          {buyerOrders && buyerOrders.length === 0 && buyerOrderStatus
+            ? noOrders
+            : buyerOrders?.map(
+                ({
+                  id,
+                  rounds,
+                  finalPrice,
+                  per,
+                  startTime,
+                  userService,
+                  seller,
+                  review,
+                  status,
+                }) => (
+                  <div
+                    key={id}
+                    className='flex flex-col w-full mt-5 bg-dark rounded-b-md'
+                  >
+                    <div className='bg-dark-light w-full rounded-t-md pl-5 text-sm text-gray-300'>
+                      Order ID: {id}
                     </div>
 
-                    <div className='flex justify-between md:flex-col md:items-center'>
-                      <p className='font-medium mb-2'>Options</p>
-                      <div className='flex space-x-5 items-center '>
-                        {sellerOrderStatus === 'Pending' && (
-                          <button
-                            onClick={async () =>
-                              await acceptOrder({
-                                variables: { id },
-                                refetchQueries: [
-                                  { query: GetSellerOrdersDocument },
-                                ],
-                              })
-                            }
-                            className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
-                          >
-                            accept
-                          </button>
-                        )}
-                        {sellerOrderStatus === 'Started' && (
-                          <button
-                            onClick={async () => {
-                              const { data } = await completeOrder({
-                                variables: { id, buyerId: buyer?.id },
-                                refetchQueries: [
-                                  { query: GetSellerOrdersDocument },
-                                ],
-                              });
+                    <div className='flex flex-col md:flex-row md:items-center md:justify-between md:px-5 p-5 md:p-0 space-y-3 md:space-y-0 w-full'>
+                      <div className='flex items-center bg-dark-light rounded-full md:my-3 space-x-3 w-full md:w-72'>
+                        <Image
+                          width={45}
+                          height={45}
+                          layout='fixed'
+                          objectFit='cover'
+                          className='rounded-full'
+                          src={
+                            seller?.images?.find(
+                              ({ type }) => type == 'profile'
+                            )?.url ?? gray.src
+                          }
+                        />
+                        <div className='flex flex-col'>
+                          <p className='font-medium'>{seller?.username}</p>
+                          <p>{userService?.service.name}</p>
+                        </div>
+                      </div>
 
-                              data?.completeOrder.errors?.length &&
-                                setErrors(data?.completeOrder.errors);
-                            }}
-                            className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
-                          >
-                            complete
-                          </button>
-                        )}
-                        {sellerOrderStatus === 'Pending' ||
-                          (sellerOrderStatus === 'Started' && (
+                      <div className='flex justify-between md:flex-col'>
+                        <p className='font-medium'>Order Time</p>
+                        <p>{dayjs(startTime).format('lll')}</p>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col'>
+                        <p className='font-medium'>Quantity</p>
+                        <p className='text-center'>{rounds}</p>
+                      </div>
+
+                      <div className='flex justify-between items-center md:flex-col'>
+                        <p className='font-medium md:hidden'>Price</p>
+                        <div className='flex items-center text-xl'>
+                          <FontAwesomeIcon
+                            size='lg'
+                            className='dark:text-white text-black mr-1'
+                            icon='coins'
+                          />
+                          <div className='font-bold'>{`${finalPrice.toFixed(
+                            2
+                          )} / ${per}`}</div>
+                        </div>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col'>
+                        <p className='font-medium'>Order Status</p>
+                        <p className='text-center'>{status}</p>
+                      </div>
+
+                      <div className='flex justify-between md:flex-col md:items-center'>
+                        <p className='font-medium mb-2'>Options</p>
+                        <div className='flex space-x-5 items-center '>
+                          {buyerOrderStatus === 'Pending' && (
                             <FontAwesomeIcon
                               id='trash'
                               size='sm'
@@ -223,151 +327,48 @@ const Order: React.FC = ({}) => {
                               icon='trash-alt'
                               onClick={async () =>
                                 await cancelOrder({
-                                  variables: { id, buyerId: buyer?.id },
+                                  variables: { id, sellerId: seller?.id },
                                   refetchQueries: [
-                                    { query: GetSellerOrdersDocument },
+                                    { query: GetBuyerOrdersDocument },
                                   ],
                                 })
                               }
                             />
-                          ))}
-                        <FontAwesomeIcon
-                          size='sm'
-                          title='chat'
-                          className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
-                          icon='comment-dots'
-                        />
+                          )}
+                          {buyerOrderStatus === 'Started' && (
+                            <button
+                              onClick={async () => {
+                                const { data } = await completeOrder({
+                                  variables: { id, sellerId: seller?.id },
+                                  refetchQueries: [
+                                    { query: GetBuyerOrdersDocument },
+                                  ],
+                                });
+
+                                data?.completeOrder.errors?.length &&
+                                  setErrors(data?.completeOrder.errors);
+                              }}
+                              className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
+                            >
+                              complete
+                            </button>
+                          )}
+
+                          {buyerOrderStatus === 'Completed' && !review && (
+                            <ReviewModal orderId={id} targetId={seller!.id} />
+                          )}
+                          <FontAwesomeIcon
+                            size='sm'
+                            title='chat'
+                            className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
+                            icon='comment-dots'
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )
-            )
-          )}
-
-          {/* Purchased Orders */}
-          {buyerOrders?.map(
-            ({
-              id,
-              rounds,
-              finalPrice,
-              per,
-              startTime,
-              userService,
-              seller,
-              review,
-              status,
-            }) => (
-              <div
-                key={id}
-                className='flex flex-col w-full mt-5 bg-dark rounded-b-md'
-              >
-                <div className='bg-dark-light w-full rounded-t-md pl-5 text-sm text-gray-300'>
-                  Order ID: {id}
-                </div>
-
-                <div className='flex flex-col md:flex-row md:items-center md:justify-between md:px-5 p-5 md:p-0 space-y-3 md:space-y-0 w-full'>
-                  <div className='flex items-center bg-dark-light rounded-full md:my-3 space-x-3 w-full md:w-72'>
-                    <Image
-                      width={45}
-                      height={45}
-                      layout='fixed'
-                      objectFit='cover'
-                      className='rounded-full'
-                      src={
-                        seller?.images?.find(({ type }) => type == 'profile')
-                          ?.url ?? gray.src
-                      }
-                    />
-                    <div className='flex flex-col'>
-                      <p className='font-medium'>{seller?.username}</p>
-                      <p>{userService?.service.name}</p>
-                    </div>
-                  </div>
-
-                  <div className='flex justify-between md:flex-col'>
-                    <p className='font-medium'>Order Time</p>
-                    <p>{dayjs(startTime).format('lll')}</p>
-                  </div>
-
-                  <div className='flex justify-between md:flex-col'>
-                    <p className='font-medium'>Quantity</p>
-                    <p className='text-center'>{rounds}</p>
-                  </div>
-
-                  <div className='flex justify-between items-center md:flex-col'>
-                    <p className='font-medium md:hidden'>Price</p>
-                    <div className='flex items-center text-xl'>
-                      <FontAwesomeIcon
-                        size='lg'
-                        className='dark:text-white text-black mr-1'
-                        icon='coins'
-                      />
-                      <div className='font-bold'>{`${finalPrice.toFixed(
-                        2
-                      )} / ${per}`}</div>
-                    </div>
-                  </div>
-
-                  <div className='flex justify-between md:flex-col'>
-                    <p className='font-medium'>Order Status</p>
-                    <p className='text-center'>{status}</p>
-                  </div>
-
-                  <div className='flex justify-between md:flex-col md:items-center'>
-                    <p className='font-medium mb-2'>Options</p>
-                    <div className='flex space-x-5 items-center '>
-                      {buyerOrderStatus === 'Pending' && (
-                        <FontAwesomeIcon
-                          id='trash'
-                          size='sm'
-                          title='cancel order'
-                          className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
-                          icon='trash-alt'
-                          onClick={async () =>
-                            await cancelOrder({
-                              variables: { id, sellerId: seller?.id },
-                              refetchQueries: [
-                                { query: GetBuyerOrdersDocument },
-                              ],
-                            })
-                          }
-                        />
-                      )}
-                      {buyerOrderStatus === 'Started' && (
-                        <button
-                          onClick={async () => {
-                            const { data } = await completeOrder({
-                              variables: { id, sellerId: seller?.id },
-                              refetchQueries: [
-                                { query: GetBuyerOrdersDocument },
-                              ],
-                            });
-
-                            data?.completeOrder.errors?.length &&
-                              setErrors(data?.completeOrder.errors);
-                          }}
-                          className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
-                        >
-                          complete
-                        </button>
-                      )}
-
-                      {buyerOrderStatus === 'Completed' && !review && (
-                        <ReviewModal orderId={id} targetId={seller!.id} />
-                      )}
-                      <FontAwesomeIcon
-                        size='sm'
-                        title='chat'
-                        className='dark:text-white text-black dark:hover:text-purple hover:text-purple'
-                        icon='comment-dots'
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          )}
+                )
+              )}
         </div>
       </div>
     </Wrapper>

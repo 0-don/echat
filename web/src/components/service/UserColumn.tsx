@@ -6,6 +6,7 @@ import { GetUserServiceQuery } from 'src/generated/graphql';
 import { ImagePopup } from '../utils/ImagePopup';
 import gray from '/public/gray.png';
 import Image from 'next/image';
+import { genderIcon } from 'src/utils/icons';
 
 interface UserColumnProps {
   data: GetUserServiceQuery | undefined;
@@ -19,7 +20,7 @@ export const UserColumn: React.FC<UserColumnProps> = ({ data }) => {
   )?.url;
 
   return (
-    <div className='flex flex-col bg-white dark:bg-dark w-5/12 rounded-lg'>
+    <div className='flex flex-col bg-white dark:bg-dark w-full md:w-5/12 rounded-lg'>
       <div style={{ position: 'relative', width: '100%', height: '300px' }}>
         <ImagePopup
           layout='fill'
@@ -30,12 +31,26 @@ export const UserColumn: React.FC<UserColumnProps> = ({ data }) => {
       </div>
       <div className='p-5 flex flex-col space-y-2'>
         <div className='flex items-center justify-between w-full'>
-          <h1
-            className='text-xl font-semibold hover:text-purple cursor-pointer'
-            onClick={() => router.push(`/user/${user?.id}`)}
-          >
-            {user?.username}
-          </h1>
+          <div className='flex items-center space-x-3'>
+            <h1
+              className='text-2xl font-semibold hover:text-purple cursor-pointer'
+              onClick={() => router.push(`/user/${user?.id}`)}
+            >
+              {user?.username}
+            </h1>
+            <FontAwesomeIcon
+              size='2x'
+              className='text-dark dark:text-white'
+              icon={genderIcon(user?.gender as string)}
+            />
+          </div>
+          <span
+            className={`${
+              user?.lastOnline && new Date(user.lastOnline).getTime() % 2 === 0
+                ? 'bg-green-500'
+                : 'bg-gray-500'
+            } h-4 w-4 rounded-full mr-1`}
+          />
         </div>
         <div className='flex flex-col text-sm text-gray-300 space-y-1'>
           <p>

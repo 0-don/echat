@@ -42,17 +42,21 @@ import {
   faCommentDots,
   // faCaretSquareRight,
   faAngleRight,
+  faInfoCircle,
   faThumbsDown as faSolidThumbsDown,
   faThumbsUp as faSolidThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faCaretSquareRight,
+  faClock,
   faStarHalf as faRegularStarHalf,
   faThumbsDown as faRegularThumbsDown,
   faThumbsUp as faRegularThumbsUp,
 } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faClock,
+  faInfoCircle,
   faAngleRight,
   faCaretSquareRight,
   faSolidThumbsDown,
@@ -98,3 +102,16 @@ library.add(
   faAngleDoubleRight,
   faAngleDoubleLeft
 );
+
+export const genderIcon = (gender: string | undefined) => {
+  switch (gender) {
+    case 'Male':
+      return 'mars';
+    case 'Female':
+      return 'venus';
+    case 'Other':
+      return 'transgender';
+    default:
+      return 'star';
+  }
+};

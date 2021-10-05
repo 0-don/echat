@@ -12,19 +12,9 @@ import { Album } from 'src/components/user/Album';
 
 import { Reviews } from 'src/components/user/Reviews';
 import { ImagePopup } from 'src/components/utils/ImagePopup';
+import { genderIcon } from 'src/utils/icons';
 
-const genderIcon = (gender: string | undefined) => {
-  switch (gender) {
-    case 'Male':
-      return 'mars';
-    case 'Female':
-      return 'venus';
-    case 'Other':
-      return 'transgender';
-    default:
-      return 'star';
-  }
-};
+
 
 const UserDetail: NextPage<{ id: number }> = ({ id }) => {
   const [tabs, setTabs] = useState([

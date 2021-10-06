@@ -201,6 +201,7 @@
 .big-button {
   @apply rounded-full text-xl px-4 py-1 font-medium text-white bg-purple hover:bg-purple-dark;
 }
+
 .react-datepicker__time-list  {
   @apply dark:bg-dark-dark
 }

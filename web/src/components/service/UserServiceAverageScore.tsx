@@ -4,11 +4,11 @@ import React from 'react';
 import { GetUserServiceQuery } from 'src/generated/graphql';
 
 
-interface AverageScoreProps {
+interface UserServiceAverageScoreProps {
   data: GetUserServiceQuery | undefined;
 }
 
-export const AverageScore: React.FC<AverageScoreProps> = ({ data }) => {
+export const UserServiceAverageScore: React.FC<UserServiceAverageScoreProps> = ({ data }) => {
 
   const reviews = data?.getUserService?.user.target;
 

@@ -80,7 +80,7 @@ export const UserColumn: React.FC<UserColumnProps> = ({ data }) => {
         </div>
 
         <h5>Other Games</h5>
-        <div className='flex flex-wrap'>
+        <div className='flex flex-wrap justify-between'>
           {/* <div className='grid grid-flow-row gap-6 mt-5'> */}
           {userServices?.map((userService, index) => (
             <div

@@ -24,7 +24,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   });
 
   const userService = data?.getUserService;
-  const user = userService?.user;
+  
   const service = data?.getUserService?.service;
   const images = service?.images?.filter((image) => image.width > 1200);
 

@@ -71,7 +71,6 @@ const Order: React.FC = ({}) => {
     </div>
   );
 
-  console.log(sellerOrders);
   return (
     <Wrapper
       navbar

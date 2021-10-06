@@ -31,8 +31,8 @@ export const UserServiceReviews: React.FC<UserServiceReviewsProps> = ({
         <h5 className='text-xl'>{averageScore} Score</h5>
       </div>
 
-      {reviews?.map(({ score, recommend, source, review, created_at }) => (
-        <div className='bg-white dark:bg-dark dark:text-white shadow sm:rounded-lg p-3 px-5 my-5'>
+      {reviews?.map(({ score, recommend, source, review, created_at }, index) => (
+        <div key={index} className='bg-white dark:bg-dark dark:text-white shadow sm:rounded-lg p-3 px-5 my-5'>
           <div className='flex space-x-3'>
             <Image
               width={'40'}
@@ -53,7 +53,7 @@ export const UserServiceReviews: React.FC<UserServiceReviewsProps> = ({
               <div className='flex items-center space-x-2'>
                 <ReactStars
                   count={5}
-                  value={Number(score)}
+                  value={1}
                   size={24}
                   isHalf={true}
                   readonly={true}

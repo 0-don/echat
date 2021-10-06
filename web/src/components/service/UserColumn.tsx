@@ -30,17 +30,17 @@ export const UserColumn: React.FC<UserColumnProps> = ({ data }) => {
         />
       </div>
       <div className='p-5 flex flex-col space-y-2'>
-        <div className='flex items-center justify-between w-full'>
-          <div className='flex items-center space-x-3'>
-            <h1
-              className='text-2xl font-semibold hover:text-purple cursor-pointer'
-              onClick={() => router.push(`/user/${user?.id}`)}
-            >
+        <div className='flex items-center justify-between w-full group'>
+          <div
+            className='flex items-center space-x-3 cursor-pointer'
+            onClick={() => router.push(`/user/${user?.id}`)}
+          >
+            <h1 className='text-2xl font-semibold group-hover:text-purple '>
               {user?.username}
             </h1>
             <FontAwesomeIcon
               size='2x'
-              className='text-dark dark:text-white'
+              className='text-dark dark:text-white group-hover:text-purple dark:group-hover:text-purple'
               icon={genderIcon(user?.gender as string)}
             />
           </div>

@@ -31,7 +31,7 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
     noClick: true,
     accept: 'image/*',
     onDrop: async (files) => {
-      console.log(files);
+   
       if (query) {
         await multipleUpload({
           variables: { files, type },
@@ -100,7 +100,7 @@ export const FilesUpload: React.FC<FilesUploadProps> = ({
             },
           },
         });
-        console.log(url.data)
+
         setFieldValue('image', url.data?.changeUserserviceImage);
       }
     },

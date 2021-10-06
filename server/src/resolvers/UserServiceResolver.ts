@@ -138,14 +138,7 @@ export class UserServiceResolver {
       replacements.push(new Date(parseInt(cursor)));
     }
     const { id } = (await Service.findOne({ slug })) as Service;
-    console.log(
-      slug,
-      id,
-      limit,
-      cursor,
-      new Date(parseInt(cursor || '')),
-      filterOptions
-    );
+
     const qb = getRepository(UserService)
       .createQueryBuilder('userService')
       .leftJoinAndSelect('userService.user', 'user');

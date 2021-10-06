@@ -55,6 +55,13 @@ query GetUserService($id: Int!) {
       instagram
       twitch
       tiktok
+      schedules {
+        id
+        name
+        from
+        to
+        available
+      }
       target {
         id
         score

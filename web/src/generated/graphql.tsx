@@ -911,7 +911,10 @@ export type GetUserServiceQuery = (
     ), user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'lastOnline' | 'age' | 'description' | 'gender' | 'discord' | 'twitter' | 'facebook' | 'instagram' | 'twitch' | 'tiktok'>
-      & { target?: Maybe<Array<(
+      & { schedules?: Maybe<Array<(
+        { __typename?: 'Schedule' }
+        & Pick<Schedule, 'id' | 'name' | 'from' | 'to' | 'available'>
+      )>>, target?: Maybe<Array<(
         { __typename?: 'Review' }
         & Pick<Review, 'id' | 'score' | 'recommend'>
       )>>, languages?: Maybe<Array<(
@@ -2171,6 +2174,13 @@ export const GetUserServiceDocument = gql`
       instagram
       twitch
       tiktok
+      schedules {
+        id
+        name
+        from
+        to
+        available
+      }
       target {
         id
         score

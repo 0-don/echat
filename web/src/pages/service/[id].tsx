@@ -11,9 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { AverageScore } from 'src/components/service/AverageScore';
 import { UserColumn } from 'src/components/service/UserColumn';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import gray from '/public/gray.png';
-import { ImagePopup } from 'src/components/utils/ImagePopup';
+import dayjs from 'dayjs';
+import { UserServiceDetail } from 'src/components/service/UserServiceDetail';
+dayjs.extend(localizedFormat);
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();
@@ -22,6 +24,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   });
 
   const userService = data?.getUserService;
+  const user = userService?.user;
   const service = data?.getUserService?.service;
   const images = service?.images?.filter((image) => image.width > 1200);
 
@@ -62,42 +65,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
         <div className='w-full flex items-start space-y-5 md:flex-row md:space-x-3 md:space-y-0 flex-col-reverse '>
           <div className='w-full'>
             <AverageScore data={data} />
-
-            <div
-              style={{ position: 'relative', width: '100%', height: '300px' }}
-              className='mt-3 hidden md:block'
-            >
-              <ImagePopup
-                layout='fill'
-                objectFit='cover'
-                className='rounded-lg'
-                src={userService?.image ?? gray.src}
-              />
-            </div>
-
-            <div className='flex space-x-5 w-full'>
-              <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 mt-5 w-full'>
-                <div className='flex space-x-1 items-center'>
-                  <FontAwesomeIcon
-                    size='sm'
-                    className='text-dark dark:text-white group-hover:text-purple'
-                    icon={['fas', 'info-circle']}
-                  />
-                  <h5 className='text-bold'>Details</h5>
-                </div>
-              </div>
-
-              <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 mt-5 w-full'>
-                <div className='flex space-x-1 items-center'>
-                  <FontAwesomeIcon
-                    size='sm'
-                    className='text-dark dark:text-white group-hover:text-purple'
-                    icon={['far', 'clock']}
-                  />
-                  <h5 className='text-bold'>Availability</h5>
-                </div>
-              </div>
-            </div>
+            <UserServiceDetail data={data} />
           </div>
 
           <UserColumn data={data} />

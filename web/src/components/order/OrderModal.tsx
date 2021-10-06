@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DatePicker from 'react-datepicker';
 import { Alert } from '../utils/Alert';
+import router from 'next/router';
 
 interface OrderModalProps {
   data: GetUserServiceQuery | undefined;
@@ -84,7 +85,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
                 <div
                   className='bg-dark-light hover:bg-purple py-1 px-3'
                   onClick={() =>
-                    setRounds(rounds - 1 > 1 ? rounds - 1 : rounds)
+                    setRounds(rounds - 1 >= 1 ? rounds - 1 : rounds)
                   }
                 >
                   <FontAwesomeIcon size='sm' icon='minus' />
@@ -159,7 +160,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
                   });
                   data?.createOrder.errors?.length &&
                     setErrors(data?.createOrder.errors);
-                  console.log(data?.createOrder);
+
+                  await router.push(`/orders`);
                 }}
                 className='big-button'
               >

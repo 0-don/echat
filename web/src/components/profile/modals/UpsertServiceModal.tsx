@@ -65,7 +65,7 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
       !userService?.image &&
       setBgImage(undefined);
   }, [serviceId, userService?.image]);
-  // console.log(userService?.image);
+
   if (service && LEVELS?.length && PERS?.length) {
     return (
       <>
@@ -99,7 +99,7 @@ export const UpsertServiceModal: React.FC<UpsertServiceModalProps> = ({
                     : PERS[0].name,
               }}
               onSubmit={async (values) => {
-                console.log(values);
+     
                 await upsertUserService({
                   variables: { options: values },
                   refetchQueries: [{ query: GetMeUserServiceDocument }],

@@ -93,12 +93,14 @@ export class OrderResolver {
     !buyer && errors.push({ field: 'buyer', message: 'Buyer is missing' });
     sellerId === buyerId &&
       errors.push({ field: 'seller', message: 'Cant buy your own service' });
+    rounds < 1 &&
+      errors.push({ field: 'rounds', message: 'Need more rounds then this' });
 
     if (!userService || !buyer || errors.length) {
       return { success: false, errors };
     }
 
-    const finalPrice = rounds * userService.price;
+    const finalPrice = rounds * parseInt(`${userService.price}`);
     if (buyer.coins < finalPrice) {
       errors.push({ field: 'coins', message: 'not enough coins' });
       return { success: false, errors };
@@ -133,7 +135,6 @@ export class OrderResolver {
       sellerId: sellerId ?? (req.session.userId as number),
     });
 
-    console.log(dayjs(new Date()).diff(order?.startedTime, 'hours'));
     const errors: FieldError[] = [];
 
     !order && errors.push({ field: 'order', message: 'Order is missing' });

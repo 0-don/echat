@@ -2,7 +2,7 @@ import React, { Dispatch, Fragment, SetStateAction } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import _ from 'lodash';
-import { OrderStatus } from 'src/pages/order';
+import { OrderStatus } from 'src/pages/orders';
 
 interface OrderSidebarProps {
   sidebarOpen: boolean;

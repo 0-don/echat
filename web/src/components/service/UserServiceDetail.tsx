@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { GetUserServiceQuery } from 'src/generated/graphql';
 import { ImagePopup } from '../utils/ImagePopup';
-import gray from '/public/gray.png';
+
 
 interface UserServiceDetailProps {
   data: GetUserServiceQuery | undefined;
@@ -17,17 +17,19 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
 
   return (
     <>
-      <div
-        style={{ position: 'relative', width: '100%', height: '300px' }}
-        className='mt-3 hidden md:block'
-      >
-        <ImagePopup
-          layout='fill'
-          objectFit='cover'
-          className='rounded-lg'
-          src={userService?.image ?? gray.src}
-        />
-      </div>
+      {userService?.image && (
+        <div
+          style={{ position: 'relative', width: '100%', height: '300px' }}
+          className='mt-3 hidden md:block'
+        >
+          <ImagePopup
+            layout='fill'
+            objectFit='cover'
+            className='rounded-lg'
+            src={userService.image}
+          />
+        </div>
+      )}
       <div className='flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-4 mt-5'>
         <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5'>
           <div className='flex space-x-1 items-center'>
@@ -62,7 +64,7 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
           <p>{userService?.description}</p>
         </div>
 
-        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg pb-2 w-full md:w-96'>
+        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg pb-2 w-full md:max-w-xs'>
           <div className='flex space-x-1 items-center px-5 p-3'>
             <FontAwesomeIcon
               size='sm'

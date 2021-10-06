@@ -9,12 +9,13 @@ import { OrderModal } from 'src/components/order/OrderModal';
 import { useGetUserServiceQuery } from 'src/generated/graphql';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { AverageScore } from 'src/components/service/AverageScore';
 import { UserColumn } from 'src/components/service/UserColumn';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import dayjs from 'dayjs';
 import { UserServiceDetail } from 'src/components/service/UserServiceDetail';
+import { UserServiceAverageScore } from 'src/components/service/UserServiceAverageScore';
+import { UserServiceReviews } from 'src/components/service/UserServiceReviews';
 dayjs.extend(localizedFormat);
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
@@ -24,7 +25,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   });
 
   const userService = data?.getUserService;
-  
+
   const service = data?.getUserService?.service;
   const images = service?.images?.filter((image) => image.width > 1200);
 
@@ -64,8 +65,9 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
 
         <div className='w-full flex items-start space-y-5 md:flex-row md:space-x-3 md:space-y-0 flex-col-reverse '>
           <div className='w-full'>
-            <AverageScore data={data} />
+            <UserServiceAverageScore data={data} />
             <UserServiceDetail data={data} />
+            <UserServiceReviews data={data} />
           </div>
 
           <UserColumn data={data} />

@@ -1,0 +1,7 @@
+subscription MessageSent {
+  messageSent {
+    id
+    name
+    message
+  }
+}

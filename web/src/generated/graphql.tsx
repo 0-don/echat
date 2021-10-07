@@ -572,6 +572,20 @@ export type CompleteOrderMutation = (
   ) }
 );
 
+export type CreateChatMutationVariables = Exact<{
+  name: Scalars['String'];
+  message: Scalars['String'];
+}>;
+
+
+export type CreateChatMutation = (
+  { __typename?: 'Mutation' }
+  & { createChat: (
+    { __typename?: 'Chat' }
+    & Pick<Chat, 'id' | 'name' | 'message'>
+  ) }
+);
+
 export type CreateOrderMutationVariables = Exact<{
   userServiceId: Scalars['Int'];
   rounds: Scalars['Int'];
@@ -738,6 +752,17 @@ export type FilterUserServiceQuery = (
         )>> }
       ) }
     )> }
+  )> }
+);
+
+export type GetChatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetChatsQuery = (
+  { __typename?: 'Query' }
+  & { getChats: Array<(
+    { __typename?: 'Chat' }
+    & Pick<Chat, 'id' | 'name' | 'message'>
   )> }
 );
 
@@ -1029,6 +1054,17 @@ export type UserImagesQuery = (
   )>> }
 );
 
+export type MessageSentSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MessageSentSubscription = (
+  { __typename?: 'Subscription' }
+  & { messageSent: (
+    { __typename?: 'Chat' }
+    & Pick<Chat, 'id' | 'name' | 'message'>
+  ) }
+);
+
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
   field
@@ -1275,6 +1311,42 @@ export function useCompleteOrderMutation(baseOptions?: Apollo.MutationHookOption
 export type CompleteOrderMutationHookResult = ReturnType<typeof useCompleteOrderMutation>;
 export type CompleteOrderMutationResult = Apollo.MutationResult<CompleteOrderMutation>;
 export type CompleteOrderMutationOptions = Apollo.BaseMutationOptions<CompleteOrderMutation, CompleteOrderMutationVariables>;
+export const CreateChatDocument = gql`
+    mutation CreateChat($name: String!, $message: String!) {
+  createChat(name: $name, message: $message) {
+    id
+    name
+    message
+  }
+}
+    `;
+export type CreateChatMutationFn = Apollo.MutationFunction<CreateChatMutation, CreateChatMutationVariables>;
+
+/**
+ * __useCreateChatMutation__
+ *
+ * To run a mutation, you first call `useCreateChatMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateChatMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createChatMutation, { data, loading, error }] = useCreateChatMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useCreateChatMutation(baseOptions?: Apollo.MutationHookOptions<CreateChatMutation, CreateChatMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateChatMutation, CreateChatMutationVariables>(CreateChatDocument, options);
+      }
+export type CreateChatMutationHookResult = ReturnType<typeof useCreateChatMutation>;
+export type CreateChatMutationResult = Apollo.MutationResult<CreateChatMutation>;
+export type CreateChatMutationOptions = Apollo.BaseMutationOptions<CreateChatMutation, CreateChatMutationVariables>;
 export const CreateOrderDocument = gql`
     mutation CreateOrder($userServiceId: Int!, $rounds: Int!, $startTime: DateTime!) {
   createOrder(
@@ -1741,6 +1813,42 @@ export function useFilterUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserServiceQuery>;
 export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
 export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
+export const GetChatsDocument = gql`
+    query GetChats {
+  getChats {
+    id
+    name
+    message
+  }
+}
+    `;
+
+/**
+ * __useGetChatsQuery__
+ *
+ * To run a query within a React component, call `useGetChatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetChatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetChatsQuery(baseOptions?: Apollo.QueryHookOptions<GetChatsQuery, GetChatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetChatsQuery, GetChatsQueryVariables>(GetChatsDocument, options);
+      }
+export function useGetChatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChatsQuery, GetChatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetChatsQuery, GetChatsQueryVariables>(GetChatsDocument, options);
+        }
+export type GetChatsQueryHookResult = ReturnType<typeof useGetChatsQuery>;
+export type GetChatsLazyQueryHookResult = ReturnType<typeof useGetChatsLazyQuery>;
+export type GetChatsQueryResult = Apollo.QueryResult<GetChatsQuery, GetChatsQueryVariables>;
 export const GetCountriesDocument = gql`
     query GetCountries($slug: String) {
   getCountries(slug: $slug) {
@@ -2510,9 +2618,41 @@ export function useUserImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type UserImagesQueryHookResult = ReturnType<typeof useUserImagesQuery>;
 export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQuery>;
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
+export const MessageSentDocument = gql`
+    subscription MessageSent {
+  messageSent {
+    id
+    name
+    message
+  }
+}
+    `;
+
+/**
+ * __useMessageSentSubscription__
+ *
+ * To run a query within a React component, call `useMessageSentSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMessageSentSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessageSentSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMessageSentSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageSentSubscription, MessageSentSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<MessageSentSubscription, MessageSentSubscriptionVariables>(MessageSentDocument, options);
+      }
+export type MessageSentSubscriptionHookResult = ReturnType<typeof useMessageSentSubscription>;
+export type MessageSentSubscriptionResult = Apollo.SubscriptionResult<MessageSentSubscription>;
 export const namedOperations = {
   Query: {
     FilterUserService: 'FilterUserService',
+    GetChats: 'GetChats',
     GetCountries: 'GetCountries',
     GetLanguages: 'GetLanguages',
     GetMeUserService: 'GetMeUserService',
@@ -2532,6 +2672,7 @@ export const namedOperations = {
     ChangeUserType: 'ChangeUserType',
     ChangeUserserviceImage: 'ChangeUserserviceImage',
     CompleteOrder: 'CompleteOrder',
+    CreateChat: 'CreateChat',
     CreateOrder: 'CreateOrder',
     CreateReview: 'CreateReview',
     DeleteImage: 'DeleteImage',
@@ -2544,6 +2685,9 @@ export const namedOperations = {
     SwitchUserServiceStatus: 'SwitchUserServiceStatus',
     UpdateMe: 'UpdateMe',
     UpsertUserService: 'UpsertUserService'
+  },
+  Subscription: {
+    MessageSent: 'MessageSent'
   },
   Fragment: {
     RegularError: 'RegularError',

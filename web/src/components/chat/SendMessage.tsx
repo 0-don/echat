@@ -1,15 +1,5 @@
 import { useState, FC } from 'react';
-import { gql, useMutation } from '@apollo/client';
-
-const SEND_MESSAGE = gql`
-  mutation createChat($name: String!, $message: String!) {
-    createChat(name: $name, message: $message) {
-      id
-      name
-      message
-    }
-  }
-`;
+import { useCreateChatMutation } from 'src/generated/graphql';
 
 interface SendMessageProps {
   name: string;
@@ -17,14 +7,11 @@ interface SendMessageProps {
 
 const SendMessage: FC<SendMessageProps> = ({ name }) => {
   const [input, setInput] = useState<string>('');
-  const [sendMessage] = useMutation(SEND_MESSAGE);
+  const [createChat] = useCreateChatMutation();
 
-  const handleSend = () => {
-    sendMessage({ variables: { name: name, message: input } })
-      .then((data) => {
-        setInput('');
-      })
-      .catch((err) => console.log(err));
+  const handleSend = async () => {
+    await createChat({ variables: { name: name, message: input } });
+    setInput('');
   };
 
   return (

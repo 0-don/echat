@@ -1,3 +1,4 @@
+// import { useMeQuery } from 'src/generated/graphql';
 import { NavBar } from './NavBar';
 
 interface WrapperProps {
@@ -14,6 +15,8 @@ export const Wrapper: React.FC<WrapperProps> = ({
   scrollbar,
   className,
 }) => {
+  // const { data } = useMeQuery();
+  
   const trueClassName = fluid
     ? `${className} h-full`
     : `${className} container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`;

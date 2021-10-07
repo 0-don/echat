@@ -12,8 +12,6 @@ import 'dayjs/locale/en';
 import { log } from 'console';
 import { TopGamesType, GameType, ImageSize, GameResultType } from './types';
 
-
-
 axios.defaults.baseURL = 'https://api.igdb.com/v4';
 axios.defaults.headers.common['Client-ID'] = process.env.TWITCH_CLIENT_ID!;
 

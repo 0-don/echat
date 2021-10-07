@@ -161,7 +161,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
                   data?.createOrder.errors?.length &&
                     setErrors(data?.createOrder.errors);
 
-                  await router.push(`/orders`);
+                  router.push(`/orders`);
                 }}
                 className='big-button'
               >

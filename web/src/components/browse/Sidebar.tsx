@@ -62,7 +62,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   const apolloClient = useApolloClient();
-  
 
   const items = Object.keys(groupedServices).map((key, index) => (
     <div
@@ -79,13 +78,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           );
         }}
         className={`${
-          tabs[index].state ? 'bg-purple' : 'bg-dark'
-        } mb-2 flex items-center p-2 transition-colors rounded-md dark:text-light hover:bg-purple`}
+          tabs[index].state ? 'bg-purple' : 'dark:bg-dark bg-white'
+        } group cursor-pointer mb-2 flex items-center relative py-2 px-2 rounded-md dark:text-white text-black hover:bg-purple-dark hover:text-white`}
       >
         <span aria-hidden='true'>
           <FontAwesomeIcon
             size='xs'
-            className='dark:text-white text-black mr-1'
+            className='dark:text-white text-black group-hover:text-white mr-1'
             icon={tabs[index].icon as any}
           />
         </span>
@@ -112,7 +111,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 } mt-2 space-y-2 px-7 hover:text-purple `}
                 key={slug}
                 onClick={async () => {
-                  
                   setOptions({});
                   setSlug(slug);
                   apolloClient.cache.modify({

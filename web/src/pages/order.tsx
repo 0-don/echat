@@ -53,7 +53,7 @@ const Order: React.FC = ({}) => {
   );
 
   const noOrders = (
-    <div className='flex flex-col justify-center items-center h-screen w-full space-y-3'>
+    <div className='flex flex-col justify-center items-center h-full w-full space-y-3'>
       <div style={{ position: 'relative', width: '33%', height: '33%' }}>
         <Image
           blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
@@ -71,6 +71,7 @@ const Order: React.FC = ({}) => {
     </div>
   );
 
+  console.log(sellerOrders);
   return (
     <Wrapper
       navbar
@@ -204,7 +205,7 @@ const Order: React.FC = ({}) => {
                                 });
 
                                 data?.completeOrder.errors?.length &&
-                                  setErrors(data.completeOrder.errors);
+                                  setErrors(data?.completeOrder.errors);
                               }}
                               className='bg-lightGray hover:bg-purple rounded-xl px-2 py-0.5'
                             >

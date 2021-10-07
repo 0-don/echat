@@ -93,11 +93,11 @@ export const Services: React.FC<ServicesProps> = ({ data }) => {
           <div className='md:h-16 border-r border-gray-500 ml-3 md:ml-10 mr-3'></div>
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base mt-5'>
+      <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-base mt-5 text-black dark:text-white'>
         {services?.map(({ price, per, id, service, reviews }) => (
           <div
             key={id}
-            className='bg-white dark:bg-dark flex flex-col'
+            className='bg-white dark:bg-dark flex flex-col cursor-pointer shadow'
             onClick={() => router.push(`/service/${id}`)}
           >
             <div
@@ -120,7 +120,7 @@ export const Services: React.FC<ServicesProps> = ({ data }) => {
               <div className='flex  items-center divide-x-2 divide-y-8 '>
                 <FontAwesomeIcon
                   size='xs'
-                  className='dark:text-yellow-500 text-black mr-1'
+                  className='dark:text-yellow-500 text-yellow-500 mr-1'
                   icon='star'
                 />
                 {`${

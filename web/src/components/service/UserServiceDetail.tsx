@@ -31,7 +31,7 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
         </div>
       )}
       <div className='flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-4 mt-5'>
-        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5'>
+        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 md:max-w-xl'>
           <div className='flex space-x-1 items-center'>
             <FontAwesomeIcon
               size='sm'
@@ -64,7 +64,7 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
           <p>{userService?.description}</p>
         </div>
 
-        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg pb-2 w-full md:max-w-xs'>
+        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg pb-2 w-full'>
           <div className='flex space-x-1 items-center px-5 p-3'>
             <FontAwesomeIcon
               size='sm'
@@ -78,7 +78,7 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
               <div
                 key={index}
                 className={`${
-                  index % 2 === 0 && 'bg-dark-light'
+                  index % 2 === 0 && 'dark:bg-dark-light bg-gray-200'
                 } px-5 py-1 flex justify-between`}
               >
                 <div>{schedule.name}</div>

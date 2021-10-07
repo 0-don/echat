@@ -33,7 +33,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
     images?.length &&
       setBgImage(images[getRandomBetween(0, images.length)].url);
   }, [images]);
-
+  console.log(bgImage)
   return (
     <Wrapper navbar fluid className='relative'>
       <div style={{ position: 'relative', width: '100%', height: '40vw' }}>

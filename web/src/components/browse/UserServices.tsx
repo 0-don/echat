@@ -14,7 +14,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
   const router = useRouter();
 
   return (
-    <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-white text-base'>
+    <div className='grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 text-black dark:text-white text-base'>
       {data?.filterUserService?.userService.map(
         ({ user, price, per, id, reviews }, index) => (
           <div key={index} className='bg-white dark:bg-dark flex flex-col'>
@@ -38,7 +38,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                       index % 2 == 0 ? 'bg-green-500' : 'bg-gray-500'
                     } h-4 w-4 rounded-full mr-1`}
                   />
-                  <h1 className='text-base my-1 font-semibold text-center text-black dark:text-white'>
+                  <h1 className='text-base my-1 font-semibold text-center '>
                     {user.username}
                   </h1>
                 </div>
@@ -53,7 +53,7 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
               <div className='flex  items-center divide-x-2 divide-y-8 '>
                 <FontAwesomeIcon
                   size='xs'
-                  className='dark:text-yellow-500 text-black mr-1'
+                  className='dark:text-yellow-500 text-yellow-500 mr-1'
                   icon='star'
                 />
 

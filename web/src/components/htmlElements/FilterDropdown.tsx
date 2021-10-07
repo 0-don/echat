@@ -107,8 +107,8 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
                           currentValue.find(
                             (value: any) => value.name === item.name
                           ) &&
-                          'bg-purple'
-                        } hover:bg-purple-dark cursor-default select-none relative py-2 pl-3 pr-9'
+                          'bg-purple text-white'
+                        } hover:bg-purple-dark hover:text-white cursor-default select-none relative py-2 pl-3 pr-9'
                         `}
                     value={item}
                   >

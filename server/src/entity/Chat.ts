@@ -1,13 +1,18 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, Int } from 'type-graphql';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
-export class Chat {
-  @Field()
+@Entity()
+export class Chat extends BaseEntity{
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Field()
+  @Column()
   message: string;
 
   @Field()
+  @Column()
   name: string;
 }

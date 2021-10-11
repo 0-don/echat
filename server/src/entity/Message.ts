@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Room } from './Room';
+import { User } from './User';
 
 @ObjectType()
 @Entity()
@@ -37,4 +38,13 @@ export class Message extends BaseEntity {
   @Field(() => Int)
   @Column()
   userId: number;
+
+  // USER
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.messages, {
+    lazy: true,
+    onDelete: 'CASCADE',
+  })
+  @TypeormLoader()
+  user: Lazy<User>;
 }

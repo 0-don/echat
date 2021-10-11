@@ -1,17 +1,8 @@
 import {
-  Mutation,
-  Query,
-  Resolver,
-  Arg,
-  Root,
-  PubSub,
-  PubSubEngine,
-  Subscription,
+  Resolver
 } from 'type-graphql';
-import { getConnection } from 'typeorm';
-import { Room } from '../entity/Room';
 
-const channel = 'CHAT_CHANNEL';
+// const channel = 'CHAT_CHANNEL';
 
 @Resolver()
 export class ChatResolver {

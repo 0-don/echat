@@ -199,7 +199,15 @@
 @import 'tailwindcss/utilities';
 
 .big-button {
-  @apply rounded-full text-xl px-4 py-1 font-medium text-white bg-purple hover:bg-purple-dark;
+  @apply 
+  rounded-full 
+  text-xl 
+  px-4 
+  py-1 
+  font-medium 
+  text-white 
+  bg-purple 
+  hover:bg-purple-dark;
 }
 
 .react-datepicker__time-list  {

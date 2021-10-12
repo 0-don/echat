@@ -20,6 +20,7 @@ import { Order } from './Order';
 import { Review } from './Review';
 import { Lazy } from '../utils';
 import { Message } from './Message';
+import { Participant } from './Participant';
 
 @ObjectType()
 @Entity()
@@ -163,7 +164,15 @@ export class User extends BaseEntity {
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, (message) => message.user, { nullable: true })
   @TypeormLoader()
-  messages?: Lazy<Message[]>;
+  messages?: Lazy<Message[] | null>;
+
+  // Participants
+  @Field(() => [Participant], { nullable: true })
+  @OneToMany(() => Participant, (participant) => participant.user, {
+    nullable: true,
+  })
+  @TypeormLoader()
+  participants?: Lazy<Participant[] | null>;
 
   @CreateDateColumn()
   created_at: Date;

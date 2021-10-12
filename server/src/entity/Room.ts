@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Message } from './Message';
+import { Participant } from './Participant';
 
 @ObjectType()
 @Entity()
@@ -25,13 +26,21 @@ export class Room extends BaseEntity {
   @Column()
   type: boolean;
 
-  // ROOM
-  @Field(() => Message, { nullable: true })
+  // MESSAGE
+  @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, (message) => message.room, {
     lazy: true,
-    onDelete: 'CASCADE',
     nullable: true,
   })
   @TypeormLoader()
-  messages: Lazy<Message | null>;
+  messages?: Lazy<Message[] | null>;
+
+  // PARTICIPANT
+  @Field(() => [Participant], { nullable: true })
+  @OneToMany(() => Participant, (participant) => participant.room, {
+    lazy: true,
+    nullable: true,
+  })
+  @TypeormLoader()
+  participants?: Lazy<Participant[] | null>;
 }

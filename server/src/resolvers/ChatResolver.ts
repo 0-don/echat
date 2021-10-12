@@ -1,17 +1,36 @@
-import {
-  Resolver
-} from 'type-graphql';
+import { Participant } from '../entity/Participant';
+import { Room } from '../entity/Room';
+import { MyContext } from '../utils/types/MyContext';
+import { Ctx, PubSub, PubSubEngine, Query, Resolver } from 'type-graphql';
+import { getRepository } from 'typeorm';
+import fs from 'fs';
 
 // const channel = 'CHAT_CHANNEL';
 
 @Resolver()
 export class ChatResolver {
-  // @Query(() => [Chat])
-  // async getChats(@PubSub() pubSub: PubSubEngine) {
-  //   console.log(pubSub);
-  //   const chats = await Chat.find({});
-  //   return chats;
-  // }
+  @Query(() => [Room])
+  async getChats(@PubSub() pubSub: PubSubEngine, @Ctx() { req }: MyContext) {
+    console.log(pubSub);
+
+    const { userId } = req.session;
+    const chats = await getRepository(Room)
+      .createQueryBuilder('room')
+      .leftJoinAndSelect(
+        Participant,
+        'participant',
+        'participant.roomId = room.id'
+      )
+      .andWhere('participant.userId IN :userId)', {
+        userId,
+      })
+      .getMany();
+
+    // const chats = await Room.find();
+
+    return chats;
+  }
+
   // @Mutation(() => Chat)
   // async createChat(
   //   @PubSub() pubSub: PubSubEngine,

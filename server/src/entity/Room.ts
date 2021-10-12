@@ -22,10 +22,6 @@ export class Room extends BaseEntity {
   @Column()
   channel: string;
 
-  @Field()
-  @Column()
-  type: boolean;
-
   // MESSAGE
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, (message) => message.room, {

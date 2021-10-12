@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  Generated,
 } from 'typeorm';
 import { Image } from './Image';
 import { Schedule } from './Schedule';
@@ -28,6 +29,11 @@ export class User extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Field()
+  @Column()
+  @Generated('uuid')
+  uuid: string;
 
   @Column({ nullable: true, default: false })
   fake: boolean;

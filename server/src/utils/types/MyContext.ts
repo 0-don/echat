@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
+import { Session } from 'express-session';
 
 export type MyContext = {
-  // @ts-ignore
-  req: Request & { session: Express.Session };
+  req: Request & { session: Session & { userId: number } };
   res: Response;
 };

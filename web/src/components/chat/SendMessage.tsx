@@ -1,5 +1,5 @@
 import { useState, FC } from 'react';
-import { useCreateChatMutation } from 'src/generated/graphql';
+import { useCreateRoomMutation } from 'src/generated/graphql';
 
 interface SendMessageProps {
   name: string;
@@ -7,10 +7,10 @@ interface SendMessageProps {
 
 const SendMessage: FC<SendMessageProps> = ({ name }) => {
   const [input, setInput] = useState<string>('');
-  const [createChat] = useCreateChatMutation();
+  const [createChat] = useCreateRoomMutation();
 
   const handleSend = async () => {
-    await createChat({ variables: { name: name, message: input } });
+    await createChat({ variables: { participantId: 26904 } });
     setInput('');
   };
 

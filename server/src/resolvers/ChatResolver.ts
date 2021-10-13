@@ -10,8 +10,10 @@ import {
   PubSubEngine,
   Query,
   Resolver,
+  Root,
+  Subscription,
 } from 'type-graphql';
-import { getConnection, getRepository } from 'typeorm';
+import { getConnection, getRepository, In } from 'typeorm';
 import { User } from '../entity/User';
 
 // const channel = 'CHAT_CHANNEL';
@@ -20,7 +22,7 @@ import { User } from '../entity/User';
 export class ChatResolver {
   @Query(() => [Room], { nullable: true })
   async getRooms(@PubSub() pubSub: PubSubEngine, @Ctx() { req }: MyContext) {
-    console.log(pubSub );
+    console.log(pubSub);
     const { userId } = req.session;
     const rooms = await getRepository(Room)
       .createQueryBuilder('room')
@@ -49,9 +51,13 @@ export class ChatResolver {
     @PubSub() pubSub: PubSubEngine,
     @Arg('participantId', () => Int) participantId: number
   ) {
-    // 11984
-    const me = await User.findOne({ where: { id: req.session.userId } });
-    const participant = await User.findOne({ where: { id: participantId } });
+    // 26904 -> test@test.test
+    const users = await getRepository(User).find({
+      where: { id: In([req.session.userId, participantId]) },
+    });
+
+    const me = users.find((user) => user.id === req.session.userId);
+    const participant = users.find((user) => user.id === participantId);
 
     if (!me || !participant) {
       return null;
@@ -75,15 +81,21 @@ export class ChatResolver {
         { userId: participant.id, roomId: room.id },
       ]);
 
-      await pubSub.publish(room.channel, '');
+      await pubSub.publish('sda', room);
       return room;
     } catch (error) {
       return null;
     }
   }
-  // @Subscription({ topics: channel })
-  // messageSent(@Root() chat: Chat): Chat {
-  //   console.log(chat);
-  //   return chat;
-  // }
+
+  @Subscription({
+    topics: (test) => {
+      console.log(test.args);
+      return 'sda';
+    },
+  })
+  messageSent(@Root() room: Room,): Room {
+    // console.log(room);
+    return room;
+  }
 }

@@ -1,7 +1,0 @@
-  query GetChats {
-    getChats {
-      id
-      name
-      message
-    }
-  }

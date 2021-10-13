@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import { createConnection } from 'typeorm';
 // import { Service } from '../entity/Service';
-import { User } from '../entity/User';
+// import { User } from '../entity/User';
 import { log } from 'console';
+import { Room } from '../entity/Room';
 
 const main = async () => {
   await createConnection({
@@ -12,7 +13,8 @@ const main = async () => {
     entities: [__dirname + '/../entity/*'],
   });
 
-  await User.delete({ fake: true });
+  // await User.delete({ fake: true });
+  await Room.delete({});
   // await Service.delete({ type: 'Games' });
 
   log('finished');

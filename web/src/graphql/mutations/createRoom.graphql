@@ -1,5 +1,5 @@
-subscription MessageSent {
-  messageSent {
+mutation createRoom($participantId: Int!) {
+  createRoom(participantId: $participantId) {
     id
     channel
     messages {

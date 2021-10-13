@@ -20,13 +20,6 @@ export type Scalars = {
   Upload: File;
 };
 
-export type Chat = {
-  __typename?: 'Chat';
-  id: Scalars['Float'];
-  message: Scalars['String'];
-  name: Scalars['String'];
-};
-
 export type Country = {
   __typename?: 'Country';
   id: Scalars['Int'];
@@ -89,6 +82,16 @@ export type ListValues = {
   name: Scalars['String'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['Int'];
+  message: Scalars['String'];
+  roomId: Scalars['Int'];
+  room: Room;
+  userId: Scalars['Int'];
+  user: User;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   changeUserType: Scalars['Boolean'];
@@ -104,7 +107,7 @@ export type Mutation = {
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
-  createChat: Chat;
+  createRoom?: Maybe<Room>;
   createReview: Scalars['Boolean'];
   createOrder: OrderResponse;
   completeOrder: OrderResponse;
@@ -171,9 +174,8 @@ export type MutationDeleteUserServiceArgs = {
 };
 
 
-export type MutationCreateChatArgs = {
-  message: Scalars['String'];
-  name: Scalars['String'];
+export type MutationCreateRoomArgs = {
+  participantId: Scalars['Int'];
 };
 
 
@@ -238,6 +240,15 @@ export type PaginatedUserService = {
   hasMore: Scalars['Boolean'];
 };
 
+export type Participant = {
+  __typename?: 'Participant';
+  id: Scalars['Int'];
+  roomId: Scalars['Int'];
+  room: Room;
+  userId: Scalars['Int'];
+  user: User;
+};
+
 export type Query = {
   __typename?: 'Query';
   getUser?: Maybe<User>;
@@ -251,7 +262,7 @@ export type Query = {
   filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
   getUserService: UserService;
-  getChats: Array<Chat>;
+  getRooms?: Maybe<Array<Room>>;
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
   getBuyerOrders: Array<Order>;
@@ -321,6 +332,14 @@ export type ReviewOptions = {
   review: Scalars['String'];
 };
 
+export type Room = {
+  __typename?: 'Room';
+  id: Scalars['Int'];
+  channel: Scalars['String'];
+  messages?: Maybe<Array<Message>>;
+  participants?: Maybe<Array<Participant>>;
+};
+
 export type Schedule = {
   __typename?: 'Schedule';
   id: Scalars['Int'];
@@ -372,7 +391,7 @@ export type ServiceImage = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  messageSent: Chat;
+  messageSent: Room;
 };
 
 export type UpdatedUser = {
@@ -407,6 +426,7 @@ export type UpsertUserService = {
 export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
+  uuid: Scalars['String'];
   type?: Maybe<Scalars['String']>;
   coins: Scalars['Float'];
   username: Scalars['String'];
@@ -433,6 +453,8 @@ export type User = {
   sellerOrders?: Maybe<Array<Order>>;
   source?: Maybe<Array<Review>>;
   target?: Maybe<Array<Review>>;
+  messages?: Maybe<Array<Message>>;
+  participants?: Maybe<Array<Participant>>;
 };
 
 export type UserLanguage = {
@@ -572,20 +594,6 @@ export type CompleteOrderMutation = (
   ) }
 );
 
-export type CreateChatMutationVariables = Exact<{
-  name: Scalars['String'];
-  message: Scalars['String'];
-}>;
-
-
-export type CreateChatMutation = (
-  { __typename?: 'Mutation' }
-  & { createChat: (
-    { __typename?: 'Chat' }
-    & Pick<Chat, 'id' | 'name' | 'message'>
-  ) }
-);
-
 export type CreateOrderMutationVariables = Exact<{
   userServiceId: Scalars['Int'];
   rounds: Scalars['Int'];
@@ -613,6 +621,34 @@ export type CreateReviewMutationVariables = Exact<{
 export type CreateReviewMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createReview'>
+);
+
+export type CreateRoomMutationVariables = Exact<{
+  participantId: Scalars['Int'];
+}>;
+
+
+export type CreateRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { createRoom?: Maybe<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'channel'>
+    & { messages?: Maybe<Array<(
+      { __typename?: 'Message' }
+      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
+    )>>, participants?: Maybe<Array<(
+      { __typename?: 'Participant' }
+      & Pick<Participant, 'id' | 'roomId' | 'userId'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'id' | 'type' | 'url'>
+        )>> }
+      ) }
+    )>> }
+  )> }
 );
 
 export type DeleteImageMutationVariables = Exact<{
@@ -755,17 +791,6 @@ export type FilterUserServiceQuery = (
   )> }
 );
 
-export type GetChatsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetChatsQuery = (
-  { __typename?: 'Query' }
-  & { getChats: Array<(
-    { __typename?: 'Chat' }
-    & Pick<Chat, 'id' | 'name' | 'message'>
-  )> }
-);
-
 export type GetCountriesQueryVariables = Exact<{
   slug?: Maybe<Scalars['String']>;
 }>;
@@ -804,6 +829,32 @@ export type GetMeUserServiceQuery = (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
     ) }
+  )>> }
+);
+
+export type GetRoomsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRoomsQuery = (
+  { __typename?: 'Query' }
+  & { getRooms?: Maybe<Array<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'channel'>
+    & { messages?: Maybe<Array<(
+      { __typename?: 'Message' }
+      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
+    )>>, participants?: Maybe<Array<(
+      { __typename?: 'Participant' }
+      & Pick<Participant, 'id' | 'roomId' | 'userId'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'id' | 'type' | 'url'>
+        )>> }
+      ) }
+    )>> }
   )>> }
 );
 
@@ -1060,8 +1111,23 @@ export type MessageSentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 export type MessageSentSubscription = (
   { __typename?: 'Subscription' }
   & { messageSent: (
-    { __typename?: 'Chat' }
-    & Pick<Chat, 'id' | 'name' | 'message'>
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'channel'>
+    & { messages?: Maybe<Array<(
+      { __typename?: 'Message' }
+      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
+    )>>, participants?: Maybe<Array<(
+      { __typename?: 'Participant' }
+      & Pick<Participant, 'id' | 'roomId' | 'userId'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+        & { images?: Maybe<Array<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'id' | 'type' | 'url'>
+        )>> }
+      ) }
+    )>> }
   ) }
 );
 
@@ -1311,42 +1377,6 @@ export function useCompleteOrderMutation(baseOptions?: Apollo.MutationHookOption
 export type CompleteOrderMutationHookResult = ReturnType<typeof useCompleteOrderMutation>;
 export type CompleteOrderMutationResult = Apollo.MutationResult<CompleteOrderMutation>;
 export type CompleteOrderMutationOptions = Apollo.BaseMutationOptions<CompleteOrderMutation, CompleteOrderMutationVariables>;
-export const CreateChatDocument = gql`
-    mutation CreateChat($name: String!, $message: String!) {
-  createChat(name: $name, message: $message) {
-    id
-    name
-    message
-  }
-}
-    `;
-export type CreateChatMutationFn = Apollo.MutationFunction<CreateChatMutation, CreateChatMutationVariables>;
-
-/**
- * __useCreateChatMutation__
- *
- * To run a mutation, you first call `useCreateChatMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateChatMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createChatMutation, { data, loading, error }] = useCreateChatMutation({
- *   variables: {
- *      name: // value for 'name'
- *      message: // value for 'message'
- *   },
- * });
- */
-export function useCreateChatMutation(baseOptions?: Apollo.MutationHookOptions<CreateChatMutation, CreateChatMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateChatMutation, CreateChatMutationVariables>(CreateChatDocument, options);
-      }
-export type CreateChatMutationHookResult = ReturnType<typeof useCreateChatMutation>;
-export type CreateChatMutationResult = Apollo.MutationResult<CreateChatMutation>;
-export type CreateChatMutationOptions = Apollo.BaseMutationOptions<CreateChatMutation, CreateChatMutationVariables>;
 export const CreateOrderDocument = gql`
     mutation CreateOrder($userServiceId: Int!, $rounds: Int!, $startTime: DateTime!) {
   createOrder(
@@ -1421,6 +1451,60 @@ export function useCreateReviewMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
 export type CreateReviewMutationResult = Apollo.MutationResult<CreateReviewMutation>;
 export type CreateReviewMutationOptions = Apollo.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
+export const CreateRoomDocument = gql`
+    mutation createRoom($participantId: Int!) {
+  createRoom(participantId: $participantId) {
+    id
+    channel
+    messages {
+      id
+      message
+      roomId
+      userId
+    }
+    participants {
+      id
+      roomId
+      userId
+      user {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
+  }
+}
+    `;
+export type CreateRoomMutationFn = Apollo.MutationFunction<CreateRoomMutation, CreateRoomMutationVariables>;
+
+/**
+ * __useCreateRoomMutation__
+ *
+ * To run a mutation, you first call `useCreateRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRoomMutation, { data, loading, error }] = useCreateRoomMutation({
+ *   variables: {
+ *      participantId: // value for 'participantId'
+ *   },
+ * });
+ */
+export function useCreateRoomMutation(baseOptions?: Apollo.MutationHookOptions<CreateRoomMutation, CreateRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRoomMutation, CreateRoomMutationVariables>(CreateRoomDocument, options);
+      }
+export type CreateRoomMutationHookResult = ReturnType<typeof useCreateRoomMutation>;
+export type CreateRoomMutationResult = Apollo.MutationResult<CreateRoomMutation>;
+export type CreateRoomMutationOptions = Apollo.BaseMutationOptions<CreateRoomMutation, CreateRoomMutationVariables>;
 export const DeleteImageDocument = gql`
     mutation DeleteImage($publicId: String!) {
   deleteImage(publicId: $publicId)
@@ -1813,42 +1897,6 @@ export function useFilterUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type FilterUserServiceQueryHookResult = ReturnType<typeof useFilterUserServiceQuery>;
 export type FilterUserServiceLazyQueryHookResult = ReturnType<typeof useFilterUserServiceLazyQuery>;
 export type FilterUserServiceQueryResult = Apollo.QueryResult<FilterUserServiceQuery, FilterUserServiceQueryVariables>;
-export const GetChatsDocument = gql`
-    query GetChats {
-  getChats {
-    id
-    name
-    message
-  }
-}
-    `;
-
-/**
- * __useGetChatsQuery__
- *
- * To run a query within a React component, call `useGetChatsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetChatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetChatsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetChatsQuery(baseOptions?: Apollo.QueryHookOptions<GetChatsQuery, GetChatsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetChatsQuery, GetChatsQueryVariables>(GetChatsDocument, options);
-      }
-export function useGetChatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChatsQuery, GetChatsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetChatsQuery, GetChatsQueryVariables>(GetChatsDocument, options);
-        }
-export type GetChatsQueryHookResult = ReturnType<typeof useGetChatsQuery>;
-export type GetChatsLazyQueryHookResult = ReturnType<typeof useGetChatsLazyQuery>;
-export type GetChatsQueryResult = Apollo.QueryResult<GetChatsQuery, GetChatsQueryVariables>;
 export const GetCountriesDocument = gql`
     query GetCountries($slug: String) {
   getCountries(slug: $slug) {
@@ -1975,6 +2023,61 @@ export function useGetMeUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServiceQuery>;
 export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
 export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
+export const GetRoomsDocument = gql`
+    query GetRooms {
+  getRooms {
+    id
+    channel
+    messages {
+      id
+      message
+      roomId
+      userId
+    }
+    participants {
+      id
+      roomId
+      userId
+      user {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRoomsQuery__
+ *
+ * To run a query within a React component, call `useGetRoomsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRoomsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetRoomsQuery(baseOptions?: Apollo.QueryHookOptions<GetRoomsQuery, GetRoomsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRoomsQuery, GetRoomsQueryVariables>(GetRoomsDocument, options);
+      }
+export function useGetRoomsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRoomsQuery, GetRoomsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRoomsQuery, GetRoomsQueryVariables>(GetRoomsDocument, options);
+        }
+export type GetRoomsQueryHookResult = ReturnType<typeof useGetRoomsQuery>;
+export type GetRoomsLazyQueryHookResult = ReturnType<typeof useGetRoomsLazyQuery>;
+export type GetRoomsQueryResult = Apollo.QueryResult<GetRoomsQuery, GetRoomsQueryVariables>;
 export const GetSellerOrdersDocument = gql`
     query GetSellerOrders {
   getSellerOrders {
@@ -2622,8 +2725,27 @@ export const MessageSentDocument = gql`
     subscription MessageSent {
   messageSent {
     id
-    name
-    message
+    channel
+    messages {
+      id
+      message
+      roomId
+      userId
+    }
+    participants {
+      id
+      roomId
+      userId
+      user {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
   }
 }
     `;
@@ -2652,10 +2774,10 @@ export type MessageSentSubscriptionResult = Apollo.SubscriptionResult<MessageSen
 export const namedOperations = {
   Query: {
     FilterUserService: 'FilterUserService',
-    GetChats: 'GetChats',
     GetCountries: 'GetCountries',
     GetLanguages: 'GetLanguages',
     GetMeUserService: 'GetMeUserService',
+    GetRooms: 'GetRooms',
     GetSellerOrders: 'GetSellerOrders',
     GetServices: 'GetServices',
     GetUser: 'GetUser',
@@ -2672,9 +2794,9 @@ export const namedOperations = {
     ChangeUserType: 'ChangeUserType',
     ChangeUserserviceImage: 'ChangeUserserviceImage',
     CompleteOrder: 'CompleteOrder',
-    CreateChat: 'CreateChat',
     CreateOrder: 'CreateOrder',
     CreateReview: 'CreateReview',
+    createRoom: 'createRoom',
     DeleteImage: 'DeleteImage',
     DeleteUserService: 'DeleteUserService',
     ForgotPassword: 'ForgotPassword',

@@ -43,7 +43,6 @@ export class Message extends BaseEntity {
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.messages, {
     lazy: true,
-    onDelete: 'CASCADE',
   })
   @TypeormLoader()
   user: Lazy<User>;

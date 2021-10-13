@@ -1,5 +1,5 @@
-subscription MessageSent {
-  messageSent {
+query GetRooms {
+  getRooms {
     id
     channel
     messages {

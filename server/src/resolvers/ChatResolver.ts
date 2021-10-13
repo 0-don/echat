@@ -65,7 +65,9 @@ export class ChatResolver {
 
     const channel = me.uuid + participant.uuid;
 
-    try {
+    let room = await Room.findOne({ where: { channel } });
+
+    if (!room) {
       const result = await getConnection()
         .createQueryBuilder()
         .insert()
@@ -74,28 +76,45 @@ export class ChatResolver {
         .returning('*')
         .execute();
 
-      const room: Room = result.raw[0];
+      room = result.raw[0] as Room;
 
       await Participant.insert([
         { userId: me.id, roomId: room.id },
         { userId: participant.id, roomId: room.id },
       ]);
-
-      await pubSub.publish('sda', room);
-      return room;
-    } catch (error) {
-      return null;
     }
+
+    // await pubSub.publish(room.channel, room);
+    return room;
+    // try {
+    //   const result = await getConnection()
+    //     .createQueryBuilder()
+    //     .insert()
+    //     .into(Room)
+    //     .values({ channel })
+    //     .returning('*')
+    //     .execute();
+
+    //   const room: Room = result.raw[0];
+
+    //   await Participant.insert([
+    //     { userId: me.id, roomId: room.id },
+    //     { userId: participant.id, roomId: room.id },
+    //   ]);
+
+    //   await pubSub.publish(room.channel, room.channel);
+    //   return room;
+    // } catch (error) {
+    //   return null;
+    // }
   }
 
   @Subscription({
-    topics: (test) => {
-      console.log(test.args);
-      return 'sda';
-    },
+    topics: ({ args }) => args.channel,
   })
-  messageSent(@Root() room: Room,): Room {
-    // console.log(room);
+  messageSent(@Arg('channel') channel: string, @Root() room: Room): Room {
+    console.log(room);
+    channel;
     return room;
   }
 }

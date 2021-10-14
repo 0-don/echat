@@ -1,26 +1,8 @@
-subscription MessageSent {
-  messageSent {
+subscription MessageSent($channel: String!) {
+  messageSent(channel: $channel) {
     id
-    channel
-    messages {
-      id
-      message
-      roomId
-      userId
-    }
-    participants {
-      id
-      roomId
-      userId
-      user {
-        id
-        username
-        images {
-          id
-          type
-          url
-        }
-      }
-    }
+    message
+    roomId
+    userId
   }
 }

@@ -1,17 +1,19 @@
 import { useState, FC } from 'react';
-import { useCreateRoomMutation } from 'src/generated/graphql';
+import {
+  useSendMessageMutation,
+} from 'src/generated/graphql';
 
 interface SendMessageProps {
-  name: string;
+  channel: string
 }
 
-const SendMessage: FC<SendMessageProps> = ({ name }) => {
-  const [input, setInput] = useState<string>('');
-  const [createChat] = useCreateRoomMutation();
+const SendMessage: FC<SendMessageProps> = ({ channel }) => {
+  const [message, setMessage] = useState<string>('');
+  const [sendMessage] = useSendMessageMutation();
 
   const handleSend = async () => {
-    await createChat({ variables: { participantId: 26904 } });
-    setInput('');
+    await sendMessage({ variables: { channel, message } });
+    setMessage('');
   };
 
   return (
@@ -20,8 +22,8 @@ const SendMessage: FC<SendMessageProps> = ({ name }) => {
         className='text-black'
         type='text'
         id='message'
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       ></input>
       <button onClick={handleSend}>Send message</button>
     </div>

@@ -107,7 +107,8 @@ export type Mutation = {
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
-  createRoom?: Maybe<Room>;
+  createRoom?: Maybe<Scalars['Boolean']>;
+  sendMessage?: Maybe<Message>;
   createReview: Scalars['Boolean'];
   createOrder: OrderResponse;
   completeOrder: OrderResponse;
@@ -176,6 +177,12 @@ export type MutationDeleteUserServiceArgs = {
 
 export type MutationCreateRoomArgs = {
   participantId: Scalars['Int'];
+};
+
+
+export type MutationSendMessageArgs = {
+  message: Scalars['String'];
+  channel: Scalars['String'];
 };
 
 
@@ -391,7 +398,12 @@ export type ServiceImage = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  messageSent: Room;
+  messageSent: Message;
+};
+
+
+export type SubscriptionMessageSentArgs = {
+  channel: Scalars['String'];
 };
 
 export type UpdatedUser = {
@@ -630,25 +642,7 @@ export type CreateRoomMutationVariables = Exact<{
 
 export type CreateRoomMutation = (
   { __typename?: 'Mutation' }
-  & { createRoom?: Maybe<(
-    { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'channel'>
-    & { messages?: Maybe<Array<(
-      { __typename?: 'Message' }
-      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
-    )>>, participants?: Maybe<Array<(
-      { __typename?: 'Participant' }
-      & Pick<Participant, 'id' | 'roomId' | 'userId'>
-      & { user: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-        & { images?: Maybe<Array<(
-          { __typename?: 'Image' }
-          & Pick<Image, 'id' | 'type' | 'url'>
-        )>> }
-      ) }
-    )>> }
-  )> }
+  & Pick<Mutation, 'createRoom'>
 );
 
 export type DeleteImageMutationVariables = Exact<{
@@ -725,6 +719,20 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
   ) }
+);
+
+export type SendMessageMutationVariables = Exact<{
+  channel: Scalars['String'];
+  message: Scalars['String'];
+}>;
+
+
+export type SendMessageMutation = (
+  { __typename?: 'Mutation' }
+  & { sendMessage?: Maybe<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
+  )> }
 );
 
 export type SwitchUserServiceStatusMutationVariables = Exact<{
@@ -1105,29 +1113,16 @@ export type UserImagesQuery = (
   )>> }
 );
 
-export type MessageSentSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type MessageSentSubscriptionVariables = Exact<{
+  channel: Scalars['String'];
+}>;
 
 
 export type MessageSentSubscription = (
   { __typename?: 'Subscription' }
   & { messageSent: (
-    { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'channel'>
-    & { messages?: Maybe<Array<(
-      { __typename?: 'Message' }
-      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
-    )>>, participants?: Maybe<Array<(
-      { __typename?: 'Participant' }
-      & Pick<Participant, 'id' | 'roomId' | 'userId'>
-      & { user: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-        & { images?: Maybe<Array<(
-          { __typename?: 'Image' }
-          & Pick<Image, 'id' | 'type' | 'url'>
-        )>> }
-      ) }
-    )>> }
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
   ) }
 );
 
@@ -1453,30 +1448,7 @@ export type CreateReviewMutationResult = Apollo.MutationResult<CreateReviewMutat
 export type CreateReviewMutationOptions = Apollo.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export const CreateRoomDocument = gql`
     mutation createRoom($participantId: Int!) {
-  createRoom(participantId: $participantId) {
-    id
-    channel
-    messages {
-      id
-      message
-      roomId
-      userId
-    }
-    participants {
-      id
-      roomId
-      userId
-      user {
-        id
-        username
-        images {
-          id
-          type
-          url
-        }
-      }
-    }
-  }
+  createRoom(participantId: $participantId)
 }
     `;
 export type CreateRoomMutationFn = Apollo.MutationFunction<CreateRoomMutation, CreateRoomMutationVariables>;
@@ -1727,6 +1699,43 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($channel: String!, $message: String!) {
+  sendMessage(channel: $channel, message: $message) {
+    id
+    message
+    roomId
+    userId
+  }
+}
+    `;
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, options);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const SwitchUserServiceStatusDocument = gql`
     mutation SwitchUserServiceStatus($id: Int!) {
   switchUserServiceStatus(id: $id)
@@ -2722,30 +2731,12 @@ export type UserImagesQueryHookResult = ReturnType<typeof useUserImagesQuery>;
 export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQuery>;
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
 export const MessageSentDocument = gql`
-    subscription MessageSent {
-  messageSent {
+    subscription MessageSent($channel: String!) {
+  messageSent(channel: $channel) {
     id
-    channel
-    messages {
-      id
-      message
-      roomId
-      userId
-    }
-    participants {
-      id
-      roomId
-      userId
-      user {
-        id
-        username
-        images {
-          id
-          type
-          url
-        }
-      }
-    }
+    message
+    roomId
+    userId
   }
 }
     `;
@@ -2762,10 +2753,11 @@ export const MessageSentDocument = gql`
  * @example
  * const { data, loading, error } = useMessageSentSubscription({
  *   variables: {
+ *      channel: // value for 'channel'
  *   },
  * });
  */
-export function useMessageSentSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageSentSubscription, MessageSentSubscriptionVariables>) {
+export function useMessageSentSubscription(baseOptions: Apollo.SubscriptionHookOptions<MessageSentSubscription, MessageSentSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useSubscription<MessageSentSubscription, MessageSentSubscriptionVariables>(MessageSentDocument, options);
       }
@@ -2804,6 +2796,7 @@ export const namedOperations = {
     Logout: 'Logout',
     MultipleUpload: 'MultipleUpload',
     Register: 'Register',
+    SendMessage: 'SendMessage',
     SwitchUserServiceStatus: 'SwitchUserServiceStatus',
     UpdateMe: 'UpdateMe',
     UpsertUserService: 'UpsertUserService'

@@ -22,8 +22,7 @@ import { Message } from '../entity/Message';
 @Resolver()
 export class ChatResolver {
   @Query(() => [Room], { nullable: true })
-  async getRooms(@PubSub() pubSub: PubSubEngine, @Ctx() { req }: MyContext) {
-    console.log(pubSub);
+  async getRooms(@Ctx() { req }: MyContext) {
     const { userId } = req.session;
     const rooms = await getRepository(Room)
       .createQueryBuilder('room')
@@ -40,8 +39,6 @@ export class ChatResolver {
     if (!rooms.length) {
       return null;
     }
-
-    // const rooms = await Room.find();
 
     return rooms;
   }
@@ -63,16 +60,18 @@ export class ChatResolver {
       return null;
     }
 
-    const channel = me.uuid + participant.uuid;
+    const channel =
+      [...me.uuid].map((x) => x.charCodeAt(0)).reduce((a, b) => a + b) +
+      [...participant.uuid].map((x) => x.charCodeAt(0)).reduce((a, b) => a + b);
 
-    let room = await Room.findOne({ where: { channel } });
+    let room = await Room.findOne({ where: { channel: channel.toString() } });
 
     if (!room) {
       const result = await getConnection()
         .createQueryBuilder()
         .insert()
         .into(Room)
-        .values({ channel })
+        .values({ channel: channel.toString() })
         .returning('*')
         .execute();
 
@@ -134,7 +133,7 @@ export class ChatResolver {
     @Arg('channel') channel: string,
     @Root() message: Message
   ): Message {
-    console.log(message);
+
     channel;
     return message;
   }

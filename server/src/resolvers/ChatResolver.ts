@@ -15,6 +15,7 @@ import {
 } from 'type-graphql';
 import { getConnection, getRepository, In } from 'typeorm';
 import { User } from '../entity/User';
+import { Message } from '../entity/Message';
 
 // const channel = 'CHAT_CHANNEL';
 
@@ -45,10 +46,9 @@ export class ChatResolver {
     return rooms;
   }
 
-  @Mutation(() => Room, { nullable: true })
+  @Mutation(() => Boolean, { nullable: true })
   async createRoom(
     @Ctx() { req }: MyContext,
-    @PubSub() pubSub: PubSubEngine,
     @Arg('participantId', () => Int) participantId: number
   ) {
     // 26904 -> test@test.test
@@ -84,37 +84,58 @@ export class ChatResolver {
       ]);
     }
 
-    // await pubSub.publish(room.channel, room);
-    return room;
-    // try {
-    //   const result = await getConnection()
-    //     .createQueryBuilder()
-    //     .insert()
-    //     .into(Room)
-    //     .values({ channel })
-    //     .returning('*')
-    //     .execute();
+    return true;
+  }
 
-    //   const room: Room = result.raw[0];
+  @Mutation(() => Message, { nullable: true })
+  async sendMessage(
+    @Ctx() { req }: MyContext,
+    @PubSub() pubSub: PubSubEngine,
+    @Arg('channel') channel: string,
+    @Arg('message') message: string
+  ) {
+    const { userId } = req.session;
+    const room = await getRepository(Room)
+      .createQueryBuilder('room')
+      .leftJoinAndSelect(
+        Participant,
+        'participant',
+        'participant.roomId = room.id'
+      )
+      .andWhere('participant.userId = :userId AND room.channel = :channel', {
+        userId,
+        channel,
+      })
+      .getOne();
 
-    //   await Participant.insert([
-    //     { userId: me.id, roomId: room.id },
-    //     { userId: participant.id, roomId: room.id },
-    //   ]);
+    if (!room) {
+      return null;
+    }
 
-    //   await pubSub.publish(room.channel, room.channel);
-    //   return room;
-    // } catch (error) {
-    //   return null;
-    // }
+    const result = await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Message)
+      .values({ userId, message, roomId: room.id })
+      .returning('*')
+      .execute();
+
+    const messageDB = result.raw[0] as Message;
+
+    await pubSub.publish(channel, messageDB);
+
+    return messageDB;
   }
 
   @Subscription({
     topics: ({ args }) => args.channel,
   })
-  messageSent(@Arg('channel') channel: string, @Root() room: Room): Room {
-    console.log(room);
+  messageSent(
+    @Arg('channel') channel: string,
+    @Root() message: Message
+  ): Message {
+    console.log(message);
     channel;
-    return room;
+    return message;
   }
 }

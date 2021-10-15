@@ -44,26 +44,11 @@ export const Messages: React.FC<MessagesProps> = ({
       document: MessageSentDocument,
       variables: { channel: currentChannel },
       updateQuery: (prev, { subscriptionData }) => {
-        // const { getRooms } = produce(prev, (draft) => {
-        //   draft?.getRooms?.forEach((room) => {
-        //     if (room.channel === currentChannel) {
-        //       subscriptionData?.data?.messageSent && room?.messages?.push(subscriptionData.data.messageSent);
-        //     }
-        //   });
-        // });
-
-        // const { getRooms } = produce(prev, (draft) => {
-        //   const room = draft?.getRooms?.find(
-        //     (room) => room.channel === currentChannel
-        //   );
-        //   subscriptionData?.data?.messageSent &&
-        //     room?.messages?.push(subscriptionData.data.messageSent);
-        // });
-
         const newState = produce(prev, (draft) => {
           const room = draft?.getRooms?.find(
             (room) => room.channel === currentChannel
           );
+          
           subscriptionData?.data?.messageSent &&
             room?.messages?.push(subscriptionData.data.messageSent);
         });

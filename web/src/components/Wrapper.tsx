@@ -22,6 +22,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
 
   return (
     <>
+    <div></div>
       <div className='flex h-screen'>
         <div className='flex-1 flex flex-col'>
           {navbar && <NavBar />}

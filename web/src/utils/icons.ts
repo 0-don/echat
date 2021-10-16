@@ -43,6 +43,7 @@ import {
   // faCaretSquareRight,
   faAngleRight,
   faInfoCircle,
+  faShare,
   faThumbsDown as faSolidThumbsDown,
   faThumbsUp as faSolidThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';

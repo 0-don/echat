@@ -14,7 +14,9 @@ import { UserServiceAverageScore } from 'src/components/service/UserServiceAvera
 import { UserServiceReviews } from 'src/components/service/UserServiceReviews';
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
-  const [bgImage, setBgImage] = useState<string | undefined>();
+  const [bgImage, setBgImage] = useState<
+    { src: string; serviceId: number } | undefined
+  >();
   const { data } = useGetUserServiceQuery({
     variables: { id },
   });
@@ -26,7 +28,14 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
 
   useEffect(() => {
     images?.length &&
-      setBgImage(images[getRandomBetween(0, images.length)].url);
+      bgImage?.serviceId !== service?.id &&
+      setBgImage({
+        src: images[getRandomBetween(0, images.length)].url,
+        serviceId: service!.id,
+      });
+    images?.length === 0 &&
+      bgImage?.serviceId !== service?.id &&
+      setBgImage(undefined);
   }, [images]);
 
   return (
@@ -34,7 +43,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
       <div style={{ position: 'relative', width: '100%', height: '40vw' }}>
         <Image
           className='img-fade opacity-40'
-          src={bgImage ?? transparent.src}
+          src={bgImage?.src ?? transparent.src}
           layout='fill'
           objectFit='cover'
         />

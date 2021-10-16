@@ -3,7 +3,8 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { GetUserServiceQuery } from 'src/generated/graphql';
 import { ImagePopup } from '../utils/ImagePopup';
-
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+dayjs.extend(localizedFormat)
 
 interface UserServiceDetailProps {
   data: GetUserServiceQuery | undefined;

@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { useGetUserQuery } from 'src/generated/graphql';
+import { useCreateRoomMutation, useGetUserQuery } from 'src/generated/graphql';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
 import transparent from '/public/transparent.png';
@@ -14,15 +14,13 @@ import { Reviews } from 'src/components/user/Reviews';
 import { ImagePopup } from 'src/components/utils/ImagePopup';
 import { genderIcon } from 'src/utils/icons';
 
-
-
 const UserDetail: NextPage<{ id: number }> = ({ id }) => {
   const [tabs, setTabs] = useState([
     { name: 'Services', icon: 'gamepad', current: true },
     { name: 'Album', icon: 'images', current: false },
     { name: 'Reviews', icon: 'star', current: false },
   ]);
-
+  const [createRoom] = useCreateRoomMutation();
   const { data } = useGetUserQuery({
     variables: { id },
   });
@@ -114,7 +112,16 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
 
         <div className='flex space-x-5 md:order-none justify-between md:justify-start mb-5'>
           <button className='big-button'>follow</button>
-          <button className='big-button'>chat</button>
+          <button
+            className='big-button'
+            onClick={async () => {
+              if (user) {
+                await createRoom({ variables: { participantId: user.id } });
+              }
+            }}
+          >
+            chat
+          </button>
         </div>
       </div>
       <Tabs tabs={tabs} setTabs={setTabs} />

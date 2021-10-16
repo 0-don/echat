@@ -8,15 +8,10 @@ import { getRandomBetween } from 'src/utils';
 import { OrderModal } from 'src/components/order/OrderModal';
 import { useGetUserServiceQuery } from 'src/generated/graphql';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { UserColumn } from 'src/components/service/UserColumn';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-
-import dayjs from 'dayjs';
 import { UserServiceDetail } from 'src/components/service/UserServiceDetail';
 import { UserServiceAverageScore } from 'src/components/service/UserServiceAverageScore';
 import { UserServiceReviews } from 'src/components/service/UserServiceReviews';
-dayjs.extend(localizedFormat);
 
 const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
   const [bgImage, setBgImage] = useState<string | undefined>();

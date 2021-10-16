@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMeQuery } from 'src/generated/graphql';
 import { Chat } from './chat/Chat';
 import { NavBar } from './NavBar';
 
@@ -16,19 +17,20 @@ export const Wrapper: React.FC<WrapperProps> = ({
   scrollbar,
   className,
 }) => {
+  const { data: me } = useMeQuery();
   const trueClassName = fluid
     ? `${className} h-full`
     : `${className} container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`;
 
   return (
     <>
-    <div></div>
+      <div></div>
       <div className='flex h-screen'>
         <div className='flex-1 flex flex-col'>
           {navbar && <NavBar />}
 
           <div className={`${trueClassName} ${scrollbar && 'overflow-hidden'}`}>
-            <Chat />
+            {me && <Chat />}
             {children}
           </div>
         </div>

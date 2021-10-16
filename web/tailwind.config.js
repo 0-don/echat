@@ -26,6 +26,7 @@ module.exports = {
       dark: {
         // Input:normal
         light: '#464649',
+        lightAlt: '#1f1f23',
         // containers
         DEFAULT: '#18181b',
         // Background Input:Focus

@@ -56,6 +56,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faShare,
   faClock,
   faInfoCircle,
   faAngleRight,

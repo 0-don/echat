@@ -4,24 +4,31 @@ import {
   MessageSentSubscription,
   MessageSentSubscriptionVariables,
   useMeQuery,
+  useGetRoomsQuery,
 } from 'src/generated/graphql';
 import SendMessage from './SendMessage';
 import produce from 'immer';
 import useChatStore from 'src/store/ChatStore';
-import { useGetRoomsQuery } from 'src/generated/graphql';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 interface MessagesProps {}
 
 export const Messages: React.FC<MessagesProps> = ({}) => {
   const { data: me } = useMeQuery();
   const meId = me?.me?.id;
-  
+
   const { data, subscribeToMore } = useGetRoomsQuery();
   const { channel, switchChatPopup } = useChatStore();
 
   const messages = data?.getRooms?.find(
     (room) => room.channel === channel
   )?.messages;
+
+  const participant = data?.getRooms
+    ?.find((room) => room.channel === channel)
+    ?.participants?.find((participant) => participant.userId !== meId);
 
   useEffect(() => {
     subscribeToMore<MessageSentSubscription, MessageSentSubscriptionVariables>({
@@ -45,26 +52,35 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   return (
     <div>
       <div className='chat-area flex-1 flex flex-col'>
-        <div className='flex-3'>
-          <h2 className='text-xl py-1 mb-8 border-b-2 border-gray-200'>
-            Chatting with <b>Mercedes Yemelyan</b>
+        <div className='flex items-center justify-between'>
+          <h2 className='text-lg'>
+            Chatting with <b>{participant?.user.username}</b>
           </h2>
+          <div
+            className='cursor-pointer hover:text-purple'
+            onClick={switchChatPopup}
+          >
+            ×︁
+          </div>
         </div>
-        <div className='messages flex-1 overflow-auto'>
-          {messages?.map(({ userId, message }) =>
+        <hr className='border-lightGray my-3' />
+        <div className='overflow-auto h-96'>
+          {messages?.map(({ userId, message, createdAt, id }) =>
             meId === userId ? (
-              <div className='message me mb-4 flex text-right'>
+              <div className='message me mb-4 flex text-right' key={id}>
                 <div className='flex-1 px-2'>
-                  <div className='inline-block bg-blue-600 rounded-full p-2 px-6 text-white'>
+                  <div className='inline-block bg-dark-light rounded-full py-1 px-6 text-white'>
                     <span>{message}</span>
                   </div>
                   <div className='pr-4'>
-                    <small className='text-gray-500'>15 April</small>
+                    <small className='text-gray-500'>
+                      {dayjs(createdAt).toNow(true)}
+                    </small>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className='message mb-4 flex'>
+              <div className='message mb-4 flex' key={id}>
                 <div className='flex-2'>
                   <div className='w-12 h-12 relative'>
                     <img
@@ -76,11 +92,13 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
                   </div>
                 </div>
                 <div className='flex-1 px-2'>
-                  <div className='inline-block bg-gray-300 rounded-full p-2 px-6 text-gray-700'>
+                  <div className='inline-block bg-purple rounded-full py-1 px-6 text-white'>
                     <span>{message}</span>
                   </div>
                   <div className='pl-4'>
-                    <small className='text-gray-500'>15 April</small>
+                    <small className='text-gray-500'>
+                      {dayjs(createdAt).toNow(true)}
+                    </small>
                   </div>
                 </div>
               </div>

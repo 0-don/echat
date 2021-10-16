@@ -7,8 +7,6 @@ import {
   useGetServicesQuery,
 } from 'src/generated/graphql';
 import { NextPage } from 'next';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { Button } from 'src/components/htmlElements';
 import gray from '/public/gray.png';
 import { getRandomBetween } from 'src/utils';
@@ -16,8 +14,6 @@ import Image from 'next/image';
 import { Filter } from 'src/components/browse/Filter';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { UserServices } from 'src/components/browse/UserServices';
-
-dayjs.extend(relativeTime);
 
 // dateNow.diff(user.lastOnline, 'day') * -1 < 2
 
@@ -33,7 +29,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
   }, []);
 
   const { data } = useGetServicesQuery();
-  data?.getServices?.map(service => service.name)
+  data?.getServices?.map((service) => service.name);
   const {
     data: userService,
     fetchMore,

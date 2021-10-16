@@ -5,8 +5,9 @@ import React from 'react';
 import Image from 'next/image';
 import gray from '/public/gray.png';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { GetUserServiceQuery } from 'src/generated/graphql';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 dayjs.extend(relativeTime);
 
 interface UserServiceReviewsProps {

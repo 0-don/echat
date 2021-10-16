@@ -5,8 +5,6 @@ import { GetUserQuery } from 'src/generated/graphql';
 import Image from 'next/image';
 import gray from '/public/gray.png';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-dayjs.extend(relativeTime);
 
 interface ReviewsProps {
   data: GetUserQuery | undefined;

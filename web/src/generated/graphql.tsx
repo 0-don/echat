@@ -90,6 +90,7 @@ export type Message = {
   room: Room;
   userId: Scalars['Int'];
   user: User;
+  createdAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -850,13 +851,13 @@ export type GetRoomsQuery = (
     & Pick<Room, 'id' | 'channel'>
     & { messages?: Maybe<Array<(
       { __typename?: 'Message' }
-      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
+      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'createdAt'>
     )>>, participants?: Maybe<Array<(
       { __typename?: 'Participant' }
       & Pick<Participant, 'id' | 'roomId' | 'userId'>
       & { user: (
         { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
+        & Pick<User, 'id' | 'username' | 'lastOnline'>
         & { images?: Maybe<Array<(
           { __typename?: 'Image' }
           & Pick<Image, 'id' | 'type' | 'url'>
@@ -1122,7 +1123,7 @@ export type MessageSentSubscription = (
   { __typename?: 'Subscription' }
   & { messageSent: (
     { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId'>
+    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'createdAt'>
   ) }
 );
 
@@ -2042,6 +2043,7 @@ export const GetRoomsDocument = gql`
       message
       roomId
       userId
+      createdAt
     }
     participants {
       id
@@ -2050,6 +2052,7 @@ export const GetRoomsDocument = gql`
       user {
         id
         username
+        lastOnline
         images {
           id
           type
@@ -2737,6 +2740,7 @@ export const MessageSentDocument = gql`
     message
     roomId
     userId
+    createdAt
   }
 }
     `;

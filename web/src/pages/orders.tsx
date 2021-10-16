@@ -17,12 +17,11 @@ import noOrder from '/public/noOrder.png';
 import gray from '/public/gray.png';
 import Image from 'next/image';
 import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'src/components/utils/Alert';
 import { ReviewModal } from 'src/components/review/ReviewModal';
 
-dayjs.extend(localizedFormat);
 export type OrderStatus =
   | 'Cancelled'
   | 'Pending'

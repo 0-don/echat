@@ -1,12 +1,11 @@
 import React from 'react';
-import {
-  GetRoomsQuery,
-  useGetRoomsQuery,
-  useMeQuery,
-} from 'src/generated/graphql';
+import { useGetRoomsQuery, useMeQuery } from 'src/generated/graphql';
 import gray from '/public/gray.png';
 import Image from 'next/image';
 import useChatStore from 'src/store/ChatStore';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 interface RoomsProps {}
 
@@ -23,15 +22,18 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
           (participant) => participant.userId !== meId
         )?.user;
 
+        const lastMessage =
+          room.messages && room?.messages[room.messages.length - 1];
+
         const profileImg = participant?.images?.find(
           (image) => image.type === 'profile'
         )?.url;
-
+        console.log(lastMessage);
         return (
           <div
             key={room.channel}
             onClick={() => setChannel(room.channel)}
-            className='border-l-4 border-purple entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-dark-light mb-4 rounded p-4 flex shadow-2xl'
+            className='border-l-4 border-purple entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-dark mb-4 rounded p-4 flex shadow-2xl'
           >
             <div className='flex-2'>
               <div className='w-12 h-12 relative'>
@@ -51,12 +53,12 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                 <span>{participant?.username}</span>
               </div>
               <div>
-                <small>Yea, Sure!</small>
+                <small>{lastMessage?.message}</small>
               </div>
             </div>
             <div className='flex-2 text-right'>
               <div>
-                <small>15 April</small>
+                <small>{dayjs(lastMessage?.createdAt).toNow(true)}</small>
               </div>
               <div>
                 <small className='text-xs bg-red-500  rounded-full h-6 w-6 leading-6 text-center inline-block'>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   MessageSentDocument,
   MessageSentSubscription,
@@ -9,6 +9,8 @@ import {
 import SendMessage from './SendMessage';
 import produce from 'immer';
 import useChatStore from 'src/store/ChatStore';
+import Image from 'next/image';
+import gray from '/public/gray.png';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -22,13 +24,13 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   const { data, subscribeToMore } = useGetRoomsQuery();
   const { channel, switchChatPopup } = useChatStore();
 
-  const messages = data?.getRooms?.find(
-    (room) => room.channel === channel
-  )?.messages;
+  const room = data?.getRooms?.find((room) => room.channel === channel);
+  const messages = room?.messages;
+  const chattingWith = room?.participants?.find(
+    (participant) => participant.userId !== meId
+  );
 
-  const participant = data?.getRooms
-    ?.find((room) => room.channel === channel)
-    ?.participants?.find((participant) => participant.userId !== meId);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     subscribeToMore<MessageSentSubscription, MessageSentSubscriptionVariables>({
@@ -54,7 +56,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
       <div className='chat-area flex-1 flex flex-col'>
         <div className='flex items-center justify-between'>
           <h2 className='text-lg'>
-            Chatting with <b>{participant?.user.username}</b>
+            Chatting with <b>{chattingWith?.user.username}</b>
           </h2>
           <div
             className='cursor-pointer hover:text-purple'
@@ -64,15 +66,22 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
           </div>
         </div>
         <hr className='border-lightGray my-3' />
-        <div className='overflow-auto h-96'>
-          {messages?.map(({ userId, message, createdAt, id }) =>
-            meId === userId ? (
-              <div className='message me mb-4 flex text-right' key={id}>
+        <div className='overflow-x-hidden overflow-y-auto h-96'>
+          {messages?.map(({ userId, message, createdAt, id }) => {
+            const user = room?.participants?.find(
+              (participant) => participant.userId === userId
+            )?.user;
+            const profileImg = user?.images?.find(
+              (image) => image.type === 'profile'
+            )?.url;
+
+            return meId === userId ? (
+              <div className='mb-4 flex text-right' key={id}>
                 <div className='flex-1 px-2'>
-                  <div className='inline-block bg-dark-light rounded-full py-1 px-6 text-white'>
+                  <div className='inline-block bg-dark-light rounded-xl py-1 px-6 text-white break-all'>
                     <span>{message}</span>
                   </div>
-                  <div className='pr-4'>
+                  <div>
                     <small className='text-gray-500'>
                       {dayjs(createdAt).toNow(true)}
                     </small>
@@ -80,19 +89,30 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
                 </div>
               </div>
             ) : (
-              <div className='message mb-4 flex' key={id}>
+              <div className='mb-4 flex' key={id}>
                 <div className='flex-2'>
                   <div className='w-12 h-12 relative'>
-                    <img
-                      className='w-12 h-12 rounded-full mx-auto'
-                      src='https://res.cloudinary.com/don-cryptus/image/upload/v1633542026/ahpca1fbkglqb42ldw3f.jpg'
-                      alt='chat-user'
+                    <Image
+                      width={45}
+                      height={45}
+                      layout='fixed'
+                      objectFit='cover'
+                      className='rounded-full'
+                      src={profileImg ?? gray.src}
+                      title={user?.username}
                     />
-                    <span className='absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0 border-2 border-white'></span>
+                    <span
+                      className={`${
+                        dayjs(new Date()).diff(user?.lastOnline, 'minutes') <
+                        120
+                          ? 'bg-green-600'
+                          : 'bg-gray-400'
+                      } absolute w-4 h-4 rounded-full right-0 bottom-0`}
+                    ></span>
                   </div>
                 </div>
                 <div className='flex-1 px-2'>
-                  <div className='inline-block bg-purple rounded-full py-1 px-6 text-white'>
+                  <div className='inline-block bg-purple rounded-xl py-1 px-6 text-white'>
                     <span>{message}</span>
                   </div>
                   <div className='pl-4'>
@@ -102,11 +122,12 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
                   </div>
                 </div>
               </div>
-            )
-          )}
+            );
+          })}
+          <div ref={messagesEndRef} />
         </div>
 
-        <SendMessage />
+        <SendMessage messagesEndRef={messagesEndRef} />
       </div>
     </div>
   );

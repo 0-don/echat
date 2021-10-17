@@ -1,13 +1,9 @@
-import { useState, FC, useEffect } from 'react';
+import { useState } from 'react';
 import { useSendMessageMutation } from 'src/generated/graphql';
 import useChatStore from 'src/store/ChatStore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-interface SendMessageProps {
-  messagesEndRef: React.RefObject<HTMLDivElement>;
-}
-
-const SendMessage: FC<SendMessageProps> = ({ messagesEndRef }) => {
+const SendMessage = () => {
   const [message, setMessage] = useState<string>('');
   const [sendMessage] = useSendMessageMutation();
   const { channel } = useChatStore();
@@ -20,19 +16,11 @@ const SendMessage: FC<SendMessageProps> = ({ messagesEndRef }) => {
     }
 
     await sendMessage({ variables: { channel, message } });
-    messagesEndRef?.current?.scrollIntoView({ behavior: 'smooth' });
     setMessage('');
   };
 
-  useEffect(() => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
   return (
-    <form
-      onSubmit={handleSend}
-      className='w-full flex items-center mt-3'
-    >
+    <form onSubmit={handleSend} className='w-full flex items-center mt-3'>
       <input
         name='message'
         className='appearance-none block w-full px-3 py-2 dark:bg-dark-light dark:border-dark-light dark:text-white border rounded-md shadow-sm focus:outline-none 

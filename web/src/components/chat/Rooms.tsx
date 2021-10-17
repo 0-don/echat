@@ -16,7 +16,8 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
   const meId = me?.me?.id;
 
   return (
-    <div>
+    <>
+      <button />
       {data?.getRooms?.map((room) => {
         const participant = room.participants?.find(
           (participant) => participant.userId !== meId
@@ -35,7 +36,7 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
             onClick={() => setChannel(room.channel)}
             className={`${
               channel === room.channel ? 'border-l-4 border-purple' : ''
-            }  entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-dark mb-1 rounded p-4 flex shadow-2xl`}
+            }  overflow-x-hidden overflow-y-auto entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-dark mb-1 rounded p-4 flex shadow-2xl`}
           >
             <div className='w-12 h-12 relative'>
               <Image
@@ -72,6 +73,6 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
           </div>
         );
       })}
-    </div>
+    </>
   );
 };

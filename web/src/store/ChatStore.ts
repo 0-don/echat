@@ -6,6 +6,7 @@ type ChatStore = {
   channel: string;
   switchChatPopup: () => void;
   setChannel: (newChannel: string) => void;
+
 };
 
 const useChatStore = create<ChatStore>(

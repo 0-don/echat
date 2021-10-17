@@ -90,7 +90,7 @@ export type Message = {
   room: Room;
   userId: Scalars['Int'];
   user: User;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
 };
 
 export type Mutation = {

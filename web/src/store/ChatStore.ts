@@ -13,7 +13,7 @@ const useChatStore = create<ChatStore>(
   immer(
     (set): ChatStore => ({
       chatPopup: false,
-      channel: '5208',
+      channel: '4730',
       switchChatPopup: () =>
         set((state) => void (state.chatPopup = !state.chatPopup)),
       setChannel: (newChannel) =>

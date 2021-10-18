@@ -17,8 +17,6 @@ import { getConnection, getRepository, In } from 'typeorm';
 import { User } from '../entity/User';
 import { Message } from '../entity/Message';
 
-// const channel = 'CHAT_CHANNEL';
-
 @Resolver()
 export class ChatResolver {
   @Query(() => [Room], { nullable: true })
@@ -133,7 +131,6 @@ export class ChatResolver {
     @Arg('channel') channel: string,
     @Root() message: Message
   ): Message {
-
     channel;
     return message;
   }

@@ -1084,7 +1084,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+    & Pick<User, 'id' | 'type' | 'username' | 'coins' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { target?: Maybe<Array<(
       { __typename?: 'Review' }
       & Pick<Review, 'id' | 'score' | 'recommend'>
@@ -2631,6 +2631,7 @@ export const MeDocument = gql`
     id
     type
     username
+    coins
     gender
     countryId
     age

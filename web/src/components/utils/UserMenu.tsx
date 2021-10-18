@@ -62,6 +62,23 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
       <DarkMode />
     </div>
   );
+
+  const coins = data && (
+    <div className='flex justify-between items-center py-1 dark:text-white text-black'>
+      <div className='flex justify-center items-center'>
+        <FontAwesomeIcon
+          size='xs'
+          className='dark:text-white text-black mx-2'
+          icon='coins'
+        />
+        <p className='cursor-pointer text-sm text-gray-700 dark:text-white'>
+          Coins
+        </p>
+      </div>
+      <small className='mr-1'>{data.me?.coins.toFixed(2)}</small>
+    </div>
+  );
+
   let userMenu: JSX.Element | null = null;
   // data is loading
   if (loading) {
@@ -178,6 +195,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
               >
                 {data?.me && userTop}
                 {darkMode}
+                {coins}
                 {userMenu}
               </Menu.Items>
             </Transition>

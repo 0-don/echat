@@ -3,7 +3,9 @@ import { useSendMessageMutation } from 'src/generated/graphql';
 import useChatStore from 'src/store/ChatStore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const SendMessage = () => {
+interface SendMessageProps {}
+
+const SendMessage: React.FC<SendMessageProps> = ({}) => {
   const [message, setMessage] = useState<string>('');
   const [sendMessage] = useSendMessageMutation();
   const { channel } = useChatStore();
@@ -18,6 +20,10 @@ const SendMessage = () => {
     await sendMessage({ variables: { channel, message } });
     setMessage('');
   };
+  
+  if (!channel) {
+    return null;
+  }
 
   return (
     <form onSubmit={handleSend} className='w-full flex items-center mt-3'>

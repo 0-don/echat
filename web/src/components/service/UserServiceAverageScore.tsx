@@ -33,18 +33,20 @@ export const UserServiceAverageScore: React.FC<UserServiceAverageScoreProps> =
                   <span className='text-3xl'>5.0</span>
                 </p>
                 <div className='flex space-x-1 mb-0.5 w-full'>
-                  <ReactStars
-                    count={5}
-                    value={Number(averageScore)}
-                    size={36}
-                    isHalf={true}
-                    readonly={true}
-                    edit={false}
-                    emptyIcon={<i className='far fa-star'></i>}
-                    halfIcon={<i className='fa fa-star-half-alt'></i>}
-                    fullIcon={<i className='fa fa-star'></i>}
-                    activeColor='#eab308'
-                  />
+                  {Number(averageScore) > 0 && (
+                    <ReactStars
+                      count={5}
+                      value={parseFloat(averageScore)}
+                      size={36}
+                      isHalf={true}
+                      readonly={true}
+                      edit={false}
+                      emptyIcon={<i className='far fa-star'></i>}
+                      halfIcon={<i className='fa fa-star-half-alt'></i>}
+                      fullIcon={<i className='fa fa-star'></i>}
+                      activeColor='#eab308'
+                    />
+                  )}
                 </div>
               </div>
             </div>

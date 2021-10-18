@@ -49,8 +49,11 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         return newState;
       },
     });
+  }, []);
+
+  useEffect(() => {
     messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
-  }, [room]);
+  }, [messages]);
 
   return (
     <>

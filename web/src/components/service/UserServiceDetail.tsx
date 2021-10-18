@@ -4,7 +4,7 @@ import React from 'react';
 import { GetUserServiceQuery } from 'src/generated/graphql';
 import { ImagePopup } from '../utils/ImagePopup';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-dayjs.extend(localizedFormat)
+dayjs.extend(localizedFormat);
 
 interface UserServiceDetailProps {
   data: GetUserServiceQuery | undefined;
@@ -32,7 +32,7 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
         </div>
       )}
       <div className='flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-4 mt-5'>
-        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 md:max-w-xl'>
+        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg p-3 px-5 md:w-full'>
           <div className='flex space-x-1 items-center'>
             <FontAwesomeIcon
               size='sm'
@@ -65,7 +65,7 @@ export const UserServiceDetail: React.FC<UserServiceDetailProps> = ({
           <p>{userService?.description}</p>
         </div>
 
-        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg pb-2 w-full'>
+        <div className='bg-white dark:bg-dark dark:text-white shadow rounded-lg pb-2 w-full md:max-w-sm'>
           <div className='flex space-x-1 items-center px-5 p-3'>
             <FontAwesomeIcon
               size='sm'

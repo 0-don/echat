@@ -3,6 +3,7 @@ query Me {
     id
     type
     username
+    coins
     gender
     countryId
     age

@@ -20,7 +20,7 @@ const SendMessage: React.FC<SendMessageProps> = ({}) => {
     await sendMessage({ variables: { channel, message } });
     setMessage('');
   };
-  
+
   if (!channel) {
     return null;
   }

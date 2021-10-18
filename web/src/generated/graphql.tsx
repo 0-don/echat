@@ -271,6 +271,7 @@ export type Query = {
   getMeUserService?: Maybe<Array<UserService>>;
   getUserService: UserService;
   getRooms?: Maybe<Array<Room>>;
+  getMessages?: Maybe<Array<Message>>;
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
   getBuyerOrders: Array<Order>;
@@ -303,6 +304,11 @@ export type QueryFilterUserServiceArgs = {
 
 export type QueryGetUserServiceArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryGetMessagesArgs = {
+  channel: Scalars['String'];
 };
 
 
@@ -838,6 +844,19 @@ export type GetMeUserServiceQuery = (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'igdbId' | 'twitchId' | 'name' | 'popularity' | 'boxArtUrl' | 'first_release_date' | 'platforms' | 'genres' | 'multiplayer_modes'>
     ) }
+  )>> }
+);
+
+export type GetMessagesQueryVariables = Exact<{
+  channel: Scalars['String'];
+}>;
+
+
+export type GetMessagesQuery = (
+  { __typename?: 'Query' }
+  & { getMessages?: Maybe<Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'createdAt'>
   )>> }
 );
 
@@ -2033,6 +2052,45 @@ export function useGetMeUserServiceLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServiceQuery>;
 export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
 export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
+export const GetMessagesDocument = gql`
+    query GetMessages($channel: String!) {
+  getMessages(channel: $channel) {
+    id
+    message
+    roomId
+    userId
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesQuery({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useGetMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+      }
+export function useGetMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+        }
+export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
+export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
+export type GetMessagesQueryResult = Apollo.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
 export const GetRoomsDocument = gql`
     query GetRooms {
   getRooms {
@@ -2774,6 +2832,7 @@ export const namedOperations = {
     GetCountries: 'GetCountries',
     GetLanguages: 'GetLanguages',
     GetMeUserService: 'GetMeUserService',
+    GetMessages: 'GetMessages',
     GetRooms: 'GetRooms',
     GetSellerOrders: 'GetSellerOrders',
     GetServices: 'GetServices',

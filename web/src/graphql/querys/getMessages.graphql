@@ -1,0 +1,9 @@
+query GetMessages($channel: String!) {
+  getMessages(channel: $channel) {
+    id
+    message
+    roomId
+    userId
+    createdAt
+  }
+}

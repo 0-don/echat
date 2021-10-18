@@ -41,6 +41,28 @@ export class ChatResolver {
     return rooms;
   }
 
+  @Query(() => [Message], { nullable: true })
+  async getMessages(
+    @Ctx() { req }: MyContext,
+    @Arg('channel') channel: string
+  ) {
+    const { userId } = req.session;
+    const messages = await getRepository(Message)
+      .createQueryBuilder('message')
+      .leftJoinAndSelect(Room, 'room', 'room.id = message.roomId')
+      .andWhere('message.userId = :userId AND room.channel = :channel', {
+        userId,
+        channel,
+      })
+      .getMany();
+
+    if (!messages.length) {
+      return null;
+    }
+
+    return messages;
+  }
+
   @Mutation(() => Boolean, { nullable: true })
   async createRoom(
     @Ctx() { req }: MyContext,
@@ -119,6 +141,7 @@ export class ChatResolver {
 
     const messageDB = result.raw[0] as Message;
 
+    console.log(messageDB)
     await pubSub.publish(channel, messageDB);
 
     return messageDB;

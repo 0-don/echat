@@ -5,6 +5,7 @@ import {
   MessageSentSubscriptionVariables,
   useMeQuery,
   useGetRoomsQuery,
+  useGetMessagesLazyQuery,
 } from 'src/generated/graphql';
 import SendMessage from './SendMessage';
 import produce from 'immer';
@@ -21,7 +22,12 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   const { data: me } = useMeQuery();
   const meId = me?.me?.id;
 
-  const { data, subscribeToMore } = useGetRoomsQuery();
+  const { data } = useGetRoomsQuery();
+  // const { data, subscribeToMore } = useGetRoomsQuery();
+  const [
+    getMessages,
+    { called, refetch, loading, data: msg, error, subscribeToMore },
+  ] = useGetMessagesLazyQuery();
   const { channel, switchChatPopup } = useChatStore();
 
   const room = data?.getRooms?.find((room) => room.channel === channel);
@@ -33,23 +39,39 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    subscribeToMore<MessageSentSubscription, MessageSentSubscriptionVariables>({
-      document: MessageSentDocument,
-      variables: { channel },
-      updateQuery: (prev, { subscriptionData }) => {
-        const newState = produce(prev, (draft) => {
-          const room = draft?.getRooms?.find(
-            (room) => room.channel === channel
-          );
+    if (channel && !called) {
+      getMessages({ variables: { channel } });
+    }
+  }, [getMessages, channel, called]);
 
-          subscriptionData?.data?.messageSent &&
-            room?.messages?.push(subscriptionData.data.messageSent);
-        });
+  useEffect(() => {
+    if (channel && called) {
+      refetch!({ channel });
+    }
+  }, [refetch, channel, called]);
 
-        return newState;
-      },
-    });
-  }, []);
+  useEffect(() => {
+    if (channel && subscribeToMore) {
+      const messageSent = subscribeToMore<
+        MessageSentSubscription,
+        MessageSentSubscriptionVariables
+      >({
+        document: MessageSentDocument,
+        variables: { channel },
+        updateQuery: (prev, { subscriptionData }) => {
+          const newState = produce(prev, (draft) => {
+            draft.getMessages?.push(subscriptionData.data.messageSent);
+          });
+          console.log(newState);
+          return newState;
+        },
+      });
+
+      return () => {
+        messageSent();
+      };
+    }
+  }, [channel, subscribeToMore]);
 
   useEffect(() => {
     messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
@@ -71,7 +93,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         </div>
         <hr className='border-lightGray my-3' />
         <div className='overflow-x-hidden overflow-y-auto h-96'>
-          {messages?.map(({ userId, message, createdAt, id }) => {
+          {msg?.getMessages?.map(({ userId, message, createdAt, id }) => {
             const user = room?.participants?.find(
               (participant) => participant.userId === userId
             )?.user;

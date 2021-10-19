@@ -63,7 +63,7 @@ export class ChatResolver {
     return messages;
   }
 
-  @Mutation(() => Boolean, { nullable: true })
+  @Mutation(() => String, { nullable: true })
   async createRoom(
     @Ctx() { req }: MyContext,
     @Arg('participantId', () => Int) participantId: number
@@ -103,7 +103,7 @@ export class ChatResolver {
       ]);
     }
 
-    return true;
+    return room.channel;
   }
 
   @Mutation(() => Message, { nullable: true })
@@ -141,7 +141,7 @@ export class ChatResolver {
 
     const messageDB = result.raw[0] as Message;
 
-    console.log(messageDB)
+    console.log(messageDB);
     await pubSub.publish(channel, messageDB);
 
     return messageDB;

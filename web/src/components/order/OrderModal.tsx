@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from 'src/components/htmlElements';
 import {
   FieldError,
+  GetBuyerOrdersDocument,
   GetUserServiceQuery,
   useCreateOrderMutation,
 } from 'src/generated/graphql';
@@ -157,6 +158,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({ data }) => {
                       rounds,
                       startTime,
                     },
+                    refetchQueries: [{ query: GetBuyerOrdersDocument }],
                   });
                   data?.createOrder.errors?.length &&
                     setErrors(data?.createOrder.errors);

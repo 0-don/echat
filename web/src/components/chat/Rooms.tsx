@@ -17,14 +17,16 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
 
   return (
     <>
-      <button />
       {data?.getRooms?.map((room) => {
         const participant = room.participants?.find(
           (participant) => participant.userId !== meId
         )?.user;
 
-        const lastMessage =
-          room.messages && room?.messages[room.messages.length - 1];
+        const lastMessage = {
+          message: 'test',
+          createdAt: '1988-10-04T20:59:27.889Z',
+        };
+        // room.messages && room?.messages[room.messages.length - 1];
 
         const profileImg = participant?.images?.find(
           (image) => image.type === 'profile'

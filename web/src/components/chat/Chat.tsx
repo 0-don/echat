@@ -11,7 +11,7 @@ export const Chat: React.FC = () => {
     <>
       {chatPopup && (
         <div className='fixed bottom-0 right-0 z-10 mr-10 mb-10 flex text-white '>
-          <div className='bg-dark-lightAlt rounded-tl-xl rounded-bl-xl w-80 px-2'>
+          <div className='bg-dark-lightAlt rounded-tl-xl rounded-bl-xl w-80 px-2 pt-2'>
             <Rooms />
           </div>
           <div className='bg-dark p-5 rounded-tr-xl rounded-br-xl w-96 max-w-sm'>

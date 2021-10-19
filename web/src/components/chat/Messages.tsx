@@ -19,22 +19,19 @@ dayjs.extend(relativeTime);
 interface MessagesProps {}
 
 export const Messages: React.FC<MessagesProps> = ({}) => {
-  const { data: me } = useMeQuery();
-  const meId = me?.me?.id;
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const { channel, switchChatPopup } = useChatStore();
+  const { data: me } = useMeQuery();
   const { data } = useGetRoomsQuery();
-  // const { data, subscribeToMore } = useGetRoomsQuery();
   const [getMessages, { called, refetch, data: msg, subscribeToMore }] =
     useGetMessagesLazyQuery();
-  const { channel, switchChatPopup } = useChatStore();
 
+  const meId = me?.me?.id;
   const room = data?.getRooms?.find((room) => room.channel === channel);
-  const messages = room?.messages;
   const chattingWith = room?.participants?.find(
     (participant) => participant.userId !== meId
   );
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (channel && !called) {
@@ -43,8 +40,8 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   }, [getMessages, channel, called]);
 
   useEffect(() => {
-    if (channel && called) {
-      refetch!({ channel });
+    if (channel && called && refetch) {
+      refetch({ channel });
     }
   }, [refetch, channel, called]);
 
@@ -60,13 +57,13 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
           const newState = produce(prev, (draft) => {
             draft.getMessages?.push(subscriptionData.data.messageSent);
           });
-          console.log(newState);
+
           return newState;
         },
       });
 
       return () => {
-        messageSent();
+        messageSent && messageSent();
       };
     }
     return () => {};
@@ -74,7 +71,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
 
   useEffect(() => {
     messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
-  }, [messages]);
+  }, [msg]);
 
   return (
     <>

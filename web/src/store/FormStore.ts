@@ -45,7 +45,7 @@ const useFormStore = create<Form>(
             if (!state.steps.length && form) {
               state.steps = form;
               state.currentStep = form[0].name;
-            }       
+            }
           }),
       })
     ),
@@ -53,7 +53,10 @@ const useFormStore = create<Form>(
       name: 'Form',
       serialize: (state) => JSON.stringify(state),
       deserialize: (storedState) => JSON.parse(storedState),
-      blacklist: ['hasHydrated'],
+      partialize: (state) => {
+        const { hasHydrated, ...fresh } = state;
+        return fresh;
+      },
     }
   )
 );

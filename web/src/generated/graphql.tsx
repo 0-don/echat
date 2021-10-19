@@ -519,8 +519,14 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'type' | 'username' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
-  & { languages?: Maybe<Array<(
+  & Pick<User, 'id' | 'type' | 'username' | 'coins' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+  & { target?: Maybe<Array<(
+    { __typename?: 'Review' }
+    & Pick<Review, 'id' | 'score' | 'recommend'>
+  )>>, country?: Maybe<(
+    { __typename?: 'Country' }
+    & Pick<Country, 'id' | 'name' | 'flag'>
+  )>, languages?: Maybe<Array<(
     { __typename?: 'UserLanguage' }
     & Pick<UserLanguage, 'id' | 'name'>
   )>>, schedules?: Maybe<Array<(
@@ -1157,11 +1163,17 @@ export const RegularUserFragmentDoc = gql`
   id
   type
   username
+  coins
   gender
   countryId
   age
   lastOnline
   description
+  target {
+    id
+    score
+    recommend
+  }
   discord
   twitter
   facebook
@@ -1170,6 +1182,11 @@ export const RegularUserFragmentDoc = gql`
   twitch
   steam
   tiktok
+  country {
+    id
+    name
+    flag
+  }
   languages {
     id
     name

@@ -1,12 +1,19 @@
 fragment RegularUser on User {
-    id
+ id
     type
     username
+    coins
     gender
     countryId
     age
     lastOnline
     description
+
+    target {
+      id
+      score
+      recommend
+    }
 
     discord
     twitter
@@ -16,6 +23,12 @@ fragment RegularUser on User {
     twitch
     steam
     tiktok
+
+    country {
+      id
+      name
+      flag
+    }
 
     languages {
       id

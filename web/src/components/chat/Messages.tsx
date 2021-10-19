@@ -24,10 +24,8 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
 
   const { data } = useGetRoomsQuery();
   // const { data, subscribeToMore } = useGetRoomsQuery();
-  const [
-    getMessages,
-    { called, refetch, loading, data: msg, error, subscribeToMore },
-  ] = useGetMessagesLazyQuery();
+  const [getMessages, { called, refetch, data: msg, subscribeToMore }] =
+    useGetMessagesLazyQuery();
   const { channel, switchChatPopup } = useChatStore();
 
   const room = data?.getRooms?.find((room) => room.channel === channel);
@@ -71,6 +69,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         messageSent();
       };
     }
+    return () => {};
   }, [channel, subscribeToMore]);
 
   useEffect(() => {

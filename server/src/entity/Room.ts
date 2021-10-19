@@ -4,6 +4,7 @@ import { TypeormLoader } from 'type-graphql-dataloader';
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -39,4 +40,8 @@ export class Room extends BaseEntity {
   })
   @TypeormLoader()
   participants?: Lazy<Participant[] | null>;
+
+  @Field()
+  @CreateDateColumn()
+  createdAt: Date;
 }

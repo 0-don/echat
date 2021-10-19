@@ -42,7 +42,10 @@ const useDarkModeStore = create<DarkMode>(
       name: 'DarkMode',
       serialize: (state) => JSON.stringify(state),
       deserialize: (storedState) => JSON.parse(storedState),
-      blacklist: ['hasHydrated'],
+      partialize: (state) => {
+        const { hasHydrated, ...fresh } = state;
+        return fresh;
+      },
     }
   )
 );

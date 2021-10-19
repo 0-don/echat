@@ -1,5 +1,10 @@
 import { NextPage } from 'next';
-import { useCreateRoomMutation, useGetUserQuery } from 'src/generated/graphql';
+import {
+  GetRoomsDocument,
+  useCreateRoomMutation,
+  useGetUserQuery,
+  useMeQuery,
+} from 'src/generated/graphql';
 import { Wrapper } from '../../components/Wrapper';
 import withApollo from '../../utils/apollo/withApollo';
 import transparent from '/public/transparent.png';
@@ -13,8 +18,12 @@ import { Album } from 'src/components/user/Album';
 import { Reviews } from 'src/components/user/Reviews';
 import { ImagePopup } from 'src/components/utils/ImagePopup';
 import { genderIcon } from 'src/utils/icons';
+import useChatStore from 'src/store/ChatStore';
 
 const UserDetail: NextPage<{ id: number }> = ({ id }) => {
+  const { data: me } = useMeQuery();
+  const { switchChatPopup, chatPopup, setChannel } = useChatStore();
+
   const [tabs, setTabs] = useState([
     { name: 'Services', icon: 'gamepad', current: true },
     { name: 'Album', icon: 'images', current: false },
@@ -111,17 +120,22 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
         </div>
 
         <div className='flex space-x-5 md:order-none justify-between md:justify-start mb-5'>
-          <button className='big-button'>follow</button>
-          <button
-            className='big-button'
-            onClick={async () => {
-              if (user) {
-                await createRoom({ variables: { participantId: user.id } });
-              }
-            }}
-          >
-            chat
-          </button>
+          {/* <button className='big-button'>follow</button> */}
+          {me && user && (
+            <button
+              className='big-button'
+              onClick={async () => {
+                const res = await createRoom({
+                  variables: { participantId: user.id },
+                  refetchQueries: [{ query: GetRoomsDocument }],
+                });
+                res.data?.createRoom && setChannel(res.data.createRoom);
+                !chatPopup && switchChatPopup();
+              }}
+            >
+              chat
+            </button>
+          )}
         </div>
       </div>
       <Tabs tabs={tabs} setTabs={setTabs} />

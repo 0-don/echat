@@ -108,7 +108,7 @@ export type Mutation = {
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
-  createRoom?: Maybe<Scalars['Boolean']>;
+  createRoom?: Maybe<Scalars['String']>;
   sendMessage?: Maybe<Message>;
   createReview: Scalars['Boolean'];
   createOrder: OrderResponse;
@@ -352,6 +352,7 @@ export type Room = {
   channel: Scalars['String'];
   messages?: Maybe<Array<Message>>;
   participants?: Maybe<Array<Participant>>;
+  createdAt: Scalars['DateTime'];
 };
 
 export type Schedule = {
@@ -873,11 +874,8 @@ export type GetRoomsQuery = (
   { __typename?: 'Query' }
   & { getRooms?: Maybe<Array<(
     { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'channel'>
-    & { messages?: Maybe<Array<(
-      { __typename?: 'Message' }
-      & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'createdAt'>
-    )>>, participants?: Maybe<Array<(
+    & Pick<Room, 'id' | 'channel' | 'createdAt'>
+    & { participants?: Maybe<Array<(
       { __typename?: 'Participant' }
       & Pick<Participant, 'id' | 'roomId' | 'userId'>
       & { user: (
@@ -2113,13 +2111,7 @@ export const GetRoomsDocument = gql`
   getRooms {
     id
     channel
-    messages {
-      id
-      message
-      roomId
-      userId
-      createdAt
-    }
+    createdAt
     participants {
       id
       roomId

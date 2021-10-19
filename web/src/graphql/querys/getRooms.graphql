@@ -2,13 +2,7 @@ query GetRooms {
   getRooms {
     id
     channel
-    messages {
-      id
-      message
-      roomId
-      userId
-      createdAt
-    }
+    createdAt
     participants {
       id
       roomId

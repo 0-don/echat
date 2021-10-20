@@ -141,7 +141,7 @@ export class ChatResolver {
 
     const messageDB = result.raw[0] as Message;
 
-    console.log(messageDB);
+
     await pubSub.publish(channel, messageDB);
 
     return messageDB;

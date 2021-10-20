@@ -15,6 +15,7 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
   const { data: me } = useMeQuery();
   const meId = me?.me?.id;
 
+  console.log(data?.getRooms);
   return (
     <>
       {data?.getRooms?.map((room) => {

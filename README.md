@@ -138,7 +138,7 @@ This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and 
 1. `./web/.env.local` graphql server url port
 
    ```diff
-   - change GRAPHQL_SERVER_URL to your specified port in the ./server/.env file
+   - change NEXT_PUBLIC_GRAPHQL_SERVER_URL, to your specified url & port from the ./server/.env file
    ```
 
 2. from root `echat/` folder, run web.
@@ -259,7 +259,7 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
     {
       root /var/www/html;
       index index.html index.htm index.nginx-debian.html;
-      server_name aktoryes.de www.aktoryes.de;
+      server_name site-name.com www.site-name.com;
       client_max_body_size 200M;
 
       location /

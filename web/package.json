@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"graphql-codegen --config codegen.yml -w\"",
+    "dev": "concurrently \"next dev\" \"graphql-codegen --config codegen.js -w\"",
     "build": "next build",
     "start": "cross-env NODE_ENV=production next start",
     "gen": "graphql-codegen --config codegen.yml"

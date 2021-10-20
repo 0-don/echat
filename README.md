@@ -1,21 +1,3 @@
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-<!--
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url] -->
-
-<!-- PROJECT LOGO -->
-
 <p align="center">
   <a href="https://github.com/Don-Cryptus/echat">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
@@ -116,14 +98,12 @@ This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and 
   psql -help
   ```
 
-  (!important) To install yarn type **npm i yarn -g**
-
-- yarn
+- important to install yarn packet manager & typescript globally
   ```sh
-  npm i yarn ts-node nodemon typescript -g
+  npm i yarn typescript -g
   ```
 
-(Optional) You will need to have a SMPT Email and a Cloudinary account to use the API for Emails & Images
+(Optional) SMPT Email, Cloudinary account and Twitch API (look up .env.development)
 
 ## Installation Development
 
@@ -136,7 +116,7 @@ This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and 
   ```
 
   ```diff
-  + Run 2 Terminals at the same time, one for Server & one for Web
+  + Run 2 Terminals at the same time, 1 Server & 1 Web
   ```
 
 ### Server Development
@@ -153,27 +133,15 @@ This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and 
    yarn server
    ```
 
-3. got to your Browser to your Graphql Server URL & PORTS
-   like for example `http://localhost:4001/graphql`
-   ```sh
-   Graphql Server URL & PORTS
-   ```
-
 ### Web Development
 
-1. `./web/src/constants.ts` graphql server url port
+1. `./web/.env.local` graphql server url port
 
    ```diff
    - change GRAPHQL_SERVER_URL to your specified port in the ./server/.env file
    ```
 
-2. `./web/codegen.yml` change schema url to your server like in `constants.ts`
-
-   ```diff
-   - change schema to your specified url in the ./server/.env file
-   ```
-
-3. from root `echat/` folder, run web.
+2. from root `echat/` folder, run web.
 
    ```sh
    yarn web
@@ -199,7 +167,7 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 
   - some node global dependecies
     ```sh
-    sudo npm i pm2 yarn typescript nodemon ts-node -g
+    sudo npm i pm2 yarn typescript -g
     ```
 
 - postgres
@@ -268,10 +236,8 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 ## Installation Production
 
 1. First of all you need to setup [github action secrets](https://github.com/Don-Cryptus/echat/settings/secrets/actions) from `./server/.env`
-2. set up `./web/src/constants.ts` graphql server url port
-3. set up `./web/codegen.yml` change schema url to your server
-4. set up your workflows in like in `./.github/workflows/node.js.yml`
-5. set up action runner as shown [here](https://github.com/Don-Cryptus/echat/settings/actions/runners/new)
+2. set up your workflows in like in `./.github/workflows/node.js.yml`
+3. set up action runner as shown [here](https://github.com/Don-Cryptus/echat/settings/actions/runners/new)
 
    while still beeing in the action-runner folder run this:(this will setup background process for the actions)
 
@@ -289,46 +255,44 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
   paste this config
 
   ```
-    server {
-
-    root /var/www/html;
-    client_max_body_size 200M;
-    index index.html index.htm index.nginx-debian.html;
-
-    #DONT FORGET TO CHANGE DOMAIN NAME
-    server_name site-name.com www.site-name.com;
-
-    location / {
-      #DONT FORGET TO CHANGE TO YOUR CLIENT PORT
-      proxy_pass http://localhost:3000;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection 'upgrade';
-      proxy_set_header Host $host;
-      proxy_cache_bypass $http_upgrade;
-      proxy_redirect off;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
+    server
+    {
+      root /var/www/html;
+      index index.html index.htm index.nginx-debian.html;
+      server_name aktoryes.de www.aktoryes.de;
       client_max_body_size 200M;
 
-    }
+      location /
+      {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection $http_connection;
+        client_max_body_size 200M;
+      }
 
-    location /graphql {
-      #DONT FORGET TO CHANGE TO YOUR SERVER PORT
-      proxy_pass http://localhost:4001/graphql;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection 'upgrade';
-      proxy_set_header Host $host;
-      proxy_cache_bypass $http_upgrade;
-      proxy_redirect off;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
-      client_max_body_size 200M;
-    }
-    }
+      location /graphql
+      {
+        proxy_pass http://localhost:4001/graphql;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection $http_connection;
+        client_max_body_size 200M;
+      }
   ```
 
   ```diff

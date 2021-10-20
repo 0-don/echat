@@ -348,11 +348,14 @@ export type ReviewOptions = {
 
 export type Room = {
   __typename?: 'Room';
-  id: Scalars['Int'];
   channel: Scalars['String'];
-  messages?: Maybe<Array<Message>>;
-  participants?: Maybe<Array<Participant>>;
   createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  lastMessageDate?: Maybe<Scalars['DateTime']>;
+  messages?: Maybe<Array<Message>>;
+  newMessage?: Maybe<Scalars['String']>;
+  newMessagesCount?: Maybe<Scalars['Int']>;
+  participants?: Maybe<Array<Participant>>;
 };
 
 export type Schedule = {
@@ -874,7 +877,7 @@ export type GetRoomsQuery = (
   { __typename?: 'Query' }
   & { getRooms?: Maybe<Array<(
     { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'channel' | 'createdAt'>
+    & Pick<Room, 'id' | 'channel' | 'createdAt' | 'newMessage' | 'newMessagesCount' | 'lastMessageDate'>
     & { participants?: Maybe<Array<(
       { __typename?: 'Participant' }
       & Pick<Participant, 'id' | 'roomId' | 'userId'>
@@ -2112,6 +2115,9 @@ export const GetRoomsDocument = gql`
     id
     channel
     createdAt
+    newMessage @client
+    newMessagesCount @client
+    lastMessageDate @client
     participants {
       id
       roomId

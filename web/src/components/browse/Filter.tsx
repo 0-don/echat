@@ -76,6 +76,7 @@ export const Filter: React.FC = () => {
             icon='search'
             text='filter'
             className='py-5 border-2 border-purple hover:border-purple-dark mt-0.5'
+            style={{height: "42px", marginTop: "2px"}}
             onClick={async () => {
               setCursor(undefined);
               await refetch({ ...filterQuery, cursor: undefined });

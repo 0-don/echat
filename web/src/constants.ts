@@ -2,7 +2,7 @@
 export const __prod__ = 'production' === process.env.NODE_ENV;
 export const GRAPHQL_SERVER_URL = __prod__
   ? '/graphql'
-  : process.env.GRAPHQL_SERVER_URL;
+  : process.env.GRAPHQL_SERVER_URL!;
 
 export const PERS = [
   { id: 1, name: 'Game' },

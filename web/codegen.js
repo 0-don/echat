@@ -5,7 +5,7 @@ loadEnvConfig(projectDir);
 
 module.exports = {
   overwrite: true,
-  schema: [process.env.GRAPHQL_SERVER_URL, './src/local.graphql'],
+  schema: [process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL, './src/local.graphql'],
   documents: 'src/graphql/**/*.graphql',
   config: {
     scalars: {

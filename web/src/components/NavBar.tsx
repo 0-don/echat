@@ -7,7 +7,6 @@ import { UserMenu } from './utils/UserMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMeQuery } from 'src/generated/graphql';
 
-
 const currentURL = () =>
   typeof window !== 'undefined'
     ? new URL(window.location.href).pathname.split('/')
@@ -22,7 +21,6 @@ export const NavBar: React.FC = ({}) => {
   useEffect(() => {
     setActiveMenu(currentURL());
   }, []);
-
 
   return (
     <Disclosure as='nav' className='bg-white dark:bg-dark shadow'>
@@ -109,8 +107,10 @@ export const NavBar: React.FC = ({}) => {
               <NextLink href='/'>
                 <a
                   className={`${
-                    activeMenu?.length === 2 ? 'bg-purple text-white' : ''
-                  } hover:bg-purple-dark block pl-3 pr-4 py-2 text-base font-medium`}
+                    activeMenu?.length === 2
+                      ? 'bg-purple text-white dark:text-white'
+                      : 'text-black dark:text-white'
+                  } hover:bg-purple-dark hover:text-white block pl-3 pr-4 py-2 text-base font-medium`}
                 >
                   Home
                 </a>
@@ -119,9 +119,9 @@ export const NavBar: React.FC = ({}) => {
                 <a
                   className={`${
                     activeMenu?.length && activeMenu[1] === 'browse'
-                      ? 'bg-purple'
-                      : 'text-black dark:text-white '
-                  } hover:bg-purple-dark block pl-3 pr-4 py-2 text-base font-medium`}
+                      ? 'bg-purple text-white dark:text-white'
+                      : 'text-black dark:text-white'
+                  } hover:bg-purple-dark hover:text-white block pl-3 pr-4 py-2 text-base font-medium`}
                 >
                   Browse
                 </a>

@@ -105,12 +105,12 @@ export const NavBar: React.FC = ({}) => {
           </div>
 
           <Disclosure.Panel className='sm:hidden'>
-            <div className='pt-2 pb-4 space-y-1'>
+            <div className='py-2 space-y-1'>
               <NextLink href='/'>
                 <a
                   className={`${
-                    activeMenu?.length === 2 ? 'bg-indigo-50' : 'bg-purple'
-                  }border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                    activeMenu?.length === 2 ? 'bg-purple text-white' : ''
+                  } hover:bg-purple-dark block pl-3 pr-4 py-2 text-base font-medium`}
                 >
                   Home
                 </a>
@@ -120,8 +120,8 @@ export const NavBar: React.FC = ({}) => {
                   className={`${
                     activeMenu?.length && activeMenu[1] === 'browse'
                       ? 'bg-purple'
-                      : 'bg-indigo-50'
-                  } border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+                      : 'text-black dark:text-white '
+                  } hover:bg-purple-dark block pl-3 pr-4 py-2 text-base font-medium`}
                 >
                   Browse
                 </a>

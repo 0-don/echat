@@ -12,7 +12,7 @@ interface ReviewsProps {
 
 export const Reviews: React.FC<ReviewsProps> = ({ data }) => {
   const reviews = data?.getUser?.target;
-  const averageScore = reviews
+  const averageScore = reviews?.length
     ? (
         reviews.reduce((total, next) => total + next.score, 0) / reviews.length
       ).toFixed(1)

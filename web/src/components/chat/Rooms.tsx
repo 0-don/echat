@@ -1,33 +1,67 @@
-import React from 'react';
-import { useGetRoomsQuery, useMeQuery } from 'src/generated/graphql';
+import React, { useEffect } from 'react';
+import {
+  GetRoomsDocument,
+  MessageSentDocument,
+  MessageSentSubscription,
+  MessageSentSubscriptionVariables,
+  useDeleteRoomMutation,
+  useGetRoomsQuery,
+  useMeQuery,
+} from 'src/generated/graphql';
 import gray from '/public/gray.png';
 import Image from 'next/image';
 import useChatStore from 'src/store/ChatStore';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import produce from 'immer';
 dayjs.extend(relativeTime);
 
 interface RoomsProps {}
 
 export const Rooms: React.FC<RoomsProps> = ({}) => {
-  const { data } = useGetRoomsQuery();
+  const [deleteRoom] = useDeleteRoomMutation();
+  const { data, subscribeToMore } = useGetRoomsQuery();
+
   const { setChannel, channel } = useChatStore();
   const { data: me } = useMeQuery();
   const meId = me?.me?.id;
+  const rooms = data?.getRooms;
+  useEffect(() => {
+    if (rooms)
+      for (let room of rooms) {
+        subscribeToMore<
+          MessageSentSubscription,
+          MessageSentSubscriptionVariables
+        >({
+          document: MessageSentDocument,
+          variables: { channel: room.channel },
+          updateQuery: (prev, { subscriptionData }) => {
+            const messageSent = subscriptionData.data.messageSent;
 
-  console.log(data?.getRooms);
+            const newState = produce(prev, (draft) => {
+              const room = draft.getRooms?.find(
+                (room) => room.id === messageSent.roomId
+              );
+              if (room) {
+                room.lastMessageDate = messageSent.createdAt;
+                room.newMessage = messageSent.message;
+                room.newMessagesCount = 1 + (room?.newMessagesCount || 0);
+              }
+            });
+            console.log(newState);
+            return newState;
+          },
+        });
+      }
+  }, []);
+
   return (
     <>
       {data?.getRooms?.map((room) => {
         const participant = room.participants?.find(
           (participant) => participant.userId !== meId
         )?.user;
-
-        const lastMessage = {
-          message: 'test',
-          createdAt: '1988-10-04T20:59:27.889Z',
-        };
-        // room.messages && room?.messages[room.messages.length - 1];
 
         const profileImg = participant?.images?.find(
           (image) => image.type === 'profile'
@@ -39,7 +73,7 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
             onClick={() => setChannel(room.channel)}
             className={`${
               channel === room.channel ? 'border-l-4 border-purple' : ''
-            }  overflow-x-hidden overflow-y-auto entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-dark mb-1 rounded p-4 flex shadow-2xl`}
+            }  hover:border-l-4 hover:border-purple-dark overflow-x-hidden overflow-y-auto entry cursor-pointer transform duration-300 transition-transform bg-dark mb-1 rounded p-4 flex shadow-2xl`}
           >
             <div className='w-12 h-12 relative'>
               <Image
@@ -62,15 +96,35 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
             <div className='w-full ml-5'>
               <div className='flex justify-between'>
                 <span className='font-medium'>{participant?.username}</span>
-                <small className='text-xs bg-red-500 rounded-full h-5 w-5 flex justify-center items-center'>
-                  10
-                </small>
+                {room?.newMessagesCount && (
+                  <small className='text-xs bg-red-500 rounded-full h-5 w-5 flex justify-center items-center'>
+                    {room.newMessagesCount}
+                  </small>
+                )}
               </div>
               <div className='flex justify-between'>
                 <div className='overflow-hidden truncate w-10 text-sm'>
-                  {lastMessage?.message}
+                  {room?.newMessage}
                 </div>
-                <small>{dayjs(lastMessage?.createdAt).toNow(true)}</small>
+
+                <div className='flex space-x-1 items-center'>
+                  {room?.lastMessageDate && (
+                    <small>{dayjs(room.lastMessageDate).toNow(true)}</small>
+                  )}
+                  <FontAwesomeIcon
+                    size='sm'
+                    title='delete chats'
+                    className='dark:text-white text-black dark:hover:text-purple hover:text-purple mt-0.5'
+                    icon='trash-alt'
+                    onClick={async () => {
+                      await deleteRoom({
+                        variables: { channel: room.channel },
+                        refetchQueries: [{ query: GetRoomsDocument }],
+                      });
+                      setChannel('');
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>

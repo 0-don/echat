@@ -110,6 +110,7 @@ export type Mutation = {
   deleteUserService: Scalars['Boolean'];
   createRoom?: Maybe<Scalars['String']>;
   sendMessage?: Maybe<Message>;
+  deleteRoom: Scalars['Boolean'];
   createReview: Scalars['Boolean'];
   createOrder: OrderResponse;
   completeOrder: OrderResponse;
@@ -183,6 +184,11 @@ export type MutationCreateRoomArgs = {
 
 export type MutationSendMessageArgs = {
   message: Scalars['String'];
+  channel: Scalars['String'];
+};
+
+
+export type MutationDeleteRoomArgs = {
   channel: Scalars['String'];
 };
 
@@ -670,6 +676,16 @@ export type DeleteImageMutationVariables = Exact<{
 export type DeleteImageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteImage'>
+);
+
+export type DeleteRoomMutationVariables = Exact<{
+  channel: Scalars['String'];
+}>;
+
+
+export type DeleteRoomMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteRoom'>
 );
 
 export type DeleteUserServiceMutationVariables = Exact<{
@@ -1546,6 +1562,37 @@ export function useDeleteImageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteImageMutationHookResult = ReturnType<typeof useDeleteImageMutation>;
 export type DeleteImageMutationResult = Apollo.MutationResult<DeleteImageMutation>;
 export type DeleteImageMutationOptions = Apollo.BaseMutationOptions<DeleteImageMutation, DeleteImageMutationVariables>;
+export const DeleteRoomDocument = gql`
+    mutation DeleteRoom($channel: String!) {
+  deleteRoom(channel: $channel)
+}
+    `;
+export type DeleteRoomMutationFn = Apollo.MutationFunction<DeleteRoomMutation, DeleteRoomMutationVariables>;
+
+/**
+ * __useDeleteRoomMutation__
+ *
+ * To run a mutation, you first call `useDeleteRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRoomMutation, { data, loading, error }] = useDeleteRoomMutation({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useDeleteRoomMutation(baseOptions?: Apollo.MutationHookOptions<DeleteRoomMutation, DeleteRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteRoomMutation, DeleteRoomMutationVariables>(DeleteRoomDocument, options);
+      }
+export type DeleteRoomMutationHookResult = ReturnType<typeof useDeleteRoomMutation>;
+export type DeleteRoomMutationResult = Apollo.MutationResult<DeleteRoomMutation>;
+export type DeleteRoomMutationOptions = Apollo.BaseMutationOptions<DeleteRoomMutation, DeleteRoomMutationVariables>;
 export const DeleteUserServiceDocument = gql`
     mutation DeleteUserService($id: Int!) {
   deleteUserService(id: $id)
@@ -2869,6 +2916,7 @@ export const namedOperations = {
     CreateReview: 'CreateReview',
     createRoom: 'createRoom',
     DeleteImage: 'DeleteImage',
+    DeleteRoom: 'DeleteRoom',
     DeleteUserService: 'DeleteUserService',
     ForgotPassword: 'ForgotPassword',
     Login: 'Login',

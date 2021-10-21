@@ -73,6 +73,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
     messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
   }, [msg]);
 
+  console.log(msg)
   return (
     <>
       <div className='chat-area flex-1 flex flex-col'>

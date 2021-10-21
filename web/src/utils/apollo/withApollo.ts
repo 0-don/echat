@@ -1,14 +1,22 @@
-import { GRAPHQL_SERVER_URL, __prod__ } from '../../constants';
-import { withApollo } from 'next-apollo';
-import { customFetch } from './customFetch';
-import { ApolloClient, ApolloLink, from, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
+import { withApollo } from 'next-apollo';
+import { GRAPHQL_SERVER_URL, __prod__ } from '../../constants';
+import { customFetch } from './customFetch';
 import { createUploadLink } from 'apollo-upload-client';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { split } from '@apollo/client';
+
+import { ApolloClient, from, InMemoryCache, split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { PaginatedUserService } from 'src/generated/graphql';
+import {
+  ApolloLink,
+  Operation,
+  FetchResult,
+  Observable,
+} from '@apollo/client/core';
+import { GraphQLError, print } from 'graphql';
+import { createClient, Client, ClientOptions } from 'graphql-ws';
+
 import { parse, stringify } from 'flatted';
+import { PaginatedUserService } from 'src/generated/graphql';
 
 const cleanTypeName = new ApolloLink((operation, forward) => {
   const omitTypename = (key: string, value: any) =>
@@ -21,15 +29,61 @@ const cleanTypeName = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const createClient = (ctx: NextPageContext) => {
+class WebSocketLink extends ApolloLink {
+  private client: Client;
+
+  constructor(options: ClientOptions) {
+    super();
+    this.client = createClient(options);
+  }
+
+  public request(operation: Operation): Observable<FetchResult> {
+    return new Observable((sink) => {
+      return this.client.subscribe<FetchResult>(
+        { ...operation, query: print(operation.query) },
+        {
+          next: sink.next.bind(sink),
+          complete: sink.complete.bind(sink),
+          error: (err) => {
+            if (err instanceof Error) {
+              return sink.error(err);
+            }
+
+            if (err instanceof CloseEvent) {
+              return sink.error(
+                // reason will be available on clean closes
+                new Error(
+                  `Socket closed with event ${err.code} ${err.reason || ''}`
+                )
+              );
+            }
+
+            return sink.error(
+              new Error(
+                (err as GraphQLError[]).map(({ message }) => message).join(', ')
+              )
+            );
+          },
+        }
+      );
+    });
+  }
+}
+
+const createApolloClient = (ctx: NextPageContext) => {
   const wsLink =
     typeof window !== 'undefined' &&
     new WebSocketLink({
-      uri: __prod__
+      url: __prod__
         ? `wss://${new URL(window.location.href).hostname}/graphql`
         : `ws://${new URL(GRAPHQL_SERVER_URL).host}/graphql`,
-      options: { reconnect: true },
     });
+  // new WebSocketLink({
+  //   uri: __prod__
+  //     ? `wss://${new URL(window.location.href).hostname}/graphql`
+  //     : `ws://${new URL(GRAPHQL_SERVER_URL).host}/graphql`,
+  //   options: { reconnect: true },
+  // });
 
   const httpLink = createUploadLink({
     uri: GRAPHQL_SERVER_URL,
@@ -86,4 +140,4 @@ const createClient = (ctx: NextPageContext) => {
     link: from([cleanTypeName, link]),
   });
 };
-export default withApollo(createClient);
+export default withApollo(createApolloClient);

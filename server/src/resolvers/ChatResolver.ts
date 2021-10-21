@@ -50,9 +50,14 @@ export class ChatResolver {
     const messages = await getRepository(Message)
       .createQueryBuilder('message')
       .leftJoinAndSelect(Room, 'room', 'room.id = message.roomId')
-      .andWhere('message.userId = :userId AND room.channel = :channel', {
-        userId,
+      .leftJoinAndSelect(
+        Participant,
+        'participant',
+        'participant.roomId = room.id'
+      )
+      .andWhere('participant.userId = :userId AND room.channel = :channel', {
         channel,
+        userId,
       })
       .getMany();
 
@@ -140,7 +145,6 @@ export class ChatResolver {
       .execute();
 
     const messageDB = result.raw[0] as Message;
-
 
     await pubSub.publish(channel, messageDB);
 

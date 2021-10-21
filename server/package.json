@@ -21,18 +21,19 @@
     "faker": "^5.5.3",
     "graphql-type-json": "^0.3.2",
     "graphql-upload": "^12.0.0",
+    "graphql-ws": "^5.5.3",
     "lodash": "^4.17.21",
     "nodemailer": "^6.6.2",
     "pg": "^8.6.0",
     "probe-image-size": "^7.2.1",
     "psl": "^1.8.0",
     "reflect-metadata": "^0.1.13",
-    "subscriptions-transport-ws": "^0.9.19",
     "twitch": "^4.6.5",
     "type-graphql": "^1.1.1",
     "type-graphql-dataloader": "^0.4.0",
     "typeorm": "^0.2.34",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "ws": "^8.2.3"
   },
   "devDependencies": {
     "@types/connect-pg-simple": "^4.2.3",
@@ -49,6 +50,7 @@
     "@types/probe-image-size": "^7.0.1",
     "@types/psl": "^1.1.0",
     "@types/uuid": "^8.3.1",
+    "@types/ws": "^8.2.0",
     "cross-env": "^7.0.3",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"

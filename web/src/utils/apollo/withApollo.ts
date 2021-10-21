@@ -78,12 +78,6 @@ const createApolloClient = (ctx: NextPageContext) => {
         ? `wss://${new URL(window.location.href).hostname}/graphql`
         : `ws://${new URL(GRAPHQL_SERVER_URL).host}/graphql`,
     });
-  // new WebSocketLink({
-  //   uri: __prod__
-  //     ? `wss://${new URL(window.location.href).hostname}/graphql`
-  //     : `ws://${new URL(GRAPHQL_SERVER_URL).host}/graphql`,
-  //   options: { reconnect: true },
-  // });
 
   const httpLink = createUploadLink({
     uri: GRAPHQL_SERVER_URL,

@@ -151,6 +151,30 @@ export class ChatResolver {
     return messageDB;
   }
 
+  @Mutation(() => Boolean)
+  async deleteRoom(@Ctx() { req }: MyContext, @Arg('channel') channel: string) {
+    const { userId } = req.session;
+    const room = await getRepository(Room)
+      .createQueryBuilder('room')
+      .leftJoinAndSelect(
+        Participant,
+        'participant',
+        'participant.roomId = room.id'
+      )
+      .andWhere('participant.userId = :userId AND room.channel = :channel', {
+        userId,
+        channel,
+      })
+      .getOne();
+
+    if (!room) {
+      return false;
+    }
+
+    await Room.delete({ id: room.id });
+    return true;
+  }
+
   @Subscription({
     topics: ({ args }) => args.channel,
   })

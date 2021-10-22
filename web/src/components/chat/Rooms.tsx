@@ -1,60 +1,28 @@
-import React, { useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import Image from 'next/image';
+import React from 'react';
+
 import {
   GetRoomsDocument,
-  MessageSentDocument,
-  MessageSentSubscription,
-  MessageSentSubscriptionVariables,
   useDeleteRoomMutation,
   useGetRoomsQuery,
   useMeQuery,
 } from 'src/generated/graphql';
-import gray from '/public/gray.png';
-import Image from 'next/image';
 import useChatStore from 'src/store/ChatStore';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import produce from 'immer';
+import gray from '/public/gray.png';
 dayjs.extend(relativeTime);
 
 interface RoomsProps {}
 
 export const Rooms: React.FC<RoomsProps> = ({}) => {
   const [deleteRoom] = useDeleteRoomMutation();
-  const { data, subscribeToMore } = useGetRoomsQuery();
+  const { data } = useGetRoomsQuery({ returnPartialData: true });
 
   const { setChannel, channel } = useChatStore();
   const { data: me } = useMeQuery();
   const meId = me?.me?.id;
-  const rooms = data?.getRooms;
-  useEffect(() => {
-    if (rooms)
-      for (let room of rooms) {
-        subscribeToMore<
-          MessageSentSubscription,
-          MessageSentSubscriptionVariables
-        >({
-          document: MessageSentDocument,
-          variables: { channel: room.channel },
-          updateQuery: (prev, { subscriptionData }) => {
-            const messageSent = subscriptionData.data.messageSent;
-
-            const newState = produce(prev, (draft) => {
-              const room = draft.getRooms?.find(
-                (room) => room.id === messageSent.roomId
-              );
-              if (room) {
-                room.lastMessageDate = messageSent.createdAt;
-                room.newMessage = messageSent.message;
-                room.newMessagesCount = 1 + (room?.newMessagesCount || 0);
-              }
-            });
-            console.log(newState);
-            return newState;
-          },
-        });
-      }
-  }, []);
 
   return (
     <>

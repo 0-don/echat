@@ -3,12 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useChatStore from 'src/store/ChatStore';
 import { Messages } from './Messages';
 import { Rooms } from './Rooms';
+import { useGetRoomsQuery } from 'src/generated/graphql';
+import { ChatNotify } from './ChatNotify';
 
 export const Chat: React.FC = () => {
   const { switchChatPopup, chatPopup } = useChatStore();
+  const { data } = useGetRoomsQuery();
 
   return (
     <>
+      {data?.getRooms?.map(({ channel }) => (
+        <ChatNotify channel={channel} key={channel} />
+      ))}
       {chatPopup && (
         <div className='fixed bottom-0 right-0 z-10 mr-10 mb-10 flex text-white '>
           <div className='bg-dark-lightAlt rounded-tl-xl rounded-bl-xl w-80 px-2 pt-2'>

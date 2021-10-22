@@ -21,6 +21,8 @@ import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'src/components/utils/Alert';
 import { ReviewModal } from 'src/components/review/ReviewModal';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+dayjs.extend(localizedFormat);
 
 export type OrderStatus =
   | 'Cancelled'
@@ -33,7 +35,7 @@ const Order: React.FC = ({}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [errors, setErrors] = useState<FieldError[]>();
   const [buyerOrderStatus, setBuyerOrderStatus] =
-    useState<OrderStatus>('Completed');
+    useState<OrderStatus>('Pending');
   const [sellerOrderStatus, setSellerOrderStatus] = useState<OrderStatus>();
 
   const { data: buyerData } = useGetBuyerOrdersQuery();

@@ -4,7 +4,7 @@ import { GRAPHQL_SERVER_URL, __prod__ } from '../../constants';
 import { customFetch } from './customFetch';
 import { createUploadLink } from 'apollo-upload-client';
 
-import { ApolloClient, from, InMemoryCache, split } from '@apollo/client';
+import { ApolloClient, from, InMemoryCache, split, } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import {
   ApolloLink,

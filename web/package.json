@@ -9,7 +9,7 @@
     "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.21",
+    "@apollo/client": "^3.4.16",
     "apollo-upload-client": "^16.0.0",
     "dayjs": "^1.10.6",
     "flatted": "^3.2.2",

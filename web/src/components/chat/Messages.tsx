@@ -35,18 +35,21 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
 
   useEffect(() => {
     if (channel && !called) {
+      console.log('getMessages', channel);
       getMessages({ variables: { channel } });
     }
   }, [getMessages, channel, called]);
 
   useEffect(() => {
     if (channel && called && refetch) {
+      console.log('refetch', channel);
       refetch({ channel });
     }
   }, [refetch, channel, called]);
 
   useEffect(() => {
     if (channel && subscribeToMore) {
+      console.log('subribe for More', channel);
       const messageSent = subscribeToMore<
         MessageSentSubscription,
         MessageSentSubscriptionVariables
@@ -54,8 +57,12 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         document: MessageSentDocument,
         variables: { channel },
         updateQuery: (prev, { subscriptionData }) => {
+
           const newState = produce(prev, (draft) => {
-            draft.getMessages?.push(subscriptionData.data.messageSent);
+            draft.getMessages = [
+              ...(draft.getMessages || []),
+              subscriptionData?.data?.messageSent,
+            ];
           });
 
           return newState;

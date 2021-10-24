@@ -5,6 +5,7 @@ import { FilterUserServiceQuery } from 'src/generated/graphql';
 import { Button } from '../htmlElements';
 import gray from '/public/gray.png';
 import Image from 'next/image';
+import dayjs from 'dayjs';
 
 interface UserServicesProps {
   data: FilterUserServiceQuery | undefined;
@@ -27,7 +28,10 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                 blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMUrAcAAKcAkqLcIOsAAAAASUVORK5CYII='
                 layout='fill'
                 objectFit='cover'
-                src={user.images?.length ? user.images[0].url : gray.src}
+                src={
+                  user.images?.find((image) => image.type === 'profile')?.url ??
+                  gray.src
+                }
               />
             </div>
             <div className='p-2'>
@@ -35,7 +39,9 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                 <div className='flex items-center'>
                   <span
                     className={`${
-                      index % 2 == 0 ? 'bg-green-500' : 'bg-gray-500'
+                      dayjs().diff(user?.lastOnline, 'minutes') < 120
+                        ? 'bg-green-600'
+                        : 'bg-gray-400'
                     } h-4 w-4 rounded-full mr-1`}
                   />
                   <h1 className='text-base my-1 font-semibold text-center '>
@@ -78,12 +84,6 @@ export const UserServices: React.FC<UserServicesProps> = ({ data }) => {
                     2
                   )} / ${per}`}</div>
                 </div>
-                {/* {user.age && new Date().getFullYear() - new Date(user.age).getFullYear()} */}
-                {/* <Button
-                  text={`View`}
-                  className='p-1 m-1'
-                  onClick={() => router.push(`/service/${id}`)}
-                /> */}
                 <Button
                   text={`Order`}
                   className='p-1 m-1'

@@ -6,14 +6,13 @@ type ChatStore = {
   channel: string;
   switchChatPopup: () => void;
   setChannel: (newChannel: string) => void;
-
 };
 
 const useChatStore = create<ChatStore>(
   immer(
     (set): ChatStore => ({
       chatPopup: false,
-      channel: '4730',
+      channel: '',
       switchChatPopup: () =>
         set((state) => void (state.chatPopup = !state.chatPopup)),
       setChannel: (newChannel) =>

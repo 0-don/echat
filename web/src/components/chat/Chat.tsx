@@ -7,7 +7,8 @@ import { useGetRoomsQuery } from 'src/generated/graphql';
 import { Notify } from './Notify';
 
 export const Chat: React.FC = () => {
-  const { switchChatPopup, chatPopup } = useChatStore();
+  const { switchChatPopup, chatPopup, newMessagesCount, setNewMessagesCount } =
+    useChatStore();
   const { data } = useGetRoomsQuery();
 
   return (
@@ -31,8 +32,16 @@ export const Chat: React.FC = () => {
             size='4x'
             className='dark:text-white text-white bg-purple dark:bg-purple dark:hover:bg-purple-dark hover:bg-purple-dark p-2.5 rounded-full '
             icon='comment-dots'
-            onClick={switchChatPopup}
+            onClick={() => {
+              switchChatPopup();
+              setNewMessagesCount(0);
+            }}
           />
+          {newMessagesCount > 0 && (
+            <small className='text-xs bg-red-500 text-white rounded-full h-5 w-5 flex justify-center items-center -mt-5'>
+              {newMessagesCount}
+            </small>
+          )}
         </div>
       )}
     </>

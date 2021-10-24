@@ -3,8 +3,8 @@ query GetRooms {
     id
     channel
     createdAt
+    newMessagesCount
     newMessage @client
-    newMessagesCount @client
     lastMessageDate @client
     participants {
       id

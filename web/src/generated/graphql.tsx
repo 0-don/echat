@@ -87,6 +87,7 @@ export type Message = {
   id: Scalars['Int'];
   message: Scalars['String'];
   roomId: Scalars['Int'];
+  read: Scalars['Boolean'];
   room: Room;
   userId: Scalars['Int'];
   user: User;
@@ -360,7 +361,7 @@ export type Room = {
   lastMessageDate?: Maybe<Scalars['DateTime']>;
   messages?: Maybe<Array<Message>>;
   newMessage?: Maybe<Scalars['String']>;
-  newMessagesCount?: Maybe<Scalars['Int']>;
+  newMessagesCount: Scalars['Int'];
   participants?: Maybe<Array<Participant>>;
 };
 
@@ -882,7 +883,7 @@ export type GetMessagesQuery = (
   { __typename?: 'Query' }
   & { getMessages?: Maybe<Array<(
     { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'createdAt'>
+    & Pick<Message, 'id' | 'message' | 'read' | 'roomId' | 'userId' | 'createdAt'>
   )>> }
 );
 
@@ -893,7 +894,7 @@ export type GetRoomsQuery = (
   { __typename?: 'Query' }
   & { getRooms?: Maybe<Array<(
     { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'channel' | 'createdAt' | 'newMessage' | 'newMessagesCount' | 'lastMessageDate'>
+    & Pick<Room, 'id' | 'channel' | 'createdAt' | 'newMessagesCount' | 'newMessage' | 'lastMessageDate'>
     & { participants?: Maybe<Array<(
       { __typename?: 'Participant' }
       & Pick<Participant, 'id' | 'roomId' | 'userId'>
@@ -1165,7 +1166,7 @@ export type MessageSentSubscription = (
   { __typename?: 'Subscription' }
   & { messageSent: (
     { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'createdAt'>
+    & Pick<Message, 'id' | 'message' | 'roomId' | 'userId' | 'read' | 'createdAt'>
   ) }
 );
 
@@ -2122,6 +2123,7 @@ export const GetMessagesDocument = gql`
   getMessages(channel: $channel) {
     id
     message
+    read
     roomId
     userId
     createdAt
@@ -2162,8 +2164,8 @@ export const GetRoomsDocument = gql`
     id
     channel
     createdAt
+    newMessagesCount
     newMessage @client
-    newMessagesCount @client
     lastMessageDate @client
     participants {
       id
@@ -2862,6 +2864,7 @@ export const MessageSentDocument = gql`
     message
     roomId
     userId
+    read
     createdAt
   }
 }

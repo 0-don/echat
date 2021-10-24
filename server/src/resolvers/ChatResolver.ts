@@ -4,6 +4,7 @@ import { MyContext } from '../utils/types/MyContext';
 import {
   Arg,
   Ctx,
+  FieldResolver,
   Int,
   Mutation,
   PubSub,
@@ -16,9 +17,41 @@ import {
 import { getConnection, getRepository, In } from 'typeorm';
 import { User } from '../entity/User';
 import { Message } from '../entity/Message';
+import { groupBy } from 'lodash';
+import { Loader } from 'type-graphql-dataloader';
+import DataLoader from 'dataloader';
 
-@Resolver()
+@Resolver(Room)
 export class ChatResolver {
+  @FieldResolver(() => Number)
+  @Loader<{ roomIds: number; userId: number }, number>(async (room) => {
+    const roomIds = room.map((room) => room.roomIds);
+    const userId = room[0].userId;
+    const messages = await getRepository(Message)
+      .createQueryBuilder('message')
+      .leftJoinAndSelect(Room, 'room', 'room.id = message.roomId')
+      .andWhere(
+        'room.id IN (:...roomIds) AND message.userId <> :userId AND message.read = FALSE',
+        {
+          roomIds,
+          userId,
+        }
+      )
+      .getMany();
+
+    const messagesByRoomId = groupBy(messages, 'roomId');
+    const result = roomIds.map(
+      (roomId) => messagesByRoomId[roomId]?.length ?? 0
+    );
+
+    return result;
+  })
+  newMessagesCount(@Root() root: Room, @Ctx() { req }: MyContext) {
+    return (
+      dataloader: DataLoader<{ roomIds: number; userId: number }, number>
+    ) => dataloader.load({ roomIds: root.id, userId: req.session.userId });
+  }
+
   @Query(() => [Room], { nullable: true })
   async getRooms(@Ctx() { req }: MyContext) {
     const { userId } = req.session;

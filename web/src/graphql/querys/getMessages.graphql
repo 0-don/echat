@@ -2,6 +2,7 @@ query GetMessages($channel: String!) {
   getMessages(channel: $channel) {
     id
     message
+    read
     roomId
     userId
     createdAt

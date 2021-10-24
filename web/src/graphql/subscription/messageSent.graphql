@@ -4,6 +4,7 @@ subscription MessageSent($channel: String!) {
     message
     roomId
     userId
+    read
     createdAt
   }
 }

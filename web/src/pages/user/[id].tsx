@@ -70,19 +70,15 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
               />
               <span
                 className={`${
-                  user?.lastOnline &&
-                  new Date(user.lastOnline).getTime() % 2 === 0
-                    ? 'bg-green-500'
-                    : 'bg-gray-500'
+                  dayjs().diff(user?.lastOnline, 'minutes') < 120
+                    ? 'bg-green-600'
+                    : 'bg-gray-400'
                 } h-4 w-4 rounded-full mr-1`}
               />
             </div>
 
             <div className='text-sm dark:text-gray-300 text-gray-600'>
-              <p>
-                Age:{' '}
-                {user?.age && dayjs(new Date()).diff(dayjs(user?.age), 'years')}
-              </p>
+              <p>Age: {user?.age && dayjs().diff(dayjs(user?.age), 'years')}</p>
               <p>
                 Languages:{' '}
                 {user?.languages &&
@@ -121,7 +117,7 @@ const UserDetail: NextPage<{ id: number }> = ({ id }) => {
 
         <div className='flex space-x-5 md:order-none justify-between md:justify-start mb-5'>
           {/* <button className='big-button'>follow</button> */}
-          {me && user && (
+          {me?.me && user && me.me?.id !== user.id && (
             <button
               className='big-button'
               onClick={async () => {

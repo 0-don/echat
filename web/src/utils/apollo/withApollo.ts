@@ -4,7 +4,7 @@ import { GRAPHQL_SERVER_URL, __prod__ } from '../../constants';
 import { customFetch } from './customFetch';
 import { createUploadLink } from 'apollo-upload-client';
 
-import { ApolloClient, from, InMemoryCache, split, } from '@apollo/client';
+import { ApolloClient, from, InMemoryCache, split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import {
   ApolloLink,
@@ -17,6 +17,30 @@ import { createClient, Client, ClientOptions } from 'graphql-ws';
 
 import { parse, stringify } from 'flatted';
 import { PaginatedUserService } from 'src/generated/graphql';
+
+export const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        filterUserService: {
+          keyArgs: [],
+          merge(
+            existing: PaginatedUserService | undefined,
+            incoming: PaginatedUserService
+          ): PaginatedUserService {
+            return {
+              ...incoming,
+              userService: [
+                ...(existing?.userService || []),
+                ...incoming.userService,
+              ],
+            };
+          },
+        },
+      },
+    },
+  },
+});
 
 const cleanTypeName = new ApolloLink((operation, forward) => {
   const omitTypename = (key: string, value: any) =>
@@ -70,7 +94,7 @@ class WebSocketLink extends ApolloLink {
   }
 }
 
-const createApolloClient = (ctx: NextPageContext) => {
+export const createApolloClient = (ctx: NextPageContext) => {
   const wsLink =
     typeof window !== 'undefined' &&
     new WebSocketLink({
@@ -108,29 +132,7 @@ const createApolloClient = (ctx: NextPageContext) => {
   return new ApolloClient({
     connectToDevTools: true,
     ssrMode: typeof window === 'undefined',
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            filterUserService: {
-              keyArgs: [],
-              merge(
-                existing: PaginatedUserService | undefined,
-                incoming: PaginatedUserService
-              ): PaginatedUserService {
-                return {
-                  ...incoming,
-                  userService: [
-                    ...(existing?.userService || []),
-                    ...incoming.userService,
-                  ],
-                };
-              },
-            },
-          },
-        },
-      },
-    }),
+    cache,
     link: from([cleanTypeName, link]),
   });
 };

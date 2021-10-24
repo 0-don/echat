@@ -22,15 +22,15 @@ export const Wrapper: React.FC<WrapperProps> = ({
     ? `${className} h-full`
     : `${className} container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`;
 
+
   return (
     <>
-      <div></div>
       <div className='flex h-screen'>
         <div className='flex-1 flex flex-col'>
           {navbar && <NavBar />}
 
           <div className={`${trueClassName} ${scrollbar && 'overflow-hidden'}`}>
-            {me && <Chat />}
+            {me?.me && <Chat />}
             {children}
           </div>
         </div>

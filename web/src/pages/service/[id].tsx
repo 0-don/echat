@@ -70,7 +70,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
               {userService?.per}
             </p>
           </div>
-          {me && userService && (
+          {me?.me && userService && me.me?.id !== userService.userId && (
             <div className='flex space-x-5'>
               <OrderModal data={data} />
               <button

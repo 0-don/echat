@@ -33,7 +33,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
           width={'35'}
           height={'35'}
           layout='fixed'
-          objectFit='contain'
+          objectFit='cover'
           className='rounded-full bg-white'
           src={profileUrl ? profileUrl : user.src ?? gray.src}
         />

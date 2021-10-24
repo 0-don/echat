@@ -57,8 +57,8 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Field(() => Date, { nullable: true })
-  @Column({ type: 'timestamptz', nullable: true })
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   lastOnline: Date;
 
   @Field({ nullable: true })

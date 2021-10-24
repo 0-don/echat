@@ -1016,7 +1016,7 @@ export type GetUserServiceQuery = (
   { __typename?: 'Query' }
   & { getUserService: (
     { __typename?: 'UserService' }
-    & Pick<UserService, 'id' | 'status' | 'platforms' | 'description' | 'level' | 'price' | 'per' | 'image'>
+    & Pick<UserService, 'id' | 'status' | 'platforms' | 'description' | 'level' | 'price' | 'per' | 'image' | 'userId'>
     & { reviews?: Maybe<Array<(
       { __typename?: 'Review' }
       & Pick<Review, 'id' | 'score' | 'recommend' | 'review' | 'created_at'>
@@ -2470,6 +2470,7 @@ export const GetUserServiceDocument = gql`
     price
     per
     image
+    userId
     reviews {
       id
       score

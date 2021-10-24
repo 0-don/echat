@@ -71,8 +71,8 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
             <div className='w-full ml-5'>
               <div className='flex justify-between'>
                 <span className='font-medium'>{participant?.username}</span>
-                {room?.newMessagesCount && (
-                  <small className='text-xs bg-red-500 rounded-full h-5 w-5 flex justify-center items-center'>
+                {room?.newMessagesCount > 0 && (
+                  <small className='text-xs bg-red-500 text-white rounded-full h-5 w-5 flex justify-center items-center'>
                     {room.newMessagesCount}
                   </small>
                 )}
@@ -89,7 +89,7 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                   <FontAwesomeIcon
                     size='sm'
                     title='delete chats'
-                    className='dark:text-white text-black dark:hover:text-purple hover:text-purple mt-0.5'
+                    className='dark:text-white text-white dark:hover:text-purple hover:text-purple mt-0.5 mr-[4px]'
                     icon='trash-alt'
                     onClick={async () => {
                       await deleteRoom({

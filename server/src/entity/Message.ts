@@ -27,6 +27,10 @@ export class Message extends BaseEntity {
   @Column()
   roomId: number;
 
+  @Field()
+  @Column({ default: false })
+  read: boolean;
+
   // ROOM
   @Field(() => Room)
   @ManyToOne(() => Room, (room) => room.messages, {

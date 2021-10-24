@@ -23,6 +23,9 @@ export class Room extends BaseEntity {
   @Column({ unique: true })
   channel: string;
 
+  @Field(() => Int)
+  newMessagesCount: number;
+
   // MESSAGE
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, (message) => message.room, {

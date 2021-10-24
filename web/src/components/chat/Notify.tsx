@@ -19,7 +19,8 @@ export const Notify: React.FC<ChatNotifyProps> = ({ currentChannel }) => {
   const { data: msg } = useMessageSentSubscription({
     variables: { channel: currentChannel },
   });
-  const { channel } = useChatStore();
+  const { channel, chatPopup, newMessagesCount, setNewMessagesCount } =
+    useChatStore();
   const { data: me } = useMeQuery();
   const meId = me?.me?.id;
 
@@ -50,6 +51,8 @@ export const Notify: React.FC<ChatNotifyProps> = ({ currentChannel }) => {
         data: { ...newState },
         overwrite: true,
       });
+
+      !chatPopup && setNewMessagesCount(newMessagesCount + 1);
     }
   }, [msg]);
 

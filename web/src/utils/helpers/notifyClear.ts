@@ -18,7 +18,7 @@ export const notifyClear = (channel: string) => {
 
       room?.lastMessageDate && (room.lastMessageDate = null);
       room?.newMessage && (room.newMessage = null);
-      room?.newMessagesCount && (room.newMessagesCount = null);
+      room?.newMessagesCount && (room.newMessagesCount = 0);
     });
 
     cache.writeQuery<GetRoomsQuery, GetRoomsQueryVariables>({

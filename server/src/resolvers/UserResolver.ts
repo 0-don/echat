@@ -25,6 +25,9 @@ import {
 } from '../utils/types/UserTypes';
 import { Schedule } from '../entity/Schedule';
 import { UserLanguage } from '../entity/UserLanguage';
+import dayjs from 'dayjs';
+var utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 @Resolver(User)
 export class UserResolver {
@@ -56,7 +59,7 @@ export class UserResolver {
     return getConnection()
       .createQueryBuilder()
       .update(User)
-      .set({ lastOnline: new Date() })
+      .set({ lastOnline: dayjs().format() })
       .where('id = :id', { id })
       .returning('*')
       .execute()

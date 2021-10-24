@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 import React from 'react';
-
 import {
   GetRoomsDocument,
   useDeleteRoomMutation,
@@ -11,7 +10,9 @@ import {
   useMeQuery,
 } from 'src/generated/graphql';
 import useChatStore from 'src/store/ChatStore';
+import { notifyClear } from '../../utils/helpers/notifyClear';
 import gray from '/public/gray.png';
+
 dayjs.extend(relativeTime);
 
 interface RoomsProps {}
@@ -38,7 +39,10 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
         return (
           <div
             key={room.channel}
-            onClick={() => setChannel(room.channel)}
+            onClick={() => {
+              setChannel(room.channel);
+              notifyClear(room.channel);
+            }}
             className={`${
               channel === room.channel ? 'border-l-4 border-purple' : ''
             }  hover:border-l-4 hover:border-purple-dark overflow-x-hidden overflow-y-auto entry cursor-pointer transform duration-300 transition-transform bg-dark mb-1 rounded p-4 flex shadow-2xl`}
@@ -54,11 +58,10 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
               />
               <span
                 className={`${
-                  dayjs(new Date()).diff(participant?.lastOnline, 'minutes') <
-                  120
+                  dayjs().diff(participant?.lastOnline, 'minutes') < 120
                     ? 'bg-green-600'
                     : 'bg-gray-400'
-                } absolute w-4 h-4 bg-gray-400 rounded-full right-0 bottom-0`}
+                } absolute w-4 h-4 rounded-full right-0 bottom-0`}
               ></span>
             </div>
             <div className='w-full ml-5'>

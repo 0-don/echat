@@ -8,6 +8,7 @@ query GetUserService($id: Int!) {
     price
     per
     image
+    userId
     reviews {
       id
       score

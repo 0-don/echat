@@ -32,7 +32,7 @@ export const SubmitSection: React.FC<SubmitSectionProps> = ({ formikRef }) => {
             text='Submit Form'
             onClick={async () => {
               await changeUserType();
-              router.push('/');
+              router.push('/browse');
             }}
           />
         </div>

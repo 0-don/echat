@@ -4,7 +4,7 @@ import useChatStore from 'src/store/ChatStore';
 import { Messages } from './Messages';
 import { Rooms } from './Rooms';
 import { useGetRoomsQuery } from 'src/generated/graphql';
-import { ChatNotify } from './ChatNotify';
+import { Notify } from './Notify';
 
 export const Chat: React.FC = () => {
   const { switchChatPopup, chatPopup } = useChatStore();
@@ -13,7 +13,7 @@ export const Chat: React.FC = () => {
   return (
     <>
       {data?.getRooms?.map(({ channel }) => (
-        <ChatNotify channel={channel} key={channel} />
+        <Notify currentChannel={channel} key={channel} />
       ))}
       {chatPopup && (
         <div className='fixed bottom-0 right-0 z-10 mr-10 mb-10 flex text-white '>

@@ -73,7 +73,6 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
     messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
   }, [msg]);
 
-
   return (
     <>
       <div className='chat-area flex-1 flex flex-col'>
@@ -128,10 +127,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
                         />
                         <span
                           className={`${
-                            dayjs(new Date()).diff(
-                              user?.lastOnline,
-                              'minutes'
-                            ) < 120
+                            dayjs().diff(user?.lastOnline, 'minutes') < 120
                               ? 'bg-green-600'
                               : 'bg-gray-400'
                           } absolute w-4 h-4 rounded-full right-0 bottom-0`}

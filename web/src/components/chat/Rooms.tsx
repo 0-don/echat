@@ -4,12 +4,16 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 import React from 'react';
 import {
+  GetMessagesDocument,
+  GetMessagesQuery,
+  GetMessagesQueryVariables,
   GetRoomsDocument,
   useDeleteRoomMutation,
   useGetRoomsQuery,
   useMeQuery,
 } from 'src/generated/graphql';
 import useChatStore from 'src/store/ChatStore';
+import { cache } from 'src/utils/apollo/withApollo';
 import { notifyClear } from '../../utils/helpers/notifyClear';
 import gray from '/public/gray.png';
 
@@ -93,6 +97,15 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                         refetchQueries: [{ query: GetRoomsDocument }],
                       });
                       setChannel('');
+                      cache.writeQuery<
+                        GetMessagesQuery,
+                        GetMessagesQueryVariables
+                      >({
+                        query: GetMessagesDocument,
+                        variables: { channel: room.channel },
+                        data: { getMessages: [] },
+                        overwrite: true,
+                      });
                     }}
                   />
                 </div>

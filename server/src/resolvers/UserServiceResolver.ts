@@ -132,11 +132,7 @@ export class UserServiceResolver {
 
     const realLimit = Math.min(50, limit);
     const reaLimitPlusOne = realLimit + 1;
-    const replacements: any[] = [reaLimitPlusOne];
 
-    if (cursor) {
-      replacements.push(new Date(parseInt(cursor)));
-    }
     const { id } = (await Service.findOne({ slug })) as Service;
 
     const qb = getRepository(UserService)

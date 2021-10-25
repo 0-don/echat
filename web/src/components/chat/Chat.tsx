@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useChatStore from 'src/store/ChatStore';
 import { Messages } from './Messages';
@@ -10,6 +10,14 @@ export const Chat: React.FC = () => {
   const { switchChatPopup, chatPopup, newMessagesCount, setNewMessagesCount } =
     useChatStore();
   const { data } = useGetRoomsQuery();
+
+  useEffect(() => {
+    const count = data?.getRooms?.reduce(
+      (total, next) => total + next.newMessagesCount,
+      0
+    );
+    setNewMessagesCount(count ?? 0);
+  }, [data]);
 
   return (
     <>
@@ -34,7 +42,7 @@ export const Chat: React.FC = () => {
             icon='comment-dots'
             onClick={() => {
               switchChatPopup();
-              setNewMessagesCount(0);
+              // setNewMessagesCount(0);
             }}
           />
           {newMessagesCount > 0 && (

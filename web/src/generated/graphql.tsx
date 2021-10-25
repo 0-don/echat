@@ -109,6 +109,7 @@ export type Mutation = {
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
+  setAsRead: Scalars['Boolean'];
   createRoom?: Maybe<Scalars['String']>;
   sendMessage?: Maybe<Message>;
   deleteRoom: Scalars['Boolean'];
@@ -175,6 +176,11 @@ export type MutationUpsertUserServiceArgs = {
 
 export type MutationDeleteUserServiceArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationSetAsReadArgs = {
+  messageIds: Array<Scalars['Int']>;
 };
 
 
@@ -249,6 +255,12 @@ export type OrderResponse = {
   success: Scalars['Boolean'];
 };
 
+export type PaginatedMessages = {
+  __typename?: 'PaginatedMessages';
+  messages: Array<Message>;
+  hasMore: Scalars['Boolean'];
+};
+
 export type PaginatedUserService = {
   __typename?: 'PaginatedUserService';
   userService: Array<UserService>;
@@ -277,8 +289,8 @@ export type Query = {
   filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
   getUserService: UserService;
+  getMessages?: Maybe<PaginatedMessages>;
   getRooms?: Maybe<Array<Room>>;
-  getMessages?: Maybe<Array<Message>>;
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
   getBuyerOrders: Array<Order>;
@@ -315,6 +327,8 @@ export type QueryGetUserServiceArgs = {
 
 
 export type QueryGetMessagesArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
   channel: Scalars['String'];
 };
 
@@ -769,6 +783,16 @@ export type SendMessageMutation = (
   )> }
 );
 
+export type SetAsReadMutationVariables = Exact<{
+  messageIds: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type SetAsReadMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setAsRead'>
+);
+
 export type SwitchUserServiceStatusMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -876,15 +900,21 @@ export type GetMeUserServiceQuery = (
 
 export type GetMessagesQueryVariables = Exact<{
   channel: Scalars['String'];
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
 }>;
 
 
 export type GetMessagesQuery = (
   { __typename?: 'Query' }
-  & { getMessages?: Maybe<Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'message' | 'read' | 'roomId' | 'userId' | 'createdAt'>
-  )>> }
+  & { getMessages?: Maybe<(
+    { __typename?: 'PaginatedMessages' }
+    & Pick<PaginatedMessages, 'hasMore'>
+    & { messages: Array<(
+      { __typename?: 'Message' }
+      & Pick<Message, 'id' | 'message' | 'read' | 'roomId' | 'userId' | 'createdAt'>
+    )> }
+  )> }
 );
 
 export type GetRoomsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1822,6 +1852,37 @@ export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
 export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
 export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
+export const SetAsReadDocument = gql`
+    mutation SetAsRead($messageIds: [Int!]!) {
+  setAsRead(messageIds: $messageIds)
+}
+    `;
+export type SetAsReadMutationFn = Apollo.MutationFunction<SetAsReadMutation, SetAsReadMutationVariables>;
+
+/**
+ * __useSetAsReadMutation__
+ *
+ * To run a mutation, you first call `useSetAsReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetAsReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setAsReadMutation, { data, loading, error }] = useSetAsReadMutation({
+ *   variables: {
+ *      messageIds: // value for 'messageIds'
+ *   },
+ * });
+ */
+export function useSetAsReadMutation(baseOptions?: Apollo.MutationHookOptions<SetAsReadMutation, SetAsReadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetAsReadMutation, SetAsReadMutationVariables>(SetAsReadDocument, options);
+      }
+export type SetAsReadMutationHookResult = ReturnType<typeof useSetAsReadMutation>;
+export type SetAsReadMutationResult = Apollo.MutationResult<SetAsReadMutation>;
+export type SetAsReadMutationOptions = Apollo.BaseMutationOptions<SetAsReadMutation, SetAsReadMutationVariables>;
 export const SwitchUserServiceStatusDocument = gql`
     mutation SwitchUserServiceStatus($id: Int!) {
   switchUserServiceStatus(id: $id)
@@ -2119,14 +2180,17 @@ export type GetMeUserServiceQueryHookResult = ReturnType<typeof useGetMeUserServ
 export type GetMeUserServiceLazyQueryHookResult = ReturnType<typeof useGetMeUserServiceLazyQuery>;
 export type GetMeUserServiceQueryResult = Apollo.QueryResult<GetMeUserServiceQuery, GetMeUserServiceQueryVariables>;
 export const GetMessagesDocument = gql`
-    query GetMessages($channel: String!) {
-  getMessages(channel: $channel) {
-    id
-    message
-    read
-    roomId
-    userId
-    createdAt
+    query GetMessages($channel: String!, $limit: Int!, $cursor: String) {
+  getMessages(channel: $channel, limit: $limit, cursor: $cursor) {
+    messages {
+      id
+      message
+      read
+      roomId
+      userId
+      createdAt
+    }
+    hasMore
   }
 }
     `;
@@ -2144,6 +2208,8 @@ export const GetMessagesDocument = gql`
  * const { data, loading, error } = useGetMessagesQuery({
  *   variables: {
  *      channel: // value for 'channel'
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
@@ -2928,6 +2994,7 @@ export const namedOperations = {
     MultipleUpload: 'MultipleUpload',
     Register: 'Register',
     SendMessage: 'SendMessage',
+    SetAsRead: 'SetAsRead',
     SwitchUserServiceStatus: 'SwitchUserServiceStatus',
     UpdateMe: 'UpdateMe',
     UpsertUserService: 'UpsertUserService'

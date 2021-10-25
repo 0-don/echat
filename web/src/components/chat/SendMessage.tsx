@@ -26,7 +26,7 @@ const SendMessage: React.FC<SendMessageProps> = ({}) => {
   }
 
   return (
-    <form onSubmit={handleSend} className='w-full flex items-center mt-3'>
+    <form onSubmit={handleSend} className='w-full flex items-center'>
       <input
         name='message'
         className='appearance-none block w-full px-3 py-2 dark:bg-dark-light dark:border-dark-light dark:text-white border rounded-md shadow-sm focus:outline-none 

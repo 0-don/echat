@@ -4,9 +4,11 @@ import { MyContext } from '../utils/types/MyContext';
 import {
   Arg,
   Ctx,
+  Field,
   FieldResolver,
   Int,
   Mutation,
+  ObjectType,
   PubSub,
   PubSubEngine,
   Query,
@@ -20,6 +22,14 @@ import { Message } from '../entity/Message';
 import { groupBy } from 'lodash';
 import { Loader } from 'type-graphql-dataloader';
 import DataLoader from 'dataloader';
+
+@ObjectType()
+class PaginatedMessages {
+  @Field(() => [Message])
+  messages: Message[];
+  @Field()
+  hasMore: boolean;
+}
 
 @Resolver(Room)
 export class ChatResolver {
@@ -52,6 +62,62 @@ export class ChatResolver {
     ) => dataloader.load({ roomIds: root.id, userId: req.session.userId });
   }
 
+  @Query(() => PaginatedMessages, { nullable: true })
+  async getMessages(
+    @Ctx() { req }: MyContext,
+    @Arg('channel') channel: string,
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor?: string
+  ) {
+    const { userId } = req.session;
+    console.log(userId, channel, limit, cursor);
+
+    if (!channel || !limit) {
+      return null;
+    }
+
+    const realLimit = Math.min(50, limit);
+    const reaLimitPlusOne = realLimit + 1;
+
+    const qb = getRepository(Message)
+      .createQueryBuilder('message')
+      .leftJoinAndSelect(Room, 'room', 'room.id = message.roomId')
+      .leftJoinAndSelect(
+        Participant,
+        'participant',
+        'participant.roomId = room.id'
+      )
+      .andWhere('participant.userId = :userId AND room.channel = :channel', {
+        channel,
+        userId,
+      });
+    if (cursor) {
+      qb.andWhere('message.createdAt < :cursor', {
+        cursor: new Date(cursor),
+      });
+    }
+
+    const messages = await qb
+      .orderBy('message.createdAt', 'DESC')
+      .limit(reaLimitPlusOne)
+      .getMany();
+
+    if (!messages.length) {
+      return null;
+    }
+
+    return {
+      messages: messages.slice(0, realLimit).sort((a, b) => a.id - b.id),
+      hasMore: messages.length === reaLimitPlusOne,
+    };
+  }
+
+  @Mutation(() => Boolean)
+  async setAsRead(@Arg('messageIds', () => [Int]) messageIds: number[]) {
+    await Message.update(messageIds, { read: true });
+    return true;
+  }
+
   @Query(() => [Room], { nullable: true })
   async getRooms(@Ctx() { req }: MyContext) {
     const { userId } = req.session;
@@ -74,39 +140,12 @@ export class ChatResolver {
     return rooms;
   }
 
-  @Query(() => [Message], { nullable: true })
-  async getMessages(
-    @Ctx() { req }: MyContext,
-    @Arg('channel') channel: string
-  ) {
-    const { userId } = req.session;
-    const messages = await getRepository(Message)
-      .createQueryBuilder('message')
-      .leftJoinAndSelect(Room, 'room', 'room.id = message.roomId')
-      .leftJoinAndSelect(
-        Participant,
-        'participant',
-        'participant.roomId = room.id'
-      )
-      .andWhere('participant.userId = :userId AND room.channel = :channel', {
-        channel,
-        userId,
-      })
-      .getMany();
-
-    if (!messages.length) {
-      return null;
-    }
-
-    return messages;
-  }
-
   @Mutation(() => String, { nullable: true })
   async createRoom(
     @Ctx() { req }: MyContext,
     @Arg('participantId', () => Int) participantId: number
   ) {
-    // 26904 -> test@test.test
+    // 4730 -> test@test.test
     const users = await getRepository(User).find({
       where: { id: In([req.session.userId, participantId]) },
     });

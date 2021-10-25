@@ -16,7 +16,7 @@ import { GraphQLError, print } from 'graphql';
 import { createClient, Client, ClientOptions } from 'graphql-ws';
 
 import { parse, stringify } from 'flatted';
-import { PaginatedMessages, PaginatedUserService } from 'src/generated/graphql';
+import { PaginatedUserService } from 'src/generated/graphql';
 
 export const cache = new InMemoryCache({
   typePolicies: {
@@ -37,18 +37,6 @@ export const cache = new InMemoryCache({
             };
           },
         },
-        // getMessages: {
-        //   keyArgs: [],
-        //   merge(
-        //     existing: PaginatedMessages | undefined,
-        //     incoming: PaginatedMessages
-        //   ): PaginatedMessages {
-        //     return {
-        //       ...incoming,
-        //       messages: [...incoming.messages, ...(existing?.messages || [])],
-        //     };
-        //   },
-        // },
       },
     },
   },

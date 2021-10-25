@@ -7,6 +7,9 @@ import {
   useGetRoomsQuery,
   useGetMessagesLazyQuery,
   useSetAsReadMutation,
+  GetMessagesQuery,
+  GetMessagesQueryVariables,
+  GetMessagesDocument,
 } from 'src/generated/graphql';
 import SendMessage from './SendMessage';
 import produce from 'immer';
@@ -95,20 +98,19 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
       ) === scrollRef.current.clientHeight;
     console.log(
       // scrollRef?.current?.scrollHeight,
-      scrollRef?.current?.scrollTop,
+      scrollRef?.current?.scrollTop
       // scrollRef?.current?.clientHeight
     );
     if (bottom && msg?.getMessages?.hasMore && fetchMore) {
-      const cursor = msg.getMessages.messages[0].createdAt;
-      await fetchMore({
+      const cursor = msg.getMessages.messages[0].createdAt.toISOString();
+      await fetchMore<GetMessagesQuery, GetMessagesQueryVariables>({
+        query: GetMessagesDocument,
         variables: {
           channel,
           cursor,
           limit: 5,
         },
-        updateQuery: (prev, {fetchMoreResult}) => {
-
-        }
+        updateQuery: (prev, { fetchMoreResult }) => prev,
       });
     }
   };

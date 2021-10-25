@@ -102,8 +102,8 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                         GetMessagesQueryVariables
                       >({
                         query: GetMessagesDocument,
-                        variables: { channel: room.channel },
-                        data: { getMessages: [] },
+                        variables: { channel: room.channel, limit: 5 },
+                        data: { getMessages: { messages: [], hasMore: false } },
                         overwrite: true,
                       });
                     }}

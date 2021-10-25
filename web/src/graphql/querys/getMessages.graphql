@@ -1,10 +1,13 @@
-query GetMessages($channel: String!) {
-  getMessages(channel: $channel) {
-    id
-    message
-    read
-    roomId
-    userId
-    createdAt
+query GetMessages($channel: String!, $limit: Int!, $cursor: String) {
+  getMessages(channel: $channel, limit: $limit, cursor: $cursor) {
+    messages {
+      id
+      message
+      read
+      roomId
+      userId
+      createdAt
+    }
+    hasMore
   }
 }

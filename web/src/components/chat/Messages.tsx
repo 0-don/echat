@@ -91,26 +91,33 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   }, [msg]);
 
   const onScroll = async () => {
-    const bottom =
-      scrollRef.current &&
-      parseInt(
-        scrollRef.current.scrollHeight - scrollRef.current.scrollTop + ''
-      ) === scrollRef.current.clientHeight;
-    console.log(
-      // scrollRef?.current?.scrollHeight,
-      scrollRef?.current?.scrollTop
-      // scrollRef?.current?.clientHeight
-    );
-    if (bottom && msg?.getMessages?.hasMore && fetchMore) {
-      const cursor = msg.getMessages.messages[0].createdAt.toISOString();
+
+    if (
+      scrollRef?.current?.scrollTop === 0 &&
+      msg?.getMessages?.hasMore &&
+      fetchMore
+    ) {
+      const cursor = msg?.getMessages?.messages[0]
+        .createdAt as unknown as string;
+
       await fetchMore<GetMessagesQuery, GetMessagesQueryVariables>({
         query: GetMessagesDocument,
         variables: {
           channel,
           cursor,
-          limit: 5,
+          limit: 1,
         },
-        updateQuery: (prev, { fetchMoreResult }) => prev,
+        updateQuery: (prev, { fetchMoreResult }) =>
+          produce(prev, (draft) => {
+            if (draft.getMessages) {
+              draft.getMessages.messages = [
+                ...(fetchMoreResult?.getMessages?.messages || []),
+                ...(draft.getMessages?.messages || []),
+              ];
+              draft.getMessages.hasMore =
+                fetchMoreResult?.getMessages?.hasMore || false;
+            }
+          }),
       });
     }
   };

@@ -12,25 +12,6 @@ interface ServicesProps {
   data: GetUserQuery | undefined;
 }
 
-//          /"\
-//         |\./|
-//         |   |
-//         |   |
-//         |>~<|
-//         |   |
-//      /'\|   |/'\..
-//  /~\|   |   |   | \
-// |   =[@]=   |   |  \
-// |   |   |   |   |   \
-// | ~   ~   ~   ~ |`   )
-// |                   /
-//  \                 /
-//   \               /
-//    \    _____    /
-//     |--//''`\--|
-//     | (( +==)) |
-//     |--\_|_//--|
-
 export const Services: React.FC<ServicesProps> = ({ data }) => {
   const router = useRouter();
 

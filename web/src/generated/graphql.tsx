@@ -289,7 +289,7 @@ export type Query = {
   filterUserService?: Maybe<PaginatedUserService>;
   getMeUserService?: Maybe<Array<UserService>>;
   getUserService: UserService;
-  getMessages?: Maybe<PaginatedMessages>;
+  getMessages: PaginatedMessages;
   getRooms?: Maybe<Array<Room>>;
   getCountries?: Maybe<Array<Country>>;
   getLanguages?: Maybe<Array<Language>>;
@@ -907,14 +907,14 @@ export type GetMessagesQueryVariables = Exact<{
 
 export type GetMessagesQuery = (
   { __typename?: 'Query' }
-  & { getMessages?: Maybe<(
+  & { getMessages: (
     { __typename?: 'PaginatedMessages' }
     & Pick<PaginatedMessages, 'hasMore'>
     & { messages: Array<(
       { __typename?: 'Message' }
       & Pick<Message, 'id' | 'message' | 'read' | 'roomId' | 'userId' | 'createdAt'>
     )> }
-  )> }
+  ) }
 );
 
 export type GetRoomsQueryVariables = Exact<{ [key: string]: never; }>;

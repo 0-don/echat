@@ -41,19 +41,25 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   );
 
   useEffect(() => {
+    // fetch firt messages
     if (channel && !called) {
+      // console.log('first fetch', channel);
       getMessages({ variables: { channel, limit: 10, cursor: null } });
     }
   }, [getMessages, channel, called]);
 
   useEffect(() => {
+    // refetch
     if (channel && called && refetch) {
+      // console.log('refetch', channel);
       refetch({ channel, limit: 10, cursor: null });
     }
   }, [refetch, channel, called]);
 
   useEffect(() => {
+    // subscribe for new messages
     if (channel && subscribeToMore) {
+      // console.log('subscribe', channel);
       const messageSent = subscribeToMore<
         MessageSentSubscription,
         MessageSentSubscriptionVariables
@@ -62,11 +68,10 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         variables: { channel },
         updateQuery: (prev, { subscriptionData }) =>
           produce(prev, (draft) => {
-            if (draft.getMessages)
-              draft.getMessages.messages = [
-                ...(draft.getMessages?.messages || []),
-                subscriptionData?.data?.messageSent,
-              ];
+            draft.getMessages.messages = [
+              ...draft.getMessages.messages,
+              subscriptionData.data.messageSent,
+            ];
           }),
       });
 
@@ -76,6 +81,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   }, [channel, subscribeToMore]);
 
   useEffect(() => {
+    msg;
     messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
   }, [msg]);
 
@@ -91,12 +97,18 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   }, [msg]);
 
   const onScroll = async () => {
-
+    // check if scroll top to load old messages
+    if (scrollRef.current)
+      console.log(
+        scrollRef?.current?.scrollHeight -
+          (scrollRef?.current?.scrollTop + scrollRef?.current?.clientHeight) 
+      );
     if (
       scrollRef?.current?.scrollTop === 0 &&
       msg?.getMessages?.hasMore &&
       fetchMore
     ) {
+      let current = scrollRef?.current?.scrollHeight;
       const cursor = msg?.getMessages?.messages[0]
         .createdAt as unknown as string;
 
@@ -105,20 +117,12 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         variables: {
           channel,
           cursor,
-          limit: 1,
+          limit: 5,
         },
-        updateQuery: (prev, { fetchMoreResult }) =>
-          produce(prev, (draft) => {
-            if (draft.getMessages) {
-              draft.getMessages.messages = [
-                ...(fetchMoreResult?.getMessages?.messages || []),
-                ...(draft.getMessages?.messages || []),
-              ];
-              draft.getMessages.hasMore =
-                fetchMoreResult?.getMessages?.hasMore || false;
-            }
-          }),
       });
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight - current;
+      }
     }
   };
 

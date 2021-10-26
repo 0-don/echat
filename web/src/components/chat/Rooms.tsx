@@ -4,9 +4,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'next/image';
 import React from 'react';
 import {
-  GetMessagesDocument,
-  GetMessagesQuery,
-  GetMessagesQueryVariables,
   GetRoomsDocument,
   useDeleteRoomMutation,
   useGetRoomsQuery,
@@ -97,14 +94,10 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                         refetchQueries: [{ query: GetRoomsDocument }],
                       });
                       setChannel('');
-                      cache.writeQuery<
-                        GetMessagesQuery,
-                        GetMessagesQueryVariables
-                      >({
-                        query: GetMessagesDocument,
-                        variables: { channel: room.channel, limit: 5 },
-                        data: { getMessages: { messages: [], hasMore: false } },
-                        overwrite: true,
+                      cache.evict({
+                        id: 'ROOT_QUERY',
+                        fieldName: 'getMessages',
+                        broadcast: false,
                       });
                     }}
                   />

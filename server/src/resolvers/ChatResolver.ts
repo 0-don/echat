@@ -62,7 +62,7 @@ export class ChatResolver {
     ) => dataloader.load({ roomIds: root.id, userId: req.session.userId });
   }
 
-  @Query(() => PaginatedMessages, { nullable: true })
+  @Query(() => PaginatedMessages)
   async getMessages(
     @Ctx() { req }: MyContext,
     @Arg('channel') channel: string,
@@ -70,10 +70,12 @@ export class ChatResolver {
     @Arg('cursor', () => String, { nullable: true }) cursor?: string
   ) {
     const { userId } = req.session;
-    console.log(userId, channel, limit, cursor);
 
     if (!channel || !limit) {
-      return null;
+      return {
+        messages: [],
+        hasMore: false,
+      };
     }
 
     const realLimit = Math.min(50, limit);
@@ -103,7 +105,10 @@ export class ChatResolver {
       .getMany();
 
     if (!messages.length) {
-      return null;
+      return {
+        messages: [],
+        hasMore: false,
+      };
     }
 
     return {

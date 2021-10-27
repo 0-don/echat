@@ -7,12 +7,14 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { User } from './User';
 import { Room } from './Room';
 
 @ObjectType()
 @Entity()
+@Unique(['roomId', 'userId'])
 export class Participant extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()

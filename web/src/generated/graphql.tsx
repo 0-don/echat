@@ -109,6 +109,7 @@ export type Mutation = {
   switchUserServiceStatus: Scalars['Boolean'];
   upsertUserService: Scalars['Boolean'];
   deleteUserService: Scalars['Boolean'];
+  joinRoom: Scalars['Boolean'];
   setAsRead: Scalars['Boolean'];
   createRoom?: Maybe<Scalars['String']>;
   sendMessage?: Maybe<Message>;
@@ -176,6 +177,11 @@ export type MutationUpsertUserServiceArgs = {
 
 export type MutationDeleteUserServiceArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationJoinRoomArgs = {
+  channel: Scalars['String'];
 };
 
 
@@ -721,6 +727,16 @@ export type ForgotPasswordMutationVariables = Exact<{
 export type ForgotPasswordMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'forgotPassword'>
+);
+
+export type JoinRoomMutationVariables = Exact<{
+  channel: Scalars['String'];
+}>;
+
+
+export type JoinRoomMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinRoom'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -1686,6 +1702,37 @@ export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const JoinRoomDocument = gql`
+    mutation JoinRoom($channel: String!) {
+  joinRoom(channel: $channel)
+}
+    `;
+export type JoinRoomMutationFn = Apollo.MutationFunction<JoinRoomMutation, JoinRoomMutationVariables>;
+
+/**
+ * __useJoinRoomMutation__
+ *
+ * To run a mutation, you first call `useJoinRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinRoomMutation, { data, loading, error }] = useJoinRoomMutation({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useJoinRoomMutation(baseOptions?: Apollo.MutationHookOptions<JoinRoomMutation, JoinRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<JoinRoomMutation, JoinRoomMutationVariables>(JoinRoomDocument, options);
+      }
+export type JoinRoomMutationHookResult = ReturnType<typeof useJoinRoomMutation>;
+export type JoinRoomMutationResult = Apollo.MutationResult<JoinRoomMutation>;
+export type JoinRoomMutationOptions = Apollo.BaseMutationOptions<JoinRoomMutation, JoinRoomMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
@@ -2989,6 +3036,7 @@ export const namedOperations = {
     DeleteRoom: 'DeleteRoom',
     DeleteUserService: 'DeleteUserService',
     ForgotPassword: 'ForgotPassword',
+    JoinRoom: 'JoinRoom',
     Login: 'Login',
     Logout: 'Logout',
     MultipleUpload: 'MultipleUpload',

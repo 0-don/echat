@@ -1,22 +1,12 @@
 import React from 'react';
 import {
   useFilterUserServiceQuery,
-  // useGetCountriesQuery,
   useGetLanguagesQuery,
 } from 'src/generated/graphql';
 import useServiceFilterStore from 'src/store/ServiceFilterStore';
 import { Button } from '../htmlElements';
 import { FilterDropdown } from '../htmlElements/FilterDropdown';
 import { GENDERS } from 'src/constants';
-// {
-//   "slug": "call-of-duty-warzone",
-//   "limit": 10,
-//   "filterOptions": {
-//     "languages": [
-//       {"id": 2, "name": "Abkhazian"}
-//     ]
-//   }
-// }
 
 export const Filter: React.FC = () => {
   const { filterQuery, setCursor } = useServiceFilterStore();
@@ -75,8 +65,8 @@ export const Filter: React.FC = () => {
           <Button
             icon='search'
             text='filter'
-            className='py-5 border-2 border-purple hover:border-purple-dark mt-0.5'
-            style={{height: "42px", marginTop: "2px"}}
+            className='py-5 border-2 border-purple hover:border-purple-dark mt-0.5 '
+            style={{ height: '42px', marginTop: '2px' }}
             onClick={async () => {
               setCursor(undefined);
               await refetch({ ...filterQuery, cursor: undefined });

@@ -192,7 +192,7 @@ export class Languages1630938809190 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        DELETE FROM public.country;
+        DELETE FROM country;
         `);
   }
 }

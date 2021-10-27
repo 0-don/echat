@@ -128,7 +128,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({}) => {
           </NextLink>
         </Menu.Item>
         <Menu.Item>
-          <NextLink href='/order'>
+          <NextLink href='/orders'>
             <div className='cursor-pointer flex items-center text-gray-700 hover:bg-purple hover:text-white dark:hover:text-white dark:text-white'>
               <FontAwesomeIcon
                 size='xs'

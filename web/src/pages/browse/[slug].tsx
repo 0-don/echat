@@ -78,6 +78,7 @@ const Browse: NextPage<{ slug: string }> = ({ slug }) => {
           src={bgImage?.src ?? gray.src}
           layout='fill'
           objectFit='cover'
+          priority={true}
         />
       </div>
 

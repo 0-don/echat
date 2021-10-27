@@ -1,0 +1,3 @@
+mutation JoinRoom($channel: String!) {
+  joinRoom(channel: $channel)
+}

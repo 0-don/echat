@@ -22,6 +22,7 @@ import { Message } from '../entity/Message';
 import { groupBy } from 'lodash';
 import { Loader } from 'type-graphql-dataloader';
 import DataLoader from 'dataloader';
+import { log } from 'console';
 
 @ObjectType()
 class PaginatedMessages {
@@ -60,6 +61,24 @@ export class ChatResolver {
     return (
       dataloader: DataLoader<{ roomIds: number; userId: number }, number>
     ) => dataloader.load({ roomIds: root.id, userId: req.session.userId });
+  }
+
+  @Mutation(() => Boolean)
+  async joinRoom(@Ctx() { req }: MyContext, @Arg('channel') channel: string) {
+    const { userId } = req.session;
+    const room = await Room.findOne({ where: { channel } });
+
+    if (!room) {
+      return false;
+    }
+
+    try {
+      await Participant.insert({ userId, roomId: room.id });
+    } catch (err) {
+      log(err);
+    }
+
+    return true;
   }
 
   @Query(() => PaginatedMessages)
@@ -178,12 +197,14 @@ export class ChatResolver {
         .execute();
 
       room = result.raw[0] as Room;
+    }
 
+    try {
       await Participant.insert([
         { userId: me.id, roomId: room.id },
         { userId: participant.id, roomId: room.id },
       ]);
-    }
+    } catch (error) {}
 
     return room.channel;
   }
@@ -247,8 +268,15 @@ export class ChatResolver {
     if (!room) {
       return false;
     }
+    console.log(channel);
+    if (channel === 'global') {
+      console.log('participant deltet');
+      await Participant.delete({ userId, roomId: room.id });
+    } else {
+      console.log('room delete');
+      await Room.delete({ id: room.id });
+    }
 
-    await Room.delete({ id: room.id });
     return true;
   }
 

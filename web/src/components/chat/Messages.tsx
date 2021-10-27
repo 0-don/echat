@@ -24,7 +24,7 @@ dayjs.extend(relativeTime);
 interface MessagesProps {}
 
 export const Messages: React.FC<MessagesProps> = ({}) => {
-  const [firstScrollDone, setFirstScrollDone] = useState(false);
+  const [bottom, setBottom] = useState<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [setAsRead] = useSetAsReadMutation();
@@ -41,27 +41,35 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   const chattingWith = room?.participants?.find(
     (participant) => participant.userId !== meId
   );
+  const messageIds = msg?.getMessages?.messages
+    ?.filter((message) => message.userId !== meId && !message.read)
+    .map((message) => message.id);
 
   useEffect(() => {
-    // fetch firt messages
+    // get first messages
     if (channel && !called) {
-      // console.log('first fetch', channel);
       getMessages({ variables: { channel, limit: 10, cursor: null } });
+      messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
     }
   }, [getMessages, channel, called]);
 
   useEffect(() => {
+    messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
+  }, []);
+
+  useEffect(() => {
     // refetch
-    if (channel && called && refetch) {
-      // console.log('refetch', channel);
-      refetch({ channel, limit: 10, cursor: null });
-    }
+    (async () => {
+      if (channel && called && refetch) {
+        await refetch({ channel, limit: 10, cursor: null });
+        messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
+      }
+    })();
   }, [refetch, channel, called]);
 
   useEffect(() => {
     // subscribe for new messages
     if (channel && subscribeToMore) {
-      // console.log('subscribe', channel);
       const messageSent = subscribeToMore<
         MessageSentSubscription,
         MessageSentSubscriptionVariables
@@ -82,31 +90,20 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
     return () => {};
   }, [channel, subscribeToMore]);
 
-  useEffect(() => {
-    if (firstScrollDone && msg) {
-      messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
-      setFirstScrollDone(true);
-    }
-  }, [msg]);
-
-  useEffect(() => {
-    // set as read
-    const messageIds = msg?.getMessages?.messages
-      ?.filter((message) => message.userId !== meId && !message.read)
-      .map((message) => message.id);
-    if (refetch && messageIds && messageIds?.length > 0) {
-      setAsRead({ variables: { messageIds } });
-      refetch({ channel });
-    }
-  }, [msg]);
-
   const onScroll = async () => {
-    // check if scroll top to load old messages
-    if (scrollRef.current)
-      console.log(
+    // set as read if at chat bottom
+    scrollRef.current &&
+      setBottom(
         scrollRef?.current?.scrollHeight -
           (scrollRef?.current?.scrollTop + scrollRef?.current?.clientHeight)
       );
+
+    if (refetch && messageIds && messageIds?.length > 0 && bottom < 25) {
+      await setAsRead({ variables: { messageIds } });
+      await refetch({ channel });
+    }
+
+    // check if scroll top to load old messages
     if (
       scrollRef?.current?.scrollTop === 0 &&
       msg?.getMessages?.hasMore &&
@@ -214,11 +211,30 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
           )}
           <div ref={messagesEndRef} />
         </div>
-        <FontAwesomeIcon
-          size='1x'
-          className='dark:text-white text-white cursor-pointer z-10 rounded-full bg-purple w-10 h-10'
-          icon='angle-double-down'
-        />
+        {bottom > 25 && (
+          <div className='flex w-full justify-end'>
+            <div
+              className='z-20'
+              onClick={() =>
+                messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' })
+              }
+            >
+              <span className='rounded-full bg-purple flex justify-center items-center cursor-pointer -mt-10 mr-3 z-10 h-7 w-7'>
+                <FontAwesomeIcon
+                  size='1x'
+                  className='dark:text-white text-white'
+                  icon='angle-double-down'
+                />
+              </span>
+              {messageIds && messageIds.length > 0 && (
+                <small className='text-xs bg-red-500 text-white rounded-full h-3.5 w-3.5 flex justify-center items-center -mt-3'>
+                  {messageIds.length}
+                </small>
+              )}
+            </div>
+          </div>
+        )}
+
         <SendMessage />
       </div>
     </>

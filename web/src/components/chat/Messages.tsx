@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MessageSentDocument,
   MessageSentSubscription,
@@ -18,11 +18,13 @@ import Image from 'next/image';
 import gray from '/public/gray.png';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dayjs.extend(relativeTime);
 
 interface MessagesProps {}
 
 export const Messages: React.FC<MessagesProps> = ({}) => {
+  const [firstScrollDone, setFirstScrollDone] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [setAsRead] = useSetAsReadMutation();
@@ -81,8 +83,10 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   }, [channel, subscribeToMore]);
 
   useEffect(() => {
-    msg;
-    messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
+    if (firstScrollDone && msg) {
+      messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
+      setFirstScrollDone(true);
+    }
   }, [msg]);
 
   useEffect(() => {
@@ -101,7 +105,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
     if (scrollRef.current)
       console.log(
         scrollRef?.current?.scrollHeight -
-          (scrollRef?.current?.scrollTop + scrollRef?.current?.clientHeight) 
+          (scrollRef?.current?.scrollTop + scrollRef?.current?.clientHeight)
       );
     if (
       scrollRef?.current?.scrollTop === 0 &&
@@ -210,7 +214,11 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
           )}
           <div ref={messagesEndRef} />
         </div>
-
+        <FontAwesomeIcon
+          size='1x'
+          className='dark:text-white text-white cursor-pointer z-10 rounded-full bg-purple w-10 h-10'
+          icon='angle-double-down'
+        />
         <SendMessage />
       </div>
     </>

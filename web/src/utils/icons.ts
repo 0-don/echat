@@ -46,6 +46,7 @@ import {
   faShare,
   faThumbsDown as faSolidThumbsDown,
   faThumbsUp as faSolidThumbsUp,
+  faAngleDoubleDown,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faCaretSquareRight,
@@ -56,6 +57,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
+  faAngleDoubleDown,
   faShare,
   faClock,
   faInfoCircle,

@@ -56,6 +56,7 @@ const ServiceDetail: NextPage<{ id: number }> = ({ id }) => {
           src={bgImage?.src ?? transparent.src}
           layout='fill'
           objectFit='cover'
+          priority={true}
         />
       </div>
 

@@ -167,7 +167,8 @@ export class ChatResolver {
   @Mutation(() => String, { nullable: true })
   async createRoom(
     @Ctx() { req }: MyContext,
-    @Arg('participantId', () => Int) participantId: number
+    @Arg('participantId', () => Int) participantId: number,
+    @PubSub() pubSub: PubSubEngine
   ) {
     // 4730 -> test@test.test
     const users = await getRepository(User).find({
@@ -205,6 +206,9 @@ export class ChatResolver {
         { userId: participant.id, roomId: room.id },
       ]);
     } catch (error) {}
+
+    console.log(participant.uuid);
+    await pubSub.publish(participant.uuid, room);
 
     return room.channel;
   }
@@ -268,12 +272,10 @@ export class ChatResolver {
     if (!room) {
       return false;
     }
-    console.log(channel);
+
     if (channel === 'global') {
-      console.log('participant deltet');
       await Participant.delete({ userId, roomId: room.id });
     } else {
-      console.log('room delete');
       await Room.delete({ id: room.id });
     }
 
@@ -289,5 +291,14 @@ export class ChatResolver {
   ): Message {
     channel;
     return message;
+  }
+
+  @Subscription({
+    topics: ({ args }) => args.channel,
+  })
+  connectRoom(@Arg('channel') channel: string, @Root() room: Room): Room {
+    console.log(channel, room);
+    channel;
+    return room;
   }
 }

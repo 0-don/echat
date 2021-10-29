@@ -1,8 +1,6 @@
-import { Loading } from 'src/components/utils';
 import { Wrapper } from '../components/Wrapper';
 import withApollo from '../utils/apollo/withApollo';
 import homeAlt from '/public/home-alt.jpg';
-import home from '/public/home.jpg';
 import rig from '/public/rig.svg';
 import Image from 'next/image';
 import { Button } from 'src/components/htmlElements';

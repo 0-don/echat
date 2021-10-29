@@ -1,0 +1,7 @@
+subscription ConnectRoom($channel: String!) {
+  connectRoom(channel: $channel) {
+    id
+    channel
+    createdAt
+  }
+}

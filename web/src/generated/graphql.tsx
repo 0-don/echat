@@ -437,10 +437,16 @@ export type ServiceImage = {
 export type Subscription = {
   __typename?: 'Subscription';
   messageSent: Message;
+  connectRoom: Room;
 };
 
 
 export type SubscriptionMessageSentArgs = {
+  channel: Scalars['String'];
+};
+
+
+export type SubscriptionConnectRoomArgs = {
   channel: Scalars['String'];
 };
 
@@ -550,7 +556,7 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'type' | 'username' | 'coins' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+  & Pick<User, 'id' | 'type' | 'uuid' | 'username' | 'coins' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
   & { target?: Maybe<Array<(
     { __typename?: 'Review' }
     & Pick<Review, 'id' | 'score' | 'recommend'>
@@ -1173,7 +1179,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'type' | 'username' | 'coins' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
+    & Pick<User, 'id' | 'type' | 'uuid' | 'username' | 'coins' | 'gender' | 'countryId' | 'age' | 'lastOnline' | 'description' | 'discord' | 'twitter' | 'facebook' | 'snapchat' | 'instagram' | 'twitch' | 'steam' | 'tiktok'>
     & { target?: Maybe<Array<(
       { __typename?: 'Review' }
       & Pick<Review, 'id' | 'score' | 'recommend'>
@@ -1203,6 +1209,19 @@ export type UserImagesQuery = (
   )>> }
 );
 
+export type ConnectRoomSubscriptionVariables = Exact<{
+  channel: Scalars['String'];
+}>;
+
+
+export type ConnectRoomSubscription = (
+  { __typename?: 'Subscription' }
+  & { connectRoom: (
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'channel' | 'createdAt'>
+  ) }
+);
+
 export type MessageSentSubscriptionVariables = Exact<{
   channel: Scalars['String'];
 }>;
@@ -1226,6 +1245,7 @@ export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
   type
+  uuid
   username
   coins
   gender
@@ -2866,6 +2886,7 @@ export const MeDocument = gql`
   me {
     id
     type
+    uuid
     username
     coins
     gender
@@ -2970,6 +2991,38 @@ export function useUserImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type UserImagesQueryHookResult = ReturnType<typeof useUserImagesQuery>;
 export type UserImagesLazyQueryHookResult = ReturnType<typeof useUserImagesLazyQuery>;
 export type UserImagesQueryResult = Apollo.QueryResult<UserImagesQuery, UserImagesQueryVariables>;
+export const ConnectRoomDocument = gql`
+    subscription ConnectRoom($channel: String!) {
+  connectRoom(channel: $channel) {
+    id
+    channel
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useConnectRoomSubscription__
+ *
+ * To run a query within a React component, call `useConnectRoomSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useConnectRoomSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConnectRoomSubscription({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useConnectRoomSubscription(baseOptions: Apollo.SubscriptionHookOptions<ConnectRoomSubscription, ConnectRoomSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ConnectRoomSubscription, ConnectRoomSubscriptionVariables>(ConnectRoomDocument, options);
+      }
+export type ConnectRoomSubscriptionHookResult = ReturnType<typeof useConnectRoomSubscription>;
+export type ConnectRoomSubscriptionResult = Apollo.SubscriptionResult<ConnectRoomSubscription>;
 export const MessageSentDocument = gql`
     subscription MessageSent($channel: String!) {
   messageSent(channel: $channel) {
@@ -3048,6 +3101,7 @@ export const namedOperations = {
     UpsertUserService: 'UpsertUserService'
   },
   Subscription: {
+    ConnectRoom: 'ConnectRoom',
     MessageSent: 'MessageSent'
   },
   Fragment: {

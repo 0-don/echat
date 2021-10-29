@@ -3,13 +3,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useChatStore from 'src/store/ChatStore';
 import { Messages } from './Messages';
 import { Rooms } from './Rooms';
-import { useGetRoomsQuery } from 'src/generated/graphql';
+import {
+  useConnectRoomSubscription,
+  useGetRoomsQuery,
+  useMeQuery,
+} from 'src/generated/graphql';
 import { Notify } from './Notify';
 
 export const Chat: React.FC = () => {
+  const { data: me } = useMeQuery();
+  const meUuid = me?.me?.uuid;
+  if (!meUuid) {
+    return null;
+  }
+
   const { switchChatPopup, chatPopup, newMessagesCount, setNewMessagesCount } =
     useChatStore();
-  const { data } = useGetRoomsQuery();
+  const { data, refetch } = useGetRoomsQuery();
+  const { data: _ } = useConnectRoomSubscription({
+    variables: { channel: meUuid },
+    onSubscriptionData: async () => {
+      await refetch();
+    },
+  });
 
   useEffect(() => {
     const count = data?.getRooms?.reduce(
@@ -25,11 +41,11 @@ export const Chat: React.FC = () => {
         <Notify currentChannel={channel} key={channel} />
       ))}
       {chatPopup && (
-        <div className='fixed bottom-0 right-0 z-10 mr-10 mb-10 flex text-white '>
-          <div className='bg-dark-lightAlt rounded-tl-xl rounded-bl-xl w-80 px-2 pt-2'>
+        <div className='fixed bottom-0 right-0 z-50 md:mr-10 md:mb-10 mr-2 mb-2 flex text-white '>
+          <div className='bg-dark-lightAlt rounded-tl-xl rounded-bl-xl md:w-80 px-2 pt-2'>
             <Rooms />
           </div>
-          <div className='bg-dark p-5 rounded-tr-xl rounded-br-xl w-96 max-w-sm'>
+          <div className='bg-dark p-5 rounded-tr-xl rounded-br-xl md:w-96 w-64 max-w-sm'>
             <Messages />
           </div>
         </div>

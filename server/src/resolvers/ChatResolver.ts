@@ -207,7 +207,7 @@ export class ChatResolver {
       ]);
     } catch (error) {}
 
-    console.log(participant.uuid);
+ 
     await pubSub.publish(participant.uuid, room);
 
     return room.channel;
@@ -297,7 +297,7 @@ export class ChatResolver {
     topics: ({ args }) => args.channel,
   })
   connectRoom(@Arg('channel') channel: string, @Root() room: Room): Room {
-    console.log(channel, room);
+
     channel;
     return room;
   }

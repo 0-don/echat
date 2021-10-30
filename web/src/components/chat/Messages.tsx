@@ -61,7 +61,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
     if (bottom === 0) {
       messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
     }
-    console.log(messageIds, bottom);
+
     if (refetch && messageIds && messageIds?.length > 0 && bottom < 25) {
       setAsRead({ variables: { messageIds } });
       refetch({ channel });

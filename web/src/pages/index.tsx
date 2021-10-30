@@ -40,7 +40,7 @@ const Index: React.FC<indexProps> = ({}) => {
                   className='text-lg'
                   onClick={() => router.push('/browse/league-of-legends')}
                 />
-                {data?.me && (
+                {!data?.me && (
                   <button
                     className='p-2 pl-5 pr-5 bg-transparent border-2 border-purple text-purple text-lg rounded-lg hover:bg-purple hover:text-gray-100 focus:border-4 focus:bg-purple-dark'
                     onClick={() => router.push('/register')}

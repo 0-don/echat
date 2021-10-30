@@ -51,7 +51,7 @@ export const Chat: React.FC = () => {
         </div>
       )}
       {!chatPopup && (
-        <div className='fixed bottom-0 right-0 z-10 mr-10 mb-10 flex flex-col items-end'>
+        <div className='fixed bottom-0 right-0 z-10 md:mr-10 md:mb-10 mr-2 mb-2 flex flex-col items-end'>
           <FontAwesomeIcon
             size='4x'
             className='dark:text-white text-white bg-purple dark:bg-purple dark:hover:bg-purple-dark hover:bg-purple-dark p-2.5 rounded-full '

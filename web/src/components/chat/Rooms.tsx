@@ -53,15 +53,24 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                   channel === room.channel ? 'border-l-4 border-purple' : ''
                 }  hover:border-l-4 hover:border-purple-dark overflow-x-hidden overflow-y-auto entry cursor-pointer transform duration-300 transition-transform bg-dark mb-1 rounded p-4 flex shadow-2xl`}
               >
-                <div className='w-12 h-12 relative'>
-                  <Image
-                    width={45}
-                    height={45}
-                    layout='fixed'
-                    objectFit='cover'
-                    className='rounded-full'
-                    src={profileImg ?? gray.src}
-                  />
+                <div className='relative'>
+                  {room.channel === 'global' ? (
+                    <FontAwesomeIcon
+                      size='3x'
+                      title='enter global chat'
+                      className='dark:text-white text-white dark:hover:text-purple hover:text-purple'
+                      icon='globe'
+                    />
+                  ) : (
+                    <Image
+                      width={55}
+                      height={55}
+                      layout='fixed'
+                      objectFit='cover'
+                      className='rounded-full'
+                      src={profileImg ?? gray.src}
+                    />
+                  )}
                   <span
                     className={`${
                       dayjs().diff(participant?.lastOnline, 'minutes') < 120
@@ -72,7 +81,11 @@ export const Rooms: React.FC<RoomsProps> = ({}) => {
                 </div>
                 <div className='w-full ml-5 hidden md:block'>
                   <div className='flex justify-between'>
-                    <span className='font-medium'>{participant?.username}</span>
+                    <span className='font-medium'>
+                      {room.channel === 'global'
+                        ? 'global chat'
+                        : participant?.username}
+                    </span>
                     {room?.newMessagesCount > 0 && (
                       <small className='text-xs bg-red-500 text-white rounded-full h-5 w-5 flex justify-center items-center'>
                         {room.newMessagesCount}

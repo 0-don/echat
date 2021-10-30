@@ -58,6 +58,17 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
   }, []);
 
   useEffect(() => {
+    if (bottom === 0) {
+      messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
+    }
+    console.log(messageIds, bottom);
+    if (refetch && messageIds && messageIds?.length > 0 && bottom < 25) {
+      setAsRead({ variables: { messageIds } });
+      refetch({ channel });
+    }
+  }, [msg]);
+
+  useEffect(() => {
     // refetch
     (async () => {
       if (channel && called && refetch) {
@@ -132,7 +143,12 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
       <div className='chat-area flex-1 flex flex-col'>
         <div className='flex items-center justify-between'>
           <h2 className='text-lg'>
-            Chatting with <b>{chattingWith?.user.username}</b>
+            Chatting with{' '}
+            <b>
+              {room?.channel === 'global'
+                ? 'global chat'
+                : chattingWith?.user.username}
+            </b>
           </h2>
           <div
             className='cursor-pointer hover:text-purple'
@@ -215,9 +231,10 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
           <div className='flex w-full justify-end'>
             <div
               className='z-20'
-              onClick={() =>
-                messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' })
-              }
+              onClick={() => {
+                messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
+                setBottom(0);
+              }}
             >
               <span className='rounded-full bg-purple flex justify-center items-center cursor-pointer -mt-10 mr-3 z-10 h-7 w-7'>
                 <FontAwesomeIcon

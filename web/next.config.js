@@ -1,4 +1,13 @@
 module.exports = {
+  // docker hot reload fix
+  webpackDevMiddleware: (config) => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 300,
+    };
+
+    return config;
+  },
   images: {
     domains: [
       'static-cdn.jtvnw.net',

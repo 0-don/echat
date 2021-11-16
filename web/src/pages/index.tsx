@@ -12,6 +12,7 @@ interface indexProps {}
 const Index: React.FC<indexProps> = ({}) => {
   const router = useRouter();
   const { data } = useMeQuery();
+
   return (
     <Wrapper navbar fluid scrollbar className='relative'>
       <div style={{ position: 'relative', width: '100%', height: '48vw' }}>

@@ -1,5 +1,7 @@
 
 export const __prod__ = 'production' === process.env.NODE_ENV;
+
+
 export const GRAPHQL_SERVER_URL = __prod__
   ? '/graphql'
   : process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL!;

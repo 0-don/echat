@@ -16,7 +16,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { COOKIE_NAME, __prod__ } from './constants';
 import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
 
-import ws from 'ws'; // yarn add ws
+import ws from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
 
 import { UserResolver } from './resolvers/UserResolver';
@@ -110,7 +110,7 @@ const PgSession = connectPgSimple(session);
     log(`
     🚀  Server is running!!
     🔉  Listening on port ${process.env.SERVER_PORT}
-    📭  Query at https://localhost:${process.env.SERVER_PORT}/graphql
+    📭  Query at http://localhost:${process.env.SERVER_PORT}/graphql
     📭  Subscription at ws://localhost:${process.env.SERVER_PORT}/graphql
   `);
   });

@@ -40,12 +40,12 @@ services:
       - ./server:/app
       - /app/node_modules
   db:
-    image: postgres
+    image: postgres:14.1-alpine
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=echat
     volumes:
-      - ./pgdata:/var/lib/postgres/data
+      - ~/pgdata:/var/lib/postgresql/data
     ports:
       - 5432:5432

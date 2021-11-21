@@ -84,6 +84,7 @@ export class Order extends BaseEntity {
   @ManyToOne(() => UserService, (userService) => userService.orders, {
     lazy: true,
     nullable: true,
+    onDelete: 'CASCADE',
   })
   @TypeormLoader(() => User, (order: Order) => order.userServiceId)
   userService?: Promise<UserService>;

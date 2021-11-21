@@ -51,15 +51,24 @@ const scheduleTemplate = (userId: number, name: string): SchedulesType => ({
   userId,
 });
 
-const main = async () => {
-  await createConnection({
-    type: 'postgres',
-    url: process.env.DATABASE_URL,
-    synchronize: true,
-    // logging: true,
-    entities: [__dirname + '/../entity/*'],
-  });
-  await User.delete({ fake: true });
+export const fakerGen = async (externalCheck: boolean) => {
+  if (externalCheck) {
+    const fakeUsers = await User.find({ fake: true });
+
+    if (fakeUsers.length) {
+      return;
+    }
+  } else {
+    await createConnection({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      synchronize: true,
+      // logging: true,
+      entities: [__dirname + '/../entity/*'],
+    });
+    console.log('deleted All users');
+    await User.delete({ fake: true });
+  }
 
   const services = await Service.find({ order: { popularity: 'ASC' } });
   const countries = await Country.find({});
@@ -91,9 +100,13 @@ const main = async () => {
       tiktok: coinFlip() ? faker.internet.userName() : undefined,
       countryId: countries[getRandomBetween(0, countries.length - 1)].id,
     };
-    fakeUsers.push(user);
+
+    if (!fakeUsers.find((u) => u.email === user.email)) {
+      fakeUsers.push(user);
+    }
   }
 
+  console.log('Fake Users Created');
   await User.insert(fakeUsers);
   const users = await User.find({ where: { fake: true } });
 
@@ -207,28 +220,30 @@ const main = async () => {
   let orders: OrderType = [];
 
   // ORDERS
-  users.forEach((user) => {
+  for (let user of users) {
     for (let x = 0; x < getRandomBetween(6, 8); x++) {
       const userService =
-        dbUserServices[getRandomBetween(0, dbUserServices!.length! - 1)];
+        dbUserServices[getRandomBetween(0, dbUserServices.length - 1)];
       const rounds = getRandomBetween(1, 4);
 
       const status = 'completed';
 
-      orders.push({
-        buyerId: user.id,
-        sellerId: userService.userId,
-        userServiceId: userService.id,
-        status,
-        price: userService.price,
-        per: userService.per as perType,
-        rounds,
-        finalPrice: userService.price * rounds,
-        startTime: new Date(),
-        startedTime: new Date(),
-      });
+      if (user.id !== userService.userId) {
+        orders.push({
+          buyerId: user.id,
+          sellerId: userService.userId,
+          userServiceId: userService.id,
+          status,
+          price: userService.price,
+          per: userService.per as perType,
+          rounds,
+          finalPrice: userService.price * rounds,
+          startTime: new Date(),
+          startedTime: new Date(),
+        });
+      }
     }
-  });
+  }
 
   log('Create Orders');
   await Order.insert(orders);
@@ -240,7 +255,7 @@ const main = async () => {
   // REVIEWS
   dbOrders.forEach(({ id, sellerId, buyerId, userServiceId }) => {
     const highestScore = getRandomBetween(0, 5);
-    reviews.push({
+    const review = {
       orderId: id,
       sourceId: buyerId,
       targetId: sellerId,
@@ -250,7 +265,8 @@ const main = async () => {
       score: Number(
         `${highestScore}.${highestScore === 5 ? 0 : getRandomBetween(0, 99)}`
       ),
-    });
+    };
+    reviews.push(review);
   });
 
   log('Create Reviews');
@@ -258,4 +274,7 @@ const main = async () => {
 
   log('Cleaning up');
 };
-main();
+
+if (process.argv[2] === 'gen') {
+  fakerGen(false);
+}

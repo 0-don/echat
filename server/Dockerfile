@@ -1,7 +1,6 @@
 # Install dependencies only when needed
 # Stage 0
 FROM node:16-alpine AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock ./
@@ -18,6 +17,7 @@ COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN yarn build 
 #############################################
+
 
 # Production image, copy all the files and run
 # Stage 3

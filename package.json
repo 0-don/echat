@@ -9,7 +9,6 @@
     "web": "cd web && yarn && yarn dev",
     "wbuild": "cd web && yarn && yarn build",
     "server": "cd server && yarn && yarn dev",
-    "sbuild": "cd server && yarn && yarn build",
-    "faker-gen": "cd server && yarn && ts-node-dev src/seed/faker-gen.ts"
+    "sbuild": "cd server && yarn && yarn build"
   }
 }

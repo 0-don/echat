@@ -41,6 +41,7 @@ export class Participant extends BaseEntity {
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.participants, {
     lazy: true,
+    onDelete: 'CASCADE',
   })
   @TypeormLoader()
   user: Lazy<User>;

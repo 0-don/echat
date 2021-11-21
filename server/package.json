@@ -60,8 +60,8 @@
     "dev": "ts-node-dev --poll --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "games-gen": "ts-node-dev src/seed/games-gen.ts",
-    "faker-gen": "ts-node-dev src/seed/faker-gen.ts",
+    "games-gen": "ts-node-dev src/seed/games-gen.ts gen",
+    "faker-gen": "ts-node-dev src/seed/faker-gen.ts gen",
     "delete-all": "ts-node-dev src/seed/deleteAllData.ts"
   },
   "nodemonConfig": {

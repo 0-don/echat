@@ -26,6 +26,8 @@ import { UserServiceResolver } from './resolvers/UserServiceResolver';
 import { ChatResolver } from './resolvers/ChatResolver';
 import { ExtraResolver } from './resolvers/ExtraResolver';
 import { OrderResolver } from './resolvers/OrderResolver';
+import { fakerGen } from './seed/faker-gen';
+import { gamesGen } from './seed/games-gen';
 
 const PgSession = connectPgSimple(session);
 
@@ -37,12 +39,16 @@ const PgSession = connectPgSimple(session);
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: true,
-      logging: true,
+      // logging: true,
       entities: [path.resolve(__dirname, 'entity', '*.{js,ts}')],
       migrations: [path.resolve(__dirname, 'migration', '*.{js,ts}')],
       subscribers: [path.resolve(__dirname, 'subscriber', '*.{js,ts}')],
     })
   ).runMigrations();
+
+  await gamesGen(true);
+
+  await fakerGen(true);
 
   // parse application/json
   app.set('trust proxy', 1);

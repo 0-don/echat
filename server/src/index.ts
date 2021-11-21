@@ -43,7 +43,7 @@ const PgSession = connectPgSimple(session);
       subscribers: [path.resolve(__dirname, 'subscriber', '*.{js,ts}')],
     })
   ).runMigrations();
-  console.log('asd');
+
   // parse application/json
   app.set('trust proxy', 1);
   app.use(cookieParser());

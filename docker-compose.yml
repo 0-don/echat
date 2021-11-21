@@ -36,6 +36,9 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/echat
+      - SERVER_PORT=4001
+      - SESSION_SECRET=qowiueojwojfalksdjoqiwueo
+      - CORS_ORIGIN=http://localhost:3000
     volumes:
       - ./server:/app
       - /app/node_modules

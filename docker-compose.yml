@@ -20,20 +20,32 @@ services:
     build:
       context: web/
       dockerfile: Dockerfile
+    restart: always
     volumes:
       - ./web:/app
       - /app/node_modules
       - /app/.next
-    env_file:
-      - web/.env.local
   server:
     ports:
       - 4001:4001
     build:
       context: server/
       dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/echat
     volumes:
       - ./server:/app
       - /app/node_modules
-    env_file:
-      - server/.env
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=echat
+    volumes:
+      - ./pgdata:/var/lib/postgres/data
+    ports:
+      - 5432:5432

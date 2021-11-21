@@ -34,17 +34,28 @@ const PgSession = connectPgSimple(session);
 (async () => {
   const app = express();
 
-  await (
-    await createConnection({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      synchronize: true,
-      // logging: true,
-      entities: [path.resolve(__dirname, 'entity', '*.{js,ts}')],
-      migrations: [path.resolve(__dirname, 'migration', '*.{js,ts}')],
-      subscribers: [path.resolve(__dirname, 'subscriber', '*.{js,ts}')],
-    })
-  ).runMigrations();
+  let retries = 5;
+  while (retries) {
+    try {
+      await (
+        await createConnection({
+          type: 'postgres',
+          url: process.env.DATABASE_URL,
+          synchronize: true,
+          // logging: true,
+          entities: [path.resolve(__dirname, 'entity', '*.{js,ts}')],
+          migrations: [path.resolve(__dirname, 'migration', '*.{js,ts}')],
+          subscribers: [path.resolve(__dirname, 'subscriber', '*.{js,ts}')],
+        })
+      ).runMigrations();
+      break;
+    } catch (error) {
+      console.log(error);
+      retries -= 1;
+      console.log(`retries left: ${retries}`);
+      await new Promise((res) => setTimeout(res, 5000));
+    }
+  }
 
   await gamesGen(true);
 

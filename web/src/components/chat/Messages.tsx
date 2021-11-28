@@ -61,7 +61,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
     if (bottom === 0) {
       messagesEndRef?.current?.scrollIntoView({ behavior: 'auto' });
     }
-
+    // @ts-ignore
     if (refetch && messageIds && messageIds?.length > 0 && bottom < 25) {
       setAsRead({ variables: { messageIds } });
       refetch({ channel });
@@ -108,7 +108,7 @@ export const Messages: React.FC<MessagesProps> = ({}) => {
         scrollRef?.current?.scrollHeight -
           (scrollRef?.current?.scrollTop + scrollRef?.current?.clientHeight)
       );
-
+    // @ts-ignore
     if (refetch && messageIds && messageIds?.length > 0 && bottom < 25) {
       await setAsRead({ variables: { messageIds } });
       await refetch({ channel });

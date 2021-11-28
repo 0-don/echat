@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { FileUpload } from 'graphql-upload';
+import path from 'path';
 const cloudinary = require('cloudinary').v2;
 
 type CloudinaryUploadResult = {
@@ -24,7 +25,7 @@ cloudinary.config({
 export const fileUpload = async (file: FileUpload) => {
   const { createReadStream, filename } = await file;
 
-  const filePath = `${__dirname}/../../files`;
+  const filePath = path.join(__dirname, '../../files');
 
   if (!fs.existsSync(filePath)) {
     fs.mkdirSync(filePath);

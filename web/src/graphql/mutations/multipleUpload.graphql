@@ -1,0 +1,3 @@
+mutation MultipleUpload($files: [Upload!]!, $type: String!) {
+  multipleUpload(files: $files, type: $type)
+}

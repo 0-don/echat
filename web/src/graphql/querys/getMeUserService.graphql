@@ -1,0 +1,25 @@
+query GetMeUserService {
+  getMeUserService {
+    id
+    status
+    serviceId
+    level
+    platforms
+    image
+    description
+    price
+    per
+    service {
+      id
+      igdbId
+      twitchId
+      name
+      popularity
+      boxArtUrl
+      first_release_date
+      platforms
+      genres
+      multiplayer_modes
+    }
+  }
+}

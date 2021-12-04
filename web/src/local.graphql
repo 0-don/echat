@@ -1,0 +1,4 @@
+extend type Room {
+  newMessage: String
+  lastMessageDate: DateTime
+}

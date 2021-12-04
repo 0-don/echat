@@ -1,0 +1,56 @@
+version: "3.4"
+
+
+#### Docker delete All + Cache #####
+# docker system prune -a
+
+### Build DockerFile ###
+# docker build -t nextjs .
+
+### Docker run Container ###
+# docker run -p 3000:3000 nextjs
+
+### SSH in to Image ###
+# docker run -it server sh
+
+services:
+  web:
+    ports:
+      - 3000:3000
+    build:
+      context: web/
+      dockerfile: Dockerfile
+      target: dev
+    restart: always
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+      - /app/.next
+  server:
+    ports:
+      - 4001:4001
+    build:
+      context: server/
+      dockerfile: Dockerfile
+      target: dev
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/echat
+      - SERVER_PORT=4001
+      - SESSION_SECRET=qowiueojwojfalksdjoqiwueo
+      - CORS_ORIGIN=http://localhost:3000
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+  db:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=echat
+    volumes:
+      - ~/pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

@@ -1,0 +1,62 @@
+version: "3.4"
+
+services:
+  echat-web:
+    ports:
+      - 3000:3000
+    build:
+      context: web/
+      dockerfile: Dockerfile
+      target: prod
+    restart: always
+    networks:
+      - nginx-network
+  echat-server:
+    ports:
+      - 4001:4001
+    build:
+      context: server/
+      dockerfile: Dockerfile
+      target: prod
+    restart: always
+    depends_on:
+      - echat-db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@echat-db:5432/echat
+      - SERVER_PORT=4001
+      - SESSION_SECRET=qowiueojwojfalksdjoqiwueo
+      - CORS_ORIGIN=http://tbit-shop.de
+    networks:
+      - nginx-network
+  echat-db:
+    image: postgres:14.1-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=echat
+    volumes:
+      - ~/pgdata:/var/lib/postgresql/data
+    networks:
+      - nginx-network
+  # echat-nginx:
+  #   image: jonasal/nginx-certbot:latest
+  #   restart: always
+  #   ports: 
+  #     - 80:80
+  #     - 443:443
+  #   volumes:
+  #     - ./user_conf.d:/etc/nginx/user_conf.d
+  #     - nginx_secrets:/etc/letsencrypt
+  #   environment:
+  #     CERTBOT_EMAIL: don.cryptus@gmail.com
+
+networks:
+  nginx-network:
+    external:
+      name: nginx-network
+
+# volumes:
+#   nginx_secrets:

@@ -1,0 +1,25 @@
+query GetRooms {
+  getRooms {
+    id
+    channel
+    createdAt
+    newMessagesCount
+    newMessage @client
+    lastMessageDate @client
+    participants {
+      id
+      roomId
+      userId
+      user {
+        id
+        username
+        lastOnline
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
+  }
+}

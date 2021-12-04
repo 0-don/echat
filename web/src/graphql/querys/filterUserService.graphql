@@ -1,0 +1,49 @@
+query FilterUserService(
+  $slug: String!
+  $limit: Int!
+  $cursor: String
+  $filterOptions: FilterOptions
+) {
+  filterUserService(
+    slug: $slug
+    limit: $limit
+    cursor: $cursor
+    filterOptions: $filterOptions
+  ) {
+    hasMore
+    userService {
+      id
+      status
+      level
+      platforms
+      price
+      per
+      createdAt
+      serviceId
+      reviews {
+        id
+        score
+        recommend
+        review
+      }
+      user {
+        id
+        username
+        age
+        gender
+        countryId
+        lastOnline
+        country {
+          id
+          name
+          flag
+        }
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
+  }
+}

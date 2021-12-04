@@ -1,0 +1,57 @@
+query GetBuyerOrders {
+  getBuyerOrders {
+    id
+    status
+    price
+    rounds
+    per
+    startTime
+    finalPrice
+    seller {
+      id
+      username
+      description
+      age
+      gender
+      images {
+        id
+        url
+        type
+      }
+    }
+    review {
+      id
+      score
+      recommend
+      review
+    }
+    userService {
+      id
+      status
+      level
+      platforms
+      description
+      price
+      per
+      image
+      service {
+        id
+        name
+        slug
+        popularity
+        boxArtUrl
+        first_release_date
+        platforms
+        genres
+        multiplayer_modes
+        images {
+          id
+          type
+          url
+          height
+          width
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+.idea/
+.vscode/
+.env
+yarn.lock
+package-lock.json
+dist
+files
+ormconfig.json
+yarn-error.log
+build/

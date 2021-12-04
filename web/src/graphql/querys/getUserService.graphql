@@ -1,0 +1,108 @@
+query GetUserService($id: Int!) {
+  getUserService(id: $id) {
+    id
+    status
+    platforms
+    description
+    level
+    price
+    per
+    image
+    userId
+    reviews {
+      id
+      score
+      recommend
+      review
+      created_at
+      source {
+        id
+        username
+        images {
+          id
+          type
+          url
+        }
+      }
+    }
+    service {
+      id
+      type
+      name
+      twitchId
+      popularity
+      boxArtUrl
+      first_release_date
+      platforms
+      genres
+      images {
+        id
+        url
+        width
+        type
+        height
+      }
+    }
+    user {
+      id
+      username
+      lastOnline
+      age
+      description
+      gender
+      discord
+      twitter
+      facebook
+      instagram
+      twitch
+      tiktok
+      schedules {
+        id
+        name
+        from
+        to
+        available
+      }
+      target {
+        id
+        score
+        recommend
+      }
+      languages {
+        id
+        name
+      }
+      country {
+        id
+        name
+        flag
+      }
+      images {
+        id
+        url
+        type
+      }
+      services {
+        id
+        status
+        level
+        platforms
+        description
+        price
+        per
+        image
+        service {
+          id
+          type
+          name
+          twitchId
+          popularity
+          boxArtUrl
+          first_release_date
+          platforms
+          genres
+        }
+      }
+    }
+  }
+}

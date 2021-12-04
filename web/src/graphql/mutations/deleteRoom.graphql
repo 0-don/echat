@@ -1,0 +1,3 @@
+mutation DeleteRoom($channel: String!) {
+  deleteRoom(channel: $channel)
+}

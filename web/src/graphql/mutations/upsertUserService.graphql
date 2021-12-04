@@ -1,0 +1,3 @@
+mutation UpsertUserService($options: UpsertUserService!) {
+  upsertUserService(options: $options)
+}

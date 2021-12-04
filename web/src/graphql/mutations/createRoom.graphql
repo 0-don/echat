@@ -1,4 +1,0 @@
-mutation createRoom($participantId: Int!) {
-  createRoom(participantId: $participantId)
-}
- 

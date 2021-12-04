@@ -1,6 +1,0 @@
-query GetLanguages($slug: String) {
-  getLanguages(slug: $slug) {
-    id
-    name
-  }
-}

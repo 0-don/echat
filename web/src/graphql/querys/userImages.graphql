@@ -1,8 +1,0 @@
-query UserImages($type: String) {
-  userImages(type: $type) {
-    id
-    type
-    url
-    publicId
-  }
-}

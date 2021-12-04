@@ -1,3 +1,0 @@
-mutation cancelOrder($id: Int!, $sellerId: Int, $buyerId: Int) {
-  cancelOrder(id: $id, buyerId: $buyerId, sellerId: $sellerId)
-}

@@ -1,3 +1,0 @@
-mutation DeleteImage($publicId: String!) {
-  deleteImage(publicId: $publicId)
-}

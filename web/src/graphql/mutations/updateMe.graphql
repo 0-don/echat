@@ -1,3 +1,0 @@
-mutation UpdateMe($options: UpdatedUser!) {
-  updateMe(options: $options)
-}

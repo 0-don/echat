@@ -23,9 +23,6 @@ services:
       - echat-db
     environment:
       - DATABASE_URL=postgres://postgres:postgres@echat-db:5432/echat
-      - SERVER_PORT=4001
-      - SESSION_SECRET=qowiueojwojfalksdjoqiwueo
-      - CORS_ORIGIN=http://echat.myngz.com
     networks:
       - nginx-network
   echat-db:

@@ -22,7 +22,7 @@ services:
     depends_on:
       - echat-db
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@echat-db:5432/echat
+      - DATABASE_URL=postgres://postgres:9oQX2RUHuHzwjy@echat-db:5432/echat
     networks:
       - nginx-network
   echat-db:
@@ -32,7 +32,7 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=9oQX2RUHuHzwjy
       - POSTGRES_DB=echat
     volumes:
       - ~/pgdata:/var/lib/postgresql/data

@@ -31,8 +31,8 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=9oQX2RUHuHzwjy
+      - POSTGRES_PASSWORD=9oQX2RUHuHzwjy
+      - POSTGRES_USER=postgres
       - POSTGRES_DB=echat
     volumes:
       - ~/pgdata:/var/lib/postgresql/data

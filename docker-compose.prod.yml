@@ -12,8 +12,8 @@ services:
     networks:
       - nginx-pm_default
   echat-server:
-    ports:
-      - 4001:4001
+    # ports:
+    #   - 4001:4001
     build:
       context: server/
       dockerfile: Dockerfile

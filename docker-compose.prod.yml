@@ -10,7 +10,7 @@ services:
       target: prod
     restart: always
     networks:
-      - nginx-network
+      - nginx-pm_default
   echat-server:
     ports:
       - 4001:4001
@@ -24,7 +24,7 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:9oQX2RUHuHzwjy@echat-db:5432/echat
     networks:
-      - nginx-network
+      - nginx-pm_default
   echat-db:
     image: postgres:14.1-alpine
     restart: always
@@ -37,7 +37,7 @@ services:
     volumes:
       - ~/pgdata:/var/lib/postgresql/data
     networks:
-      - nginx-network
+      - nginx-pm_default
   # echat-nginx:
   #   image: jonasal/nginx-certbot:latest
   #   restart: always
@@ -51,9 +51,9 @@ services:
   #     CERTBOT_EMAIL: don.cryptus@gmail.com
 
 networks:
-  nginx-network:
-    external:
-      name: nginx-network
+  nginx-pm_default:
+    external: false
+    name: nginx-pm_default
 
 # volumes:
 #   nginx_secrets:

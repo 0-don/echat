@@ -86,11 +86,15 @@ export class UserServiceResolver {
     const serviceImages = await getRepository(ServiceImage).find({
       where: { serviceId: In([...serviceIds]) },
     });
-
+    // console.log(serviceIds)
     const serviceImageByserviceId = groupBy(serviceImages, 'serviceId');
-    return serviceIds.map(
+    // console.log(serviceImageByserviceId)
+    const result = serviceIds.map(
       (serviceId) => serviceImageByserviceId[serviceId] ?? []
     );
+    console.log(result);
+    // console.log(serviceImageByserviceId);
+    return result;
   })
   images(@Root() root: UserService) {
     return (dataloader: DataLoader<number, ServiceImage[]>) =>

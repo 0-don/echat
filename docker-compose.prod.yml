@@ -1,19 +1,24 @@
-version: "3.4"
+version: "3.8"
 
 services:
   echat-web:
     ports:
-      - 3000:3000
+      - 3000
     build:
       context: web/
       dockerfile: Dockerfile
       target: prod
     restart: always
     networks:
-      - nginx-pm_default
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.echat-web.rule=Host(`echat.myngz.com`)'
+      - 'traefik.http.routers.echat-web.entrypoints=websecure'
+      - 'traefik.http.routers.echat-web.tls.certresolver=letsencrypt'
   echat-server:
     ports:
-      - 4001:4001
+      - 4001
     build:
       context: server/
       dockerfile: Dockerfile
@@ -24,12 +29,12 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:9oQX2RUHuHzwjy@echat-db:5432/echat
     networks:
-      - nginx-pm_default
+      - proxy
   echat-db:
     image: postgres:14.1-alpine
     restart: always
-    # ports:
-      # - 5432:5432
+    ports:
+      - 5432
     environment:
       - POSTGRES_PASSWORD=9oQX2RUHuHzwjy
       - POSTGRES_USER=postgres
@@ -37,23 +42,9 @@ services:
     volumes:
       - ~/pgdata:/var/lib/postgresql/data
     networks:
-      - nginx-pm_default
-  # echat-nginx:
-  #   image: jonasal/nginx-certbot:latest
-  #   restart: always
-  #   ports: 
-  #     - 80:80
-  #     - 443:443
-  #   volumes:
-  #     - ./user_conf.d:/etc/nginx/user_conf.d
-  #     - nginx_secrets:/etc/letsencrypt
-  #   environment:
-  #     CERTBOT_EMAIL: don.cryptus@gmail.com
+      - proxy
 
 networks:
-  nginx-pm_default:
+  proxy:
     external: false
-    name: nginx-pm_default
-
-# volumes:
-#   nginx_secrets:
+    name: proxy

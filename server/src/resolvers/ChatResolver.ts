@@ -58,9 +58,11 @@ export class ChatResolver {
     return result;
   })
   newMessagesCount(@Root() root: Room, @Ctx() { req }: MyContext) {
-    return (
+    const result = (
       dataloader: DataLoader<{ roomIds: number; userId: number }, number>
     ) => dataloader.load({ roomIds: root.id, userId: req.session.userId });
+
+    return result;
   }
 
   @Mutation(() => Boolean)
@@ -207,7 +209,6 @@ export class ChatResolver {
       ]);
     } catch (error) {}
 
- 
     await pubSub.publish(participant.uuid, room);
 
     return room.channel;
@@ -297,7 +298,6 @@ export class ChatResolver {
     topics: ({ args }) => args.channel,
   })
   connectRoom(@Arg('channel') channel: string, @Root() room: Room): Room {
-
     channel;
     return room;
   }

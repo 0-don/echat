@@ -16,6 +16,7 @@ services:
       - 'traefik.http.routers.echat-web.rule=Host(`echat.myngz.com`)'
       - 'traefik.http.routers.echat-web.entrypoints=websecure'
       - 'traefik.http.routers.echat-web.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.palarm-server.loadbalancer.server.port=3000'
   echat-server:
     ports:
       - 4001
@@ -30,6 +31,12 @@ services:
       - DATABASE_URL=postgres://postgres:9oQX2RUHuHzwjy@echat-db:5432/echat
     networks:
       - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.palarm-server.rule=Host(`echat.myngz.com`) && PathPrefix(`/graphql`)'
+      - 'traefik.http.routers.palarm-server.entrypoints=websecure'
+      - 'traefik.http.routers.palarm-server.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.palarm-server.loadbalancer.server.port=4001'
   echat-db:
     image: postgres:14.1-alpine
     restart: always

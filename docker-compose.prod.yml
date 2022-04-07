@@ -3,7 +3,7 @@ version: "3.8"
 services:
   echat-web:
     ports:
-      - 3000
+      - 3000:3000
     build:
       context: web/
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
       - 'traefik.http.services.palarm-server.loadbalancer.server.port=3000'
   echat-server:
     ports:
-      - 4001
+      - 4001:4001
     build:
       context: server/
       dockerfile: Dockerfile

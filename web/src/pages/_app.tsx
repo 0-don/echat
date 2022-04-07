@@ -11,7 +11,8 @@ const App = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     startTheme();
   }, []);
-
+  
+  // @ts-ignore
   return <Component {...pageProps} />;
 };
 

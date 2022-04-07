@@ -2,7 +2,10 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import { useField, useFormikContext } from 'formik';
 
-type DatePickerFieldProps = { name: string; className: string };
+type DatePickerFieldProps = {
+  name: string;
+  className: string;
+};
 
 export const DatePickerField: React.FC<DatePickerFieldProps> = ({
   className,
@@ -17,7 +20,9 @@ export const DatePickerField: React.FC<DatePickerFieldProps> = ({
       </label>
       <DatePicker
         {...field}
-        {...props}
+        // {...props}
+        className={className}
+        name={field.name}
         selected={(field.value && new Date(field.value)) || null}
         onChange={(val) => {
           setFieldValue(field.name, val);

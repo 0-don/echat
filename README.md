@@ -11,7 +11,7 @@
     <a href="#about-the-project"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://aktoryes.de/">View Demo</a>
+    <a href="https://echat.myngz.com/">View Demo</a>
     ·
     <a href="https://github.com/Don-Cryptus/echat/issues">Report Bug</a>
     ·

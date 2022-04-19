@@ -319,7 +319,7 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 
 Register, Login chat with a gamer, book them and play with them.
 
-_For more examples, please refer to the [FAQ](https://aktoryes.de/)_
+_For more examples, please refer to the [FAQ](https://echat.myngz.com/)_
 
 <!-- ROADMAP -->
 

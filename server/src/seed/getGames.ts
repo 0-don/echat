@@ -85,6 +85,7 @@ const getImages = async (
   let images = [];
   for (let url of imageUrls) {
     try {
+      // @ts-ignore
       let { width, height } = await probe(url, { retries: 10 });
 
       images.push({ type, url, width, height });

@@ -3,13 +3,13 @@ import 'dotenv/config';
 import { createConnection, getConnection } from 'typeorm';
 import { Service } from '../entity/Service';
 import { ServiceImage } from '../entity/ServiceImage';
-import { getGames } from './getGames';
+// import { getGames } from './getGames';
 import { log } from 'console';
 import { Services } from './types';
 
 export const gamesGen = async (externalCheck: boolean) => {
   if (process.env.TWITCH_CLIENT_ID && !fs.existsSync('games.json')) {
-    await getGames();
+    // await getGames();
   } else if (!process.env.TWITCH_CLIENT_ID && !fs.existsSync('games.json')) {
     return;
   }

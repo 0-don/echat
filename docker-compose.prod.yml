@@ -3,8 +3,6 @@ version: "3.8"
 services:
   echat-web:
     container_name: echat-web
-    ports:
-      - 3000
     build:
       context: web/
       dockerfile: Dockerfile
@@ -20,8 +18,6 @@ services:
       - 'traefik.http.services.echat-web.loadbalancer.server.port=3000'
   echat-server:
     container_name: echat-server
-    ports:
-      - 4001
     build:
       context: server/
       dockerfile: Dockerfile
@@ -43,8 +39,6 @@ services:
     container_name: echat-db
     image: postgres:14.1-alpine
     restart: always
-    ports:
-      - 5432
     environment:
       - POSTGRES_PASSWORD=9oQX2RUHuHzwjy
       - POSTGRES_USER=postgres

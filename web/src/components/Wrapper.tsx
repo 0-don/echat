@@ -8,6 +8,7 @@ interface WrapperProps {
   fluid?: boolean;
   className?: string;
   scrollbar?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Wrapper: React.FC<WrapperProps> = ({

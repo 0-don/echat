@@ -2,6 +2,7 @@ import { Transition, Dialog } from '@headlessui/react';
 import React, { Dispatch, Fragment, SetStateAction } from 'react';
 
 interface ModalProps {
+  children?: React.ReactNode;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }

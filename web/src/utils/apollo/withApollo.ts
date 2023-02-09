@@ -130,10 +130,7 @@ export const createApolloClient = (ctx: NextPageContext) => {
     credentials: 'include',
     fetch: customFetch as any,
     headers: {
-      cookie:
-        typeof window === 'undefined'
-          ? ctx?.req?.headers.cookie
-          : undefined || '',
+      cookie: typeof window === 'undefined' ? ctx?.req?.headers.cookie : '',
     },
   });
 

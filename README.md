@@ -12,7 +12,7 @@
     <a href="#about-the-project"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://echat.myngz.com/">View Demo</a>
+    <a href="https://echat.coding.global/">View Demo</a>
     ·
     <a href="https://github.com/Don-Cryptus/echat/issues">Report Bug</a>
     ·
@@ -319,8 +319,7 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 # Usage
 
 Register, Login chat with a gamer, book them and play with them.
-
-_For more examples, please refer to the [FAQ](https://echat.myngz.com/)_
+_For more examples, please refer to the [FAQ](https://echat.coding.global/)_
 
 <!-- ROADMAP -->
 

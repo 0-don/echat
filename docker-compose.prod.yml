@@ -12,7 +12,7 @@ services:
       - proxy
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.echat-web.rule=Host(`echat.myngz.com`)'
+      - 'traefik.http.routers.echat-web.rule=Host(`echat.coding.global`)'
       - 'traefik.http.routers.echat-web.entrypoints=websecure'
       - 'traefik.http.routers.echat-web.tls.certresolver=letsencrypt'
       - 'traefik.http.services.echat-web.loadbalancer.server.port=3000'
@@ -31,7 +31,7 @@ services:
       - proxy
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.echat-server.rule=Host(`echat.myngz.com`) && PathPrefix(`/graphql`)'
+      - 'traefik.http.routers.echat-server.rule=Host(`echat.coding.global`) && PathPrefix(`/graphql`)'
       - 'traefik.http.routers.echat-server.entrypoints=websecure'
       - 'traefik.http.routers.echat-server.tls.certresolver=letsencrypt'
       - 'traefik.http.services.echat-server.loadbalancer.server.port=4001'

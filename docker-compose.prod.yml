@@ -37,7 +37,7 @@ services:
       - 'traefik.http.services.echat-server.loadbalancer.server.port=4001'
   echat-db:
     container_name: echat-db
-    image: postgres:14.1-alpine
+    image: postgres:14
     restart: always
     environment:
       - POSTGRES_PASSWORD=9oQX2RUHuHzwjy

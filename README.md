@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="https://github.com/Don-Cryptus/echat">
+  <a href="https://github.com/0-don/echat">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -14,9 +14,9 @@
     <br />
     <a href="https://echat.coding.global/">View Demo</a>
     ·
-    <a href="https://github.com/Don-Cryptus/echat/issues">Report Bug</a>
+    <a href="https://github.com/0-don/echat/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Don-Cryptus/echat/issues">Request Feature</a>
+    <a href="https://github.com/0-don/echat/issues">Request Feature</a>
   </p>
 </p>
 
@@ -111,7 +111,7 @@ This project requires NodeJS (version 14 or later), Postgres and Yarn. Node and 
 - Clone the repo
 
   ```sh
-  git clone https://github.com/Don-Cryptus/echat/
+  git clone https://github.com/0-don/echat/
   cd echat/
   code .
   ```
@@ -236,9 +236,9 @@ This project requires preferrably a Ubuntu Linux VPS (version 20 or later), ngin
 
 ## Installation Production
 
-1. First of all you need to setup [github action secrets](https://github.com/Don-Cryptus/echat/settings/secrets/actions) from `./server/.env`
+1. First of all you need to setup [github action secrets](https://github.com/0-don/echat/settings/secrets/actions) from `./server/.env`
 2. set up your workflows in like in `./.github/workflows/node.js.yml`
-3. set up action runner as shown [here](https://github.com/Don-Cryptus/echat/settings/actions/runners/new)
+3. set up action runner as shown [here](https://github.com/0-don/echat/settings/actions/runners/new)
 
    while still beeing in the action-runner folder run this:(this will setup background process for the actions)
 
@@ -325,7 +325,7 @@ _For more examples, please refer to the [FAQ](https://echat.coding.global/)_
 
 # Roadmap
 
-See the [open issues](https://github.com/Don-Cryptus/echat/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/0-don/echat/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 
@@ -351,4 +351,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Your Email - don.cryptus@gmail.com
 
-Project Link: [https://github.com/Don-Cryptus/echat/](https://github.com/Don-Cryptus/echat/)
+Project Link: [https://github.com/0-don/echat/](https://github.com/0-don/echat/)

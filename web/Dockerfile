@@ -4,7 +4,7 @@ FROM node:16-alpine AS deps
 WORKDIR /app
 
 COPY package.json ./
-RUN yarn install --frozen-lockfile
+RUN npm i -f
 #############################################
 
 
@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN yarn build 
+RUN npm run build
 #############################################
 
 
@@ -39,7 +39,7 @@ EXPOSE 3000
 ENV PORT 3000
 ENV NEXT_TELEMETRY_DISABLED 1
 
-CMD ["yarn", "start"]
+CMD npm start
 #############################################
 
 # development image, copy all the files and run
@@ -58,5 +58,5 @@ EXPOSE 3000
 ENV PORT 3000
 ENV NEXT_TELEMETRY_DISABLED 1
 
-CMD ["yarn", "dev"]
+CMD npm run dev
 #############################################

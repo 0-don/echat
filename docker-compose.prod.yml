@@ -8,9 +8,16 @@ services:
       dockerfile: Dockerfile
       target: prod
     restart: always
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
       - proxy
     labels:
+      - 'autoheal=true'
       - 'traefik.enable=true'
       - 'traefik.http.routers.echat-web.rule=Host(`echat.coding-global.com`)'
       - 'traefik.http.routers.echat-web.entrypoints=websecure'
@@ -23,6 +30,12 @@ services:
       dockerfile: Dockerfile
       target: prod
     restart: always
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:4001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     depends_on:
       - echat-db
     environment:
@@ -30,6 +43,7 @@ services:
     networks:
       - proxy
     labels:
+      - 'autoheal=true'
       - 'traefik.enable=true'
       - 'traefik.http.routers.echat-server.rule=Host(`echat.coding-global.com`) && PathPrefix(`/graphql`)'
       - 'traefik.http.routers.echat-server.entrypoints=websecure'

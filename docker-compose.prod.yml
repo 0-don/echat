@@ -31,7 +31,9 @@ services:
       target: prod
     restart: always
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:4001/"]
+      # Apollo answers 404 on / and 400 on a plain GET to /graphql, so any HTTP
+      # status means the server is up: check the port instead of a status code.
+      test: ["CMD-SHELL", "netstat -tln | grep -q ':4001'"]
       interval: 30s
       timeout: 10s
       retries: 3

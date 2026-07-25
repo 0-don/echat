@@ -38,6 +38,8 @@ services:
       start_period: 40s
     depends_on:
       - echat-db
+    env_file:
+      - server/.env
     environment:
       - DATABASE_URL=postgres://postgres:9oQX2RUHuHzwjy@echat-db:5432/echat
     networks:

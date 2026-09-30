@@ -1,6 +1,6 @@
 # Install dependencies only when needed
 # Stage 0
-FROM node:16-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 
 COPY package.json ./
@@ -10,7 +10,7 @@ RUN npm i -f
 
 # Rebuild the source code only when needed
 # Stage 1
-FROM node:16-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 COPY . .
@@ -21,7 +21,7 @@ RUN npm run build
 
 # Production image, copy only production files
 # Stage 2
-FROM node:16-alpine AS prod
+FROM node:22-alpine AS prod
 WORKDIR /app
 
 
@@ -44,7 +44,7 @@ CMD npm start
 
 # development image, copy all the files and run
 # Stage 3
-FROM node:16-alpine AS dev
+FROM node:22-alpine AS dev
 WORKDIR /app
 
 
